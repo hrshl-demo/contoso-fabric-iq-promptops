@@ -271,6 +271,18 @@ def approval_request(s: PlatformSettings, capacity_fabric_id: Optional[str], wai
     if cross_geo:
         settings.append("Data sent to Azure OpenAI can be processed outside this capacity's geographic region, compliance boundary, or national cloud instance"
                         f"          (needed too: {s.base.location} is outside the US and EU)")
+    cost = f"The capacity bills while the run waits (about USD {s.base.usd_per_hour:.2f} an hour)."
+    if wait_min <= 0:
+        return "\n".join([
+            f"ACTION NEEDED LATER from a capacity admin of {s.base.capacity} (about 2 minutes, no tenant admin needed). Not now: this run does not wait "
+            "(gate_wait_min is 0), so it pauses the capacity as soon as the data is loaded, and the settings page is greyed out while the capacity is paused.",
+            f"  1. Run build again with a wait (gate_wait_min, default {DEFAULT_GATE_WAIT_MIN:g}): it resumes the capacity, skips the data that is already loaded and waits for the gate.",
+            f"  2. While that run is going, open {url}",
+            f"     (Fabric admin portal > Capacity settings > {s.base.capacity} > Delegated tenant settings)",
+            "  3. For EACH of these: tick 'Override tenant admin selection', switch it On, press Apply:",
+            *[f"       - {x}" for x in settings],
+            "The settings need 7 to 11 minutes to apply. " + cost,
+        ])
     return "\n".join([
         f"ACTION NEEDED from a capacity admin of {s.base.capacity} (about 2 minutes, no tenant admin needed):",
         f"  1. Open {url}",
@@ -278,7 +290,7 @@ def approval_request(s: PlatformSettings, capacity_fabric_id: Optional[str], wai
         "  2. For EACH of these: tick 'Override tenant admin selection', switch it On, press Apply:",
         *[f"       - {x}" for x in settings],
         f"  3. Nothing else: the run goes on loading the data, then checks every minute for up to {wait_min:g} minutes and carries on by itself. The settings need 7 to 11 minutes to apply.",
-        f"The capacity bills while waiting (about USD {s.base.usd_per_hour:.2f} an hour).",
+        cost,
     ])
 
 

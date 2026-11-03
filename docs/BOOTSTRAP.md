@@ -96,7 +96,7 @@ Same page: **action** `build`, target `dev`, and type `BUILD` in the confirm box
 | 22 to 36 min | If the gate is still closed the run checks every minute for up to `gate_wait_min` (20) minutes |
 | 36 min | The outputs are written and **the capacity is paused** |
 
-The times are estimates for the first run. The click, while the data loads:
+The times above are estimates for a build from blank. **Measured on the first live run (4 Nov 2026, the capacity already existed, paused):** the capacity was active 2 minutes after *Run workflow*, the workspace and the lakehouse took 5 seconds, **the load took about 4 minutes** (63 tables: bronze 36 s, silver 95 s, gold 111 s), and the pause came about 6 minutes after the resume: about 8 minutes from start to finish, and about USD 0.07 of F4. The load is shorter than the 7 to 11 minutes the click needs to apply, so even with the click made during the load the run still waits the remaining minutes. The click, while the data loads:
 
 1. Open the link in the log of the step *check the ontology gate and ask the admin to open it* (or in the job summary, or in the `platform-outputs` artifact, file `ADMIN_APPROVAL.md`). It looks like `https://app.fabric.microsoft.com/admin-portal/capacities/<capacity id>/delegatedSettings?experience=power-bi`.
 2. For each of these settings: tick **Override tenant admin selection**, switch it **On**, press **Apply**:
@@ -105,7 +105,7 @@ The times are estimates for the first run. The click, while the data loads:
    - only when the capacity is outside the US and the EU: **Data sent to Azure OpenAI can be processed outside this capacity's geographic region, compliance boundary, or national cloud instance**
 3. Nothing else. The settings take 7 to 11 minutes to apply and the run carries on by itself. A paused capacity greys these settings out, which is why the run asks while the capacity is running.
 
-If the gate is still closed when the wait ends the run ends with **exit 3** (yellow in the summary), after pausing the capacity. Run `build` again: it resumes the capacity, finds the data already loaded, checks the gate and, now that you have clicked, carries on.
+If the gate is still closed when the wait ends the run ends with **exit 3** (yellow in the summary), after pausing the capacity. Run `build` again: it resumes the capacity, finds the data already loaded, checks the gate and, now that you have clicked, carries on. With `gate_wait_min` set to **0** the run does not wait at all: it pauses right after the load, so the click is for the next run, which needs a wait (open the link while that run is going: a paused capacity greys the settings out).
 
 ## 7. The outputs
 

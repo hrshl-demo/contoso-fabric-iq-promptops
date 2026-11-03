@@ -49,7 +49,7 @@ The capacity is created **last among the Azure resources** so that everything th
 | 8 | Workspace, lakehouse, roles | Refuses a workspace that is on another capacity: the pipeline pauses only the capacity it knows, so a workspace elsewhere would bill unseen |
 | 9 | **Ontology gate check, and the request to the admin** | Creates an empty ontology as a probe and deletes it (and the graph model Fabric creates next to it; it also removes what an earlier probe left behind, so a leftover cannot turn the answer into "unknown"). A leftover that cannot be removed stops the probe and fails the build (the create would answer 409 and tell nothing about the gate). A 403 `FeatureNotAvailable` is a closed gate. If closed, the run prints the link and the exact switches, then goes on |
 | 10 | Load the layers | Only when tables are missing, or with `reload_data`. This takes about as long as the admin's click needs to apply, so the two overlap |
-| 11 | Wait for the gate | Only if it is still closed, up to `gate_wait_min`, never beyond the deadline |
+| 11 | Wait for the gate | Only if it is still closed, up to `gate_wait_min`, never beyond the deadline. With 0 it does not wait: the capacity is paused right after the load and the click is for a later run |
 | 12 | Write the outputs | `platform-outputs.json` |
 | 13 | **Pause the capacity** | Also after a failure, an interrupt or a deadline. The run reports `still running` loudly if the pause did not work |
 
