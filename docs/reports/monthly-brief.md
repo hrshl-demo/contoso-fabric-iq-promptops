@@ -30,4 +30,4 @@ python -m pip install -r analysis/requirements.txt
 python -m analysis.monthly_brief.build_brief --gold out/gold --out out/reports/monthly-brief.pdf
 ```
 
-The same data gives the same PDF (a test checks it byte for byte). The PDF itself is not committed; CI builds it and a release attaches it.
+The same data gives the same PDF on the same platform (a test checks it byte for byte). A Windows build and a Linux build differ by two bytes in one marker shape (floating-point formatting), which is why the release builds the PDF on the Actions runner only. The PDF itself is not committed; CI builds it and a release attaches it.

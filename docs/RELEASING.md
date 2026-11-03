@@ -25,7 +25,7 @@ A release is **a reviewed changelog section plus one button press**. The release
 | `prompts-vX.Y.Z.zip` | The prompt library with `skills.lock` and `manifest.lock.json` |
 | `SHA256SUMS` | A checksum for every file above |
 
-The release notes are the changelog section, a table of every prompt with its version and hash (from `manifest.lock.json`), the attached files, and the commit and run that built them. The zips are reproducible: the same commit gives the same bytes.
+The release notes are the changelog section, a table of every prompt with its version and hash (from `manifest.lock.json`), the attached files, and the commit and run that built them. The two zips and the ontology brief are the same bytes on every platform (checked on Windows and Linux); the PDF is built on the runner, so the checksum in `SHA256SUMS` is the one of the attached file.
 
 ## The rules the gate enforces
 
