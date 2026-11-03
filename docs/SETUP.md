@@ -1,5 +1,7 @@
 # Turning on the deployment pipelines
 
+> **Starting from a blank subscription? Use [BOOTSTRAP.md](BOOTSTRAP.md) instead.** The `platform` pipeline ([PLATFORM.md](PLATFORM.md)) creates the storage account, the capacity, the workspaces, the lakehouse and the data, and `python -m tools.bootstrap` scripts the identity, the roles and the secrets, so steps 1, 2 and 4 below are not typed by hand. This page stays for reference, for using a capacity that already exists, and for the cost and safety layers, which apply to every pipeline. One difference: the bootstrap gives the pipeline **Contributor on the resource group** (it must create the capacity), not the pause-only role described in step 2.
+
 Everything up to a pull request, and the release files, run without Azure. This page turns on the rest: **`cd-dev`** (deploy to the dev workspace after a merge), **`capacity`** (status, resume, pause, and a guard that pauses the F4 every 3 hours if someone forgot) and **Deploy to prod** inside the `release` workflow.
 
 It is a one-time setup. **Nothing here runs by itself**: the pipelines stay switched off (their jobs are skipped, which costs no Actions minutes) until the last step sets `CD_ENABLED`. Every step says who does it, what it changes and what it costs. The pipelines are drafts: they are tested with fakes and the kit's Fabric mock, and they have not run against a live tenant. Step 5 is a careful first run.

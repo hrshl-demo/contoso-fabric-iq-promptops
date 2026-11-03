@@ -4,7 +4,7 @@ This repo turns versioned prompts into a Fabric IQ ontology and Power BI reports
 
 ## Hard rules
 
-1. **Propose, never deploy.** Work on a branch named `copilot/<intent>`, open a pull request, stop. Never push to `main`. Never run or dispatch the `cd-dev`, `release` or `capacity` workflows, never set the repository secrets or variables (`CD_ENABLED` is the switch), and never call a Fabric or Azure write API from your own session.
+1. **Propose, never deploy.** Work on a branch named `copilot/<intent>`, open a pull request, stop. Never push to `main`. Never run or dispatch the `platform`, `cd-dev`, `release` or `capacity` workflows, never run `python -m tools.bootstrap` with `--execute` or `python -m tools.platform build` or `destroy`, never set the repository secrets or variables (`CD_ENABLED` is the switch), and never call a Fabric or Azure write API from your own session. A dry run of the bootstrap and `tools.platform plan` are read-only and fine.
 2. **Preview before any remote change.** Anything that would write to Fabric or Azure is first shown as a preview (created, replaced, deleted) and waits for an explicit "go" from the human.
 3. **No billable action without an explicit go.** Creating or resuming a Fabric capacity, starting a VM, Databricks, storage: ask first and state the cost.
 4. **Synthetic data only.** No real customer data, no credentials, tokens, connection strings or keys. Tenant, subscription and workspace IDs live in GitHub Actions variables, not in files.
@@ -23,6 +23,7 @@ This repo turns versioned prompts into a Fabric IQ ontology and Power BI reports
 | `seed/` | Synthetic seed data, read-only | Nobody |
 | `analysis/` | Analyses run by prompts (the PDF brief); `docs/reports/` documents them | You, through a PR |
 | `tools/`, `.github/workflows/` | Repo tooling and pipelines | Pipeline changes only |
+| `infra/` | The Bicep template of the platform (storage account, Fabric capacity) | Infrastructure changes only, with tests |
 
 ## Prompt discipline
 

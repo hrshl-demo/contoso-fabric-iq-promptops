@@ -397,8 +397,10 @@ def parse_hold(value: str) -> Optional[dt.datetime]:
 def guard(s: Settings, io: Any, hold_until: Optional[dt.datetime], now: dt.datetime, say: Callable[[str], None] = print) -> int:
     st = io.capacity(s, "status")
     if not st.get("exists", True):
-        say(f"::error::capacity {s.capacity} was not found in resource group {s.resource_group}")
-        return EXIT_CONFIG
+        # Before the platform has been built there is nothing to guard, and a red run every 3 hours would only teach people to ignore it. The warning stays
+        # visible on the run, so a mistyped CD_CAPACITY is still noticed.
+        say(f"::warning::capacity {s.capacity} was not found in resource group {s.resource_group}: nothing to guard. If the platform has been built, check CD_CAPACITY.")
+        return EXIT_OK
     say(f"capacity {s.capacity}: {st.get('state')}")
     if st.get("state") in NOT_BILLING:
         say("nothing to do")

@@ -104,6 +104,16 @@ jobs:
           if [ "$RELOAD" = "true" ]; then args+=(--reload-data); fi
           if [ "$KEEP" = "true" ]; then args+=(--keep-running); fi
           python -m tools.cd deploy "${args[@]}"
+      # A sign-in lasts about an hour and a long deploy plus its pause can outlast it: sign in again, so that the last-resort pause below cannot fail on an
+      # expired token. If this sign-in fails the pause step still tries and says so.
+      - name: Sign in again for the last line of defence
+        if: ${{ always() && steps.deploy.outcome != 'skipped' && (steps.deploy.outcome != 'success' || inputs.keep_running != true) }}
+        continue-on-error: true
+        uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       # Pausing twice is harmless. This catches a run that was cancelled, timed out or crashed before tools.cd could pause. It does not run when the
       # deploy step never started (nothing was resumed), and not after a successful run that was asked to keep the capacity on. It comes before the
       # artifact upload so that nothing else can use up the time it needs.
