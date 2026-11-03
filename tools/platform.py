@@ -41,6 +41,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import uuid
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable, Mapping, Optional, Sequence
@@ -55,6 +56,7 @@ SOURCE_CONTAINER = "source"
 DATA_SOURCES = ("repository", "storage")
 DATA_SOURCE_DEFAULT = "repository"                        # a storage account is reachable from GitHub's runners only where the subscription's policies leave public network access on
 GATE_PROBE_ITEM = "PromptOpsGateProbe"
+PROBE_WORKSPACE_PREFIX = "PromptOpsProbe-"
 DEFAULT_GATE_WAIT_MIN = 20
 GATE_POLL_S = 60.0
 SP_GROUP_DEFAULT = "contoso-promptops-fabric-apps"
@@ -444,11 +446,12 @@ class Live(cd.Live):
         try:
             ws = ops.ensure_workspace(s.base.workspace, s.base.capacity, f"Contoso PromptOps platform, {s.base.env_name} (synthetic data only).", sku=PLATFORM_SKU)
         except oac.FabricError as ex:
-            if http_status(ex) in (401, 403):
+            status = http_status(ex)
+            if status in (401, 403):
                 guide = tenant_settings_guide(s.group_name)
-                raise CdError("Fabric refused to create the workspace (403). Two things can cause it. (1) The tenant setting is not on for the group: "
-                              f"{guide['workspaces']} (2) The pipeline's identity is not yet an administrator of the capacity: the platform adds it when it "
-                              f"creates the capacity, so check CD_PIPELINE_OBJECT_ID and the capacity's administrators. The capacity is paused next. {str(ex)[:200]}") from ex
+                raise CdError(f"Fabric refused to create the workspace ({status}). Two things can cause it. (1) The tenant setting is not on for the group, or not effective yet "
+                              f"(a change can take up to 15 minutes): {guide['workspaces']} (2) The pipeline's identity is not yet an administrator of the capacity: the platform "
+                              f"adds it when it creates the capacity, so check CD_PIPELINE_OBJECT_ID and the capacity's administrators. The capacity is paused next. {str(ex)[:600]}") from ex
             raise
         self.capacity_fabric_id = ws["capacityId"]
         members = s.workspace_members()
@@ -511,9 +514,10 @@ class Live(cd.Live):
         return bool(runner.needs_cross_geo(s.base.location))
 
     def probe_fabric(self, s: PlatformSettings) -> list[Check]:
-        """The one door that can be proven before a capacity exists: may the pipeline's identity call Fabric at all (the first tenant setting)? Creating a
-        workspace cannot be proven here: Fabric also wants the caller to administer a capacity, and none exists yet, so a probe would fail for a reason
-        that is not the tenant setting. That door is checked when the workspace is created (and its guide is shown then)."""
+        """The two doors that can be proven before a capacity exists: may the pipeline's identity call Fabric at all (the first tenant setting), and may it create
+        a workspace (the second)? The second is proven by creating an empty workspace without a capacity and deleting it at once: Fabric answers 401 when the
+        tenant setting is not on for the identity (the first live run, 4 Nov 2026, found this at step 8, with the F4 already running). A refusal for any other
+        reason is reported as 'skipped', never as closed."""
         _cli, ops = self._ops(s)
         _c, _l, _r, _s, _m = self._kit_modules()
         from contoso_onto import oac
@@ -523,10 +527,31 @@ class Live(cd.Live):
         except oac.FabricError as ex:
             status = "closed" if http_status(ex) in (401, 403) else "error"           # the tokens were issued a moment ago, so a refusal is the tenant setting
             return [Check("Fabric API access for the pipeline's identity", status, str(ex)[:240], guide["api"] if status == "closed" else "")]
-        return [Check("Fabric API access for the pipeline's identity", "ok", "listing workspaces works"),
-                Check("Permission to create workspaces", "skipped",
-                      "cannot be proven before the capacity exists (Fabric also requires the caller to administer a capacity); the build checks it at step 8, "
-                      "and shows what to change if it is refused", guide["workspaces"])]
+        return [Check("Fabric API access for the pipeline's identity", "ok", "listing workspaces works"), self._probe_workspace_creation(ops, oac, guide)]
+
+    def _probe_workspace_creation(self, ops: Any, oac: Any, guide: dict[str, str]) -> Check:
+        name = "Permission to create workspaces"
+        try:                                                                          # what an earlier probe left behind, if its delete failed
+            for w in (ops.fab._json(ops.fab.call("GET", f"{ops.fab.api}/workspaces")) or {}).get("value", []):
+                if str(w.get("displayName", "")).startswith(PROBE_WORKSPACE_PREFIX):
+                    ops.delete_workspace(w["id"])
+        except oac.FabricError:
+            pass                                                                      # the create below says whether the door is open
+        probe = f"{PROBE_WORKSPACE_PREFIX}{uuid.uuid4().hex[:8]}"
+        try:
+            resp = ops.fab.call("POST", f"{ops.fab.api}/workspaces", json={"displayName": probe, "description": "Contoso PromptOps check: empty, deleted at once (synthetic)."})
+        except oac.FabricError as ex:
+            if http_status(ex) in (401, 403):
+                return Check(name, "closed", str(ex)[:300], guide["workspaces"])
+            return Check(name, "skipped", f"could not be proven ({str(ex)[:200]}); the build checks it at step 8", guide["workspaces"])
+        ws_id = (ops.fab._json(resp) or {}).get("id")
+        if not ws_id:
+            return Check(name, "error", f"Fabric created '{probe}' but returned no id: delete that empty workspace by hand")
+        try:
+            ops.delete_workspace(ws_id)
+        except Exception as ex:  # noqa: BLE001 - a leftover is reported, with its name
+            return Check(name, "error", f"the empty workspace '{probe}' was created but could not be deleted ({str(ex)[:160]}): delete it by hand")
+        return Check(name, "ok", "an empty workspace was created and deleted")
 
     def inventory(self, s: PlatformSettings, storage: Optional[str]) -> dict:
         cap = self.capacity(s.base, "status")
