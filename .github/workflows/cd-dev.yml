@@ -43,9 +43,11 @@ jobs:
     name: Deploy to dev
     if: ${{ vars.CD_ENABLED == 'true' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 75
+    # 5 minutes of set-up, the deadline for the deployment steps (CD_DEADLINE_MIN, default 45) and up to 25 minutes for the pause that always follows
+    timeout-minutes: 80
     permissions:
       contents: read
+      actions: read
       id-token: write
     env:
       CD_RESOURCE_GROUP: ${{ vars.CD_RESOURCE_GROUP }}
@@ -54,6 +56,7 @@ jobs:
       CD_WORKSPACE_DEV: ${{ vars.CD_WORKSPACE_DEV }}
       CD_TIER: ${{ vars.CD_TIER }}
       CD_USD_PER_HOUR: ${{ vars.CD_USD_PER_HOUR }}
+      CD_DEADLINE_MIN: ${{ vars.CD_DEADLINE_MIN }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -74,19 +77,16 @@ jobs:
         env:
           EVENT: ${{ github.event_name }}
           INPUT_RELOAD: ${{ inputs.reload_data }}
-          BEFORE: ${{ github.event.before }}
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
         run: |
           set -eu
-          reload=false
-          if [ "$EVENT" = "workflow_dispatch" ]; then
-            reload="$INPUT_RELOAD"
-          elif ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
-            reload=true
-          elif git diff --name-only "$BEFORE" "$GITHUB_SHA" -- seed kit/model/gold kit/model/silver kit/model/cdm_crosswalk.yaml kit/contoso_onto | grep -q .; then
-            reload=true
-          fi
+          # Compared with the last dev deployment that really ran, not with the previous push: a failed or skipped run in between must not hide a data change.
+          last=$(python -m tools.release dev-sha --repo "$REPO")
+          reload=$(python -m tools.release reload-data --since "$last" --sha "$GITHUB_SHA")
+          if [ "$EVENT" = "workflow_dispatch" ] && [ "$INPUT_RELOAD" = "true" ]; then reload=true; fi
           echo "reload=$reload" >> "$GITHUB_OUTPUT"
-          echo "Data reload: $reload" >> "$GITHUB_STEP_SUMMARY"
+          echo "Data reload: $reload (last dev deployment that ran: ${last:-none})" >> "$GITHUB_STEP_SUMMARY"
       - name: Sign in to Azure (federated credential, no secret)
         uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
         with:
@@ -94,6 +94,7 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       - name: Deploy, verify, pause
+        id: deploy
         env:
           RELOAD: ${{ steps.data.outputs.reload }}
           KEEP: ${{ inputs.keep_running }}
@@ -111,6 +112,8 @@ jobs:
           path: ${{ runner.temp }}/cd-out/backup
           if-no-files-found: ignore
           retention-days: 30
+      # Pausing twice is harmless. This catches a run that was cancelled, timed out or crashed before tools.cd could pause. It does not run when the
+      # deploy step never started (nothing was resumed), and not after a successful run that was asked to keep the capacity on.
       - name: Last line of defence, pause the capacity
-        if: ${{ always() && inputs.keep_running != true }}
+        if: ${{ always() && steps.deploy.outcome != 'skipped' && (steps.deploy.outcome != 'success' || inputs.keep_running != true) }}
         run: python -m tools.cd capacity pause

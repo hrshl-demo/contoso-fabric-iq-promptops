@@ -57,11 +57,11 @@ The flow follows Microsoft's Fabric skills demo: **Inspect, Build, Enrich, Consu
 | `ci.yml` | Prompt lint, wrappers, manifest, CHANGELOG structure, PII and secret scan, tooling tests, kit tests, offline build, drift check of the generated Fabric items, a deployment preview comment on every pull request, the Monthly Business Brief PDF and a preview of the release files as build artifacts | live |
 | `cd-dev.yml` | After a merge that changes what is deployed: sign-in check, resume the F4, load the data if needed, deploy the semantic model and the ontology, build the graph, verify, pause the F4 (also when a step failed). Draft, off until `CD_ENABLED` is set ([SETUP.md](docs/SETUP.md)) | after identity setup |
 | `release.yml` | Run by hand: checks the rules, runs the full kit tests, rebuilds the files from the commit, optionally deploys prod (only what dev had), and publishes a GitHub release with the PDF brief, the ontology brief, the Fabric items, the prompt library and checksums. A dry run is the default ([how](docs/RELEASING.md)) | live; prod deploy after identity setup |
-| `capacity.yml` | Status, resume and pause of the F4 by hand, and a guard that pauses a running F4 twice a day unless a demo hold is set. Draft | after identity setup |
+| `capacity.yml` | Status, resume and pause of the F4 by hand, and a guard that pauses a running F4 every 3 hours unless a demo hold is set. Draft | after identity setup |
 
 ## Cost guard
 
-Nothing bills until a person says so. The F4 capacity (East US 2) is paused between sessions, which keeps compute billing at zero. Every deploy ends with a pause, also when a step failed, a final workflow step pauses it again, and a guard pauses a forgotten one twice a day. Teardown (`wipe.sh`) stays a deliberate action on the machine that built the capacity, never a pipeline. See [docs/DECISIONS.md](docs/DECISIONS.md) and [docs/SETUP.md](docs/SETUP.md).
+Nothing bills until a person says so. The F4 capacity (East US 2) is paused between sessions, which keeps compute billing at zero. Every deploy ends with a pause, also when a step failed (`--keep-running` is ignored after a failure), the deployment steps have a deadline so the pause always has time, a final workflow step pauses again, and a guard pauses a forgotten F4 every 3 hours. Teardown (`wipe.sh`) stays a deliberate action on the machine that built the capacity, never a pipeline. See [docs/DECISIONS.md](docs/DECISIONS.md) and [docs/SETUP.md](docs/SETUP.md).
 
 ## Local checks
 

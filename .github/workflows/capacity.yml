@@ -1,6 +1,7 @@
 name: capacity
 
-# Status, resume and pause of the F4 by hand, and a guard that pauses it twice a day when someone forgot.
+# Status, resume and pause of the F4 by hand, and a guard that pauses it every 3 hours when someone forgot (so a forgotten capacity bills for 3 hours
+# at most, about USD 2.2; GitHub can start a scheduled run a few minutes late).
 # DRAFT: not run against a live tenant yet. It does nothing until the repository variable CD_ENABLED is "true" (docs/SETUP.md);
 # a skipped job costs no Actions minutes. Before a demo set the variable CD_GUARD_HOLD_UNTIL (for example 2026-11-05T20:00:00Z) so the guard
 # leaves a running capacity alone until then, and remove it afterwards.
@@ -14,7 +15,7 @@ on:
         options: [status, resume, pause, guard]
         default: status
   schedule:
-    - cron: "30 8,20 * * *"
+    - cron: "17 */3 * * *"
 
 permissions:
   contents: read
@@ -31,7 +32,7 @@ jobs:
     name: Capacity
     if: ${{ vars.CD_ENABLED == 'true' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 40
     permissions:
       contents: read
       id-token: write

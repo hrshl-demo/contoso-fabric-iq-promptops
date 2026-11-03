@@ -281,3 +281,129 @@ def test_promotion_command_line(history, capsys):
     assert release.main(["--root", str(root), "promotion", "--dev-sha", "", "--sha", third]) == 1
     out = capsys.readouterr().out
     assert "prod would get exactly what dev had" in out and "fabric/item.txt" in out and "no successful dev deployment yet" in out
+
+
+# ---- the last dev deployment that really ran ------------------------------------------------------------------
+
+def fake_api(runs, jobs_by_run):
+    """A stand-in for `gh api`: the workflow runs (newest first) and the jobs of each run."""
+    seen = []
+
+    def api(path):
+        seen.append(path)
+        if "/workflows/" in path:
+            return {"workflow_runs": runs}
+        run_id = int(path.split("/runs/")[1].split("/")[0])
+        return {"jobs": jobs_by_run[run_id]}
+    api.seen = seen
+    return api
+
+
+def job(name, conclusion):
+    return {"name": name, "conclusion": conclusion}
+
+
+def test_a_skipped_deploy_job_is_not_a_deployment():
+    """With CD_ENABLED unset the workflow run concludes 'success' although its only job was skipped; that must not license a prod deployment."""
+    api = fake_api([{"id": 3, "head_sha": "c" * 40}, {"id": 2, "head_sha": "b" * 40}, {"id": 1, "head_sha": "a" * 40}],
+                   {3: [job("Deploy to dev", "skipped")], 2: [job("Deploy to dev", "skipped")], 1: [job("Deploy to dev", "success")]})
+    assert release.last_dev_deployment("hrshl-demo/some-repo", api) == "a" * 40
+
+
+def test_the_newest_real_deployment_wins_and_nothing_else_is_fetched():
+    api = fake_api([{"id": 3, "head_sha": "c" * 40}, {"id": 2, "head_sha": "b" * 40}],
+                   {3: [job("Deploy to dev", "success")], 2: [job("Deploy to dev", "success")]})
+    assert release.last_dev_deployment("o/r", api) == "c" * 40
+    assert len(api.seen) == 2 and "branch=main" in api.seen[0] and "status=success" in api.seen[0] and "cd-dev.yml" in api.seen[0]
+
+
+@pytest.mark.parametrize("jobs", [[], [job("Deploy to dev", "failure")], [job("Deploy to dev", None)], [job("Some other job", "success")]])
+def test_no_deployment_when_the_deploy_job_did_not_succeed(jobs):
+    assert release.last_dev_deployment("o/r", fake_api([{"id": 1, "head_sha": "a" * 40}], {1: jobs})) == ""
+    assert release.last_dev_deployment("o/r", fake_api([], {})) == ""
+
+
+@pytest.mark.parametrize("repo", ["", "no-slash", "a/b/c", "o/r; rm -rf", "o/r name", "../x/y"])
+def test_the_repository_name_is_checked(repo):
+    with pytest.raises(release.ReleaseError, match="owner/name"):
+        release.last_dev_deployment(repo, fake_api([], {}))
+
+
+def test_gh_api_errors_are_readable():
+    def runner(cmd, **kw):
+        return subprocess.CompletedProcess(cmd, 1, "", "HTTP 404: Not Found")
+    with pytest.raises(release.ReleaseError, match="gh api repos/o/r/actions/workflows/cd-dev.yml/runs failed: HTTP 404"):
+        release.gh_api("repos/o/r/actions/workflows/cd-dev.yml/runs?branch=main", runner)
+
+    def junk(cmd, **kw):
+        return subprocess.CompletedProcess(cmd, 0, "not json", "")
+    with pytest.raises(release.ReleaseError, match="did not answer with JSON"):
+        release.gh_api("repos/o/r", junk)
+
+
+def test_dev_sha_command_prints_only_the_answer(monkeypatch, capsys):
+    monkeypatch.setattr(release, "last_dev_deployment", lambda repo: "d" * 40)
+    assert release.main(["dev-sha", "--repo", "o/r"]) == 0
+    captured = capsys.readouterr()
+    assert captured.out == "d" * 40 + "\n" and captured.err == ""
+
+    def boom(repo):
+        raise release.ReleaseError("gh failed")
+    monkeypatch.setattr(release, "last_dev_deployment", boom)
+    assert release.main(["dev-sha", "--repo", "o/r"]) == 1
+    captured = capsys.readouterr()
+    assert captured.out == "" and "gh failed" in captured.err                                       # a shell capturing stdout must not swallow the reason
+
+
+# ---- when must the data be loaded again -----------------------------------------------------------------------
+
+@pytest.fixture
+def data_history(tmp_path):
+    def head():
+        return subprocess.run(["git", "-C", str(tmp_path), "rev-parse", "HEAD"], capture_output=True, text=True, check=True).stdout.strip()
+
+    def commit(message, **files):
+        for rel, text in files.items():
+            f = tmp_path / rel.replace("__", "/")
+            f.parent.mkdir(parents=True, exist_ok=True)
+            f.write_text(text, encoding="utf-8")
+        git(tmp_path, "add", "-A")
+        git(tmp_path, "commit", "-q", "-m", message)
+        return head()
+    subprocess.run(["git", "-C", str(tmp_path), "init", "-q"], check=True)
+    base = commit("base", seed__a="1", fabric__x="1", docs__d="1")
+    only_fabric = commit("fabric only", fabric__x="2")
+    seed_change = commit("seed", seed__a="2")
+    engine_change = commit("engine", kit__contoso_onto__e="2")
+    return tmp_path, base, only_fabric, seed_change, engine_change
+
+
+@pytest.mark.skipif(shutil.which("git") is None, reason="git not available")
+def test_data_reload_decisions(data_history):
+    root, base, only_fabric, seed_change, engine_change = data_history
+    assert release.needs_data_reload(root, base, only_fabric) == (False, f"no data file changed since the last dev deployment ({base[:7]})")
+    reload, why = release.needs_data_reload(root, only_fabric, seed_change)
+    assert reload and "seed/a" in why
+    assert release.needs_data_reload(root, only_fabric, engine_change)[0]                                  # the engine decides the tables too
+    assert release.needs_data_reload(root, "", engine_change) == (True, "no successful dev deployment is known yet")
+    reload, why = release.needs_data_reload(root, "f" * 40, engine_change)
+    assert reload and "cannot be compared" in why
+
+
+@pytest.mark.skipif(shutil.which("git") is None, reason="git not available")
+def test_a_data_change_is_not_hidden_by_a_failed_run_in_between(data_history):
+    """Push 1 changes the seed (its deployment failed), push 2 changes only fabric/: compared with the last deployment that really ran, the data is stale."""
+    root, base, only_fabric, seed_change, engine_change = data_history
+    assert release.needs_data_reload(root, base, engine_change)[0]
+    assert not release.needs_data_reload(root, seed_change, seed_change)[0]
+
+
+@pytest.mark.skipif(shutil.which("git") is None, reason="git not available")
+def test_reload_data_command_keeps_stdout_clean(data_history, capsys):
+    root, base, only_fabric, seed_change, _engine = data_history
+    assert release.main(["--root", str(root), "reload-data", "--since", base, "--sha", only_fabric]) == 0
+    out, err = capsys.readouterr()
+    assert out == "false\n" and "not needed" in err
+    assert release.main(["--root", str(root), "reload-data", "--since", "", "--sha", seed_change]) == 0
+    out, err = capsys.readouterr()
+    assert out == "true\n" and "no successful dev deployment" in err

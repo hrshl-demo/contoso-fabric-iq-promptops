@@ -16,10 +16,13 @@ def settings(env_name="dev", **over):
 
 
 class FakeIo:
-    def __init__(self, missing=(), fail=None, state="Paused", pause_state="Paused", pause_error=None, resume_error=None, exists=True, warm_error=None):
+    def __init__(self, missing=(), fail=None, state="Paused", pause_state="Paused", pause_error=None, resume_error=None, exists=True, warm_error=None,
+                 kit_codes=None, interrupt_on=None):
         self.missing, self.fail, self.state, self.pause_state = list(missing), fail, state, pause_state
         self.pause_error, self.resume_error, self.exists, self.warm_error = pause_error, resume_error, exists, warm_error
+        self.kit_codes, self.interrupt_on = kit_codes or {}, interrupt_on
         self.calls: list[str] = []
+        self.timeouts: dict[str, float] = {}
 
     def warm_tokens(self, s):
         self.calls.append("warm")
@@ -29,8 +32,9 @@ class FakeIo:
     def build_offline(self, s, out):
         self.calls.append("build")
 
-    def capacity(self, s, action):
+    def capacity(self, s, action, timeout=None):
         self.calls.append(f"capacity {action}")
+        self.timeouts[f"capacity {action}"] = timeout
         if action == "resume":
             if self.resume_error:
                 raise cd.CdError(self.resume_error)
@@ -49,21 +53,25 @@ class FakeIo:
         self.calls.append("missing")
         return self.missing
 
-    def kit(self, s, *args):
+    def kit(self, s, *args, timeout=None):
         self.calls.append(f"kit {args[0]}")
-        return 1 if args[0] == self.fail else 0
+        self.timeouts[f"kit {args[0]}"] = timeout
+        if self.interrupt_on == args[0]:
+            raise KeyboardInterrupt
+        return self.kit_codes.get(args[0], 1 if args[0] == self.fail else 0)
 
-    def graph(self, s, out):
+    def graph(self, s, out, budget=None):
         self.calls.append("graph")
+        self.timeouts["graph"] = budget
         if self.fail == "graph":
             raise cd.CdError("graph refused")
 
 
-def clock():
+def clock(step_s=1.0):
     t = [0.0]
 
     def tick():
-        t[0] += 60.0
+        t[0] += step_s
         return t[0]
     return tick
 
@@ -147,15 +155,83 @@ def test_a_failed_resume_still_tries_to_pause():
 def test_no_sign_in_stops_before_anything_is_built_or_resumed():
     io = FakeIo(warm_error="not signed in")
     rc, rep = cd.deploy(settings(), io, Path("out"), clock=clock())
-    assert rc == cd.EXIT_FAILED and "build" not in io.calls and "capacity resume" not in io.calls
+    assert rc == cd.EXIT_FAILED and io.calls == ["warm"]                  # nothing was resumed, so nothing is paused (and no false alarm)
     assert rep.active_seconds is None and rep.steps[0][1] == "failed"
 
 
-def test_keep_running_leaves_the_capacity_on():
+def test_a_run_that_never_resumed_does_not_touch_a_capacity_somebody_else_started():
+    io = FakeIo(state="Active")
+    rc, _ = cd.deploy(settings(), io, Path("out"), clock=clock())
+    assert rc == 0 and io.state == "Paused"                                   # resumed (already Active), then paused: the documented behaviour
+    io = FakeIo(state="Active")
+    io.build_offline = lambda s, out: (_ for _ in ()).throw(cd.CdError("build broke"))
+    rc, _ = cd.deploy(settings(), io, Path("out"), clock=clock())
+    assert rc == cd.EXIT_FAILED and "capacity pause" not in io.calls and io.state == "Active"
+
+
+def test_keep_running_leaves_the_capacity_on_after_a_success():
     io = FakeIo()
     rc, rep = cd.deploy(settings(), io, Path("out"), keep_running=True, clock=clock())
     assert rc == 0 and "capacity pause" not in io.calls and rep.active_seconds is None
     assert any("left running on purpose" in n for n in rep.notes)
+
+
+@pytest.mark.parametrize("failing", ["load", "deploy", "graph", "verify"])
+def test_keep_running_is_ignored_after_a_failure(failing):
+    io = FakeIo(missing=["dim_customer"], fail=failing)
+    rc, rep = cd.deploy(settings(), io, Path("out"), keep_running=True, clock=clock())
+    assert rc == cd.EXIT_FAILED and io.calls[-1] == "capacity pause" and io.state == "Paused"
+    assert any("--keep-running was ignored" in n for n in rep.notes)
+
+
+@pytest.mark.parametrize("keep", [False, True])
+def test_an_interrupt_still_pauses_even_with_keep_running(keep):
+    io = FakeIo(interrupt_on="deploy")
+    with pytest.raises(KeyboardInterrupt):
+        cd.deploy(settings(), io, Path("out"), keep_running=keep, clock=clock())
+    assert io.calls[-1] == "capacity pause" and io.state == "Paused"
+
+
+# ---- the deadline ---------------------------------------------------------------------------------------------
+
+def test_every_long_step_gets_the_time_that_is_left():
+    io = FakeIo(missing=["dim_customer"])
+    rc, _ = cd.deploy(settings(), io, Path("out"), clock=clock(step_s=10.0), deadline_s=3000.0)
+    assert rc == 0
+    for key in ("kit load", "kit deploy", "kit verify", "graph"):
+        assert 0 < io.timeouts[key] <= 3000, key
+    assert io.timeouts["kit load"] > io.timeouts["kit deploy"] > io.timeouts["kit verify"]          # the budget shrinks as time passes
+    assert io.timeouts["capacity resume"] <= cd.CAPACITY_TIMEOUT_S["resume"]
+    assert io.timeouts["capacity pause"] is None                                                     # the pause is never limited by the deadline
+
+
+def test_steps_are_not_started_after_the_deadline_but_the_capacity_is_still_paused():
+    io = FakeIo(missing=["dim_customer"])
+    rc, rep = cd.deploy(settings(), io, Path("out"), clock=clock(step_s=100.0), deadline_s=1500.0)
+    assert rc == cd.EXIT_FAILED and io.calls[-1] == "capacity pause" and io.state == "Paused"
+    assert "kit load" not in io.calls and "kit verify" not in io.calls
+    assert any(r[1] == "not started" for r in rep.steps) and any("failed at" in n for n in rep.notes)
+
+
+def test_a_kit_step_that_hits_the_deadline_is_reported_as_such(capsys):
+    io = FakeIo(kit_codes={"deploy": cd.TIMEOUT_EXIT})
+    rc, rep = cd.deploy(settings(), io, Path("out"), clock=clock(), deadline_s=3000.0)
+    assert rc == cd.EXIT_FAILED and io.calls[-1] == "capacity pause"
+    assert "stopped at the 50-minute deadline" in capsys.readouterr().out
+
+
+def test_the_deadline_comes_from_the_settings():
+    assert settings().deadline_min == 45 and settings(CD_DEADLINE_MIN="30").deadline_min == 30
+    io = FakeIo()
+    rc, rep = cd.deploy(settings(CD_DEADLINE_MIN="10"), io, Path("out"), clock=clock(step_s=100.0))
+    assert rc == cd.EXIT_FAILED and rep.steps[-1][1] == "not started"                               # 10 minutes are used up by the clock
+    assert "capacity resume" not in io.calls and "capacity pause" not in io.calls                     # the resume never started, so nothing is paused
+
+
+@pytest.mark.parametrize("value", ["5", "121", "soon", "-1"])
+def test_the_deadline_must_be_a_sensible_number(value):
+    with pytest.raises(cd.CdError, match="CD_DEADLINE_MIN"):
+        settings(CD_DEADLINE_MIN=value)
 
 
 def test_a_capacity_that_cannot_be_paused_is_loud_even_after_a_good_deploy(capsys):
@@ -289,12 +365,34 @@ def test_live_capacity_errors_are_clear(tmp_path):
         live.capacity(settings(), "status")
 
 
+def test_live_capacity_calls_have_their_own_time_limits(tmp_path):
+    calls = []
+    status = json.dumps({"exists": True, "state": "Paused"})
+    live = cd.Live(state_dir=tmp_path, runner=fake_runner(calls, {"capacity status": (0, status)}))
+    live.capacity(settings(), "pause")
+    live.capacity(settings(), "resume", timeout=90)
+    by_verb = [(c[0][4], c[1]["timeout"]) for c in calls]
+    assert by_verb == [("suspend", cd.PAUSE_TIMEOUT_S), ("status", cd.CAPACITY_TIMEOUT_S["status"]), ("resume", 90), ("status", cd.CAPACITY_TIMEOUT_S["status"])]
+
+
+def test_a_stuck_kit_process_is_stopped_and_reported_not_waited_for(tmp_path):
+    import subprocess
+
+    class Hangs:
+        def __call__(self, cmd, **kw):
+            raise subprocess.TimeoutExpired(cmd, kw["timeout"])
+    live = cd.Live(state_dir=tmp_path, runner=Hangs())
+    assert live.kit(settings(), "deploy", "--execute", timeout=30) == cd.TIMEOUT_EXIT
+    with pytest.raises(cd.CdError, match="capacity suspend failed.*timed out after 20 s"):
+        live.capacity(settings(), "pause", timeout=20)
+
+
 def test_live_kit_step_uses_the_execute_flag_only_when_asked(tmp_path):
     calls = []
     live = cd.Live(state_dir=tmp_path, runner=fake_runner(calls, {}))
-    assert live.kit(settings(), "deploy", "--execute", "--replace", "--tier", "core", "--out", tmp_path / "o") == 0
+    assert live.kit(settings(), "deploy", "--execute", "--replace", "--tier", "core", "--out", tmp_path / "o", timeout=120) == 0
     assert calls[0][0][3:] == ["deploy", "--execute", "--replace", "--tier", "core", "--out", str(tmp_path / "o")]
-    assert calls[0][1]["capture_output"] is False
+    assert calls[0][1]["capture_output"] is False and calls[0][1]["timeout"] == 120
 
 
 def test_live_warm_tokens_asks_for_every_audience_and_never_prints_a_token(tmp_path):

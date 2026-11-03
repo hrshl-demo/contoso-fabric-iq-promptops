@@ -1,6 +1,7 @@
 """Cut a release: prepare the changelog, check the rules, write the notes, collect the assets.
 
-A release is a reviewed CHANGELOG section plus a button press. Nothing here talks to GitHub or Azure; the release workflow does.
+A release is a reviewed CHANGELOG section plus a button press. Nothing here talks to Azure or Fabric; only `dev-sha` reads GitHub (through `gh`), and
+the release workflow does the publishing.
 
   python -m tools.release prepare --version v1.0.0 --date 2026-11-04    turn "## Unreleased" into the release section (open a pull request)
   python -m tools.release gate    --version v1.0.0                       the rules a release must satisfy (exit 1 with the reasons)
@@ -8,7 +9,9 @@ A release is a reviewed CHANGELOG section plus a button press. Nothing here talk
   python -m tools.release notes   --unreleased --out notes.md           the same for the pending changes (pull request preview)
   python -m tools.release assets  --version v1.0.0 --brief monthly-brief.pdf --out dist     the files attached to the release
   python -m tools.release lint                                           structure of CHANGELOG.md
+  python -m tools.release dev-sha --repo owner/name                       commit of the last dev deployment that really ran (prints it, or nothing)
   python -m tools.release promotion --dev-sha <sha> --sha <sha>          prod gets only what dev has had
+  python -m tools.release reload-data --since <sha> --sha <sha>          prints true or false: must the data be loaded again?
 
 CHANGELOG.md convention: newest first; `## Unreleased` first, then `## vX.Y.Z — YYYY-MM-DD` sections in descending order,
 each with at least one `- ` entry.
@@ -26,14 +29,19 @@ import sys
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
+from typing import Any, Callable, Optional
 
 from .promptlib import ROOT
 
 VERSION_RE = re.compile(r"^v(\d+)\.(\d+)\.(\d+)$")
 SHA_RE = re.compile(r"^[0-9a-f]{7,40}$")
+REPO_RE = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 # What a deployment sends to Fabric: a change here is a change in what is deployed.
 DEPLOYED_PATHS = ("fabric", "seed", "kit/model", "kit/contoso_onto", "kit/config", "tools/cd.py")
+# What decides the contents of the loaded tables: a change here means the data must be loaded again.
+DATA_PATHS = ("seed", "kit/model/gold", "kit/model/silver", "kit/model/cdm_crosswalk.yaml", "kit/model/model.yaml", "kit/contoso_onto")
+DEPLOY_WORKFLOW = "cd-dev.yml"
+DEPLOY_JOB = "Deploy to dev"                         # the `name:` of the job in .github/workflows/cd-dev.yml
 LABEL_RE = re.compile(r"^(v\d+\.\d+\.\d+|preview)$")
 HEADING_RE = re.compile(r"^## (?P<title>.+?)[ \t]*$", re.M)
 RELEASE_TITLE_RE = re.compile(r"^(?P<version>v\d+\.\d+\.\d+)\s+[—–-]\s+(?P<date>\d{4}-\d{2}-\d{2})$")
@@ -156,15 +164,58 @@ def git_tags(root: Path) -> list[str]:
     return [t.strip() for t in p.stdout.splitlines() if t.strip()] if p.returncode == 0 else []
 
 
-def deployed_changes(root: Path, dev_sha: str, sha: str) -> list[str]:
-    """Files that differ, in what a deployment sends, between the last successful dev deployment and this commit."""
-    for label, value in (("dev commit", dev_sha), ("commit", sha)):
+def changed_files(root: Path, old: str, new: str, paths: tuple[str, ...]) -> list[str]:
+    """Files under `paths` that differ between two commits."""
+    for label, value in (("older commit", old), ("newer commit", new)):
         if not SHA_RE.match(value or ""):
             raise ReleaseError(f"the {label} '{value}' is not a commit id")
-    p = subprocess.run(["git", "-C", str(root), "diff", "--name-only", dev_sha, sha, "--", *DEPLOYED_PATHS], capture_output=True, text=True)
+    p = subprocess.run(["git", "-C", str(root), "diff", "--name-only", old, new, "--", *paths], capture_output=True, text=True)
     if p.returncode != 0:
-        raise ReleaseError(f"git could not compare {dev_sha[:7]} with {sha[:7]}: {p.stderr.strip()[:200]}")
+        raise ReleaseError(f"git could not compare {old[:7]} with {new[:7]}: {p.stderr.strip()[:200]}")
     return [line for line in p.stdout.splitlines() if line.strip()]
+
+
+def deployed_changes(root: Path, dev_sha: str, sha: str) -> list[str]:
+    """Files that differ, in what a deployment sends, between the last successful dev deployment and this commit."""
+    return changed_files(root, dev_sha, sha, DEPLOYED_PATHS)
+
+
+def needs_data_reload(root: Path, last_sha: str, sha: str) -> tuple[bool, str]:
+    """(reload, why). The data is loaded again when no dev deployment is known, when it cannot be compared with this commit, or when a file that
+    decides the contents of the tables changed since it. The comparison is with the last deployment that really ran, not with the previous push:
+    a failed or skipped run in between must not hide a data change."""
+    if not last_sha:
+        return True, "no successful dev deployment is known yet"
+    try:
+        changed = changed_files(root, last_sha, sha, DATA_PATHS)
+    except ReleaseError:
+        return True, f"the last dev deployment ({last_sha[:7]}) cannot be compared with this commit"
+    if changed:
+        return True, f"{len(changed)} data file(s) changed since the last dev deployment ({last_sha[:7]}), for example {changed[0]}"
+    return False, f"no data file changed since the last dev deployment ({last_sha[:7]})"
+
+
+def gh_api(path: str, runner: Callable[..., Any] = subprocess.run) -> dict:
+    p = runner(["gh", "api", path], capture_output=True, text=True)
+    if p.returncode != 0:
+        raise ReleaseError(f"gh api {path.split('?')[0]} failed: {(p.stderr or p.stdout).strip()[:200]}")
+    try:
+        return json.loads(p.stdout or "{}")
+    except ValueError as ex:
+        raise ReleaseError(f"gh api {path.split('?')[0]} did not answer with JSON") from ex
+
+
+def last_dev_deployment(repo: str, api: Callable[[str], dict] = gh_api, limit: int = 20) -> str:
+    """Head commit of the newest cd-dev run on main whose 'Deploy to dev' job really succeeded ('' when there is none). A run whose only job was
+    skipped (the deployment pipelines were switched off) concludes 'success' as well, so the conclusion of the job itself is what counts."""
+    if not REPO_RE.match(repo or ""):
+        raise ReleaseError(f"repository '{repo}' must look like owner/name")
+    runs = api(f"repos/{repo}/actions/workflows/{DEPLOY_WORKFLOW}/runs?branch=main&status=success&per_page={limit}").get("workflow_runs") or []
+    for run in runs:
+        jobs = api(f"repos/{repo}/actions/runs/{run['id']}/jobs?per_page=100").get("jobs") or []
+        if any(j.get("name") == DEPLOY_JOB and j.get("conclusion") == "success" for j in jobs):
+            return str(run["head_sha"])
+    return ""
 
 
 def gate(root: Path, version: str, tags: list[str]) -> list[str]:
@@ -317,6 +368,11 @@ def main(argv: Optional[list[str]] = None) -> int:
     p = sub.add_parser("promotion", help="prod gets only what dev has had: fail when the deployed files differ from the last good dev deployment")
     p.add_argument("--dev-sha", default="", help="head commit of the last successful dev deployment (empty: there is none)")
     p.add_argument("--sha", required=True)
+    p = sub.add_parser("dev-sha", help="head commit of the newest cd-dev run on main whose deploy job really succeeded")
+    p.add_argument("--repo", required=True, help="owner/name")
+    p = sub.add_parser("reload-data", help="prints true when the data must be loaded again since the last dev deployment")
+    p.add_argument("--since", default="", help="commit of the last dev deployment (empty: none is known)")
+    p.add_argument("--sha", required=True)
     sub.add_parser("lint")
     a = ap.parse_args(argv)
     root = Path(a.root)
@@ -342,6 +398,18 @@ def main(argv: Optional[list[str]] = None) -> int:
         if a.cmd == "assets":
             for f in assets(root, a.version, Path(a.brief), Path(a.out)):
                 print(f"  {f.name}  {f.stat().st_size:,} bytes")
+            return 0
+        if a.cmd == "dev-sha":
+            try:
+                print(last_dev_deployment(a.repo))
+            except ReleaseError as ex:                                   # stdout carries only the answer, so a shell can capture it
+                print(f"release: {ex}", file=sys.stderr)
+                return 1
+            return 0
+        if a.cmd == "reload-data":
+            reload, why = needs_data_reload(root, a.since, a.sha)
+            print(f"release: data reload is {'needed' if reload else 'not needed'}: {why}", file=sys.stderr)
+            print("true" if reload else "false")
             return 0
         if a.cmd == "promotion":
             if not a.dev_sha:

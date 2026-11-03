@@ -9,9 +9,13 @@ workflows only sign in and call it.
   python -m tools.cd capacity status|resume|pause|guard
 
 Settings come from environment variables (GitHub Actions variables): CD_RESOURCE_GROUP, CD_CAPACITY, CD_WORKSPACE_DEV, CD_WORKSPACE_PROD and
-optionally CD_LOCATION (default eastus2), CD_TIER (default: the kit's tier) and CD_USD_PER_HOUR (default 0.72, the East US 2 list price of an F4).
-The capacity is paused at the end of every deploy, also when a step failed; --keep-running leaves it on and the guard pauses it later.
-`guard` pauses an Active capacity unless CD_GUARD_HOLD_UNTIL (an ISO time such as 2026-11-05T20:00:00Z, set before a demo) is still in the future.
+optionally CD_LOCATION (default eastus2), CD_TIER (default: the kit's tier), CD_USD_PER_HOUR (default 0.72, the East US 2 list price of an F4)
+and CD_DEADLINE_MIN (default 45, 10 to 120).
+The capacity is paused at the end of every deploy once it has been resumed, also when a step failed. --keep-running leaves it on only when every
+step succeeded; after a failure it is paused anyway. The steps between resume and pause have a deadline (CD_DEADLINE_MIN): a step that is still running
+when it ends is stopped, so the pause that follows (up to 25 minutes) always happens inside the workflow's timeout (keep timeout-minutes at least 30
+minutes above the deadline plus about 5 minutes for the set-up steps).
+`guard` pauses a running capacity unless CD_GUARD_HOLD_UNTIL (an ISO time such as 2026-11-05T20:00:00Z, set before a demo) is still in the future.
 """
 from __future__ import annotations
 
@@ -35,6 +39,11 @@ from .promptlib import ROOT
 EXIT_OK, EXIT_FAILED, EXIT_CONFIG, EXIT_STILL_RUNNING = 0, 1, 2, 4
 DEFAULT_LOCATION = "eastus2"
 DEFAULT_USD_PER_HOUR = 0.72
+DEFAULT_DEADLINE_MIN = 45
+PAUSE_TIMEOUT_S = 25 * 60                                  # one pause call, including the kit's own wait for the state to change
+CAPACITY_TIMEOUT_S = {"status": 300, "resume": 25 * 60, "pause": PAUSE_TIMEOUT_S}
+MIN_STEP_S = 60                                            # a step is not started with less than this left before the deadline
+TIMEOUT_EXIT = 124
 NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9 ._()\-]{0,127}$")
 CAPACITY_RE = re.compile(r"^[a-z][a-z0-9]{2,62}$")
 LOCATION_RE = re.compile(r"^[a-z][a-z0-9]*$")
@@ -62,6 +71,7 @@ class Settings:
     tier: str
     env_name: str
     usd_per_hour: float
+    deadline_min: int = DEFAULT_DEADLINE_MIN
 
     def kit_env(self, state_dir: Path, root: Path = ROOT) -> dict[str, str]:
         env = {"CONTOSO_RESOURCE_GROUP": self.resource_group, "CONTOSO_LOCATION": self.location, "CONTOSO_CAPACITY_NAME": self.capacity,
@@ -91,9 +101,16 @@ def load_settings(environ: Mapping[str, str], env_name: Optional[str], default_t
     except ValueError:
         bad.append("CD_USD_PER_HOUR")
         usd = DEFAULT_USD_PER_HOUR
+    try:
+        deadline = int(get("CD_DEADLINE_MIN", str(DEFAULT_DEADLINE_MIN)))
+        if not 10 <= deadline <= 120:
+            raise ValueError
+    except ValueError:
+        bad.append("CD_DEADLINE_MIN")
+        deadline = DEFAULT_DEADLINE_MIN
     if bad:
         raise CdError("invalid values for: " + ", ".join(bad) + " (see docs/SETUP.md)")
-    return Settings(s.resource_group, s.capacity, s.location, s.workspace, s.tier, s.env_name, usd)
+    return Settings(s.resource_group, s.capacity, s.location, s.workspace, s.tier, s.env_name, usd, deadline)
 
 
 def describe_plan(s: Settings) -> str:
@@ -106,12 +123,13 @@ def describe_plan(s: Settings) -> str:
         "  1. check the sign-in and fetch a token for each service the kit talks to",
         "  2. build the data layers and the definitions offline (no Azure)",
         f"  3. resume the capacity (bills about USD {s.usd_per_hour:.2f} an hour until step 9)",
-        "  4. find the workspace and the lakehouse (the lakehouse is created when missing)",
+        "  4. find the workspace and the lakehouse (the lakehouse is created when missing); the workspace must be on this capacity",
         "  5. load the data when planned tables are missing, or with --reload-data",
         "  6. deploy the semantic model and the ontology (an existing item is replaced after a backup)",
         "  7. build the graph",
         "  8. verify the ontology and the tables",
         "  9. pause the capacity, also when a step failed",
+        f"Deadline:    steps 1 to 8 are stopped after {s.deadline_min} minutes so that step 9 always runs (it may take up to 25 minutes)",
     ])
 
 
@@ -127,9 +145,12 @@ class Live:
     def _env(self, s: Settings) -> dict[str, str]:
         return {**os.environ, "PYTHONUTF8": "1", "PYTHONDONTWRITEBYTECODE": "1", **s.kit_env(self.state_dir, self.root)}
 
-    def _kit(self, s: Settings, *args: Any, capture: bool = False) -> Any:
+    def _kit(self, s: Settings, *args: Any, capture: bool = False, timeout: Optional[float] = None) -> Any:
         cmd = [sys.executable, "-m", "contoso_onto.cli", *[str(a) for a in args]]
-        return self.runner(cmd, cwd=self.root / "kit", env=self._env(s), text=True, encoding="utf-8", capture_output=capture)
+        try:
+            return self.runner(cmd, cwd=self.root / "kit", env=self._env(s), text=True, encoding="utf-8", capture_output=capture, timeout=timeout)
+        except subprocess.TimeoutExpired:
+            return subprocess.CompletedProcess(cmd, TIMEOUT_EXIT, "", f"timed out after {int(timeout or 0)} s and was stopped")
 
     def warm_tokens(self, s: Settings) -> None:
         """Sign-in check, and a token for every audience the kit uses, fetched now. A federated (OIDC) sign-in cannot mint tokens for new audiences once
@@ -144,12 +165,13 @@ class Live:
                 raise CdError(f"the signed-in identity cannot get a token for {resource}: {(r.stderr or r.stdout).strip()[:300]}. "
                               f"Sign in first (azure/login in a workflow, az login on a laptop) and check docs/SETUP.md.")
 
-    def kit(self, s: Settings, *args: Any) -> int:
-        return self._kit(s, *args).returncode
+    def kit(self, s: Settings, *args: Any, timeout: Optional[float] = None) -> int:
+        return self._kit(s, *args, timeout=timeout).returncode
 
-    def capacity(self, s: Settings, action: str) -> dict:
+    def capacity(self, s: Settings, action: str, timeout: Optional[float] = None) -> dict:
         verb = {"status": "status", "resume": "resume", "pause": "suspend"}[action]
-        r = self._kit(s, "capacity", verb, *([] if action == "status" else ["--execute"]), capture=True)
+        limit = timeout if timeout is not None else CAPACITY_TIMEOUT_S[action]
+        r = self._kit(s, "capacity", verb, *([] if action == "status" else ["--execute"]), capture=True, timeout=limit)
         if r.returncode != 0:
             raise CdError(f"capacity {verb} failed: {(r.stdout + r.stderr).strip()[-600:]}")
         if action != "status":
@@ -182,6 +204,14 @@ class Live:
             raise CdError(f"workspace '{s.workspace}' was not found, or the identity has no role in it: create it and add the identity as Admin (docs/SETUP.md)")
         if not ws.get("capacityId"):
             raise CdError(f"workspace '{s.workspace}' is not assigned to a capacity: assign it to {s.capacity}")
+        try:
+            cap = ops.find_capacity(s.capacity)
+        except Exception as ex:  # noqa: BLE001 - one clear message, whatever the API said
+            raise CdError(f"the identity cannot see capacity '{s.capacity}' through the Fabric API ({str(ex)[:200]}). Add the app's security group as a "
+                          f"contributor of the capacity (docs/SETUP.md step 3)") from ex
+        if ws["capacityId"] != cap.get("id"):
+            raise CdError(f"workspace '{s.workspace}' is not on capacity '{s.capacity}' (it is on {ws['capacityId']}). This pipeline resumes and pauses "
+                          f"'{s.capacity}' only, so it would leave the capacity that really bills running. Assign the workspace to '{s.capacity}', or fix CD_CAPACITY")
         lh = ops.ensure_lakehouse(ws["id"], cfg["lakehouse"]["name"])
         keep = {k: lh[k] for k in ("lakehouseId", "lakehouseName", "sqlEndpoint", "sqlDatabase")}
         cli.write_state(out, workspaceId=ws["id"], workspaceName=s.workspace, capacityName=s.capacity, resourceGroup=s.resource_group, **keep)
@@ -193,13 +223,16 @@ class Live:
         rep = cli.make_ops().layer_report(layers.load_plan(out), st["workspaceId"], st["lakehouseId"])
         return [t for layer in rep["layers"].values() for t in layer["missing"]]
 
-    def graph(self, s: Settings, out: Path) -> dict:
+    def graph(self, s: Settings, out: Path, budget: Optional[float] = None) -> dict:
+        """The graph step runs in this process and cannot be killed, so its two waits are cut to fit the time that is left before the deadline."""
         cli, _layers, runner, spec, load_model = self._kit_modules()
         st = cli.read_state(out)
         sp = spec.make_spec(load_model(cli.ROOT / "model"), s.tier, spec.DEFAULT_DESCRIPTIONS)
         ws = {"workspaceId": st["workspaceId"], "workspaceName": st["workspaceName"]}
         lh = {"lakehouseId": st["lakehouseId"], "sqlEndpoint": st.get("sqlEndpoint"), "sqlDatabase": st.get("sqlDatabase")}
-        return runner.materialize_graph(cli.make_ops(), sp, ws, lh, out, print)
+        wait_s = 300.0 if budget is None else max(30.0, min(300.0, budget * 0.25))
+        timeout_s = 900.0 if budget is None else max(60.0, min(900.0, budget * 0.7))
+        return runner.materialize_graph(cli.make_ops(), sp, ws, lh, out, print, wait_s=wait_s, timeout_s=timeout_s)
 
 
 @dataclass
@@ -234,16 +267,25 @@ def pause(s: Settings, io: Any, say: Callable[[str], None]) -> int:
 
 
 def deploy(s: Settings, io: Any, out: Path, reload_data: bool = False, keep_running: bool = False, say: Callable[[str], None] = print,
-           clock: Callable[[], float] = time.monotonic) -> tuple[int, Report]:
+           clock: Callable[[], float] = time.monotonic, deadline_s: Optional[float] = None) -> tuple[int, Report]:
     rep = Report()
-    rc = EXIT_OK
+    rc = EXIT_FAILED                                       # becomes EXIT_OK only when every step has run; anything else (an interrupt too) must pause
     resume_started: Optional[float] = None
+    started = clock()
+    limit = s.deadline_min * 60.0 if deadline_s is None else deadline_s
 
-    def step(name: str, fn: Callable[[], Any]) -> Any:
+    def left() -> float:
+        return limit - (clock() - started)
+
+    def step(name: str, fn: Callable[..., Any], budgeted: bool = False) -> Any:
         say(f"\n== {name}")
+        budget = left()
         t0 = clock()
+        if budget < MIN_STEP_S:
+            rep.steps.append((name, "not started", 0.0))
+            raise StepFailed(name, f"not started: {max(0, int(budget))} s are left of the {int(limit // 60)}-minute deadline (CD_DEADLINE_MIN)")
         try:
-            res = fn()
+            res = fn(budget) if budgeted else fn()
         except StepFailed:
             rep.steps.append((name, "failed", clock() - t0))
             raise
@@ -254,17 +296,23 @@ def deploy(s: Settings, io: Any, out: Path, reload_data: bool = False, keep_runn
         return res
 
     def kit_step(name: str, *args: Any) -> None:
-        def run() -> None:
-            code = io.kit(s, *args)
+        def run(budget: float) -> None:
+            code = io.kit(s, *args, timeout=budget)
+            if code == TIMEOUT_EXIT:
+                raise StepFailed(name, f"stopped at the {int(limit // 60)}-minute deadline (CD_DEADLINE_MIN); the capacity is paused next. Run again, the kit resumes")
             if code != 0:
                 raise StepFailed(name, f"the kit exited with {code}; its output is above")
-        step(name, run)
+        step(name, run, budgeted=True)
 
     try:
         step("check the sign-in and fetch the tokens", lambda: io.warm_tokens(s))
         step("build the layers and the definitions offline", lambda: io.build_offline(s, out))
-        resume_started = clock()
-        step("resume the capacity", lambda: io.capacity(s, "resume"))
+
+        def resume(budget: float) -> Any:
+            nonlocal resume_started
+            resume_started = clock()                       # from here on the capacity may bill, so a pause is owed whatever happens
+            return io.capacity(s, "resume", timeout=min(budget, CAPACITY_TIMEOUT_S["resume"]))
+        step("resume the capacity", resume, budgeted=True)
         step("find the workspace and the lakehouse", lambda: io.bootstrap(s, out))
         missing = step("check which planned tables the lakehouse already has", lambda: io.missing_tables(out))
         if reload_data or missing:
@@ -274,24 +322,28 @@ def deploy(s: Settings, io: Any, out: Path, reload_data: bool = False, keep_runn
             say("data: every planned table is already in the lakehouse; load skipped (use --reload-data to load again)")
             rep.notes.append("data load skipped: every planned table was already present")
         kit_step("deploy the semantic model and the ontology", "deploy", "--execute", "--replace", "--tier", s.tier, "--out", out)
-        step("build the graph", lambda: io.graph(s, out))
+        step("build the graph", lambda b: io.graph(s, out, budget=b), budgeted=True)
         kit_step("verify the ontology and the tables", "verify", "--tier", s.tier, "--out", out)
+        rc = EXIT_OK
     except StepFailed as ex:
         say(f"\nFAILED at '{ex.step}': {ex}")
         rep.notes.append(f"failed at '{ex.step}'")
-        rc = EXIT_FAILED
     finally:
-        if keep_running:
+        if resume_started is None:
+            say("\nthe capacity was never resumed by this run, so it is left as it is")
+        elif keep_running and rc == EXIT_OK:
             say("\n--keep-running: the capacity stays on and bills until it is paused (the guard does it at its next run)")
             rep.notes.append("the capacity was left running on purpose (--keep-running)")
         else:
+            if keep_running:
+                say("\n--keep-running is ignored after a failure: the capacity is paused so that it cannot bill unseen")
+                rep.notes.append("--keep-running was ignored because a step failed; the capacity was paused")
             say("\n== pause the capacity")
             t0 = clock()
             code = pause(s, io, say)
             rep.steps.append(("pause the capacity", "ok" if code == EXIT_OK else "FAILED", clock() - t0))
             rc = max(rc, code)
-            if resume_started is not None:
-                rep.active_seconds = clock() - resume_started
+            rep.active_seconds = clock() - resume_started
     return rc, rep
 
 

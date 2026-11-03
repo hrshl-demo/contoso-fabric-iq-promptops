@@ -33,7 +33,7 @@ The release notes are the changelog section, a table of every prompt with its ve
 - The version looks like `v1.2.3`, the tag does not exist, and it is not older than the newest tag.
 - `CHANGELOG.md` has a dated, non-empty section for it, nothing is left in `## Unreleased` (it would be missing from the notes), and the structure is valid.
 - A successful `ci` run exists for this exact commit, the full kit test suite passes, and the generated Fabric items still match the spec.
-- Deploy to prod only: the deployment pipelines are enabled, and the files a deployment sends (`fabric/`, `seed/`, `kit/model`, `kit/contoso_onto`, `kit/config`, `tools/cd.py`) equal those of the last successful `cd-dev` run (`python -m tools.release promotion`). Prod gets only what dev has had.
+- Deploy to prod only: the deployment pipelines are enabled, and the files a deployment sends (`fabric/`, `seed/`, `kit/model`, `kit/contoso_onto`, `kit/config`, `tools/cd.py`) equal those of the last dev deployment that really ran (`python -m tools.release dev-sha` reads the conclusion of the `Deploy to dev` job, so a skipped run does not count; `python -m tools.release promotion` compares). Prod gets only what dev has had, and always loads the data again because table names do not change when the data behind them does.
 
 Every pull request also builds the same files as the `release-preview` artifact and prints the file list and the pending release notes in the CI job summary, so a broken release is found in the pull request, not on release day.
 

@@ -194,7 +194,8 @@ jobs:
     if: ${{ inputs.deploy_prod && inputs.publish && vars.CD_ENABLED == 'true' }}
     needs: [build, kit-tests]
     runs-on: ubuntu-latest
-    timeout-minutes: 75
+    # 5 minutes of set-up, the deadline for the deployment steps (CD_DEADLINE_MIN, default 45) and up to 25 minutes for the pause that always follows
+    timeout-minutes: 80
     concurrency:
       group: fabric-capacity
       cancel-in-progress: false
@@ -209,6 +210,7 @@ jobs:
       CD_WORKSPACE_PROD: ${{ vars.CD_WORKSPACE_PROD }}
       CD_TIER: ${{ vars.CD_TIER }}
       CD_USD_PER_HOUR: ${{ vars.CD_USD_PER_HOUR }}
+      CD_DEADLINE_MIN: ${{ vars.CD_DEADLINE_MIN }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -230,7 +232,8 @@ jobs:
           REPO: ${{ github.repository }}
         run: |
           set -eu
-          dev_sha=$(gh run list --repo "$REPO" --workflow cd-dev.yml --branch main --status success --limit 1 --json headSha --jq '.[0].headSha // ""')
+          # the last dev deployment whose deploy job really succeeded; a run whose job was skipped does not count
+          dev_sha=$(python -m tools.release dev-sha --repo "$REPO")
           python -m tools.release promotion --dev-sha "$dev_sha" --sha "$GITHUB_SHA"
       - name: Sign in to Azure (federated credential, no secret)
         uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
@@ -238,8 +241,11 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      # The data is always loaded again for prod: the tables keep their names when the data behind them changes, so "the tables exist" proves nothing.
+      # The load overwrites, so it is safe, and it costs about 7 minutes of F4 time (about USD 0.08).
       - name: Deploy, verify, pause
-        run: python -m tools.cd deploy --env prod --out "$RUNNER_TEMP/cd-out" --summary "$GITHUB_STEP_SUMMARY"
+        id: deploy
+        run: python -m tools.cd deploy --env prod --reload-data --out "$RUNNER_TEMP/cd-out" --summary "$GITHUB_STEP_SUMMARY"
       - name: Keep the backup of any replaced definition
         if: ${{ always() }}
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -248,8 +254,10 @@ jobs:
           path: ${{ runner.temp }}/cd-out/backup
           if-no-files-found: ignore
           retention-days: 30
+      # Pausing twice is harmless. This catches a run that was cancelled, timed out or crashed before tools.cd could pause; it does not run when the
+      # deploy step never started (nothing was resumed).
       - name: Last line of defence, pause the capacity
-        if: ${{ always() }}
+        if: ${{ always() && steps.deploy.outcome != 'skipped' }}
         run: python -m tools.cd capacity pause
 
   publish:

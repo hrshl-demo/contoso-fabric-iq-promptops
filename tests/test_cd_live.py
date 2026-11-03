@@ -73,6 +73,23 @@ def test_bootstrap_says_what_to_fix(world):
         live.bootstrap(settings(), out)
 
 
+def test_bootstrap_refuses_a_workspace_that_bills_to_another_capacity(world):
+    """The pipeline pauses only the configured capacity; a workspace on another one would keep billing unseen."""
+    mock, live, out, _ = world
+    mock.workspaces["w-1"] = {"id": "w-1", "displayName": "Demo-Dev", "capacityId": "some-other-capacity-guid"}
+    with pytest.raises(cd.CdError, match="not on capacity 'contosofabricf4'.*would leave the capacity that really bills running"):
+        live.bootstrap(settings(), out)
+    assert not mock.items.get(("w-1", "lakehouses"))                                              # nothing was created in it
+
+
+def test_bootstrap_needs_the_identity_to_see_the_capacity(world):
+    mock, live, out, _ = world
+    mock.workspaces["w-1"] = {"id": "w-1", "displayName": "Demo-Dev", "capacityId": "cap-guid-1"}
+    other = cd.load_settings({**ENV, "CD_CAPACITY": "someothercap"}, "dev", "smoke")
+    with pytest.raises(cd.CdError, match="cannot see capacity 'someothercap'.*contributor of the capacity.*SETUP.md step 3"):
+        live.bootstrap(other, out)
+
+
 def test_missing_tables_compares_the_lakehouse_with_the_plan(world):
     mock, live, out, (cli, layers, *_rest) = world
     mock.workspaces["w-1"] = {"id": "w-1", "displayName": "Demo-Dev", "capacityId": "cap-guid-1"}
@@ -91,14 +108,26 @@ def test_graph_hands_the_kit_a_valid_spec_and_state(world, monkeypatch):
     live.bootstrap(settings(), out)
     seen = {}
 
-    def fake(ops, sp, ws, lh, out_dir, say):
-        seen.update(sp=sp, ws=ws, lh=lh, out=out_dir)
+    def fake(ops, sp, ws, lh, out_dir, say, wait_s=None, timeout_s=None):
+        seen.update(sp=sp, ws=ws, lh=lh, out=out_dir, wait_s=wait_s, timeout_s=timeout_s)
         return {"action": "applied"}
     monkeypatch.setattr(runner, "materialize_graph", fake)
     assert live.graph(settings(), out) == {"action": "applied"}
     assert seen["sp"]["ontology"]["name"] == "ContosoBankOntology" and seen["sp"]["lakehouse"]["name"] == "ContosoBankLH" and seen["sp"]["tables"]
     assert seen["ws"] == {"workspaceId": "w-1", "workspaceName": "Demo-Dev"} and seen["lh"]["lakehouseId"] and seen["out"] == out
     assert json.loads((out / ".state.json").read_text(encoding="utf-8"))["workspaceId"] == "w-1"
+    assert (seen["wait_s"], seen["timeout_s"]) == (300.0, 900.0)                                  # no deadline: the kit's own defaults
+
+
+@pytest.mark.parametrize("budget, wait_s, timeout_s", [(5000, 300.0, 900.0), (1200, 300.0, 840.0), (100, 30.0, 70.0), (10, 30.0, 60.0)])
+def test_the_graph_waits_are_cut_to_the_time_left_before_the_deadline(world, monkeypatch, budget, wait_s, timeout_s):
+    mock, live, out, (cli, layers, runner, spec) = world
+    mock.workspaces["w-1"] = {"id": "w-1", "displayName": "Demo-Dev", "capacityId": "cap-guid-1"}
+    live.bootstrap(settings(), out)
+    seen = {}
+    monkeypatch.setattr(runner, "materialize_graph", lambda *a, **kw: seen.update(kw) or {})
+    live.graph(settings(), out, budget=budget)
+    assert (seen["wait_s"], seen["timeout_s"]) == (wait_s, timeout_s)
 
 
 def test_the_kit_commands_named_by_the_orchestrator_exist():

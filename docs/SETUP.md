@@ -1,6 +1,6 @@
 # Turning on the deployment pipelines
 
-Everything up to a pull request, and the release files, run without Azure. This page turns on the rest: **`cd-dev`** (deploy to the dev workspace after a merge), **`capacity`** (status, resume, pause, and a guard that pauses the F4 twice a day if someone forgot) and **Deploy to prod** inside the `release` workflow.
+Everything up to a pull request, and the release files, run without Azure. This page turns on the rest: **`cd-dev`** (deploy to the dev workspace after a merge), **`capacity`** (status, resume, pause, and a guard that pauses the F4 every 3 hours if someone forgot) and **Deploy to prod** inside the `release` workflow.
 
 It is a one-time setup. **Nothing here runs by itself**: the pipelines stay switched off (their jobs are skipped, which costs no Actions minutes) until the last step sets `CD_ENABLED`. Every step says who does it, what it changes and what it costs. The pipelines are drafts: they are tested with fakes and the kit's Fabric mock, and they have not run against a live tenant. Step 5 is a careful first run.
 
@@ -11,19 +11,35 @@ It is a one-time setup. **Nothing here runs by itself**: the pipelines stay swit
 | F4 capacity, East US 2 | USD 0.72 an hour while it runs; paused costs no compute |
 | A deploy without a data load | about 12 to 20 minutes of F4 time, so about USD 0.15 to 0.25 (estimate from the kit's measured stages: graph 2 to 3 minutes, checks a few more, resume and pause a few minutes) |
 | The first deploy, with the data load | about 25 to 35 minutes, so about USD 0.3 to 0.4 (the kit's build stage took about 7 minutes) |
+| Deploy to prod | the data is always loaded again, so as the first deploy: about USD 0.3 to 0.4 |
+| A forgotten F4 | at most about USD 2.2: the guard pauses a running F4 every 3 hours (a scheduled run can start a few minutes late) |
 | The two capacity settings (step 3) | free, but they take 7 to 11 minutes to apply |
-| Actions minutes | the same minutes as the deploy; the Free plan has 2,000 a month |
+| Actions minutes | the same minutes as the deploy; the guard is about 1.5 minutes per run while `CD_ENABLED` is on (240 a month); the Free plan has 2,000 a month |
 | Entra app, role, federated credential | free |
 
 The first real run replaces these estimates; the job summary shows the minutes the capacity was resumed and the cost at list price.
+
+## How the F4 is kept from billing unseen
+
+Five layers, each catching what the one before can miss:
+
+1. **`tools.cd` pauses in a `finally`**, after a failed step, an interrupt or a pause that needs a second try. `--keep-running` is honoured only when every step succeeded; after a failure the capacity is paused anyway.
+2. **A deadline** (`CD_DEADLINE_MIN`, default 45 minutes): a step still running when it ends is stopped and a step is not started with less than a minute left, so the pause that follows always has time inside the job's 80 minute timeout.
+3. **A last workflow step** pauses again even when the deploy step was cancelled, timed out or crashed (pausing twice is harmless).
+4. **The guard**, every 3 hours, pauses a running F4 when nothing is deploying (the deploy and the guard share one concurrency group, so the guard waits for a running deploy). `CD_GUARD_HOLD_UNTIL` holds it off for a demo.
+5. **A pause that fails says so loudly**: "THE CAPACITY MAY STILL BE RUNNING", and the run fails.
+
+What can still go wrong: the runner dies and GitHub starts the guard late, so a forgotten F4 bills for a few hours. Optional hardening below adds an Azure budget alert that tells you.
+
+A deploy pauses the F4 when it ends, so **do not run one during a demo**.
 
 ## Who does what
 
 | # | Step | Who | Changes | Needs your explicit go |
 |---|---|---|---|---|
 | 1 | The F4, resource group, dev workspace and prod workspace | you, or an agent you tell to | creates the F4 (billing until paused) | yes |
-| 2 | Entra app, federated credential, capacity role | you, or an agent you tell to | one app registration and one role in the demo tenant | yes |
-| 3 | Fabric settings | **you only** | one tenant setting for one security group; two capacity settings | yes, and an agent never does it |
+| 2 | Entra app, federated credential, capacity role | you, or an agent you tell to | one app registration and one role (on the one capacity) in the demo tenant | yes |
+| 3 | Fabric settings | **you only** | one tenant setting for one security group; contributor access to the capacity; two capacity settings | yes, and an agent never does it |
 | 4 | GitHub secrets and variables | you, or an agent you tell to | repository settings | yes |
 | 5 | First runs | you press the buttons | the F4 runs for about 30 minutes in total | yes |
 
@@ -72,16 +88,19 @@ az ad app federated-credential create --id $app.objectId --parameters "@fic.json
 Remove-Item fic.json
 ```
 
-A role that can only read, pause and resume capacities in that one resource group (it cannot create or delete anything):
+A role for **that one capacity**. Microsoft's page on pausing and resuming a capacity lists four actions: `read`, `write`, `suspend/action` and `resume/action`; without `write` the pause is refused. Create the role once (it can only be assigned inside the resource group), then assign it **on the capacity itself**, not on the group:
 
 ```powershell
-$scope = "/subscriptions/<subscription id>/resourceGroups/rg-contoso-fabric-promptops"
-$role = @{ Name = "Fabric capacity operator (promptops demo)"; IsCustom = $true; Description = "Read, pause and resume Fabric capacities in this resource group"; Actions = @("Microsoft.Fabric/capacities/read", "Microsoft.Fabric/capacities/suspend/action", "Microsoft.Fabric/capacities/resume/action"); NotActions = @(); AssignableScopes = @($scope) } | ConvertTo-Json
+$rg = "/subscriptions/<subscription id>/resourceGroups/rg-contoso-fabric-promptops"
+$capacity = "$rg/providers/Microsoft.Fabric/capacities/contosofabricf4"
+$role = @{ Name = "Fabric capacity operator (promptops demo)"; IsCustom = $true; Description = "Read, change, pause and resume Fabric capacities in this resource group"; Actions = @("Microsoft.Fabric/capacities/read", "Microsoft.Fabric/capacities/write", "Microsoft.Fabric/capacities/suspend/action", "Microsoft.Fabric/capacities/resume/action"); NotActions = @(); AssignableScopes = @($rg) } | ConvertTo-Json
 [System.IO.File]::WriteAllText("$PWD\role.json", $role, (New-Object System.Text.UTF8Encoding $false))
 az role definition create --role-definition "@role.json"
-az role assignment create --assignee-object-id $sp --assignee-principal-type ServicePrincipal --role "Fabric capacity operator (promptops demo)" --scope $scope
+az role assignment create --assignee-object-id $sp --assignee-principal-type ServicePrincipal --role "Fabric capacity operator (promptops demo)" --scope $capacity
 Remove-Item role.json
 ```
+
+What the role allows: reading, pausing and resuming that capacity, and also changing it (`write` includes a resize). It cannot create or delete a capacity, and nothing in the pipelines resizes one. The residual risk is a workflow change merged to `main` that resizes the F4; that needs a human to merge it, and the credential works for runs on `main` only. The optional budget alert below would show the cost.
 
 ## 3. The Fabric settings (you only)
 
@@ -90,7 +109,8 @@ An agent never changes these. They decide who can use the Fabric APIs, so look a
 1. **One tenant setting, for one group.** Create a security group that contains only the app (`az ad group create --display-name contoso-fabric-cd --mail-nickname contoso-fabric-cd`, then `az ad group member add --group contoso-fabric-cd --member-id $sp`). In the Fabric admin portal, Tenant settings, Developer settings, switch **Service principals can call Fabric public APIs** on **for specific security groups** and name that group. Do not enable it for the whole organisation.
 2. If *Users can create Ontology (preview) items* is limited to groups in your tenant, add the same group to it.
 3. **Add the app to both workspaces as Admin** (workspace, Manage access, Add people or groups, search `contoso-fabric-iq-promptops-cd`).
-4. **The two capacity settings**, once per capacity, as in the earlier builds: in the capacity's delegated settings tick *Override tenant admin selection*, switch on *Users can create Ontology (preview) items* and *Users can use Copilot and other features powered by Azure OpenAI*, press Apply. They need 7 to 11 minutes to apply. A persistent F4 keeps them, so this is not repeated.
+4. **Let the app see the capacity.** In the Fabric admin portal, Capacity settings, your F4, Contributor permissions, add the same security group (or make it a capacity administrator). The Fabric API lists only capacities the caller administers or contributes to, and the pipeline uses that list to check that each workspace is on the capacity it pauses: a workspace on any other capacity would keep billing unseen, so the deploy refuses it.
+5. **The two capacity settings**, once per capacity, as in the earlier builds: in the capacity's delegated settings tick *Override tenant admin selection*, switch on *Users can create Ontology (preview) items* and *Users can use Copilot and other features powered by Azure OpenAI*, press Apply. They need 7 to 11 minutes to apply. A persistent F4 keeps them, so this is not repeated.
 
 ## 4. GitHub secrets and variables
 
@@ -105,7 +125,7 @@ gh variable set CD_WORKSPACE_DEV   --body "Contoso-Bank-Ontology-Demo-Dev"
 gh variable set CD_WORKSPACE_PROD  --body "Contoso-Bank-Ontology-Demo"
 ```
 
-Optional: `CD_LOCATION` (default `eastus2`), `CD_TIER` (default the kit's, `core`), `CD_USD_PER_HOUR` (default `0.72`), `RELEASE_APPROVERS` (default the repository owner), `CD_GUARD_HOLD_UNTIL` (see below).
+Optional: `CD_LOCATION` (default `eastus2`), `CD_TIER` (default the kit's, `core`), `CD_USD_PER_HOUR` (default `0.72`), `CD_DEADLINE_MIN` (default `45`; keep it at least 35 minutes below the 80 minute job timeout), `RELEASE_APPROVERS` (default the repository owner), `CD_GUARD_HOLD_UNTIL` (see below).
 
 The ids are secrets, not variables, so they are masked in logs and never in a file. **`CD_ENABLED` is the switch; set it last:**
 
@@ -119,18 +139,21 @@ gh variable set CD_ENABLED --body "true"
 2. **Actions, cd-dev, Run workflow, Reload data on** (about 30 minutes of F4 time, about USD 0.35). Watch the job summary: each step, its seconds and the cost at list price. The F4 is paused at the end, also when a step fails.
 3. **Check independently**: the Azure portal or `az resource list --resource-type Microsoft.Fabric/capacities`, the capacity must be `Paused`; open the dev workspace and the ontology.
 4. **Actions, release, Run workflow** with your version, Deploy to prod off, Publish off (the dry run from [RELEASING.md](RELEASING.md)).
-5. Only then the real thing: Deploy to prod on and Publish on. It refuses a commit whose deployed files differ from the last successful dev deployment.
+5. Only then the real thing: Deploy to prod on and Publish on. It refuses a commit whose deployed files differ from the last dev deployment that really ran (a run whose deploy job was skipped does not count), and it loads the data again.
 
-Before a demo, resume the F4 yourself (`capacity` workflow, action `resume`) and set the variable `CD_GUARD_HOLD_UNTIL` to the end of the demo, for example `2026-11-05T20:00:00Z`, so the guard does not pause it under you. Remove the variable afterwards. Without it the guard pauses a running F4 at 14:00 and 02:00 India time.
+Before a demo, resume the F4 yourself (`capacity` workflow, action `resume`) and set the variable `CD_GUARD_HOLD_UNTIL` to the end of the demo, for example `2026-11-05T20:00:00Z`, so the guard does not pause it under you. Remove the variable afterwards. Without it the guard pauses a running F4 at its next run, every 3 hours.
 
 ## If something fails
 
 | What you see | Cause and fix |
 |---|---|
 | `AADSTS700213` or "No matching federated identity record" | The subject does not match. Re-read the prefix (step 2); the credential must be for `ref:refs/heads/main` and the run must be on `main` |
-| `capacity status failed` with 403 | The role (step 2) is missing or on another resource group |
+| `capacity status failed` or `capacity suspend failed` with 403 | The role (step 2) is missing, is on the wrong scope, or lacks `write`; it must be assigned on the capacity itself |
 | "the signed-in identity cannot get a token for ..." | Sign-in worked, but a service refused it: check the tenant setting and the group (step 3) |
 | `workspace '...' was not found, or the identity has no role in it` | The app is not an Admin of that workspace (step 3) |
+| "the identity cannot see capacity '...' through the Fabric API" | The group is not a contributor or administrator of the capacity (step 3, item 4) |
+| "workspace '...' is not on capacity '...'" | The workspace is assigned to another capacity, which this pipeline would not pause. Assign it to the F4, or fix `CD_CAPACITY` |
+| "stopped at the 45-minute deadline" | A step took too long; the capacity was paused. Run again, the kit resumes where it stopped |
 | Ontology create answers 403 `FeatureNotAvailable` | The two capacity settings are not applied yet; wait 7 to 11 minutes after Apply |
 | "THE CAPACITY MAY STILL BE RUNNING" | Pause it now: the portal, or `capacity` workflow, action `pause`. Then read the log |
 
@@ -146,3 +169,4 @@ Delete the variable `CD_ENABLED` (or set it to anything but `true`): every Azure
 
 - Repository setting *Require actions to be pinned to a full-length commit SHA* (all workflows here already are).
 - `RELEASE_APPROVERS` with more than the owner when others may release.
+- **An Azure budget alert on the resource group** (Azure portal, Cost Management, Budgets): a small monthly amount (for example USD 15) with an email at 50% and 100%. It is the net under the layers above and the only thing that tells you about a capacity that was resized or left running by a dead runner.
