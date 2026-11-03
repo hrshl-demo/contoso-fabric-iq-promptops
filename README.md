@@ -28,6 +28,13 @@ flowchart LR
 | **Ontology**: inspect, build, enrich, consume | `prompts/ontology/` | `kit/model/` (spec) and `fabric/` (Fabric item folders) |
 | **Reports** on the dataset | `prompts/reports/` | `fabric/` (Power BI PBIR), `analysis/` (PDF brief) |
 
+## Two parts
+
+| Part | Repository | Builds | Doc |
+|---|---|---|---|
+| **1. The platform** | this one | From a blank subscription, by pipeline: a storage account as the data source, a Fabric F4 capacity, a workspace, a lakehouse and the loaded medallion. The only manual steps are a scripted identity set-up and two Fabric tenant settings, with guided links | [BOOTSTRAP.md](docs/BOOTSTRAP.md), [PLATFORM.md](docs/PLATFORM.md) |
+| **2. The content** | a separate repository, started in its own session | The end-to-end ontology and the reports, from versioned prompts, through its own CI/CD into the platform's workspace | [CONSUMING.md](docs/CONSUMING.md), [the prompt to start it](docs/part2/NEW_SESSION_PROMPT.md) |
+
 ## What is in the repo
 
 | Path | What |
@@ -37,9 +44,10 @@ flowchart LR
 | `seed/` | Synthetic seed data, read-only ([provenance](seed/PROVENANCE.md)) |
 | `fabric/` | Fabric item folders generated from the spec (`python -m tools.export_fabric --write`): the Gen 2 ontology and the Direct Lake semantic model; reports go here too |
 | `analysis/` | Analyses run by prompts. `analysis/monthly_brief` builds the [Monthly Business Brief](docs/reports/monthly-brief.md) PDF offline from the gold layer |
-| `tools/` | Prompt lint, wrapper generation, manifest, PII guard, Fabric export, validation, deployment preview, release preparation and the deployment orchestrator (`tools/cd.py`) |
+| `tools/` | Prompt lint, wrapper generation, manifest, PII guard, Fabric export, validation, deployment preview, release preparation, the deployment orchestrator (`tools/cd.py`), the platform orchestrator (`tools/platform.py`) and the identity bootstrap (`tools/bootstrap.py`) |
+| `infra/` | The Bicep template of the platform: the storage account (the data source) and the Fabric capacity |
 | `.github/` | Workflows, Copilot instructions, a custom agent and generated prompt wrappers |
-| `docs/` | [Architecture](docs/ARCHITECTURE.md), [decisions](docs/DECISIONS.md), [releasing](docs/RELEASING.md), [turning on the deployment pipelines](docs/SETUP.md), [the shortcut and Databricks pilot](docs/PILOT.md), `docs/generated/ontology-brief.md` (a readable view of every entity, synonym and PII flag) |
+| `docs/` | [Architecture](docs/ARCHITECTURE.md), [decisions](docs/DECISIONS.md), [bootstrap](docs/BOOTSTRAP.md), [the platform pipeline](docs/PLATFORM.md), [consuming the platform](docs/CONSUMING.md), [releasing](docs/RELEASING.md), [the deployment pipelines](docs/SETUP.md), [the shortcut and Databricks pilot](docs/PILOT.md), `docs/generated/ontology-brief.md` (a readable view of every entity, synonym and PII flag) |
 | `AGENTS.md` | The rules every agent follows: propose, never deploy |
 
 ## Drive it
@@ -58,6 +66,7 @@ The flow follows Microsoft's Fabric skills demo: **Inspect, Build, Enrich, Consu
 | `cd-dev.yml` | After a merge that changes what is deployed: sign-in check, resume the F4, load the data if needed, deploy the semantic model and the ontology, build the graph, verify, pause the F4 (also when a step failed). Draft, off until `CD_ENABLED` is set ([SETUP.md](docs/SETUP.md)) | after identity setup |
 | `release.yml` | Run by hand: checks the rules, runs the full kit tests, rebuilds the files from the commit, optionally deploys prod (only what dev had), and publishes a GitHub release with the PDF brief, the ontology brief, the Fabric items, the prompt library and checksums. A dry run is the default ([how](docs/RELEASING.md)) | live; prod deploy after identity setup |
 | `capacity.yml` | Status, resume and pause of the F4 by hand, and a guard that pauses a running F4 every 3 hours unless a demo hold is set. Draft | after identity setup |
+| `platform.yml` | Run by hand, on main, by an approver: `check` (free) tells which Fabric door is still closed; `build` (type BUILD) creates the storage account, the F4, the workspace and the lakehouse, loads the data, asks a capacity admin to open the ontology gate while it loads, and pauses the F4; `destroy` (type DESTROY) removes it. Draft | after the bootstrap ([BOOTSTRAP.md](docs/BOOTSTRAP.md)) |
 
 ## Cost guard
 

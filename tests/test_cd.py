@@ -330,7 +330,14 @@ def test_guard_pauses_an_active_capacity_only():
     assert cd.guard(s, io, None, NOW) == 0 and io.calls == ["capacity status", "capacity pause"]
     io = FakeIo(state="Paused")
     assert cd.guard(s, io, None, NOW) == 0 and io.calls == ["capacity status"]
-    assert cd.guard(s, FakeIo(exists=False), None, NOW) == cd.EXIT_CONFIG
+
+
+def test_guard_with_no_capacity_yet_is_a_warning_not_a_failure():
+    """Before the platform is built there is nothing to guard; the schedule must not go red every 3 hours."""
+    said = []
+    io = FakeIo(exists=False)
+    assert cd.guard(settings(None), io, None, NOW, said.append) == cd.EXIT_OK and io.calls == ["capacity status"]
+    assert said and said[0].startswith("::warning::") and "nothing to guard" in said[0] and "CD_CAPACITY" in said[0]
 
 
 @pytest.mark.parametrize("state, pauses", [("Active", True), ("Resuming", True), ("Scaling", True), (None, True),

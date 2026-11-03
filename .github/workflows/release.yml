@@ -246,6 +246,16 @@ jobs:
       - name: Deploy, verify, pause
         id: deploy
         run: python -m tools.cd deploy --env prod --reload-data --out "$RUNNER_TEMP/cd-out" --summary "$GITHUB_STEP_SUMMARY"
+      # A sign-in lasts about an hour and a long deploy plus its pause can outlast it: sign in again, so that the last-resort pause below cannot fail on an
+      # expired token. If this sign-in fails the pause step still tries and says so.
+      - name: Sign in again for the last line of defence
+        if: ${{ always() && steps.deploy.outcome != 'skipped' }}
+        continue-on-error: true
+        uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       # Pausing twice is harmless. This catches a run that was cancelled, timed out or crashed before tools.cd could pause; it does not run when the
       # deploy step never started (nothing was resumed). It comes before the artifact upload so that nothing else can use up the time it needs.
       - name: Last line of defence, pause the capacity

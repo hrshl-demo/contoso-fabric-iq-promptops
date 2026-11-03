@@ -1,0 +1,273 @@
+name: platform
+
+# Build the platform from blank, check it, or tear it down: the storage account that is the data source, the Fabric capacity, a workspace, a lakehouse and
+# the loaded data. Run it from Actions > platform > Run workflow, on main, as an approver.
+# DRAFT: written against the documented Azure and Fabric calls and tested with fakes and the kit's Fabric mock; it has not run against a live tenant yet.
+# It refuses to run until the repository variable CD_ENABLED is "true" (python -m tools.bootstrap enable; docs/BOOTSTRAP.md).
+#
+#   check    free and read-only: the sign-in, whether the identity may call Fabric, and the plan for the infrastructure (what-if). Run it first. It tells you
+#            which Fabric tenant setting is still closed and where to open it. (Creating workspaces cannot be proven before the capacity exists.)
+#   build    needs the typed confirmation BUILD. Creates the storage account, uploads and builds the data, creates the F4 capacity (or keeps the one that
+#            exists: it is never resized and never loses an administrator; bills about USD 0.72 an hour from then until it is paused, about 40 minutes the
+#            first time), creates the workspace and the lakehouse, loads the data, checks the ontology gate (it asks a capacity admin to open it, with the
+#            link, while the data loads), writes the outputs and pauses the capacity.
+#   destroy  needs the typed confirmation DESTROY. Purges the workspace (it resumes the capacity for that and pauses it again); with "everything" also the
+#            other workspace, the capacity and the storage account.
+#
+# The capacity is paused when the run ends, also when it failed, was cancelled or timed out; the 3-hourly capacity guard is the backstop after that.
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "check is free and read-only; build creates things and starts the F4 (type BUILD); destroy deletes things (type DESTROY)"
+        type: choice
+        options: [check, build, destroy]
+        default: check
+      target:
+        description: "Which workspace: dev or prod (the capacity and the data source are shared)"
+        type: choice
+        options: [dev, prod]
+        default: dev
+      confirm:
+        description: "Type BUILD to build or DESTROY to destroy. Not needed for check."
+        type: string
+        default: ""
+      reload_data:
+        description: "build: load the bronze, silver and gold tables again even when the lakehouse already has them"
+        type: boolean
+        default: false
+      keep_running:
+        description: "build: leave the capacity running afterwards (it bills until the capacity guard or you pause it)"
+        type: boolean
+        default: false
+      gate_wait_min:
+        description: "build: minutes to wait for a capacity admin to open the ontology gate, after the data has loaded (0: do not wait)"
+        type: number
+        default: 20
+      everything:
+        description: "destroy: also delete the other workspace, the capacity and the storage account"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+  CD_RESOURCE_GROUP: ${{ vars.CD_RESOURCE_GROUP }}
+  CD_CAPACITY: ${{ vars.CD_CAPACITY }}
+  CD_LOCATION: ${{ vars.CD_LOCATION }}
+  CD_WORKSPACE_DEV: ${{ vars.CD_WORKSPACE_DEV }}
+  CD_WORKSPACE_PROD: ${{ vars.CD_WORKSPACE_PROD }}
+  CD_TIER: ${{ vars.CD_TIER }}
+  CD_USD_PER_HOUR: ${{ vars.CD_USD_PER_HOUR }}
+  CD_DEADLINE_MIN: ${{ vars.CD_DEADLINE_MIN }}
+  CD_ADMIN_OBJECT_IDS: ${{ vars.CD_ADMIN_OBJECT_IDS }}
+  CD_ADMIN_UPNS: ${{ vars.CD_ADMIN_UPNS }}
+  CD_PIPELINE_OBJECT_ID: ${{ vars.CD_PIPELINE_OBJECT_ID }}
+  CD_CONSUMER_OBJECT_IDS: ${{ vars.CD_CONSUMER_OBJECT_IDS }}
+  CD_SP_GROUP_NAME: ${{ vars.CD_SP_GROUP_NAME }}
+
+jobs:
+  guards:
+    name: Guards
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Only when switched on, only from main, only by an approver, only with the typed confirmation
+        env:
+          REF: ${{ github.ref }}
+          ACTOR: ${{ github.triggering_actor }}
+          APPROVERS: ${{ vars.RELEASE_APPROVERS }}
+          OWNER: ${{ github.repository_owner }}
+          ENABLED: ${{ vars.CD_ENABLED }}
+          ACTION: ${{ inputs.action }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -eu
+          if [ "$ENABLED" != "true" ]; then
+            echo "::error::The pipelines are switched off (repository variable CD_ENABLED). Run: python -m tools.bootstrap enable (docs/BOOTSTRAP.md)."
+            exit 1
+          fi
+          if [ "$REF" != "refs/heads/main" ]; then
+            echo "::error::The platform is built from main only (this run is on $REF); the sign-in trusts main and nothing else."
+            exit 1
+          fi
+          list="${APPROVERS:-$OWNER}"
+          if ! printf '%s' "$list" | tr ',' '\n' | tr -d ' ' | grep -Fxqi -- "$ACTOR"; then
+            echo "::error::$ACTOR is not an approver. Approvers: $list (repository variable RELEASE_APPROVERS; the repository owner when unset)."
+            exit 1
+          fi
+          case "$ACTION" in
+            build) want=BUILD ;;
+            destroy) want=DESTROY ;;
+            *) want="" ;;
+          esac
+          if [ -n "$want" ] && [ "$CONFIRM" != "$want" ]; then
+            echo "::error::Type $want in the confirm box to $ACTION. It starts or removes things that cost money or hold data."
+            exit 1
+          fi
+          echo "$ACTOR may run $ACTION on main."
+
+  check:
+    name: Check every door (free)
+    needs: guards
+    if: ${{ inputs.action != 'destroy' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      TARGET: ${{ inputs.target }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            kit/requirements.txt
+            requirements-ci.txt
+      - name: Install the requirements
+        run: python -m pip install -r kit/requirements.txt -r requirements-ci.txt
+      - name: Show the plan (calls nothing)
+        run: python -m tools.platform plan --env "$TARGET"
+      - name: Install the Bicep compiler
+        run: az bicep install
+      - name: Sign in to Azure (federated credential, no secret)
+        uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Check every door (nothing lasting is created, nothing bills)
+        run: python -m tools.platform preflight --env "$TARGET" --summary "$GITHUB_STEP_SUMMARY"
+
+  build:
+    name: Build the platform
+    needs: [guards, check]
+    if: ${{ inputs.action == 'build' }}
+    runs-on: ubuntu-latest
+    # 6 minutes of set-up, the deadline for the build steps (CD_DEADLINE_MIN, default 45), and after it the pause: up to 5 minutes to cancel and wait for a
+    # capacity deployment that may still be running, then the status call and up to 25 minutes for the pause itself; plus a margin
+    timeout-minutes: 90
+    concurrency:
+      group: fabric-capacity
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      TARGET: ${{ inputs.target }}
+      RELOAD: ${{ inputs.reload_data }}
+      KEEP: ${{ inputs.keep_running }}
+      GATE_WAIT: ${{ inputs.gate_wait_min }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            kit/requirements.txt
+            requirements-ci.txt
+      - name: Install the requirements
+        run: python -m pip install -r kit/requirements.txt -r requirements-ci.txt
+      - name: Install the Bicep compiler
+        run: az bicep install
+      - name: Sign in to Azure (federated credential, no secret)
+        uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Build the platform, then pause the capacity
+        id: build
+        run: |
+          set -eu
+          args=(--env "$TARGET" --out "$RUNNER_TEMP/platform-out" --summary "$GITHUB_STEP_SUMMARY" --gate-wait-min "$GATE_WAIT")
+          if [ "$RELOAD" = "true" ]; then args+=(--reload-data); fi
+          if [ "$KEEP" = "true" ]; then args+=(--keep-running); fi
+          python -m tools.platform build "${args[@]}"
+      # A sign-in lasts about an hour and a long build plus its pause can outlast it: sign in again, so that the last-resort step below cannot fail on an
+      # expired token. If this sign-in fails the step still tries and says so.
+      - name: Sign in again for the last line of defence
+        if: ${{ always() && steps.build.outcome != 'skipped' && (steps.build.outcome != 'success' || inputs.keep_running != true) }}
+        continue-on-error: true
+        uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      # Pausing twice is harmless; a capacity that does not exist is left alone. `rescue` first cancels a capacity deployment that may still be running on
+      # Azure's side (it could create a running capacity behind the pause) and waits for it to end, then pauses. It catches a run that was cancelled, timed
+      # out or crashed before tools.platform could pause, and comes before the artifact upload so that nothing else can use up the time it needs.
+      - name: Last line of defence, settle the capacity deployment and make sure the capacity is paused
+        if: ${{ always() && steps.build.outcome != 'skipped' && (steps.build.outcome != 'success' || inputs.keep_running != true) }}
+        run: python -m tools.platform rescue --env "$TARGET"
+      - name: Keep the outputs (names and ids, nothing secret)
+        if: ${{ always() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: platform-outputs
+          path: |
+            ${{ runner.temp }}/platform-out/platform-outputs.json
+            ${{ runner.temp }}/platform-out/ADMIN_APPROVAL.md
+          if-no-files-found: ignore
+          retention-days: 30
+
+  destroy:
+    name: Destroy
+    needs: guards
+    if: ${{ inputs.action == 'destroy' }}
+    runs-on: ubuntu-latest
+    # Purging a workspace needs a running capacity, so a destroy can resume it, delete things, and must pause it again: the worst cases add up
+    timeout-minutes: 120
+    concurrency:
+      group: fabric-capacity
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      TARGET: ${{ inputs.target }}
+      EVERYTHING: ${{ inputs.everything }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            kit/requirements.txt
+            requirements-ci.txt
+      - name: Install the requirements
+        run: python -m pip install -r kit/requirements.txt -r requirements-ci.txt
+      - name: Sign in to Azure (federated credential, no secret)
+        uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Destroy, then pause the capacity if it still exists
+        id: destroy
+        run: |
+          set -eu
+          args=(--env "$TARGET" --summary "$GITHUB_STEP_SUMMARY")
+          if [ "$EVERYTHING" = "true" ]; then args+=(--everything); fi
+          python -m tools.platform destroy "${args[@]}"
+      # A destroy may resume the capacity to purge the items. Sign in again (a sign-in lasts about an hour) and make sure it is paused, also when the step
+      # above failed, timed out or was cancelled. Nothing happens when the capacity no longer exists.
+      - name: Sign in again for the last line of defence
+        if: ${{ always() && steps.destroy.outcome != 'skipped' }}
+        continue-on-error: true
+        uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Last line of defence, settle the capacity deployment and make sure the capacity is paused
+        if: ${{ always() && steps.destroy.outcome != 'skipped' }}
+        run: python -m tools.platform rescue --env "$TARGET"

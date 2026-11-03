@@ -54,10 +54,11 @@ def read_tier(root: Path = ROOT) -> str:
     return (cfg.get("ontology") or {}).get("tier") or "core"
 
 
-def run_build(root: Path, tier: str, out: Path, hashseed: str = "0") -> Path:
-    """Run the kit's offline build into `out` and return the folder of the tier."""
+def run_build(root: Path, tier: str, out: Path, hashseed: str = "0", repo: Optional[Path] = None) -> Path:
+    """Run the kit's offline build into `out` and return the folder of the tier. `repo` is the seed folder to build from (default: seed/ in this repo;
+    the platform pipeline passes the copy it downloaded from the data source)."""
     env = {**os.environ, "PYTHONDONTWRITEBYTECODE": "1", "PYTHONUTF8": "1", "PYTHONHASHSEED": hashseed}
-    cmd = [sys.executable, "-m", "contoso_onto.cli", "build", "--repo", str(root / "seed"), "--tier", tier, "--out", str(out)]
+    cmd = [sys.executable, "-m", "contoso_onto.cli", "build", "--repo", str(repo or root / "seed"), "--tier", tier, "--out", str(out)]
     r = subprocess.run(cmd, cwd=root / "kit", env=env, capture_output=True, text=True, encoding="utf-8")
     if r.returncode != 0:
         raise ExportError(f"the kit build failed (exit {r.returncode}):\n{(r.stdout + r.stderr)[-3000:]}")
