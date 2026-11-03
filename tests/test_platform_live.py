@@ -268,6 +268,32 @@ def test_a_probe_workspace_that_cannot_be_deleted_is_reported_by_name(world):
     assert create.status == "error" and pf.PROBE_WORKSPACE_PREFIX in create.detail and "delete it by hand" in create.detail
 
 
+def test_a_workspace_that_already_exists_makes_the_permission_to_create_one_unnecessary(world):
+    """The way round a tenant that does not let service principals create workspaces: made by hand, with the pipeline's identity as Admin."""
+    mock, live, ops, out, cli = world
+    ops.fab.call("POST", f"{ops.fab.api}/workspaces", json={"displayName": "Demo-Dev"})
+    fault(mock, r"/workspaces$", "POST", 401)                                                              # creating would be refused: it is not even tried
+    api, create = live.probe_fabric(settings())
+    assert api.status == "ok" and create.status == "ok" and "not needed" in create.detail and "Demo-Dev" in create.detail
+    assert probe_names(mock) == ["Demo-Dev"] and not mock.deleted_workspaces                               # no probe workspace was made
+
+
+def test_another_workspace_does_not_count_for_the_one_that_is_needed(world):
+    mock, live, ops, out, cli = world
+    ops.fab.call("POST", f"{ops.fab.api}/workspaces", json={"displayName": "Somebody-Elses"})
+    fault(mock, r"/workspaces$", "POST", 401)
+    _api, create = live.probe_fabric(settings())
+    assert create.status == "closed"
+
+
+def test_a_workspace_made_by_hand_is_assigned_to_the_capacity_and_used(world):
+    mock, live, ops, out, cli = world
+    ops.fab.call("POST", f"{ops.fab.api}/workspaces", json={"displayName": "Demo-Dev"})                    # no capacity yet, and the pipeline did not create it
+    ws = live.workspace_and_lakehouse(settings(), out)
+    assert ws["created"] is False and ws["capacityId"] and mock.workspaces[ws["workspaceId"]]["capacityId"] == ws["capacityId"]
+    assert ws["lakehouseId"]
+
+
 def test_a_leftover_probe_workspace_from_an_earlier_run_is_swept_and_other_workspaces_are_left_alone(world):
     mock, live, ops, out, cli = world
     for name in (pf.PROBE_WORKSPACE_PREFIX + "deadbeef", "Contoso-PromptOps-Dev"):

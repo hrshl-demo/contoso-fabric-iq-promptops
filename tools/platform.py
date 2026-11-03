@@ -527,16 +527,24 @@ class Live(cd.Live):
         except oac.FabricError as ex:
             status = "closed" if http_status(ex) in (401, 403) else "error"           # the tokens were issued a moment ago, so a refusal is the tenant setting
             return [Check("Fabric API access for the pipeline's identity", status, str(ex)[:240], guide["api"] if status == "closed" else "")]
-        return [Check("Fabric API access for the pipeline's identity", "ok", "listing workspaces works"), self._probe_workspace_creation(ops, oac, guide)]
+        return [Check("Fabric API access for the pipeline's identity", "ok", "listing workspaces works"), self._probe_workspace_creation(ops, oac, guide, s.base.workspace)]
 
-    def _probe_workspace_creation(self, ops: Any, oac: Any, guide: dict[str, str]) -> Check:
+    def _probe_workspace_creation(self, ops: Any, oac: Any, guide: dict[str, str], workspace: str) -> Check:
         name = "Permission to create workspaces"
+        listing: list[dict] = []
+        try:
+            listing = (ops.fab._json(ops.fab.call("GET", f"{ops.fab.api}/workspaces")) or {}).get("value", [])
+        except oac.FabricError:
+            pass                                                                      # the create below says whether the door is open
+        if any(w.get("displayName") == workspace for w in listing):
+            return Check(name, "ok", f"not needed: the workspace '{workspace}' already exists and the pipeline can see it (a workspace made by hand, with the pipeline's "
+                                     "identity as Admin, is the way round a tenant that does not let service principals create workspaces)")
         try:                                                                          # what an earlier probe left behind, if its delete failed
-            for w in (ops.fab._json(ops.fab.call("GET", f"{ops.fab.api}/workspaces")) or {}).get("value", []):
+            for w in listing:
                 if str(w.get("displayName", "")).startswith(PROBE_WORKSPACE_PREFIX):
                     ops.delete_workspace(w["id"])
         except oac.FabricError:
-            pass                                                                      # the create below says whether the door is open
+            pass
         probe = f"{PROBE_WORKSPACE_PREFIX}{uuid.uuid4().hex[:8]}"
         try:
             resp = ops.fab.call("POST", f"{ops.fab.api}/workspaces", json={"displayName": probe, "description": "Contoso PromptOps check: empty, deleted at once (synthetic)."})

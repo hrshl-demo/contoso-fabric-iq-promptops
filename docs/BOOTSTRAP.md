@@ -80,6 +80,8 @@ This sets `CD_ENABLED=true`. From then on the capacity guard (every 3 hours) run
 
 **What `check` proves about the second setting:** it creates an empty workspace without a capacity (named `PromptOpsProbe-…`) and deletes it at once. If Fabric answers 401 or 403, the summary shows **CLOSED** with the exact setting to change, and a `build` stops before it creates anything. Any other answer is shown as *skipped* (it could not be proven), and the build checks it again at step 8. A change in the Fabric admin portal can take up to 15 minutes to reach the pipeline's identity, so run `check` again until it is green: it is free.
 
+**If you cannot change that tenant setting (or a tenant policy forbids it): make the workspace by hand.** The pipeline then does not need to create one, and `check` shows the door as *ok: not needed*. In the Fabric portal (https://app.fabric.microsoft.com): **Workspaces > New workspace**, name it exactly like `CD_WORKSPACE_DEV` (default `Contoso-PromptOps-Dev`; no capacity needed), then **Manage access > Add people or groups**, type `contoso-promptops-platform` (the pipeline's identity), role **Admin**, **Add**. The build finds the workspace, assigns it to the capacity and goes on. The first tenant setting (service principals can call Fabric APIs) is still needed.
+
 ## 6. Build
 
 Same page: **action** `build`, target `dev`, and type `BUILD` in the confirm box. Only the repository owner (or the people in `RELEASE_APPROVERS`) can do this, and only from `main`. The run:
