@@ -28,6 +28,7 @@ CD_CONSUMER_OBJECT_IDS (content repositories, by object id: capacity administrat
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import hashlib
 import json
 import os
@@ -67,6 +68,8 @@ MIN_CAPACITY_STEP_S = 15 * 60                             # creating the capacit
 STORAGE_DEPLOYMENT = "platform-storage"
 CAPACITY_DEPLOYMENT = "platform-capacity"
 DEPLOYMENT_ENDED = {"Succeeded", "Failed", "Canceled", "Cancelled", "NotFound"}
+CANCELLED_STATES = {"Canceled", "Cancelled"}
+CANCEL_DOUBT_S = 30 * 60                                  # a deployment cancelled less than this long ago (by anyone) may still be followed by a capacity
 DEPLOYMENT_MISSING_RE = re.compile(r"DeploymentNotFound|ResourceGroupNotFound|ResourceNotFound")
 TRANSFER_TIMEOUT_S = 15 * 60
 PROBE_CLEANUP_TRIES = 3
@@ -266,9 +269,10 @@ def approval_request(s: PlatformSettings, capacity_fabric_id: Optional[str], wai
 class Live(cd.Live):
     """`az` for Azure, the kit's Python API for Fabric, the kit's command line for the data."""
 
-    def __init__(self, *a: Any, sleeper: Callable[[float], None] = time.sleep, **kw: Any):
+    def __init__(self, *a: Any, sleeper: Callable[[float], None] = time.sleep, utcnow: Callable[[], dt.datetime] = lambda: dt.datetime.now(dt.timezone.utc), **kw: Any):
         super().__init__(*a, **kw)
         self.sleeper = sleeper
+        self.utcnow = utcnow
         self.subscription: Optional[str] = None
         self.capacity_fabric_id: Optional[str] = None
         self.deployment_cancelled = False
@@ -307,11 +311,29 @@ class Live(cd.Live):
         out = (res.get("properties") or {}).get("outputs") or {}
         return {k: v.get("value") for k, v in out.items()}
 
+    def cancelled_recently(self, s: PlatformSettings) -> bool:
+        """Did the capacity deployment end, cancelled, less than CANCEL_DOUBT_S ago? An unreadable time counts as yes: a cancel is not an undo, so a capacity
+        can still appear for a while after somebody (this run, an earlier run, a person in the portal) cancelled the deployment, and only the age says whether
+        that window is over."""
+        try:
+            r = self._az(["deployment", "group", "show", "-g", s.base.resource_group, "-n", CAPACITY_DEPLOYMENT, "--query", "properties.timestamp", "-o", "tsv"],
+                         120, check=False)
+            raw = re.sub(r"(\.\d{6})\d+", r"\1", (r.stdout or "").strip().replace("Z", "+00:00"))        # .NET ticks have seven digits
+            when = dt.datetime.fromisoformat(raw) if r.returncode == 0 and raw else None
+        except (CdError, ValueError):
+            when = None
+        if when is None:
+            return True
+        if when.tzinfo is None:
+            when = when.replace(tzinfo=dt.timezone.utc)
+        return (self.utcnow() - when).total_seconds() < CANCEL_DOUBT_S
+
     def settle_capacity_deployment(self, s: PlatformSettings) -> str:
         """A capacity deployment that was abandoned (a deadline, an interrupt, a cancelled run) is still running on Azure's side and can create an Active
         capacity after a pause was tried. Cancel it and wait until it has ended, so that the pause that follows sees what really exists. Returns the last
-        state seen; anything that is not an ended state means it could not be settled. `deployment_cancelled` says that a running deployment was cancelled:
-        a cancelled deployment does not undo what the capacity service had already started, so the capacity may still appear."""
+        state seen; anything that is not an ended state means it could not be settled. `deployment_cancelled` says that the deployment was cancelled (by this
+        call, or by somebody else in the last CANCEL_DOUBT_S): a cancelled deployment does not undo what the capacity service had already started, so the
+        capacity may still appear."""
         self.deployment_cancelled = False
         show = ["deployment", "group", "show", "-g", s.base.resource_group, "-n", CAPACITY_DEPLOYMENT, "--query", "properties.provisioningState", "-o", "tsv"]
 
@@ -326,6 +348,8 @@ class Live(cd.Live):
             return "NotFound" if DEPLOYMENT_MISSING_RE.search(f"{r.stderr or ''} {r.stdout or ''}") else "Unknown"
         now = state()
         if now in DEPLOYMENT_ENDED:
+            if now in CANCELLED_STATES and self.cancelled_recently(s):
+                self.deployment_cancelled = True
             return now
         self.deployment_cancelled = True
         try:

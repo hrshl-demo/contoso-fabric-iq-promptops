@@ -1,3 +1,4 @@
+import datetime as dt
 import json
 import re
 import subprocess
@@ -465,6 +466,19 @@ def test_with_no_deployment_in_doubt_an_absent_capacity_is_not_waited_for():
     assert rc == 0 and t.slept == [] and io.calls == ["settle", "capacity status"]
 
 
+def test_a_deployment_that_was_cancelled_long_ago_and_no_capacity_is_not_an_alarm(capsys):
+    """After a destroy, or a build that failed early, an old cancelled record must not turn every later run red: the age of the cancel decides (see Live)."""
+    io = FakeIo(settle_state="Canceled", settle_cancels=False)
+    rc, t = rescue_with(io)
+    assert rc == 0 and t.slept == [] and "nothing to pause" in capsys.readouterr().out
+
+
+def test_a_deployment_that_somebody_else_just_cancelled_is_looked_after_like_one_this_run_cancelled(capsys):
+    io = FakeIo(settle_state="Canceled", settle_cancels=True)
+    rc, t = rescue_with(io)
+    assert rc == cd.EXIT_STILL_RUNNING and "MAY STILL APPEAR AND BILL" in capsys.readouterr().out and sum(t.slept) == pf.LATE_APPEARANCE_S
+
+
 def test_a_capacity_that_is_still_being_provisioned_is_waited_for_before_it_is_paused(capsys):
     io = FakeIo(cap_exists=True, state="Active", provisioning=["Provisioning", "Updating", "Succeeded"])
     rc, t = rescue_with(io)
@@ -913,12 +927,59 @@ def settle_runner(calls, states):
     return run
 
 
-@pytest.mark.parametrize("state", ["Succeeded", "Failed", "Canceled", None])
+@pytest.mark.parametrize("state", ["Succeeded", "Failed", None])
 def test_a_deployment_that_has_ended_or_never_existed_is_not_cancelled(tmp_path, state):
     calls = []
     io = live(tmp_path, settle_runner(calls, [state]))
     assert io.settle_capacity_deployment(settings()) == (state or "NotFound")
     assert not any(c[1:4] == ["deployment", "group", "cancel"] for c in calls) and io.deployment_cancelled is False
+    assert len(calls) == 1                                                                               # and the time of the end is not even asked for
+
+
+NOW = dt.datetime(2026, 11, 4, 1, 0, 0, tzinfo=dt.timezone.utc)
+
+
+def cancelled_runner(calls, stamp, state="Canceled", stamp_rc=0, hang=False):
+    """`deployment group show` answers the provisioning state, or (when asked for `properties.timestamp`) the time the deployment ended."""
+    def run(cmd, **kw):
+        calls.append(cmd)
+        if cmd[1:4] == ["deployment", "group", "show"]:
+            if "properties.timestamp" in cmd:
+                if hang:
+                    raise subprocess.TimeoutExpired(cmd, kw["timeout"])
+                return SimpleNamespace(returncode=stamp_rc, stdout=(stamp or "") + "\n", stderr="" if stamp_rc == 0 else "boom")
+            return SimpleNamespace(returncode=0, stdout=state + "\n", stderr="")
+        return SimpleNamespace(returncode=0, stdout="", stderr="")
+    return run
+
+
+@pytest.mark.parametrize("state", ["Canceled", "Cancelled"])
+@pytest.mark.parametrize("stamp", ["2026-11-04T00:55:00.123456+00:00", "2026-11-04T00:55:00Z", "2026-11-04T00:55:00.1234567Z", "2026-11-04T00:55:00", "2026-11-04T00:30:01+00:00",
+                                   "2026-11-04T06:30:00+05:30"])
+def test_a_deployment_that_somebody_cancelled_a_moment_ago_is_still_in_doubt(tmp_path, state, stamp):
+    """A cancel is not an undo: the capacity service can finish what it had started, whoever cancelled (a person in the portal, an earlier run)."""
+    calls = []
+    io = live(tmp_path, cancelled_runner(calls, stamp, state), utcnow=lambda: NOW)
+    assert io.settle_capacity_deployment(settings()) == state and io.deployment_cancelled is True
+    assert not any(c[1:4] == ["deployment", "group", "cancel"] for c in calls)                          # it had ended already: nothing to cancel again
+
+
+@pytest.mark.parametrize("stamp", ["2026-11-03T22:00:00.000000+00:00", "2026-11-04T00:29:59+00:00", "2026-11-04T05:59:00+05:30"])
+def test_a_deployment_cancelled_long_ago_is_no_longer_in_doubt(tmp_path, stamp):
+    """Otherwise one old cancelled record would turn every later destroy, and every build that failed early, red."""
+    io = live(tmp_path, cancelled_runner([], stamp), utcnow=lambda: NOW)
+    assert io.settle_capacity_deployment(settings()) == "Canceled" and io.deployment_cancelled is False
+
+
+@pytest.mark.parametrize("stamp, rc, hang", [("", 0, False), ("not a time", 0, False), ("2026-13-45T99:00:00Z", 0, False), ("", 1, False), ("", 0, True)])
+def test_a_cancel_time_that_cannot_be_read_counts_as_recent(tmp_path, stamp, rc, hang):
+    io = live(tmp_path, cancelled_runner([], stamp, stamp_rc=rc, hang=hang), utcnow=lambda: NOW)
+    assert io.settle_capacity_deployment(settings()) == "Canceled" and io.deployment_cancelled is True
+
+
+def test_a_cancel_time_in_the_future_counts_as_recent(tmp_path):
+    io = live(tmp_path, cancelled_runner([], "2026-11-04T03:00:00+00:00"), utcnow=lambda: NOW)           # a clock that is off must not switch the doubt off
+    assert io.settle_capacity_deployment(settings()) == "Canceled" and io.deployment_cancelled is True
 
 
 def test_a_running_deployment_is_cancelled_and_waited_for(tmp_path):
