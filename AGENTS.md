@@ -21,6 +21,7 @@ This repo turns versioned prompts into a Fabric IQ ontology and Power BI reports
 | `fabric/reports/` | Power BI report definitions (PBIR) | The report tooling |
 | `kit/contoso_onto/` | The deterministic engine (seed to bronze, silver, gold, semantic model, ontology, graph, verify) | Only for engine changes, with tests |
 | `seed/` | Synthetic seed data, read-only | Nobody |
+| `analysis/` | Analyses run by prompts (the PDF brief); `docs/reports/` documents them | You, through a PR |
 | `tools/`, `.github/workflows/` | Repo tooling and pipelines | Pipeline changes only |
 
 ## Prompt discipline

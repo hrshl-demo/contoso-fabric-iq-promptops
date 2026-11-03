@@ -38,8 +38,8 @@
     },
     "reports.customer-financial-health": {
       "outputs": {
-        "files": 0,
-        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        "files": 1,
+        "sha256": "23833dfb991d9cb3854f143f79fd902a9113c3bdd3f22a016dc49f601324431c"
       },
       "path": "prompts/reports/customer-financial-health.md",
       "promptSha256": "89f90a7fa78ee73e90cbe130bc7b10cd972f3382e19d32e812d4f5561bf3f035",
@@ -47,8 +47,8 @@
     },
     "reports.executive-overview": {
       "outputs": {
-        "files": 0,
-        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        "files": 1,
+        "sha256": "23833dfb991d9cb3854f143f79fd902a9113c3bdd3f22a016dc49f601324431c"
       },
       "path": "prompts/reports/executive-overview.md",
       "promptSha256": "51783fefe857d9947185d81fb2fe99bf0efd5453dfdf6da999ee692dc4ea8532",
@@ -56,8 +56,8 @@
     },
     "reports.monthly-brief": {
       "outputs": {
-        "files": 0,
-        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        "files": 5,
+        "sha256": "8c4a94194a256c1fccb7b36214bec52cc0ede936281660b5896411f4f2043b78"
       },
       "path": "prompts/reports/monthly-brief.md",
       "promptSha256": "0c3c29c5fb4889368d95445163c02d05fed027f96cee49c7df7bf6e9e6a17c9d",
