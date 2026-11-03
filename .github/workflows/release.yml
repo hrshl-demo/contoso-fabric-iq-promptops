@@ -3,6 +3,8 @@ name: release
 # Cut a release by hand: Actions > release > Run workflow. Run it once with "Publish" off first: a dry run checks the rules,
 # runs the full kit tests, builds every file from this commit and shows what it would publish. It changes nothing.
 # A release is a prepared CHANGELOG.md section (python -m tools.release prepare) plus this button. See docs/RELEASING.md.
+# "Deploy to prod" is optional and DRAFT (not run against a live tenant yet): it only takes effect together with Publish, needs the Azure setup in
+# docs/SETUP.md, and refuses a commit whose deployed files differ from the last successful dev deployment.
 
 on:
   workflow_dispatch:
@@ -11,6 +13,11 @@ on:
         description: "Version to release, for example v1.0.0. CHANGELOG.md must already have its dated section."
         required: true
         type: string
+      deploy_prod:
+        description: "Together with Publish: deploy this commit to the prod workspace first (needs docs/SETUP.md done and a dev deployment of the same files)"
+        required: true
+        type: boolean
+        default: false
       publish:
         description: "Publish the GitHub release. Leave off for a dry run."
         required: true
@@ -54,6 +61,16 @@ jobs:
             exit 1
           fi
           echo "$ACTOR is an approver and this run is on main."
+      - name: A prod deployment needs the deployment pipelines enabled
+        env:
+          DEPLOY_PROD: ${{ inputs.deploy_prod }}
+          CD_ENABLED: ${{ vars.CD_ENABLED }}
+        run: |
+          set -eu
+          if [ "$DEPLOY_PROD" = "true" ] && [ "$CD_ENABLED" != "true" ]; then
+            echo "::error::Deploy to prod was requested, but the deployment pipelines are not enabled (repository variable CD_ENABLED). See docs/SETUP.md, or run again with Deploy to prod off."
+            exit 1
+          fi
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
@@ -143,14 +160,17 @@ jobs:
         env:
           VERSION: ${{ inputs.version }}
           PUBLISH: ${{ inputs.publish }}
+          DEPLOY_PROD: ${{ inputs.deploy_prod }}
         run: |
           {
             if [ "$PUBLISH" = "true" ]; then
               echo "### $VERSION: files built, publishing after the kit tests pass"
+              if [ "$DEPLOY_PROD" = "true" ]; then echo; echo "Prod is deployed first; the release is published only if that succeeds."; fi
             else
               echo "### Dry run for $VERSION: nothing is published"
               echo
               echo "Run the workflow again with **Publish** on to release these files."
+              if [ "$DEPLOY_PROD" = "true" ]; then echo "**Deploy to prod** only takes effect together with Publish, so prod was not touched."; fi
             fi
             echo
             echo '```'
@@ -169,10 +189,81 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+  deploy-prod:
+    name: Deploy to prod
+    if: ${{ inputs.deploy_prod && inputs.publish && vars.CD_ENABLED == 'true' }}
+    needs: [build, kit-tests]
+    runs-on: ubuntu-latest
+    # 5 minutes of set-up, the deadline for the deployment steps (CD_DEADLINE_MIN, default 45) and up to 25 minutes for the pause that always follows
+    timeout-minutes: 80
+    concurrency:
+      group: fabric-capacity
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+    env:
+      CD_RESOURCE_GROUP: ${{ vars.CD_RESOURCE_GROUP }}
+      CD_CAPACITY: ${{ vars.CD_CAPACITY }}
+      CD_LOCATION: ${{ vars.CD_LOCATION }}
+      CD_WORKSPACE_PROD: ${{ vars.CD_WORKSPACE_PROD }}
+      CD_TIER: ${{ vars.CD_TIER }}
+      CD_USD_PER_HOUR: ${{ vars.CD_USD_PER_HOUR }}
+      CD_DEADLINE_MIN: ${{ vars.CD_DEADLINE_MIN }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            kit/requirements.txt
+            requirements-ci.txt
+      - name: Install the requirements
+        run: python -m pip install -r kit/requirements.txt -r requirements-ci.txt
+      - name: Check the settings (calls nothing)
+        run: python -m tools.cd plan --env prod
+      - name: Prod gets only what dev has had
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -eu
+          # the last dev deployment whose deploy job really succeeded; a run whose job was skipped does not count
+          dev_sha=$(python -m tools.release dev-sha --repo "$REPO")
+          python -m tools.release promotion --dev-sha "$dev_sha" --sha "$GITHUB_SHA"
+      - name: Sign in to Azure (federated credential, no secret)
+        uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      # The data is always loaded again for prod: the tables keep their names when the data behind them changes, so "the tables exist" proves nothing.
+      # The load overwrites, so it is safe, and it costs about 7 minutes of F4 time (about USD 0.08).
+      - name: Deploy, verify, pause
+        id: deploy
+        run: python -m tools.cd deploy --env prod --reload-data --out "$RUNNER_TEMP/cd-out" --summary "$GITHUB_STEP_SUMMARY"
+      # Pausing twice is harmless. This catches a run that was cancelled, timed out or crashed before tools.cd could pause; it does not run when the
+      # deploy step never started (nothing was resumed). It comes before the artifact upload so that nothing else can use up the time it needs.
+      - name: Last line of defence, pause the capacity
+        if: ${{ always() && steps.deploy.outcome != 'skipped' }}
+        run: python -m tools.cd capacity pause
+      - name: Keep the backup of any replaced definition
+        if: ${{ always() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: replaced-prod-definitions-backup
+          path: ${{ runner.temp }}/cd-out/backup
+          if-no-files-found: ignore
+          retention-days: 30
+
   publish:
     name: Publish the GitHub release
-    if: ${{ inputs.publish }}
-    needs: [build, kit-tests]
+    if: ${{ !cancelled() && !failure() && inputs.publish }}
+    needs: [build, kit-tests, deploy-prod]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:

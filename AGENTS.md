@@ -4,7 +4,7 @@ This repo turns versioned prompts into a Fabric IQ ontology and Power BI reports
 
 ## Hard rules
 
-1. **Propose, never deploy.** Work on a branch named `copilot/<intent>`, open a pull request, stop. Never push to `main`. Never run or dispatch the `cd-dev`, `release`, `capacity` or `wipe` workflows. Never call a Fabric or Azure write API from your own session.
+1. **Propose, never deploy.** Work on a branch named `copilot/<intent>`, open a pull request, stop. Never push to `main`. Never run or dispatch the `cd-dev`, `release` or `capacity` workflows, never set the repository secrets or variables (`CD_ENABLED` is the switch), and never call a Fabric or Azure write API from your own session.
 2. **Preview before any remote change.** Anything that would write to Fabric or Azure is first shown as a preview (created, replaced, deleted) and waits for an explicit "go" from the human.
 3. **No billable action without an explicit go.** Creating or resuming a Fabric capacity, starting a VM, Databricks, storage: ask first and state the cost.
 4. **Synthetic data only.** No real customer data, no credentials, tokens, connection strings or keys. Tenant, subscription and workspace IDs live in GitHub Actions variables, not in files.

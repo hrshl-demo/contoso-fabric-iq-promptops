@@ -37,9 +37,9 @@ flowchart LR
 | `seed/` | Synthetic seed data, read-only ([provenance](seed/PROVENANCE.md)) |
 | `fabric/` | Fabric item folders generated from the spec (`python -m tools.export_fabric --write`): the Gen 2 ontology and the Direct Lake semantic model; reports go here too |
 | `analysis/` | Analyses run by prompts. `analysis/monthly_brief` builds the [Monthly Business Brief](docs/reports/monthly-brief.md) PDF offline from the gold layer |
-| `tools/` | Prompt lint, wrapper generation, manifest, PII guard, Fabric export, validation, deployment preview and release preparation |
+| `tools/` | Prompt lint, wrapper generation, manifest, PII guard, Fabric export, validation, deployment preview, release preparation and the deployment orchestrator (`tools/cd.py`) |
 | `.github/` | Workflows, Copilot instructions, a custom agent and generated prompt wrappers |
-| `docs/` | [Architecture](docs/ARCHITECTURE.md), [decisions](docs/DECISIONS.md), [releasing](docs/RELEASING.md), `docs/generated/ontology-brief.md` (a readable view of every entity, synonym and PII flag) |
+| `docs/` | [Architecture](docs/ARCHITECTURE.md), [decisions](docs/DECISIONS.md), [releasing](docs/RELEASING.md), [turning on the deployment pipelines](docs/SETUP.md), [the shortcut and Databricks pilot](docs/PILOT.md), `docs/generated/ontology-brief.md` (a readable view of every entity, synonym and PII flag) |
 | `AGENTS.md` | The rules every agent follows: propose, never deploy |
 
 ## Drive it
@@ -55,14 +55,13 @@ The flow follows Microsoft's Fabric skills demo: **Inspect, Build, Enrich, Consu
 | Workflow | Does | Status |
 |---|---|---|
 | `ci.yml` | Prompt lint, wrappers, manifest, CHANGELOG structure, PII and secret scan, tooling tests, kit tests, offline build, drift check of the generated Fabric items, a deployment preview comment on every pull request, the Monthly Business Brief PDF and a preview of the release files as build artifacts | live |
-| `cd-dev.yml` | Resume the F4, deploy to the dev workspace, verify, pause | after identity setup |
-| `release.yml` | Run by hand: checks the rules, runs the full kit tests, rebuilds the files from the commit and publishes a GitHub release with the PDF brief, the ontology brief, the Fabric items, the prompt library and checksums. A dry run is the default ([how](docs/RELEASING.md)) | live |
-| `capacity.yml` | Status, resume and pause of the F4 | after identity setup |
-| `wipe.yml` | Manual teardown with an independent check | after identity setup |
+| `cd-dev.yml` | After a merge that changes what is deployed: sign-in check, resume the F4, load the data if needed, deploy the semantic model and the ontology, build the graph, verify, pause the F4 (also when a step failed). Draft, off until `CD_ENABLED` is set ([SETUP.md](docs/SETUP.md)) | after identity setup |
+| `release.yml` | Run by hand: checks the rules, runs the full kit tests, rebuilds the files from the commit, optionally deploys prod (only what dev had), and publishes a GitHub release with the PDF brief, the ontology brief, the Fabric items, the prompt library and checksums. A dry run is the default ([how](docs/RELEASING.md)) | live; prod deploy after identity setup |
+| `capacity.yml` | Status, resume and pause of the F4 by hand, and a guard that pauses a running F4 every 3 hours unless a demo hold is set. Draft | after identity setup |
 
 ## Cost guard
 
-Nothing bills until a person says so. The F4 capacity (East US 2) is paused between sessions, which keeps compute billing at zero. Every deploy ends with a pause. See [docs/DECISIONS.md](docs/DECISIONS.md).
+Nothing bills until a person says so. The F4 capacity (East US 2) is paused between sessions, which keeps compute billing at zero. Every deploy ends with a pause, also when a step failed (`--keep-running` is ignored after a failure), the deployment steps have a deadline so the pause always has time, a final workflow step pauses again, and a guard pauses a forgotten F4 every 3 hours. Teardown (`wipe.sh`) stays a deliberate action on the machine that built the capacity, never a pipeline. See [docs/DECISIONS.md](docs/DECISIONS.md) and [docs/SETUP.md](docs/SETUP.md).
 
 ## Local checks
 

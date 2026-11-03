@@ -1,6 +1,6 @@
 # Releasing
 
-A release is **a reviewed changelog section plus one button press**. The release workflow never touches Azure or Fabric; it checks the rules, rebuilds every file from the commit and publishes a GitHub release.
+A release is **a reviewed changelog section plus one button press**. Publishing the release never needs Azure or Fabric. Deploying prod is an optional extra that stays off until the one-time setup in [SETUP.md](SETUP.md) is done.
 
 ## The four steps
 
@@ -13,7 +13,7 @@ A release is **a reviewed changelog section plus one button press**. The release
    This turns `## Unreleased` in `CHANGELOG.md` into `## v1.0.0 — 2026-11-04` and leaves an empty `## Unreleased` on top. CI checks the structure (`python -m tools.release lint`). Merge it.
 2. **Wait for CI on `main`** to go green. The release refuses a commit without a successful `ci` run.
 3. **Dry run:** Actions, `release`, Run workflow, version `v1.0.0`, **Publish off**. It checks the rules, runs the full kit tests, builds the files and shows what it would publish. Nothing is created.
-4. **Publish:** run it again with **Publish on**. It creates the tag `v1.0.0` on that commit and a GitHub release with the files below.
+4. **Publish:** run it again with **Publish on**. It creates the tag `v1.0.0` on that commit and a GitHub release with the files below. With **Deploy to prod** also on, prod is deployed first and the release is published only if that succeeds (draft; needs [SETUP.md](SETUP.md)). Deploy to prod does nothing without Publish, so a dry run never touches prod.
 
 ## What a release carries
 
@@ -33,6 +33,7 @@ The release notes are the changelog section, a table of every prompt with its ve
 - The version looks like `v1.2.3`, the tag does not exist, and it is not older than the newest tag.
 - `CHANGELOG.md` has a dated, non-empty section for it, nothing is left in `## Unreleased` (it would be missing from the notes), and the structure is valid.
 - A successful `ci` run exists for this exact commit, the full kit test suite passes, and the generated Fabric items still match the spec.
+- Deploy to prod only: the deployment pipelines are enabled, and the files a deployment sends (`fabric/`, `seed/`, `kit/model`, `kit/contoso_onto`, `kit/config`, `tools/cd.py`) equal those of the last dev deployment that really ran (`python -m tools.release dev-sha` reads the conclusion of the `Deploy to dev` job, so a skipped run does not count; `python -m tools.release promotion` compares). Prod gets only what dev has had, and always loads the data again because table names do not change when the data behind them does.
 
 Every pull request also builds the same files as the `release-preview` artifact and prints the file list and the pending release notes in the CI job summary, so a broken release is found in the pull request, not on release day.
 

@@ -1,0 +1,120 @@
+name: cd-dev
+
+# Deploy to the dev workspace after a merge to main.
+# DRAFT: written against the kit's commands and tested with fakes and the kit's Fabric mock; it has not run against a live tenant yet.
+# It does nothing until the repository variable CD_ENABLED is "true" (docs/SETUP.md); a skipped job costs no Actions minutes.
+# Steps: sign-in check, offline build, resume the F4, load the data when needed, deploy the semantic model and the ontology, build the graph,
+# verify, pause the F4 (also when a step failed). The sign-in is a federated credential that trusts runs on main only; no secret is stored.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "fabric/**"
+      - "seed/**"
+      - "kit/model/**"
+      - "kit/contoso_onto/**"
+      - "kit/config/**"
+      - "tools/cd.py"
+      - ".github/workflows/cd-dev.yml"
+  workflow_dispatch:
+    inputs:
+      reload_data:
+        description: "Load the bronze, silver and gold tables again even when the lakehouse already has them"
+        type: boolean
+        default: false
+      keep_running:
+        description: "Leave the capacity running afterwards (it bills until the capacity guard or you pause it)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fabric-capacity
+  cancel-in-progress: false
+
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+
+jobs:
+  deploy:
+    name: Deploy to dev
+    if: ${{ vars.CD_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    # 5 minutes of set-up, the deadline for the deployment steps (CD_DEADLINE_MIN, default 45) and up to 25 minutes for the pause that always follows
+    timeout-minutes: 80
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+    env:
+      CD_RESOURCE_GROUP: ${{ vars.CD_RESOURCE_GROUP }}
+      CD_CAPACITY: ${{ vars.CD_CAPACITY }}
+      CD_LOCATION: ${{ vars.CD_LOCATION }}
+      CD_WORKSPACE_DEV: ${{ vars.CD_WORKSPACE_DEV }}
+      CD_TIER: ${{ vars.CD_TIER }}
+      CD_USD_PER_HOUR: ${{ vars.CD_USD_PER_HOUR }}
+      CD_DEADLINE_MIN: ${{ vars.CD_DEADLINE_MIN }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            kit/requirements.txt
+            requirements-ci.txt
+      - name: Install the requirements
+        run: python -m pip install -r kit/requirements.txt -r requirements-ci.txt
+      - name: Check the settings (calls nothing)
+        run: python -m tools.cd plan --env dev
+      - name: Decide whether the data must be loaded again
+        id: data
+        env:
+          EVENT: ${{ github.event_name }}
+          INPUT_RELOAD: ${{ inputs.reload_data }}
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -eu
+          # Compared with the last dev deployment that really ran, not with the previous push: a failed or skipped run in between must not hide a data change.
+          last=$(python -m tools.release dev-sha --repo "$REPO")
+          reload=$(python -m tools.release reload-data --since "$last" --sha "$GITHUB_SHA")
+          if [ "$EVENT" = "workflow_dispatch" ] && [ "$INPUT_RELOAD" = "true" ]; then reload=true; fi
+          echo "reload=$reload" >> "$GITHUB_OUTPUT"
+          echo "Data reload: $reload (last dev deployment that ran: ${last:-none})" >> "$GITHUB_STEP_SUMMARY"
+      - name: Sign in to Azure (federated credential, no secret)
+        uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Deploy, verify, pause
+        id: deploy
+        env:
+          RELOAD: ${{ steps.data.outputs.reload }}
+          KEEP: ${{ inputs.keep_running }}
+        run: |
+          set -eu
+          args=(--env dev --out "$RUNNER_TEMP/cd-out" --summary "$GITHUB_STEP_SUMMARY")
+          if [ "$RELOAD" = "true" ]; then args+=(--reload-data); fi
+          if [ "$KEEP" = "true" ]; then args+=(--keep-running); fi
+          python -m tools.cd deploy "${args[@]}"
+      # Pausing twice is harmless. This catches a run that was cancelled, timed out or crashed before tools.cd could pause. It does not run when the
+      # deploy step never started (nothing was resumed), and not after a successful run that was asked to keep the capacity on. It comes before the
+      # artifact upload so that nothing else can use up the time it needs.
+      - name: Last line of defence, pause the capacity
+        if: ${{ always() && steps.deploy.outcome != 'skipped' && (steps.deploy.outcome != 'success' || inputs.keep_running != true) }}
+        run: python -m tools.cd capacity pause
+      - name: Keep the backup of any replaced definition
+        if: ${{ always() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: replaced-definitions-backup
+          path: ${{ runner.temp }}/cd-out/backup
+          if-no-files-found: ignore
+          retention-days: 30
