@@ -2,12 +2,12 @@
   "prompts": {
     "ontology.build": {
       "outputs": {
-        "files": 22,
-        "sha256": "f4a181a12b55c96485aea31e181786c1cff391c1d9e1286c5492a9b1b18493ea"
+        "files": 153,
+        "sha256": "efff029f029eb03caa4edeb1901e6110245686d15e3d3f1fb5752253a52ada72"
       },
       "path": "prompts/ontology/02-build.md",
-      "promptSha256": "1b8d46e30792e2ee39aca2419186e63dbca6c999ee7307107593f0ff2f20616e",
-      "version": "1.0.0"
+      "promptSha256": "c662f96f421a468c949633491715c2f714047ee9ed30edb210de207dbc9ab66f",
+      "version": "1.1.0"
     },
     "ontology.consume": {
       "outputs": {
@@ -20,12 +20,12 @@
     },
     "ontology.enrich": {
       "outputs": {
-        "files": 22,
-        "sha256": "f4a181a12b55c96485aea31e181786c1cff391c1d9e1286c5492a9b1b18493ea"
+        "files": 153,
+        "sha256": "efff029f029eb03caa4edeb1901e6110245686d15e3d3f1fb5752253a52ada72"
       },
       "path": "prompts/ontology/03-enrich.md",
-      "promptSha256": "df8f495dbbc6ff7d59dd6b317378b9a620a70bd8050ff8c764cdf75aee74730b",
-      "version": "1.0.0"
+      "promptSha256": "3dcaf682e5acb76671b5aaad385a72f683919e436582c46b9c54d38c95e99e65",
+      "version": "1.1.0"
     },
     "ontology.inspect": {
       "outputs": {

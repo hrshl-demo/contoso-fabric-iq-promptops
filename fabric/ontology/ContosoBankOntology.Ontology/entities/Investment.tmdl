@@ -1,0 +1,69 @@
+/// [Holdings] An investment holding (fixed deposit, index fund, reserve). Current value is a market-style figure from the seed, not a guaranteed return. Linked to the goals it funds. For net position or total assets use Investment value: a fixed deposit that is also an Investment is one asset, so never add Deposit principal on top of it (Law L5). Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: dimension; grain: one investment holding. Lakehouse: dim_investment <- silver_investment <- investments.json.
+entity Investment
+	lineageTag: 47862fb4-f2ed-52a1-b298-4619e0e57a4f
+	backingTable: Investment
+	keyProperty: InvestmentId
+
+	/// Investment identifier such as inv-liquid-fd.
+	property InvestmentId
+		dataType: string
+		lineageTag: 92db648b-f14f-5596-8cac-09d9e503ce8a
+
+		backingConfiguration
+			valueColumn: Investment.InvestmentId
+
+	/// Investor.
+	property CustomerId
+		dataType: string
+		lineageTag: 27184cf5-7dd8-5fee-a0e0-e8c2c5ffedc3
+
+		backingConfiguration
+			valueColumn: Investment.CustomerId
+
+	/// Catalogue product of the investment.
+	property ProductId
+		dataType: string
+		lineageTag: 969dde87-d20e-535b-858a-13b7f8c9ff79
+
+		backingConfiguration
+			valueColumn: Investment.ProductId
+
+	/// Type such as fixed_deposit or index_fund.
+	property InvestmentType
+		dataType: string
+		lineageTag: c28237df-ced7-50eb-8542-c05dda6bb9bd
+
+		backingConfiguration
+			valueColumn: Investment.InvestmentType
+
+	/// How quickly the money can be reached.
+	property Liquidity
+		dataType: string
+		lineageTag: 25084a1c-0da4-5750-b2ba-001140c10870
+
+		backingConfiguration
+			valueColumn: Investment.Liquidity
+
+	/// Current value of the holding. In rupees (INR).
+	property CurrentValueInr
+		dataType: double
+		lineageTag: 8f923767-45c9-532b-8652-6221d8b67c78
+
+		backingConfiguration
+			valueColumn: Investment.CurrentValueInr
+
+	/// Goals the investment funds (semicolon separated).
+	property GoalIds
+		dataType: string
+		lineageTag: 86ab1b0a-b8a4-5852-b783-beeaf146f45b
+
+		backingConfiguration
+			valueColumn: Investment.GoalIds
+
+	/// Seed release the row comes from.
+	property ReleaseId
+		dataType: string
+		lineageTag: 2f14fbb4-ad1e-59cc-b4a6-f57151e4d132
+
+		backingConfiguration
+			valueColumn: Investment.ReleaseId

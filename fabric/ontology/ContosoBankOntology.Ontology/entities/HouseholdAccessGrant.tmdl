@@ -1,0 +1,85 @@
+/// [Authority] A household access grant (permission grant): what a household member (or agent) may see or do on the owner's data. Frontier: Vivek can view goals, obligations and budget only; Anika (minor) has no access; Savitri sees the care schedule only. Denied permissions always win; a relationship never implies permission. Standards: no verified BIAN mapping (custom semantics); no Microsoft CDM reference. Demo mapping, not certification. Star role: dimension; grain: one access grant. Lakehouse: dim_household_access_grant <- silver_household_access_grant <- access-grants.json.
+entity HouseholdAccessGrant
+	lineageTag: 0139188c-c5df-560c-931c-d990876aacb4
+	backingTable: HouseholdAccessGrant
+	keyProperty: GrantId
+
+	/// Grant identifier such as grant-vivek-view.
+	property GrantId
+		dataType: string
+		lineageTag: 8e45e651-0639-51e8-9097-5598515bb74a
+
+		backingConfiguration
+			valueColumn: HouseholdAccessGrant.GrantId
+
+	/// Owner whose data is shared.
+	property CustomerId
+		dataType: string
+		lineageTag: 69d7e10d-6a1c-57d3-8a7b-265d6991a8ef
+
+		backingConfiguration
+			valueColumn: HouseholdAccessGrant.CustomerId
+
+	/// Household the grant belongs to.
+	property HouseholdId
+		dataType: string
+		lineageTag: 0e677149-77cc-5c8f-8b96-015fcc562bf6
+
+		backingConfiguration
+			valueColumn: HouseholdAccessGrant.HouseholdId
+
+	/// Consent that backs the grant. Null for an inactive grant with no consent.
+	property ConsentId
+		dataType: string
+		lineageTag: 4c9195df-17bc-53c1-ab9d-43c1812dd7b2
+
+		backingConfiguration
+			valueColumn: HouseholdAccessGrant.ConsentId
+
+	/// Who holds the grant: a household member id.
+	property SubjectRef
+		dataType: string
+		lineageTag: f3a720cb-c754-5c0b-b828-aa050672eea3
+
+		backingConfiguration
+			valueColumn: HouseholdAccessGrant.SubjectRef
+
+	/// Household member id when the grantee is a household member.
+	property SubjectMemberId
+		dataType: string
+		lineageTag: 06362bb2-5cef-5b9b-9abf-a13cfc7c02ce
+
+		backingConfiguration
+			valueColumn: HouseholdAccessGrant.SubjectMemberId
+
+	/// active or inactive.
+	property Status
+		dataType: string
+		lineageTag: bda4e87a-904e-5c8f-8601-3ffa19aceaee
+
+		backingConfiguration
+			valueColumn: HouseholdAccessGrant.Status
+
+	/// Permissions granted, such as view:goals (semicolon separated).
+	property Permissions
+		dataType: string
+		lineageTag: 50c954ae-cf67-5365-bf52-2a4203668b89
+
+		backingConfiguration
+			valueColumn: HouseholdAccessGrant.Permissions
+
+	/// Permissions explicitly denied, such as transact or change_access (semicolon separated). Denied wins.
+	property DeniedPermissions
+		dataType: string
+		lineageTag: b266d16a-d678-5a6a-9f80-03e025c84400
+
+		backingConfiguration
+			valueColumn: HouseholdAccessGrant.DeniedPermissions
+
+	/// Seed release the row comes from.
+	property ReleaseId
+		dataType: string
+		lineageTag: d14b39e5-e5ea-56a4-9431-7d26c3fcea0b
+
+		backingConfiguration
+			valueColumn: HouseholdAccessGrant.ReleaseId

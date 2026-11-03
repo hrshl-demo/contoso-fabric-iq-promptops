@@ -1,0 +1,101 @@
+/// [Holdings] One scheduled or paid EMI of a loan, split into principal, interest and fees. Use it for questions about interest paid so far or the next instalment. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: fact; grain: one scheduled instalment of a loan. Lakehouse: fact_loan_installment <- silver_loan_installment <- loans.json.
+entity LoanInstallment
+	lineageTag: 24463247-50b8-5ebc-bd8b-047d376121da
+	backingTable: LoanInstallment
+	keyProperty: InstallmentId
+
+	/// Instalment identifier: loan id plus instalment number.
+	property InstallmentId
+		dataType: string
+		lineageTag: 56abfd5d-5e30-5d75-92e4-77071318f450
+
+		backingConfiguration
+			valueColumn: LoanInstallment.InstallmentId
+
+	/// Loan the instalment belongs to.
+	property LoanId
+		dataType: string
+		lineageTag: 2c23097c-a5ce-5f46-8e5c-ac8ef48836a4
+
+		backingConfiguration
+			valueColumn: LoanInstallment.LoanId
+
+	/// Sequence number of the instalment (1 = first).
+	property InstallmentNumber
+		dataType: int64
+		lineageTag: 563720d8-4f97-51fd-8d25-45fd180044cf
+
+		backingConfiguration
+			valueColumn: LoanInstallment.InstallmentNumber
+
+	/// Due date of the instalment.
+	property DueOn
+		dataType: dateTime
+		lineageTag: 383d1bfb-ef76-55a8-902f-1cfc620cd208
+
+		backingConfiguration
+			valueColumn: LoanInstallment.DueOn
+
+	/// paid or scheduled.
+	property Status
+		dataType: string
+		lineageTag: d46e53a5-1b33-5cd5-87f5-d956268f9f29
+
+		backingConfiguration
+			valueColumn: LoanInstallment.Status
+
+	/// Principal at the start of the instalment. In rupees (INR).
+	property OpeningPrincipalInr
+		dataType: double
+		lineageTag: b7ae4f5e-6632-50d4-b5f8-6efe0ffc424b
+
+		backingConfiguration
+			valueColumn: LoanInstallment.OpeningPrincipalInr
+
+	/// Principal repaid by this instalment. In rupees (INR).
+	property PrincipalPaidInr
+		dataType: double
+		lineageTag: d03c0ebe-ae5a-5c39-8711-8a765cf0dea8
+
+		backingConfiguration
+			valueColumn: LoanInstallment.PrincipalPaidInr
+
+	/// Interest paid in this instalment. In rupees (INR).
+	property InterestPaidInr
+		dataType: double
+		lineageTag: a9fbbad2-701c-542d-a9cd-29e9e1193cdf
+
+		backingConfiguration
+			valueColumn: LoanInstallment.InterestPaidInr
+
+	/// Fees paid in this instalment. In rupees (INR).
+	property FeesPaidInr
+		dataType: double
+		lineageTag: c001bbc9-6cab-5483-9d3b-ebf300c51348
+
+		backingConfiguration
+			valueColumn: LoanInstallment.FeesPaidInr
+
+	/// Total paid: principal + interest + fees. In rupees (INR).
+	property TotalPaidInr
+		dataType: double
+		lineageTag: 9c2cf8a2-0378-5af7-9546-4c7f359de3b3
+
+		backingConfiguration
+			valueColumn: LoanInstallment.TotalPaidInr
+
+	/// Principal remaining after this instalment. In rupees (INR).
+	property ClosingPrincipalInr
+		dataType: double
+		lineageTag: 8e0d727a-e6ea-59d6-a42a-4b7234a28855
+
+		backingConfiguration
+			valueColumn: LoanInstallment.ClosingPrincipalInr
+
+	/// Bank statement narration of the payment, for example HOME LOAN EMI.
+	property PaymentDescription
+		dataType: string
+		lineageTag: 331aeaad-e440-53c2-8de3-dd85221ca21c
+
+		backingConfiguration
+			valueColumn: LoanInstallment.PaymentDescription

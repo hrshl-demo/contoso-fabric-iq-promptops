@@ -1,0 +1,173 @@
+/// [Servicing] A CRM case that continues a conversation with a human relationship manager: stage, priority, sentiment, SLA, owning RM, journey and products discussed. Legacy release only. Cases belong to ReleaseId retail4-v1. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: fact; grain: one CRM case. Lakehouse: fact_crm_case <- silver_crm_case <- bank/crm-cases.json.
+entity CrmCase
+	lineageTag: f5724a44-334f-59e4-aab6-bc59a3442a5c
+	backingTable: CrmCase
+	keyProperty: CaseId
+
+	/// Case identifier such as CASE-2026-0001.
+	property CaseId
+		dataType: string
+		lineageTag: dc94bdb8-9f8b-5cc2-b820-e62ba00af502
+
+		backingConfiguration
+			valueColumn: CrmCase.CaseId
+
+	/// Customer the case is about.
+	property CustomerId
+		dataType: string
+		lineageTag: 502d1798-813e-5b2e-a437-32a98fa0272e
+
+		backingConfiguration
+			valueColumn: CrmCase.CustomerId
+
+	/// Case title.
+	property Title
+		dataType: string
+		lineageTag: ce705408-e7b8-5e6f-8f58-8f624f7031a3
+
+		backingConfiguration
+			valueColumn: CrmCase.Title
+
+	/// One-sentence case summary.
+	property Summary
+		dataType: string
+		lineageTag: aa23bdbc-a5c2-5cfa-b6be-1c1529b543c9
+
+		backingConfiguration
+			valueColumn: CrmCase.Summary
+
+	/// new, in_progress, awaiting_customer, resolved or declined.
+	property Stage
+		dataType: string
+		lineageTag: 5e902480-8367-576a-b334-86580604e265
+
+		backingConfiguration
+			valueColumn: CrmCase.Stage
+
+	/// low, medium or high.
+	property Priority
+		dataType: string
+		lineageTag: 5ba2b43a-efcc-5314-82d5-ad9eba9d00b5
+
+		backingConfiguration
+			valueColumn: CrmCase.Priority
+
+	/// Customer sentiment: positive, neutral or negative.
+	property Sentiment
+		dataType: string
+		lineageTag: 0ce58eb5-6d34-569d-b3b6-f3c2798cafac
+
+		backingConfiguration
+			valueColumn: CrmCase.Sentiment
+
+	/// Channel: mobileapp, website, whatsappchatbot, branch, email, phonebanking, inbound_call.
+	property Channel
+		dataType: string
+		lineageTag: 7c8ba68d-9b99-5f95-a6be-b6bc55d8438f
+
+		backingConfiguration
+			valueColumn: CrmCase.Channel
+
+	/// How the case started, for example ai_assistant.
+	property Origin
+		dataType: string
+		lineageTag: 7efda14b-7835-5cde-a04a-eff570bab747
+
+		backingConfiguration
+			valueColumn: CrmCase.Origin
+
+	/// Business unit handling the case.
+	property BuId
+		dataType: string
+		lineageTag: f950729a-9e57-515e-b3cd-c7ee510876f7
+
+		backingConfiguration
+			valueColumn: CrmCase.BuId
+
+	/// Conversation journey that led to the case, for example J01.
+	property JourneyId
+		dataType: string
+		lineageTag: 0b883f9e-c664-5edd-9fbe-88aaf51be1e7
+
+		backingConfiguration
+			valueColumn: CrmCase.JourneyId
+
+	/// Relationship manager who owns the case.
+	property OwnerRmId
+		dataType: string
+		lineageTag: a05c40aa-d7cd-5029-bc26-32de1586bfc3
+
+		backingConfiguration
+			valueColumn: CrmCase.OwnerRmId
+
+	/// Products discussed (semicolon separated).
+	property ProductIds
+		dataType: string
+		lineageTag: e45d5389-3c3d-5b5f-b835-11a16f19d46b
+
+		backingConfiguration
+			valueColumn: CrmCase.ProductIds
+
+	/// Number of interactions on the case.
+	property Interactions
+		dataType: int64
+		lineageTag: b45fdde5-5f7a-5d5d-9c7d-70b07982126c
+
+		backingConfiguration
+			valueColumn: CrmCase.Interactions
+
+	/// Customer objection, when one was raised.
+	property ObjectionReason
+		dataType: string
+		lineageTag: affff346-cc4d-56f2-a476-412b6a5afd8a
+
+		backingConfiguration
+			valueColumn: CrmCase.ObjectionReason
+
+	/// Product the objection is about.
+	property ObjectionProductId
+		dataType: string
+		lineageTag: 146169c2-f4b4-51b0-98b0-7889425b31a1
+
+		backingConfiguration
+			valueColumn: CrmCase.ObjectionProductId
+
+	/// When the case was opened. Instant in UTC.
+	property OpenedAt
+		dataType: dateTime
+		lineageTag: 09731ddb-8e4c-5ad4-bfc4-744b3914965b
+
+		backingConfiguration
+			valueColumn: CrmCase.OpenedAt
+
+	/// When the case was opened. Calendar date in India time (IST), for 'today', 'this month' questions.
+	property OpenedDateIst
+		dataType: dateTime
+		lineageTag: e5c9d670-36a5-58c3-96a6-4c8d80936f93
+
+		backingConfiguration
+			valueColumn: CrmCase.OpenedDateIst
+
+	/// When the case was last updated. Instant in UTC.
+	property UpdatedAt
+		dataType: dateTime
+		lineageTag: 739902d2-3cf0-5bfd-bff3-8421279778ff
+
+		backingConfiguration
+			valueColumn: CrmCase.UpdatedAt
+
+	/// When the case SLA falls due. Instant in UTC.
+	property SlaDueAt
+		dataType: dateTime
+		lineageTag: d2dbf7de-2e51-59c1-b97e-672d097174cc
+
+		backingConfiguration
+			valueColumn: CrmCase.SlaDueAt
+
+	/// Seed release the row comes from.
+	property ReleaseId
+		dataType: string
+		lineageTag: 087c9b30-e365-5602-b0e9-93a4c6312509
+
+		backingConfiguration
+			valueColumn: CrmCase.ReleaseId

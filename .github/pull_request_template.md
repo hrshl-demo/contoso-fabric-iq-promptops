@@ -13,7 +13,7 @@
 ## Checklist
 - [ ] `python -m tools.check` passes locally
 - [ ] Prompt versions bumped and `CHANGELOG.md` updated
-- [ ] `manifest.lock.json` refreshed (`python -m tools.manifest --write`)
+- [ ] Generated files regenerated (`python -m tools.export_fabric --write`) and `manifest.lock.json` refreshed (`python -m tools.manifest --write`)
 - [ ] Preview reviewed; nothing deployed from this branch
 - [ ] No secrets, no real personal data, no tenant-wide settings changed
 - [ ] No billable action was taken (capacity, VM, Databricks, storage)

@@ -1,0 +1,50 @@
+table Preference
+	lineageTag: 2fe9fc58-e275-532f-8fb8-2a98bf1e9cab
+
+	column PreferenceId
+		dataType: string
+		lineageTag: bebad7e2-e250-5967-b947-2d3a6f530b0d
+		sourceColumn: preference_id
+
+	column CustomerId
+		dataType: string
+		lineageTag: 68618d1f-942e-5d54-bd77-6df8464c1e38
+		sourceColumn: customer_id
+
+	column Field
+		dataType: string
+		lineageTag: 5331281c-be79-5158-9a41-7854d9be28f4
+		sourceColumn: field
+
+	column PreferenceValue
+		dataType: string
+		lineageTag: e6b2dbb1-e646-59ba-ad41-a176f83ddfad
+		sourceColumn: preference_value
+
+	column RecordedOn
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 0d1e8258-a005-5c0a-887b-01535fe91b07
+		sourceColumn: recorded_on
+
+	column StatedIn
+		dataType: string
+		lineageTag: 0d725e6e-922a-52a5-a15d-919d3aa78f2a
+		sourceColumn: stated_in
+
+	column Note
+		dataType: string
+		lineageTag: a8ff6b2a-d994-5b0d-84c0-00b09ec65d70
+		sourceColumn: note
+
+	column ReleaseId
+		dataType: string
+		lineageTag: 81108f37-0569-52d2-a4b3-83f799a1d083
+		sourceColumn: release_id
+
+	partition Preference = entity
+		mode: directLake
+		source
+			entityName: dim_preference
+			schemaName: dbo
+			expressionSource: DatabaseQuery

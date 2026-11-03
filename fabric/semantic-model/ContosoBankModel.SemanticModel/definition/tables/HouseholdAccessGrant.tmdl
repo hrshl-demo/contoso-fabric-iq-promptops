@@ -1,0 +1,74 @@
+/// A household access grant (permission grant): what a household member (or agent) may see or do on the owner's data. Frontier: Vivek can view goals, obligations and budget only; Anika (minor) has no access; Savitri sees the care schedule only. Denied permissions always win; a relationship never implies permission. Standards: no verified BIAN mapping (custom semantics); no Microsoft CDM reference. Demo mapping, not certification. Star role: dimension; grain: one access grant. Lakehouse: dim_household_access_grant <- silver_household_access_grant <- access-grants.json.
+table HouseholdAccessGrant
+
+	/// Household access grants that are active.
+	measure 'Active Access Grants' = CALCULATE(COUNTROWS(HouseholdAccessGrant), HouseholdAccessGrant[Status] = "active")
+		formatString: #,0
+		displayFolder: Authority
+
+	/// Grant identifier such as grant-vivek-view.
+	column 'Grant ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: grant_id
+
+	/// Owner whose data is shared.
+	column 'Customer ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	/// Household the grant belongs to.
+	column 'Household ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: household_id
+
+	/// Consent that backs the grant. Null for an inactive grant with no consent.
+	column 'Consent ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: consent_id
+
+	/// Who holds the grant: a household member id.
+	column 'Subject Ref'
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: subject_ref
+
+	/// Household member id when the grantee is a household member.
+	column 'Subject Member ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: subject_member_id
+
+	/// active or inactive.
+	column Status
+		dataType: string
+		summarizeBy: none
+		sourceColumn: status
+
+	/// Permissions granted, such as view:goals (semicolon separated).
+	column Permissions
+		dataType: string
+		summarizeBy: none
+		sourceColumn: permissions
+
+	/// Permissions explicitly denied, such as transact or change_access (semicolon separated). Denied wins.
+	column 'Denied Permissions'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: denied_permissions
+
+	/// Seed release the row comes from.
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	partition HouseholdAccessGrant = entity
+		mode: directLake
+		source
+			entityName: dim_household_access_grant
+			expressionSource: 'DirectLake - ContosoBankModel'

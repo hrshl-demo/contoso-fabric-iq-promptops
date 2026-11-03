@@ -1,0 +1,19 @@
+rule NoSalesDuringHarm
+	statement: Law L9. While a customer has an unresolved Incident (fraud, scam, dispute, coercion or vulnerability) do not sell or recommend new products. Stay service-first, explain next steps and offer a human handoff.
+	lineageTag: 946ec7c9-6f39-5d13-8a6a-7ba2881aea87
+
+	ruleReferencedEntity Incident
+		propertyScope: specific
+
+		ruleReferencedProperty Status
+
+		ruleReferencedProperty IncidentType
+
+	ruleReferencedEntity ServiceCase
+		propertyScope: specific
+
+		ruleReferencedProperty HandoffTeam
+
+	ruleReferencedRelationship 'Incident Affects Customer'
+
+	ruleReferencedRelationship 'Service Record For Customer'

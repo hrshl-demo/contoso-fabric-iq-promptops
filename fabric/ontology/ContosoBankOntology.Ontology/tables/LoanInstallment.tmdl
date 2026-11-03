@@ -1,0 +1,71 @@
+table LoanInstallment
+	lineageTag: 898d9710-e06b-5daa-b3d6-001d7f55027c
+
+	column InstallmentId
+		dataType: string
+		lineageTag: 4e078fbb-5bc7-5b18-8f0d-da6c01eee22a
+		sourceColumn: installment_id
+
+	column LoanId
+		dataType: string
+		lineageTag: bbc5b7a5-95e2-5339-b04b-76b3daab505d
+		sourceColumn: loan_id
+
+	column InstallmentNumber
+		dataType: int64
+		formatString: 0
+		lineageTag: e1f3e30d-0b3b-559b-bb80-979a5e344a1c
+		sourceColumn: installment_number
+
+	column DueOn
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 6ee7c882-bf4f-5973-ba8a-3f2de4a31c77
+		sourceColumn: due_on
+
+	column Status
+		dataType: string
+		lineageTag: e490aaff-92b4-5b30-a290-03f083a18694
+		sourceColumn: status
+
+	column OpeningPrincipalInr
+		dataType: double
+		lineageTag: 5819da86-ccc0-5f30-98f1-48dc7f7bc692
+		sourceColumn: opening_principal_inr
+
+	column PrincipalPaidInr
+		dataType: double
+		lineageTag: bb517915-fe40-5992-8085-5b0ed06386e1
+		sourceColumn: principal_paid_inr
+
+	column InterestPaidInr
+		dataType: double
+		lineageTag: dfbfc1c9-0bf1-56d3-8107-9442a86fcd4b
+		sourceColumn: interest_paid_inr
+
+	column FeesPaidInr
+		dataType: double
+		lineageTag: da5e9d6f-0d04-5309-a8f1-e4e8e2613a6f
+		sourceColumn: fees_paid_inr
+
+	column TotalPaidInr
+		dataType: double
+		lineageTag: 54224ff4-6373-538a-bf0b-bea01f74b746
+		sourceColumn: total_paid_inr
+
+	column ClosingPrincipalInr
+		dataType: double
+		lineageTag: c52d3a0e-1581-57fb-811e-0a2e71f97027
+		sourceColumn: closing_principal_inr
+
+	column PaymentDescription
+		dataType: string
+		lineageTag: 5586c31a-57d6-56e1-ab12-88165097b3e6
+		sourceColumn: payment_description
+
+	partition LoanInstallment = entity
+		mode: directLake
+		source
+			entityName: fact_loan_installment
+			schemaName: dbo
+			expressionSource: DatabaseQuery

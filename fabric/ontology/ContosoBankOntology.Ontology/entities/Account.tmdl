@@ -1,0 +1,117 @@
+/// [Holdings] A deposit account (salary, reserve, savings). Frontier Rhea has acc-rhea-primary and acc-rhea-reserve. Balances are INR; the *_paise twins are exact integer paise. Posted balance is what the customer owns; available balance is net of holds. Standards: BIAN 13.0.0 Customer Product and Service Directory (custom), Savings Account (custom); Microsoft CDM FHAccount (semantic reference only). Demo mapping, not certification. Star role: dimension; grain: one account, with its balances as at the release business date. Lakehouse: dim_account <- silver_account <- accounts.json. Official CDM name aliases: FHAccount.integrationKey, FHAccount.balance, FHAccount.availableBalance, FHAccount.blockedAmount (semantic reference only).
+entity Account
+	lineageTag: ab43aee1-3bea-5137-879c-37897eefcf5b
+	backingTable: Account
+	keyProperty: AccountId
+
+	/// Account identifier such as acc-rhea-primary.
+	property AccountId
+		dataType: string
+		lineageTag: 306dd38c-7c1b-54d5-9d6e-a391673233ac
+
+		backingConfiguration
+			valueColumn: Account.AccountId
+
+	/// Owning customer.
+	property CustomerId
+		dataType: string
+		lineageTag: ca037f15-d5b4-5ecc-9a7b-1bef4cd5ead7
+
+		backingConfiguration
+			valueColumn: Account.CustomerId
+
+	/// Catalogue product the account was opened under, for example CB-SAV-SALARY.
+	property ProductId
+		dataType: string
+		lineageTag: a9b2d804-c2d3-51e0-90a2-91792f0e6515
+
+		backingConfiguration
+			valueColumn: Account.ProductId
+
+	/// Account type such as salary or reserve (Frontier only).
+	property AccountType
+		dataType: string
+		lineageTag: d82e2572-437f-5ce7-85e5-80efb7c9c472
+
+		backingConfiguration
+			valueColumn: Account.AccountType
+
+	/// Account status such as active.
+	property Status
+		dataType: string
+		lineageTag: ee8089a8-7a88-5030-9fe8-8dfe4820d899
+
+		backingConfiguration
+			valueColumn: Account.Status
+
+	/// ISO currency code; always INR in this data.
+	property Currency
+		dataType: string
+		lineageTag: 52860c51-2886-5c11-865c-1bac147d24ff
+
+		backingConfiguration
+			valueColumn: Account.Currency
+
+	/// Date the account was opened (legacy only).
+	property OpenedOn
+		dataType: dateTime
+		lineageTag: 38783dab-1110-5bcd-ba5b-22184e88f49c
+
+		backingConfiguration
+			valueColumn: Account.OpenedOn
+
+	/// First date covered by the seeded transaction history (Frontier only).
+	property HistoryStartOn
+		dataType: dateTime
+		lineageTag: 3e4202fd-d12b-561e-a716-59ee98d9c6be
+
+		backingConfiguration
+			valueColumn: Account.HistoryStartOn
+
+	/// Date the balances are valid for (the release business date).
+	property BalanceAsOn
+		dataType: dateTime
+		lineageTag: a0594dc2-fb4c-59cb-8824-ce8b7430944b
+
+		backingConfiguration
+			valueColumn: Account.BalanceAsOn
+
+	/// Balance at the start of the seeded history. In rupees (INR).
+	property OpeningBalanceInr
+		dataType: double
+		lineageTag: f1dd5a3c-1426-5e08-92ca-4545d48be604
+
+		backingConfiguration
+			valueColumn: Account.OpeningBalanceInr
+
+	/// Ledger balance of posted transactions. In rupees (INR).
+	property PostedBalanceInr
+		dataType: double
+		lineageTag: 4916c803-fc13-568a-ae96-40671cb5ac00
+
+		backingConfiguration
+			valueColumn: Account.PostedBalanceInr
+
+	/// Balance the customer can use after holds. In rupees (INR).
+	property AvailableBalanceInr
+		dataType: double
+		lineageTag: 484189d9-780e-572c-8c4a-f7b2be307012
+
+		backingConfiguration
+			valueColumn: Account.AvailableBalanceInr
+
+	/// Amount on hold (legacy only). In rupees (INR).
+	property HoldsAmountInr
+		dataType: double
+		lineageTag: e6316b64-faea-521d-abe1-1265ff15a457
+
+		backingConfiguration
+			valueColumn: Account.HoldsAmountInr
+
+	/// Seed release the row comes from.
+	property ReleaseId
+		dataType: string
+		lineageTag: f1fbab7e-48e1-51d2-87d2-cb42a86aee4c
+
+		backingConfiguration
+			valueColumn: Account.ReleaseId

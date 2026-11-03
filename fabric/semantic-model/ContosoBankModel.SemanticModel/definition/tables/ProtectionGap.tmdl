@@ -1,0 +1,129 @@
+/// A planning gap between existing and target protection (for example life cover). It is a synthetic planning figure, not a recommendation, quote or underwriting outcome. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: fact; grain: one computed protection gap per customer and cover type at the business date (snapshot). Lakehouse: fact_protection_gap <- silver_protection_gap <- insurance.json.
+table ProtectionGap
+
+	/// Gap identifier such as gap-life-001.
+	column 'Protection Gap ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: protection_gap_id
+
+	/// Customer the gap was computed for.
+	column 'Customer ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	/// Type of cover, for example life_cover.
+	column 'Gap Type'
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: gap_type
+
+	/// Cover already in force. In rupees (INR).
+	column 'Existing Protection (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: existing_protection_inr
+
+	/// Cover already in force. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Existing Protection (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: existing_protection_paise
+
+	/// Cover the household would need. In rupees (INR).
+	column 'Target Protection (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: target_protection_inr
+
+	/// Cover the household would need. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Target Protection (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: target_protection_paise
+
+	/// Target minus existing protection. In rupees (INR).
+	column 'Protection Gap (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: gap_inr
+
+	/// Target minus existing protection. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Protection Gap (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: gap_paise
+
+	/// Part of the target that replaces income. In rupees (INR).
+	column 'Income Replacement (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: income_replacement_inr
+
+	/// Part of the target that replaces income. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Income Replacement (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: income_replacement_paise
+
+	/// Part of the target that covers loans and education. In rupees (INR).
+	column 'Loan And Education Needs (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: loan_and_education_needs_inr
+
+	/// Part of the target that covers loans and education. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Loan And Education Needs (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: loan_and_education_needs_paise
+
+	/// Liquid assets deducted from the target. In rupees (INR).
+	column 'Offset Liquid Assets (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: offset_liquid_assets_inr
+
+	/// Liquid assets deducted from the target. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Offset Liquid Assets (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: offset_liquid_assets_paise
+
+	/// Mandatory disclosure that this is a planning figure only.
+	column Disclosure
+		dataType: string
+		summarizeBy: none
+		sourceColumn: disclosure
+
+	/// Seed release the row comes from.
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	partition ProtectionGap = entity
+		mode: directLake
+		source
+			entityName: fact_protection_gap
+			expressionSource: 'DirectLake - ContosoBankModel'

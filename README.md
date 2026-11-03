@@ -35,10 +35,10 @@ flowchart LR
 | `prompts/` | The versioned prompts. Start with [prompts/README.md](prompts/README.md) |
 | `kit/` | The deterministic engine: seed to bronze, silver (CDM and BIAN) and gold, a Direct Lake semantic model, a Gen 2 ontology, a graph and verification. See [kit/README.md](kit/README.md) |
 | `seed/` | Synthetic seed data, read-only ([provenance](seed/PROVENANCE.md)) |
-| `fabric/` | Fabric item folders generated from the spec and the prompts |
-| `tools/` | Prompt lint, wrapper generation, manifest, PII guard, Fabric validation |
+| `fabric/` | Fabric item folders generated from the spec (`python -m tools.export_fabric --write`): the Gen 2 ontology and the Direct Lake semantic model; reports go here too |
+| `tools/` | Prompt lint, wrapper generation, manifest, PII guard, Fabric export, validation and deployment preview |
 | `.github/` | Workflows, Copilot instructions, a custom agent and generated prompt wrappers |
-| `docs/` | [Architecture](docs/ARCHITECTURE.md), [decisions](docs/DECISIONS.md) |
+| `docs/` | [Architecture](docs/ARCHITECTURE.md), [decisions](docs/DECISIONS.md), `docs/generated/ontology-brief.md` (a readable view of every entity, synonym and PII flag) |
 | `AGENTS.md` | The rules every agent follows: propose, never deploy |
 
 ## Drive it
@@ -53,7 +53,7 @@ The flow follows Microsoft's Fabric skills demo: **Inspect, Build, Enrich, Consu
 
 | Workflow | Does | Status |
 |---|---|---|
-| `ci.yml` | Prompt lint, wrappers, manifest, PII and secret scan, tooling tests, kit tests, offline build of the ontology and semantic model | live |
+| `ci.yml` | Prompt lint, wrappers, manifest, PII and secret scan, tooling tests, kit tests, offline build, drift check of the generated Fabric items, and a deployment preview comment on every pull request | live |
 | `cd-dev.yml` | Resume the F4, deploy to the dev workspace, verify, pause | after identity setup |
 | `release.yml` | Tag, manual approval, deploy to prod, attach PDFs and release notes | after identity setup |
 | `capacity.yml` | Status, resume and pause of the F4 | after identity setup |

@@ -1,0 +1,298 @@
+/// A bank product: savings, fixed and recurring deposit, sweep, credit and debit card, home loan, health cover. 24 catalogue products carry full terms; products named only by Frontier records (card, floating home loan, education term cover, index fund) are reference stubs with no terms: do not quote their rates or fees. Rupee parameters are whole rupees, rates are percent. Standards: BIAN 13.0.0 Product Directory (custom); no Microsoft CDM reference. Demo mapping, not certification. Star role: dimension; grain: one catalogue product. Lakehouse: dim_product <- silver_product <- products.json, relationship/products.json.
+table Product
+
+	/// Products with full approved terms.
+	measure 'Catalogue Products' = CALCULATE(COUNTROWS(Product), Product[Data Role] = "catalogue")
+		formatString: #,0
+		displayFolder: Catalogue
+
+	/// Highest fixed deposit interest rate in the catalogue, percent.
+	measure 'Highest Fixed Deposit Rate (%)' = CALCULATE(MAX(Product[Interest Rate (%)]), Product[Family] = "fixed_deposit")
+		formatString: 0.00
+		displayFolder: Catalogue
+
+	/// Product code such as CB-FD-STANDARD or CB-CARD-CLASSIC.
+	column 'Product ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: product_id
+
+	/// Customer-facing product name. Reference stubs show their type only.
+	column 'Display Name'
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: display_name
+
+	/// Product family: savings, fixed_deposit, recurring_deposit, sweep, credit_card, debit_card, prepaid_card, home_loan, health_cover, personal_loan, goal_pocket, or a Frontier product type.
+	column Family
+		dataType: string
+		summarizeBy: none
+		sourceColumn: family
+
+	/// catalogue (full terms), relationship_proposal (planner proposal, not an approved offer) or reference_only (stub with no terms).
+	column 'Data Role'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: data_role
+
+	/// Catalogue status such as active or proposed.
+	column Status
+		dataType: string
+		summarizeBy: none
+		sourceColumn: status
+
+	/// Issuer name (synthetic).
+	column Issuer
+		dataType: string
+		summarizeBy: none
+		sourceColumn: issuer
+
+	/// Catalogue version, for example catalogue-v1.
+	column 'Catalogue Version'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: catalogue_version
+
+	/// Date the product terms take effect.
+	column 'Effective From'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: effective_from
+
+	/// Date the terms end; null while open.
+	column 'Effective To'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: effective_to
+
+	/// Who the product suits.
+	column Audience
+		dataType: string
+		summarizeBy: none
+		sourceColumn: audience
+
+	/// The main trade-off of choosing the product.
+	column 'Main Tradeoff'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: main_tradeoff
+
+	/// Who the product does not suit.
+	column 'Why Not Suitable'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: why_not_suitable
+
+	/// Plain-language rate or cashback terms.
+	column 'Rate Terms'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: rate_terms
+
+	/// Plain-language liquidity terms.
+	column 'Liquidity Terms'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: liquidity_terms
+
+	/// Benefits (semicolon separated).
+	column 'Benefits Text'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: benefits_text
+
+	/// Fees (semicolon separated).
+	column 'Fees Text'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: fees_text
+
+	/// Limitations (semicolon separated).
+	column 'Limitations Text'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: limitations_text
+
+	/// Evidence needed to apply (semicolon separated).
+	column 'Required Evidence'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: required_evidence
+
+	/// What the assistant may do: prepare_application, keep_current, request_information.
+	column 'Supported Actions'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: supported_actions
+
+	/// True when the product needs underwriting.
+	column 'Underwriting Required'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: underwriting_required
+
+	/// Minimum customer age in years.
+	column 'Min Age'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: min_age
+
+	/// Minimum monthly income in rupees.
+	column 'Min Monthly Income (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: min_monthly_income_inr
+
+	/// Minimum amount to place or borrow, in rupees.
+	column 'Min Principal (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: min_principal_inr
+
+	/// Maximum amount to place or borrow, in rupees.
+	column 'Max Principal (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: max_principal_inr
+
+	/// Annual interest rate of the product. As a percentage, for example 7.75 means 7.75%.
+	column 'Interest Rate (%)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: interest_rate_pct
+
+	/// Annual fee in rupees.
+	column 'Annual Fee (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: annual_fee_inr
+
+	/// Monthly fee in rupees.
+	column 'Monthly Fee (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: monthly_fee_inr
+
+	/// Minimum balance to maintain, in rupees.
+	column 'Minimum Balance (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: minimum_balance_inr
+
+	/// Processing fee as a percentage of the amount.
+	column 'Processing Fee (%)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: processing_fee_pct
+
+	/// Prepayment charge as a percentage.
+	column 'Prepayment Charge (%)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: prepayment_charge_pct
+
+	/// Penalty percentage for withdrawing a deposit early.
+	column 'Early Withdrawal Penalty (%)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: early_withdrawal_penalty_pct
+
+	/// Shortest term in months.
+	column 'Min Term Months'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: min_term_months
+
+	/// Longest term in months.
+	column 'Max Term Months'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: max_term_months
+
+	/// Longest loan tenure in years.
+	column 'Max Tenure Years'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: max_tenure_years
+
+	/// Maximum loan-to-value percentage.
+	column 'Max LTV (%)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: max_ltv_pct
+
+	/// Cashback percentage on spends.
+	column 'Cashback (%)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: cashback_pct
+
+	/// Foreign exchange mark-up percentage.
+	column 'Forex Markup (%)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: forex_markup_pct
+
+	/// Monthly premium in rupees.
+	column 'Monthly Premium (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: monthly_premium_inr
+
+	/// Sum insured in rupees.
+	column 'Sum Insured (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: sum_insured_inr
+
+	/// Loan rate type: fixed or floating.
+	column 'Rate Type'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: rate_type
+
+	/// Deposit payout mode: monthly, quarterly, on_maturity.
+	column 'Payout Mode'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: payout_mode
+
+	/// Mandatory demo disclosure.
+	column Disclosure
+		dataType: string
+		summarizeBy: none
+		sourceColumn: disclosure
+
+	/// Seed release the row comes from.
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	partition Product = entity
+		mode: directLake
+		source
+			entityName: dim_product
+			expressionSource: 'DirectLake - ContosoBankModel'

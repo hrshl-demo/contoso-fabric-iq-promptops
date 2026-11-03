@@ -1,0 +1,211 @@
+relationship rel_customer_belongs_to_household
+	fromColumn: Customer.HouseholdId
+	toColumn: Household.HouseholdId
+
+relationship rel_household_member_belongs_to_household
+	fromColumn: HouseholdMember.HouseholdId
+	toColumn: Household.HouseholdId
+
+relationship rel_household_owned_by_customer
+	fromColumn: Household.PrimaryCustomerId
+	toColumn: Customer.CustomerId
+
+relationship rel_household_member_of_customer
+	fromColumn: HouseholdMember.PrimaryCustomerId
+	toColumn: Customer.CustomerId
+
+relationship rel_account_held_by_customer
+	fromColumn: Account.CustomerId
+	toColumn: Customer.CustomerId
+
+relationship rel_account_opened_under_product
+	fromColumn: Account.ProductId
+	toColumn: Product.ProductId
+
+relationship rel_card_linked_to_account
+	fromColumn: Card.AccountId
+	toColumn: Account.AccountId
+
+relationship rel_card_issued_to_customer
+	fromColumn: Card.CustomerId
+	toColumn: Customer.CustomerId
+
+relationship rel_card_of_product
+	fromColumn: Card.ProductId
+	toColumn: Product.ProductId
+
+relationship rel_deposit_held_by_customer
+	fromColumn: Deposit.CustomerId
+	toColumn: Customer.CustomerId
+
+relationship rel_deposit_of_product
+	fromColumn: Deposit.ProductId
+	toColumn: Product.ProductId
+
+relationship rel_deposit_linked_to_account
+	fromColumn: Deposit.LinkedAccountId
+	toColumn: Account.AccountId
+
+relationship rel_loan_granted_to_customer
+	fromColumn: Loan.CustomerId
+	toColumn: Customer.CustomerId
+
+relationship rel_loan_of_product
+	fromColumn: Loan.ProductId
+	toColumn: Product.ProductId
+
+relationship rel_installment_of_loan
+	fromColumn: LoanInstallment.LoanId
+	toColumn: Loan.LoanId
+
+relationship rel_policy_held_by_customer
+	fromColumn: ProtectionPolicy.CustomerId
+	toColumn: Customer.CustomerId
+
+relationship rel_policy_of_product
+	fromColumn: ProtectionPolicy.ProductId
+	toColumn: Product.ProductId
+
+relationship rel_policy_premium_paid_from_account
+	fromColumn: ProtectionPolicy.LinkedAccountId
+	toColumn: Account.AccountId
+
+relationship rel_protection_gap_of_customer
+	fromColumn: ProtectionGap.CustomerId
+	toColumn: Customer.CustomerId
+
+relationship rel_investment_held_by_customer
+	fromColumn: Investment.CustomerId
+	toColumn: Customer.CustomerId
+
+relationship rel_investment_of_product
+	fromColumn: Investment.ProductId
+	toColumn: Product.ProductId
+
+relationship rel_transaction_posted_to_account
+	fromColumn: Transaction.AccountId
+	toColumn: Account.AccountId
+
+relationship rel_transaction_of_customer
+	fromColumn: Transaction.CustomerId
+	toColumn: Customer.CustomerId
+
+relationship rel_transaction_paid_by_card
+	fromColumn: Transaction.CardId
+	toColumn: Card.CardId
+
+relationship rel_transaction_disputed_in_incident
+	fromColumn: Transaction.DisputeIncidentId
+	toColumn: Incident.IncidentId
+
+relationship rel_obligation_paid_from_account
+	fromColumn: ScheduledObligation.SourceAccountId
+	toColumn: Account.AccountId
+
+relationship rel_obligation_owed_by_customer
+	fromColumn: ScheduledObligation.CustomerId
+	toColumn: Customer.CustomerId
+
+relationship rel_income_earned_by_customer
+	fromColumn: IncomeRecord.CustomerId
+	toColumn: Customer.CustomerId
+
+relationship rel_income_evidenced_by_document
+	fromColumn: IncomeRecord.EvidenceDocumentId
+	toColumn: Document.DocumentId
+
+relationship rel_income_contributed_by_member
+	fromColumn: IncomeRecord.ContributorMemberId
+	toColumn: HouseholdMember.MemberId
+
+relationship rel_goal_owned_by_customer
+	fromColumn: Goal.CustomerId
+	toColumn: Customer.CustomerId
+
+relationship rel_preference_stated_by_customer
+	fromColumn: Preference.CustomerId
+	toColumn: Customer.CustomerId
+
+relationship rel_consent_given_by_customer
+	fromColumn: Consent.CustomerId
+	toColumn: Customer.CustomerId
+
+relationship rel_consent_about_household_member
+	fromColumn: Consent.SubjectMemberId
+	toColumn: HouseholdMember.MemberId
+
+relationship rel_access_grant_of_customer
+	fromColumn: HouseholdAccessGrant.CustomerId
+	toColumn: Customer.CustomerId
+
+relationship rel_access_grant_backed_by_consent
+	fromColumn: HouseholdAccessGrant.ConsentId
+	toColumn: Consent.ConsentId
+
+relationship rel_access_grant_for_household_member
+	fromColumn: HouseholdAccessGrant.SubjectMemberId
+	toColumn: HouseholdMember.MemberId
+
+relationship rel_access_grant_in_household
+	fromColumn: HouseholdAccessGrant.HouseholdId
+	toColumn: Household.HouseholdId
+
+relationship rel_agent_registered_for_customer
+	fromColumn: RegisteredAgent.CustomerId
+	toColumn: Customer.CustomerId
+
+relationship rel_agent_authorised_by_consent
+	fromColumn: RegisteredAgent.ConsentId
+	toColumn: Consent.ConsentId
+
+relationship rel_mandate_granted_by_customer
+	fromColumn: FrontierMandate.CustomerId
+	toColumn: Customer.CustomerId
+
+relationship rel_mandate_bound_to_agent
+	fromColumn: FrontierMandate.AgentId
+	toColumn: RegisteredAgent.AgentId
+
+relationship rel_mandate_backed_by_consent
+	fromColumn: FrontierMandate.ConsentId
+	toColumn: Consent.ConsentId
+
+relationship rel_mandate_draws_on_account
+	fromColumn: FrontierMandate.SourceAccountId
+	toColumn: Account.AccountId
+
+relationship rel_mandate_funds_account
+	fromColumn: FrontierMandate.DestinationAccountId
+	toColumn: Account.AccountId
+
+relationship rel_mandate_funds_goal
+	fromColumn: FrontierMandate.GoalId
+	toColumn: Goal.GoalId
+
+relationship rel_event_of_mandate
+	fromColumn: MandateAction.MandateId
+	toColumn: FrontierMandate.MandateId
+
+relationship rel_incident_affects_customer
+	fromColumn: Incident.CustomerId
+	toColumn: Customer.CustomerId
+
+relationship rel_service_record_for_customer
+	fromColumn: ServiceCase.CustomerId
+	toColumn: Customer.CustomerId
+
+relationship rel_service_record_about_incident
+	fromColumn: ServiceCase.IncidentId
+	toColumn: Incident.IncidentId
+
+relationship rel_document_owned_by_customer
+	fromColumn: Document.CustomerId
+	toColumn: Customer.CustomerId
+
+relationship rel_case_opened_for_customer
+	fromColumn: CrmCase.CustomerId
+	toColumn: Customer.CustomerId
+
+relationship rel_case_follows_journey
+	fromColumn: CrmCase.JourneyId
+	toColumn: Journey.JourneyId

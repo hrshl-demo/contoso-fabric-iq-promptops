@@ -1,0 +1,90 @@
+/// A recurring commitment that leaves an account on a fixed day: loan EMI, school fee, card payment, SIP, premium. Obligations are committed cash: they reduce what can safely be moved or invested. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: fact; grain: one scheduled obligation. Lakehouse: fact_scheduled_obligation <- silver_scheduled_obligation <- scheduled-obligations.json.
+table ScheduledObligation
+
+	/// Active monthly commitments in rupees.
+	measure 'Monthly Obligations (INR)' = CALCULATE(SUM(ScheduledObligation[Amount (INR)]), ScheduledObligation[Cadence] = "monthly", ScheduledObligation[Status] = "active")
+		formatString: #,0.00
+		displayFolder: Cash Flow
+
+	/// Obligation identifier such as obl-home-emi.
+	column 'Obligation ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: obligation_id
+
+	/// Customer who owes the obligation.
+	column 'Customer ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	/// Obligation name such as Home loan EMI.
+	column Name
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: name
+
+	/// Account the payment leaves.
+	column 'Source Account ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: source_account_id
+
+	/// What is being paid: loan, card, document or account reference.
+	column 'Payee Ref'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: payee_ref
+
+	/// Kind of payee: loan, card, document, account.
+	column 'Payee Type'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: payee_type
+
+	/// monthly, quarterly or annual.
+	column Cadence
+		dataType: string
+		summarizeBy: none
+		sourceColumn: cadence
+
+	/// Day of the month the payment is due.
+	column 'Day Of Month'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: day_of_month
+
+	/// Obligation status such as active.
+	column Status
+		dataType: string
+		summarizeBy: none
+		sourceColumn: status
+
+	/// Amount per payment. In rupees (INR).
+	column 'Amount (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: amount_inr
+
+	/// Amount per payment. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Amount (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: amount_paise
+
+	/// Seed release the row comes from.
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	partition ScheduledObligation = entity
+		mode: directLake
+		source
+			entityName: fact_scheduled_obligation
+			expressionSource: 'DirectLake - ContosoBankModel'

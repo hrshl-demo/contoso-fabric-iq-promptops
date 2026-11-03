@@ -1,0 +1,103 @@
+table ProtectionPolicy
+	lineageTag: 908b3d5a-796c-5adb-a39c-b2b1c8e3539e
+
+	column PolicyId
+		dataType: string
+		lineageTag: 22bfe959-0139-5054-b7ab-771445c4efa5
+		sourceColumn: policy_id
+
+	column CustomerId
+		dataType: string
+		lineageTag: 0ab3d096-fe40-5b1d-bb17-8b252dadd050
+		sourceColumn: customer_id
+
+	column ProductId
+		dataType: string
+		lineageTag: 1ba51237-39aa-5f01-af20-2ed62de55f17
+		sourceColumn: product_id
+
+	column PolicyType
+		dataType: string
+		lineageTag: 8a3c8c2b-7e95-51a7-9ef9-e5480d15dde4
+		sourceColumn: policy_type
+
+	column Status
+		dataType: string
+		lineageTag: a3ff5cad-2803-5fc0-83c0-d59e9c0bbc35
+		sourceColumn: status
+
+	column Insurer
+		dataType: string
+		lineageTag: 05376be4-320c-5504-bf89-b211117538ea
+		sourceColumn: insurer
+
+	column PremiumInr
+		dataType: double
+		lineageTag: b3469ac0-58a6-52be-b14b-a3b2c5eb1acd
+		sourceColumn: premium_inr
+
+	column PremiumCadence
+		dataType: string
+		lineageTag: 580c7f80-b4b6-5fb3-a5de-93125b1cfcc2
+		sourceColumn: premium_cadence
+
+	column SumInsuredInr
+		dataType: double
+		lineageTag: beaf970e-4741-5fe2-9e04-7545bf7b7ce5
+		sourceColumn: sum_insured_inr
+
+	column BeneficiaryMemberIds
+		dataType: string
+		lineageTag: b93b3a4c-03db-5da9-a11a-5d11cfdcd157
+		sourceColumn: beneficiary_member_ids
+
+	column CoveredMemberIds
+		dataType: string
+		lineageTag: 28c660f6-65b9-56ce-9d7e-d4132968806b
+		sourceColumn: covered_member_ids
+
+	column StartedOn
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: fe47fc26-c510-5723-a6eb-513daa51204d
+		sourceColumn: started_on
+
+	column RenewsOn
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 66351555-90d4-578f-a77b-0dbd2a2950b4
+		sourceColumn: renews_on
+
+	column LinkedAccountId
+		dataType: string
+		lineageTag: 5a5fa39a-73cf-5fcd-882d-67b43128b857
+		sourceColumn: linked_account_id
+
+	column CoPayPct
+		dataType: double
+		lineageTag: 31f41e8c-cc77-579a-b20e-0ad10ebf0d96
+		sourceColumn: co_pay_pct
+
+	column InitialWaitingDays
+		dataType: int64
+		formatString: 0
+		lineageTag: 03dab86f-5921-5bc1-9437-31694cce058f
+		sourceColumn: initial_waiting_days
+
+	column PreExistingWaitingMonths
+		dataType: int64
+		formatString: 0
+		lineageTag: 310b39e0-d84f-5efe-8833-0dd9181f844e
+		sourceColumn: pre_existing_waiting_months
+
+	column ReleaseId
+		dataType: string
+		lineageTag: 9e8ef6f2-08ca-572b-8439-ae7315200e38
+		sourceColumn: release_id
+
+	partition ProtectionPolicy = entity
+		mode: directLake
+		source
+			entityName: dim_protection_policy
+			schemaName: dbo
+			expressionSource: DatabaseQuery

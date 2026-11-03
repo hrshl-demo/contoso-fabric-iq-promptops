@@ -1,0 +1,17 @@
+rule ProtectEmergencyReserveFirst
+	statement: Protect the emergency reserve before suggesting prepayment, investment or a mandate transfer. The reserve target is the customer's emergencyReserveMonths preference applied to essential outgoings; a goal gap is not a reason to spend the reserve.
+	lineageTag: df640953-d454-58bb-9d3f-a5bd825c6dce
+
+	ruleReferencedEntity Goal
+		propertyScope: specific
+
+		ruleReferencedProperty Name
+
+		ruleReferencedProperty TargetInr
+
+		ruleReferencedProperty CurrentInr
+
+	ruleReferencedEntity Preference
+		propertyScope: specific
+
+		ruleReferencedProperty PreferenceValue

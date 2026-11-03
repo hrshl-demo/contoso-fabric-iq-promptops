@@ -1,0 +1,59 @@
+table HouseholdAccessGrant
+	lineageTag: 87fa0f34-d173-5077-9d6c-1796cdd88139
+
+	column GrantId
+		dataType: string
+		lineageTag: bfb678f3-5971-5ced-8736-5ba50a7919d2
+		sourceColumn: grant_id
+
+	column CustomerId
+		dataType: string
+		lineageTag: 1c761a9f-beb5-57a8-bf12-93bd0e8eec26
+		sourceColumn: customer_id
+
+	column HouseholdId
+		dataType: string
+		lineageTag: 08130d70-085d-5d46-b1c9-a7e1683e327f
+		sourceColumn: household_id
+
+	column ConsentId
+		dataType: string
+		lineageTag: bda4675c-fa83-5468-9aeb-2822e6503286
+		sourceColumn: consent_id
+
+	column SubjectRef
+		dataType: string
+		lineageTag: 2ae3cc35-96c3-5e28-a629-72af20e23408
+		sourceColumn: subject_ref
+
+	column SubjectMemberId
+		dataType: string
+		lineageTag: fafcf393-58f4-516f-b2db-7f648575ccb3
+		sourceColumn: subject_member_id
+
+	column Status
+		dataType: string
+		lineageTag: 5bb6dfa2-cedd-576d-940a-b3ca3a395d44
+		sourceColumn: status
+
+	column Permissions
+		dataType: string
+		lineageTag: 9d6eb1ae-62ef-5750-bc67-6c148f00ffcf
+		sourceColumn: permissions
+
+	column DeniedPermissions
+		dataType: string
+		lineageTag: 505c4494-d1b7-5ae4-ba78-510b7da1305e
+		sourceColumn: denied_permissions
+
+	column ReleaseId
+		dataType: string
+		lineageTag: 4297db6c-e491-5751-b849-0f5576206202
+		sourceColumn: release_id
+
+	partition HouseholdAccessGrant = entity
+		mode: directLake
+		source
+			entityName: dim_household_access_grant
+			schemaName: dbo
+			expressionSource: DatabaseQuery

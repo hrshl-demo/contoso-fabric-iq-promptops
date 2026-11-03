@@ -1,0 +1,10 @@
+rule LoanProceedsAreLiability
+	statement: A loan disbursement creates an equal liability. It is not income and not net wealth: Loan.CurrentPrincipalInr is what is still owed.
+	lineageTag: d057bc0f-cd19-58a4-87e4-d4c08f73d788
+
+	ruleReferencedEntity Loan
+		propertyScope: specific
+
+		ruleReferencedProperty CurrentPrincipalInr
+
+		ruleReferencedProperty OpeningPrincipalInr

@@ -1,0 +1,34 @@
+table AuthorityRule
+	lineageTag: c3ddfab4-9389-5cbe-8dc4-ef3caa5d4a7c
+
+	column RuleId
+		dataType: string
+		lineageTag: c519dc3d-98cf-5f6d-9067-ccfa19baa978
+		sourceColumn: rule_id
+
+	column Capability
+		dataType: string
+		lineageTag: f1bc8adf-e3bd-5527-823b-230be6248a86
+		sourceColumn: capability
+
+	column Actor
+		dataType: string
+		lineageTag: b7cde7d4-a729-5efa-8698-f03acfbc0a66
+		sourceColumn: actor
+
+	column PermissionClass
+		dataType: string
+		lineageTag: 23b485fb-a370-5786-a43e-7355b99161e5
+		sourceColumn: permission_class
+
+	column PermissionText
+		dataType: string
+		lineageTag: bf67bb0d-7e8d-5361-ac5e-8133ea24d17e
+		sourceColumn: permission_text
+
+	partition AuthorityRule = entity
+		mode: directLake
+		source
+			entityName: ref_authority_rule
+			schemaName: dbo
+			expressionSource: DatabaseQuery

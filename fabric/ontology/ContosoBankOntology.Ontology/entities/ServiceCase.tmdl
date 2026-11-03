@@ -1,0 +1,93 @@
+/// [Servicing] A service case (service record): a servicing contact on a customer's behalf: channel, actions taken and, when applicable, the consented handoff to a human team. A recorded action is not a completed effect: never claim a card is blocked or money returned unless the case says so. Standards: BIAN 13.0.0 Customer Case (custom), Servicing Order (provisional); no Microsoft CDM reference. Demo mapping, not certification. Star role: fact; grain: one service case. Lakehouse: fact_service_case <- silver_service_case <- service-records.json.
+entity ServiceCase
+	lineageTag: d44be271-feec-557a-8ad0-df39b2997040
+	backingTable: ServiceCase
+	keyProperty: ServiceRecordId
+
+	/// Service record identifier such as svc-scam-001.
+	property ServiceRecordId
+		dataType: string
+		lineageTag: d962c7c5-d24f-5974-8c1b-668106f3c88c
+
+		backingConfiguration
+			valueColumn: ServiceCase.ServiceRecordId
+
+	/// Customer served.
+	property CustomerId
+		dataType: string
+		lineageTag: 4ab56067-ea3f-5f41-87d6-fc36938e91c6
+
+		backingConfiguration
+			valueColumn: ServiceCase.CustomerId
+
+	/// Incident the contact relates to.
+	property IncidentId
+		dataType: string
+		lineageTag: 75d1c787-8f50-523f-8d21-740cbb67424a
+
+		backingConfiguration
+			valueColumn: ServiceCase.IncidentId
+
+	/// Channel used: phone, chat, app.
+	property Channel
+		dataType: string
+		lineageTag: 7db92fa7-440b-5355-8f92-b4b393c239b5
+
+		backingConfiguration
+			valueColumn: ServiceCase.Channel
+
+	/// When the contact was opened. Instant in UTC.
+	property OpenedAt
+		dataType: dateTime
+		lineageTag: e6d641b7-c385-53c5-8e5e-2f0ea6336358
+
+		backingConfiguration
+			valueColumn: ServiceCase.OpenedAt
+
+	/// When the contact was opened. Calendar date in India time (IST), for 'today', 'this month' questions.
+	property OpenedDateIst
+		dataType: dateTime
+		lineageTag: 0f8739e1-ead2-511c-b67f-b418234081d6
+
+		backingConfiguration
+			valueColumn: ServiceCase.OpenedDateIst
+
+	/// Actions recorded, such as beneficiary_freeze_requested (semicolon separated).
+	property Actions
+		dataType: string
+		lineageTag: 4036e335-3fd8-5e17-8a8f-c628b89a17f2
+
+		backingConfiguration
+			valueColumn: ServiceCase.Actions
+
+	/// Human team the case was handed to, such as fraud_operations.
+	property HandoffTeam
+		dataType: string
+		lineageTag: 8342116f-0203-5a97-be13-4128aa228795
+
+		backingConfiguration
+			valueColumn: ServiceCase.HandoffTeam
+
+	/// Why the case was handed to a human.
+	property HandoffReason
+		dataType: string
+		lineageTag: f6325ddc-67f2-50ac-8548-ae2e1141ef5b
+
+		backingConfiguration
+			valueColumn: ServiceCase.HandoffReason
+
+	/// When the handoff happened. Instant in UTC.
+	property HandoffAt
+		dataType: dateTime
+		lineageTag: 83610356-be25-5ec2-8601-320f44f5a073
+
+		backingConfiguration
+			valueColumn: ServiceCase.HandoffAt
+
+	/// Seed release the row comes from.
+	property ReleaseId
+		dataType: string
+		lineageTag: 6784af22-2072-5168-a455-82b28a2bf66f
+
+		backingConfiguration
+			valueColumn: ServiceCase.ReleaseId

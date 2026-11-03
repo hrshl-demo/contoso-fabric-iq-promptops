@@ -1,0 +1,29 @@
+table Household
+	lineageTag: b2155ae3-cb1b-56c4-b7e6-723a55b481a2
+
+	column HouseholdId
+		dataType: string
+		lineageTag: 1b9e1b71-649b-5c6c-b6da-c7047c5b938c
+		sourceColumn: household_id
+
+	column DisplayName
+		dataType: string
+		lineageTag: 421229af-1eb4-5536-8b99-80e4619a9497
+		sourceColumn: display_name
+
+	column PrimaryCustomerId
+		dataType: string
+		lineageTag: 77dcd9ed-a1fa-55dc-a4ca-09b050c4016a
+		sourceColumn: primary_customer_id
+
+	column ReleaseId
+		dataType: string
+		lineageTag: 23f37094-6805-572b-8fd6-371c0c0de086
+		sourceColumn: release_id
+
+	partition Household = entity
+		mode: directLake
+		source
+			entityName: dim_household
+			schemaName: dbo
+			expressionSource: DatabaseQuery

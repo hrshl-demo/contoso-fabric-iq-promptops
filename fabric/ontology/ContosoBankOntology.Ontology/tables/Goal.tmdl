@@ -1,0 +1,81 @@
+table Goal
+	lineageTag: a9ce65f8-5082-586b-8938-d76cfe8e96d7
+
+	column GoalId
+		dataType: string
+		lineageTag: b7dbd547-9a9f-5235-b442-175036d386e7
+		sourceColumn: goal_id
+
+	column CustomerId
+		dataType: string
+		lineageTag: 8e7ec7bf-7df6-5aef-ba0c-064b812f0859
+		sourceColumn: customer_id
+
+	column Name
+		dataType: string
+		lineageTag: 23554423-2998-5327-94d3-d63ab22587ab
+		sourceColumn: name
+
+	column PriorityRank
+		dataType: int64
+		formatString: 0
+		lineageTag: 65a9b652-5bb7-5d25-b4d1-e0907cc4c576
+		sourceColumn: priority_rank
+
+	column StatedPriority
+		dataType: string
+		lineageTag: aefeacb5-eda7-51c3-9080-815c6dc79f97
+		sourceColumn: stated_priority
+
+	column Status
+		dataType: string
+		lineageTag: f0e868a9-6a86-5b7c-9089-5470a494cffd
+		sourceColumn: status
+
+	column TargetInr
+		dataType: double
+		lineageTag: c7c8698e-bfa9-5083-b4cf-099e823de639
+		sourceColumn: target_inr
+
+	column CurrentInr
+		dataType: double
+		lineageTag: 16c56431-0b38-5b42-939c-2ce137d28e42
+		sourceColumn: current_inr
+
+	column ProgressPct
+		dataType: double
+		lineageTag: 805133d0-adc9-5c45-aa3d-5c001bc08202
+		sourceColumn: progress_pct
+
+	column TargetDate
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: d5841603-e739-549a-b866-2f36f6d46142
+		sourceColumn: target_date
+
+	column TargetFrequency
+		dataType: string
+		lineageTag: 16ef4666-1e5b-59cd-84c0-988d18b9990b
+		sourceColumn: target_frequency
+
+	column IntentSummary
+		dataType: string
+		lineageTag: d8f5b5e0-2471-5c1d-aab6-69aa1c4412f9
+		sourceColumn: intent_summary
+
+	column FundingProductIds
+		dataType: string
+		lineageTag: 697b8452-0fb3-5032-bc8a-2321ceb77161
+		sourceColumn: funding_product_ids
+
+	column ReleaseId
+		dataType: string
+		lineageTag: 4f295b81-53b4-575c-a012-55cdcf97e30e
+		sourceColumn: release_id
+
+	partition Goal = entity
+		mode: directLake
+		source
+			entityName: dim_goal
+			schemaName: dbo
+			expressionSource: DatabaseQuery

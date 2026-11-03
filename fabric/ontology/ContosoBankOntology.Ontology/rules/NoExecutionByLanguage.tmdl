@@ -1,0 +1,17 @@
+rule NoExecutionByLanguage
+	statement: Law L4. Saying 'do it', an agent tool call or a specialist recommendation is not authority to execute. Only the deterministic bank, on the current revision and with a customer decision or an active FrontierMandate, can execute. The assistant may analyse and prepare only; see AuthorityRule for who may do what.
+	lineageTag: 4ced26e5-3296-54af-9bca-c6ab6d804945
+
+	ruleReferencedEntity AuthorityRule
+		propertyScope: specific
+
+		ruleReferencedProperty Capability
+
+		ruleReferencedProperty Actor
+
+		ruleReferencedProperty PermissionClass
+
+	ruleReferencedEntity FrontierMandate
+		propertyScope: specific
+
+		ruleReferencedProperty Status

@@ -1,0 +1,103 @@
+/// A recorded customer consent: who may see or do what, for which purpose, until when. Consent is specific and revocable: a conversation, upload or earlier consent never creates a new permission. Agent read consent and mandate consent are separate consents. Standards: no verified BIAN mapping (custom semantics); no Microsoft CDM reference. Demo mapping, not certification. Star role: dimension; grain: one consent. Lakehouse: dim_consent <- silver_frontier_consent + silver_consent <- consents.json.
+table Consent
+
+	/// Consents that are granted and not revoked.
+	measure 'Active Consents' = CALCULATE(COUNTROWS(Consent), Consent[Status] = "granted")
+		formatString: #,0
+		displayFolder: Authority
+
+	/// Consent identifier such as consent-household-view.
+	column 'Consent ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: consent_id
+
+	/// Customer who gave the consent.
+	column 'Customer ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	/// What the consent is for, for example view_household_goals_and_obligations or evidence_analysis.
+	column Purpose
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: purpose
+
+	/// granted or revoked. Derived from RevokedAt when the seed has no status.
+	column Status
+		dataType: string
+		summarizeBy: none
+		sourceColumn: status
+
+	/// When consent was granted. Instant in UTC.
+	column 'Granted At'
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: granted_at
+
+	/// When consent expires. An expired consent gives no access. Instant in UTC.
+	column 'Expires At'
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: expires_at
+
+	/// When consent was revoked, if it was. Instant in UTC.
+	column 'Revoked At'
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: revoked_at
+
+	/// Who or what the consent is about: a household member, an agent or a mandate.
+	column 'Subject Ref'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: subject_ref
+
+	/// Kind of subject: household_member, agent or mandate.
+	column 'Subject Type'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: subject_type
+
+	/// Household member id when the subject is a household member.
+	column 'Subject Member ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: subject_member_id
+
+	/// Who may receive the data, for example contoso_demo_assistant (legacy only).
+	column 'Recipient Scope'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: recipient_scope
+
+	/// Consent revision number (legacy only).
+	column Revision
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: revision
+
+	/// Number of documents the consent covers (legacy only).
+	column 'Resource Count'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: resource_count
+
+	/// Seed release the row comes from.
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	partition Consent = entity
+		mode: directLake
+		source
+			entityName: dim_consent
+			expressionSource: 'DirectLake - ContosoBankModel'

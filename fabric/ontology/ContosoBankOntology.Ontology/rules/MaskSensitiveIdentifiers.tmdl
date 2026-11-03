@@ -1,0 +1,20 @@
+rule MaskSensitiveIdentifiers
+	statement: Never speak or write masked card numbers, mobile numbers, policy numbers, addresses or KYA fingerprints in full. Reveal at most the last four characters, and in voice never read an identifier digit by digit unless the customer is verifying it.
+	lineageTag: e85ca3c0-f6ec-551b-9e0a-ae8c04f9c2a3
+
+	ruleReferencedEntity Card
+		propertyScope: specific
+
+		ruleReferencedProperty MaskedNumber
+
+	ruleReferencedEntity Customer
+		propertyScope: specific
+
+		ruleReferencedProperty PhoneMasked
+
+		ruleReferencedProperty DisplayName
+
+	ruleReferencedEntity RegisteredAgent
+		propertyScope: specific
+
+		ruleReferencedProperty KyaRegistrationId

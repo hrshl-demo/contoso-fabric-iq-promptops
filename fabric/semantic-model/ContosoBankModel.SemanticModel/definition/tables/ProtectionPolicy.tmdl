@@ -1,0 +1,146 @@
+/// An insurance policy (protection policy) held by a customer (term life, family health, individual health). Sum insured is cover, not cash. New cover is never retroactive and never guaranteed reimbursement. Standards: BIAN 13.0.0 Customer Product and Service Directory (custom); no Microsoft CDM reference. Demo mapping, not certification. Star role: dimension; grain: one insurance policy. Lakehouse: dim_protection_policy <- silver_protection_policy <- insurance.json, policies.json.
+table ProtectionPolicy
+
+	/// Policy identifier such as policy-term-001.
+	column 'Policy ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: policy_id
+
+	/// Policy holder.
+	column 'Customer ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	/// Catalogue product the policy was bought under.
+	column 'Product ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: product_id
+
+	/// Cover type such as term_life, family_health or individual_health_indemnity.
+	column 'Policy Type'
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: policy_type
+
+	/// Policy status such as active.
+	column Status
+		dataType: string
+		summarizeBy: none
+		sourceColumn: status
+
+	/// Insurer name (legacy only; fictional).
+	column Insurer
+		dataType: string
+		summarizeBy: none
+		sourceColumn: insurer
+
+	/// Premium per payment period. In rupees (INR).
+	column 'Premium (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: premium_inr
+
+	/// Premium per payment period. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Premium (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: premium_paise
+
+	/// How often the premium is paid, for example monthly.
+	column 'Premium Cadence'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: premium_cadence
+
+	/// Cover amount. Not cash and not guaranteed reimbursement. In rupees (INR).
+	column 'Sum Insured (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: sum_insured_inr
+
+	/// Cover amount. Not cash and not guaranteed reimbursement. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Sum Insured (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: sum_insured_paise
+
+	/// Household members named as beneficiaries (semicolon separated).
+	column 'Beneficiary Member Ids'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: beneficiary_member_ids
+
+	/// People covered by the policy (semicolon separated).
+	column 'Covered Member Ids'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: covered_member_ids
+
+	/// Policy start date (legacy only).
+	column 'Started On'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: started_on
+
+	/// Next renewal date (legacy only).
+	column 'Renews On'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: renews_on
+
+	/// Account the premium is paid from (legacy only).
+	column 'Linked Account ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: linked_account_id
+
+	/// Co-payment percentage (legacy only).
+	column 'Co Pay (%)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: co_pay_pct
+
+	/// Initial waiting period in days (legacy only).
+	column 'Initial Waiting Days'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: initial_waiting_days
+
+	/// Waiting period for pre-existing conditions in months (legacy only).
+	column 'Pre Existing Waiting Months'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: pre_existing_waiting_months
+
+	/// [PII] Insurer policy number. Restricted.
+	column 'Policy Number'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: policy_number
+
+	/// Seed release the row comes from.
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	partition ProtectionPolicy = entity
+		mode: directLake
+		source
+			entityName: dim_protection_policy
+			expressionSource: 'DirectLake - ContosoBankModel'

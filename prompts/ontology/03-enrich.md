@@ -1,7 +1,7 @@
 ---
 id: ontology.enrich
 title: Make the ontology AI-ready with descriptions, synonyms and PII context
-version: 1.0.0
+version: 1.1.0
 area: ontology
 stage: enrich
 skills: [fabriciq-ontology-cli]
@@ -10,6 +10,8 @@ inputs:
   tier: core
 outputs:
   - kit/model/**
+  - fabric/**
+  - docs/generated/**
 guardrails: [pr-only, preview-before-deploy, synthetic-data-only]
 ---
 Plan first and show me the plan.
@@ -25,4 +27,4 @@ Respect the kit's budgets: an entity description is at most 800 characters (500 
 
 Take rules and meanings only from `kit/model/rules.yaml`, the seed documents and the existing descriptions. Never invent a business rule; list what you were unsure about in the pull request instead.
 
-Rebuild with `python -m contoso_onto.cli build --repo ../seed --tier {{tier}} --out ../out` (run from `kit/`; it must report `errors=0`), refresh the manifest with `python -m tools.manifest --write`, and show me a preview of the text that will be written. Do not deploy. Open a pull request from a `copilot/ontology-enrich` branch and quote this prompt's id and version in it.
+Regenerate with `python -m tools.export_fabric --write --tier {{tier}}` (the build it runs must report `errors=0`), refresh the manifest with `python -m tools.manifest --write`, and run `python -m tools.check`. Show me a preview of the text that will be written: the new descriptions are in `fabric/`, and `docs/generated/ontology-brief.md` shows every entity with its synonyms and PII markers. Do not deploy. Open a pull request from a `copilot/ontology-enrich` branch and quote this prompt's id and version in it.

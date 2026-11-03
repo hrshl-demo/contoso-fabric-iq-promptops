@@ -1,0 +1,78 @@
+/// A service case (service record): a servicing contact on a customer's behalf: channel, actions taken and, when applicable, the consented handoff to a human team. A recorded action is not a completed effect: never claim a card is blocked or money returned unless the case says so. Standards: BIAN 13.0.0 Customer Case (custom), Servicing Order (provisional); no Microsoft CDM reference. Demo mapping, not certification. Star role: fact; grain: one service case. Lakehouse: fact_service_case <- silver_service_case <- service-records.json.
+table ServiceCase
+
+	/// Service record identifier such as svc-scam-001.
+	column 'Service Record ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: service_record_id
+
+	/// Customer served.
+	column 'Customer ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	/// Incident the contact relates to.
+	column 'Incident ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: incident_id
+
+	/// Channel used: phone, chat, app.
+	column Channel
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: channel
+
+	/// When the contact was opened. Instant in UTC.
+	column 'Opened At'
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: opened_at
+
+	/// When the contact was opened. Calendar date in India time (IST), for 'today', 'this month' questions.
+	column 'Opened Date IST'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: opened_date_ist
+
+	/// Actions recorded, such as beneficiary_freeze_requested (semicolon separated).
+	column Actions
+		dataType: string
+		summarizeBy: none
+		sourceColumn: actions
+
+	/// Human team the case was handed to, such as fraud_operations.
+	column 'Handoff Team'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: handoff_team
+
+	/// Why the case was handed to a human.
+	column 'Handoff Reason'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: handoff_reason
+
+	/// When the handoff happened. Instant in UTC.
+	column 'Handoff At'
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: handoff_at
+
+	/// Seed release the row comes from.
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	partition ServiceCase = entity
+		mode: directLake
+		source
+			entityName: fact_service_case
+			expressionSource: 'DirectLake - ContosoBankModel'

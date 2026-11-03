@@ -1,0 +1,17 @@
+rule HonestRecording
+	statement: Recording a service instruction is not executing it. Never say a card is blocked, a transaction reversed, an issuer or network contacted, or money returned unless the ServiceCase or Incident shows it. Use ServiceRequestType.NeverClaim for the statements that must not be made.
+	lineageTag: e0d6db6d-227d-5377-a921-66a24927ef39
+
+	ruleReferencedEntity ServiceRequestType
+		propertyScope: specific
+
+		ruleReferencedProperty NeverClaim
+
+		ruleReferencedProperty RecordedOutcome
+
+		ruleReferencedProperty ActivationMode
+
+	ruleReferencedEntity Card
+		propertyScope: specific
+
+		ruleReferencedProperty Status

@@ -1,0 +1,133 @@
+/// [Catalogue] A conversation journey the assistant runs. Legacy J01-J12 are goal-led playbooks (retirement income, scam check, card fit, ...) with triggers, must-establish facts and never-do rules. Frontier F01-F06 are the household journeys, each with specialists, an autonomy ceiling and the operations it may only prepare. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: dimension; grain: one journey (curated reference source). Lakehouse: dim_journey <- Curated reference data.
+entity Journey
+	lineageTag: 7a79462c-0cd6-5c44-9aa8-df2b3875f888
+	backingTable: Journey
+	keyProperty: JourneyId
+
+	/// Journey identifier: J01-J12 (legacy) or F01-F06 (Frontier).
+	property JourneyId
+		dataType: string
+		lineageTag: 2442d0e5-291f-5b1d-b1e7-011b55e8bc51
+
+		backingConfiguration
+			valueColumn: Journey.JourneyId
+
+	/// Journey title.
+	property Title
+		dataType: string
+		lineageTag: 4f563c14-7327-5422-aef5-4bd4a76fb449
+
+		backingConfiguration
+			valueColumn: Journey.Title
+
+	/// legacy (J) or frontier (F).
+	property JourneyKind
+		dataType: string
+		lineageTag: 5f0ec27e-b594-5ca5-94cb-99af2472ef25
+
+		backingConfiguration
+			valueColumn: Journey.JourneyKind
+
+	/// One-line promise of the journey.
+	property OneLiner
+		dataType: string
+		lineageTag: 5f6c052d-693e-57e7-bc4e-885e1bdc0445
+
+		backingConfiguration
+			valueColumn: Journey.OneLiner
+
+	/// What the journey must achieve for the customer (legacy).
+	property Goal
+		dataType: string
+		lineageTag: 93e3a362-e16f-5ec8-ba76-e3ca26bd2688
+
+		backingConfiguration
+			valueColumn: Journey.Goal
+
+	/// Business unit that owns the journey (legacy).
+	property BuId
+		dataType: string
+		lineageTag: b10fdfaa-c5c3-5b74-8eb8-1f72ca1284dd
+
+		backingConfiguration
+			valueColumn: Journey.BuId
+
+	/// advise, light_touch or never_sell: how much selling is allowed (legacy).
+	property SalesPosture
+		dataType: string
+		lineageTag: 69fef1b4-5e01-59e1-99c0-96e89704e58f
+
+		backingConfiguration
+			valueColumn: Journey.SalesPosture
+
+	/// Maximum conversation turns before handoff (legacy, when set).
+	property TurnCap
+		dataType: int64
+		lineageTag: 92097461-cb73-5a42-9390-a88c42393254
+
+		backingConfiguration
+			valueColumn: Journey.TurnCap
+
+	/// Highest workflow level the journey may request (Frontier). It grants no authority by itself.
+	property AutonomyCeiling
+		dataType: int64
+		lineageTag: 80da8e02-9f5a-5da6-884a-3bafba2f9cde
+
+		backingConfiguration
+			valueColumn: Journey.AutonomyCeiling
+
+	/// Specialist agents used by the journey (Frontier).
+	property PrimarySpecialists
+		dataType: string
+		lineageTag: b4e1b5b3-b9c3-5ee4-b790-76f486fbbc94
+
+		backingConfiguration
+			valueColumn: Journey.PrimarySpecialists
+
+	/// Operations the journey may only prepare, never execute (Frontier).
+	property AllowedPreparedOperations
+		dataType: string
+		lineageTag: 5b5cc130-bfe0-5fb0-8048-54039ce6650d
+
+		backingConfiguration
+			valueColumn: Journey.AllowedPreparedOperations
+
+	/// Phrases and situations that start the journey (legacy).
+	property TriggersText
+		dataType: string
+		lineageTag: 07cb5446-f5fd-56cb-a1e5-36dce441097b
+
+		backingConfiguration
+			valueColumn: Journey.TriggersText
+
+	/// Facts that must be established before advising (legacy).
+	property MustEstablishText
+		dataType: string
+		lineageTag: 791d9ec7-82f5-566b-bbcc-a191a41a6bc0
+
+		backingConfiguration
+			valueColumn: Journey.MustEstablishText
+
+	/// Things the assistant must never do in this journey (legacy).
+	property NeverDoText
+		dataType: string
+		lineageTag: a3d138ab-c78a-528f-a67a-cafb6a40bdfa
+
+		backingConfiguration
+			valueColumn: Journey.NeverDoText
+
+	/// Tools the journey normally uses (legacy).
+	property ToolHints
+		dataType: string
+		lineageTag: b27e39f5-514e-5120-8cb0-4fe5c0495543
+
+		backingConfiguration
+			valueColumn: Journey.ToolHints
+
+	/// Example customer openers (legacy).
+	property OpenerExamples
+		dataType: string
+		lineageTag: e0a7daa5-c421-58e2-a4a3-f255e9be55c6
+
+		backingConfiguration
+			valueColumn: Journey.OpenerExamples

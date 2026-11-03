@@ -1,0 +1,149 @@
+/// [Holdings] An insurance policy (protection policy) held by a customer (term life, family health, individual health). Sum insured is cover, not cash. New cover is never retroactive and never guaranteed reimbursement. Standards: BIAN 13.0.0 Customer Product and Service Directory (custom); no Microsoft CDM reference. Demo mapping, not certification. Star role: dimension; grain: one insurance policy. Lakehouse: dim_protection_policy <- silver_protection_policy <- insurance.json, policies.json.
+entity ProtectionPolicy
+	lineageTag: afa774b5-531d-5ebb-82c7-dec3219bf9a3
+	backingTable: ProtectionPolicy
+	keyProperty: PolicyId
+
+	/// Policy identifier such as policy-term-001.
+	property PolicyId
+		dataType: string
+		lineageTag: 540b5d1b-5856-54ac-bc90-d13cd95b4dfd
+
+		backingConfiguration
+			valueColumn: ProtectionPolicy.PolicyId
+
+	/// Policy holder.
+	property CustomerId
+		dataType: string
+		lineageTag: 5fdd2649-7e15-5e02-8542-d3128b6c9845
+
+		backingConfiguration
+			valueColumn: ProtectionPolicy.CustomerId
+
+	/// Catalogue product the policy was bought under.
+	property ProductId
+		dataType: string
+		lineageTag: 24dce5fb-f93a-55d3-bba6-d3899ad26410
+
+		backingConfiguration
+			valueColumn: ProtectionPolicy.ProductId
+
+	/// Cover type such as term_life, family_health or individual_health_indemnity.
+	property PolicyType
+		dataType: string
+		lineageTag: 757513e2-3671-50b8-881d-02338e4f6289
+
+		backingConfiguration
+			valueColumn: ProtectionPolicy.PolicyType
+
+	/// Policy status such as active.
+	property Status
+		dataType: string
+		lineageTag: ea3af0d7-d018-5d2f-819f-5d73d4e408ac
+
+		backingConfiguration
+			valueColumn: ProtectionPolicy.Status
+
+	/// Insurer name (legacy only; fictional).
+	property Insurer
+		dataType: string
+		lineageTag: a6facd08-4c99-5398-bb57-1a723d4fa321
+
+		backingConfiguration
+			valueColumn: ProtectionPolicy.Insurer
+
+	/// Premium per payment period. In rupees (INR).
+	property PremiumInr
+		dataType: double
+		lineageTag: a6b1ef93-b618-524d-8420-fa77da2c9a91
+
+		backingConfiguration
+			valueColumn: ProtectionPolicy.PremiumInr
+
+	/// How often the premium is paid, for example monthly.
+	property PremiumCadence
+		dataType: string
+		lineageTag: c4c339d1-7bd5-565d-8893-721f6ad01a5d
+
+		backingConfiguration
+			valueColumn: ProtectionPolicy.PremiumCadence
+
+	/// Cover amount. Not cash and not guaranteed reimbursement. In rupees (INR).
+	property SumInsuredInr
+		dataType: double
+		lineageTag: fd9f2e7e-3d2b-5b93-ac6a-87bae63af2da
+
+		backingConfiguration
+			valueColumn: ProtectionPolicy.SumInsuredInr
+
+	/// Household members named as beneficiaries (semicolon separated).
+	property BeneficiaryMemberIds
+		dataType: string
+		lineageTag: d7e87aa2-e7f7-59a8-82e1-78fca5394c67
+
+		backingConfiguration
+			valueColumn: ProtectionPolicy.BeneficiaryMemberIds
+
+	/// People covered by the policy (semicolon separated).
+	property CoveredMemberIds
+		dataType: string
+		lineageTag: 8a9264f5-1363-5b4e-a685-fcabec3b5ea3
+
+		backingConfiguration
+			valueColumn: ProtectionPolicy.CoveredMemberIds
+
+	/// Policy start date (legacy only).
+	property StartedOn
+		dataType: dateTime
+		lineageTag: a2908499-940d-53c2-acb0-d16bd84f0378
+
+		backingConfiguration
+			valueColumn: ProtectionPolicy.StartedOn
+
+	/// Next renewal date (legacy only).
+	property RenewsOn
+		dataType: dateTime
+		lineageTag: 357aabea-9353-5013-afac-b20b04380572
+
+		backingConfiguration
+			valueColumn: ProtectionPolicy.RenewsOn
+
+	/// Account the premium is paid from (legacy only).
+	property LinkedAccountId
+		dataType: string
+		lineageTag: 81e99eca-6da5-5a4f-a73c-18ecad627c8c
+
+		backingConfiguration
+			valueColumn: ProtectionPolicy.LinkedAccountId
+
+	/// Co-payment percentage (legacy only).
+	property CoPayPct
+		dataType: double
+		lineageTag: 1d351b80-21f3-5a60-a676-dd2df164369b
+
+		backingConfiguration
+			valueColumn: ProtectionPolicy.CoPayPct
+
+	/// Initial waiting period in days (legacy only).
+	property InitialWaitingDays
+		dataType: int64
+		lineageTag: 30ae2235-c31d-5706-be25-e910e93e93e5
+
+		backingConfiguration
+			valueColumn: ProtectionPolicy.InitialWaitingDays
+
+	/// Waiting period for pre-existing conditions in months (legacy only).
+	property PreExistingWaitingMonths
+		dataType: int64
+		lineageTag: 12ae14b5-8eda-5bcf-aa1b-93e978c872a2
+
+		backingConfiguration
+			valueColumn: ProtectionPolicy.PreExistingWaitingMonths
+
+	/// Seed release the row comes from.
+	property ReleaseId
+		dataType: string
+		lineageTag: 470df4a6-17c0-5957-9887-8f55c71c9379
+
+		backingConfiguration
+			valueColumn: ProtectionPolicy.ReleaseId

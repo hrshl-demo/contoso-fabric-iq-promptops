@@ -1,0 +1,49 @@
+table Investment
+	lineageTag: bca0e162-4ab0-5c4d-a434-7d2965731926
+
+	column InvestmentId
+		dataType: string
+		lineageTag: cf12fc71-7869-53c4-9003-433b3c9fc65f
+		sourceColumn: investment_id
+
+	column CustomerId
+		dataType: string
+		lineageTag: 4a75dc19-53cd-5b21-9fb4-60ce9e13f924
+		sourceColumn: customer_id
+
+	column ProductId
+		dataType: string
+		lineageTag: 988ec5e9-6ca6-5585-9845-bc71661dcfcb
+		sourceColumn: product_id
+
+	column InvestmentType
+		dataType: string
+		lineageTag: 578b10bc-62d2-5db8-aa52-a56d33d26370
+		sourceColumn: investment_type
+
+	column Liquidity
+		dataType: string
+		lineageTag: 72f9199e-602f-549c-b658-5f6e63f6daba
+		sourceColumn: liquidity
+
+	column CurrentValueInr
+		dataType: double
+		lineageTag: 4ed107cf-199c-5742-95e5-00bed4e2e082
+		sourceColumn: current_value_inr
+
+	column GoalIds
+		dataType: string
+		lineageTag: 8b10a0fa-376f-5c1d-a391-ce72f7ab74bf
+		sourceColumn: goal_ids
+
+	column ReleaseId
+		dataType: string
+		lineageTag: aea9063e-8c97-54c2-86df-85a66cebcc35
+		sourceColumn: release_id
+
+	partition Investment = entity
+		mode: directLake
+		source
+			entityName: dim_investment
+			schemaName: dbo
+			expressionSource: DatabaseQuery

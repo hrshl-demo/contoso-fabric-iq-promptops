@@ -1,0 +1,117 @@
+/// [Party] A person the bank serves or tracks: Frontier primary customer Rhea Bansal (CustomerId rhea), legacy personas (Nivedita, Ravi, and the older copy of Rhea as rhea~legacy) and CRM-only parties. Never merge rows across ReleaseId; Frontier supersedes legacy. Standards: BIAN 13.0.0 Party Reference Data Directory (custom); Microsoft CDM Contact (semantic reference only). Demo mapping, not certification. Star role: dimension; grain: one customer identity per release. Lakehouse: dim_customer <- silver_customer + silver_crm_case <- personas.json, bank/crm-cases.json.
+entity Customer
+	lineageTag: c4375f7f-077f-5d51-9944-2605a9d7ab52
+	backingTable: Customer
+	keyProperty: CustomerId
+
+	/// Stable customer identifier, for example rhea or nivedita. Legacy copies of a Frontier customer end in ~legacy.
+	property CustomerId
+		dataType: string
+		lineageTag: 098344f0-02de-5ecf-8cc3-9f95e8f4593b
+
+		backingConfiguration
+			valueColumn: Customer.CustomerId
+
+	/// [PII] Customer display name.
+	property DisplayName
+		dataType: string
+		lineageTag: 025c7e70-a84e-55ef-92e6-224c787ce445
+
+		backingConfiguration
+			valueColumn: Customer.DisplayName
+
+	/// [PII] Age in years at the seed business date.
+	property Age
+		dataType: int64
+		lineageTag: 98be50af-b7fd-524a-896d-e68f82729e13
+
+		backingConfiguration
+			valueColumn: Customer.Age
+
+	/// [PII] City of residence.
+	property City
+		dataType: string
+		lineageTag: 7bbd11bd-5b26-5867-bb31-b99ec0e50628
+
+		backingConfiguration
+			valueColumn: Customer.City
+
+	/// Employment status such as salaried or retired.
+	property EmploymentStatus
+		dataType: string
+		lineageTag: 27276a93-5037-5072-925a-18d066828efc
+
+		backingConfiguration
+			valueColumn: Customer.EmploymentStatus
+
+	/// Customer cohort: household_primary_owner (Frontier), retirement, millennial or gen-z (legacy). Null for CRM-only parties.
+	property Segment
+		dataType: string
+		lineageTag: 52ab80ea-b726-5f26-8fc8-6043f0355f2d
+
+		backingConfiguration
+			valueColumn: Customer.Segment
+
+	/// Household the customer belongs to (Frontier only).
+	property HouseholdId
+		dataType: string
+		lineageTag: 693e0d52-b74e-54a5-a091-300b59905785
+
+		backingConfiguration
+			valueColumn: Customer.HouseholdId
+
+	/// True when the customer is the only customer-visible primary owner of a household (Frontier only).
+	property IsPrimaryOwner
+		dataType: boolean
+		lineageTag: 353fa486-4428-58af-ab50-8aefbe0f6905
+
+		backingConfiguration
+			valueColumn: Customer.IsPrimaryOwner
+
+	/// [PII] Registered mobile number, already masked. Never read digits aloud.
+	property PhoneMasked
+		dataType: string
+		lineageTag: 73717701-8104-5a2c-a075-9d8ff92489f0
+
+		backingConfiguration
+			valueColumn: Customer.PhoneMasked
+
+	/// Short narrative of the persona's situation and goals (legacy personas only).
+	property ProfileSummary
+		dataType: string
+		lineageTag: 1f1f1ed5-f8a2-5483-9f0f-9b6b704b414a
+
+		backingConfiguration
+			valueColumn: Customer.ProfileSummary
+
+	/// Where the row comes from: persona (full profile) or crm_case_party (name only, seen in CRM cases).
+	property SourceKind
+		dataType: string
+		lineageTag: 3379f406-3e35-558e-938c-95d025dbb057
+
+		backingConfiguration
+			valueColumn: Customer.SourceKind
+
+	/// For a legacy copy of a Frontier customer: the CustomerId that supersedes it. Never combine the two.
+	property SupersededByCustomerId
+		dataType: string
+		lineageTag: 96635304-1849-5876-84c3-be179bb619b2
+
+		backingConfiguration
+			valueColumn: Customer.SupersededByCustomerId
+
+	/// Always true: every record in this demo is synthetic and must never be presented as live bank data.
+	property IsSynthetic
+		dataType: boolean
+		lineageTag: ec3b62b0-370f-5099-9667-49a4c0394d48
+
+		backingConfiguration
+			valueColumn: Customer.IsSynthetic
+
+	/// Seed release the row comes from: retail-frontier-v1 (current) or retail4-v1 (legacy).
+	property ReleaseId
+		dataType: string
+		lineageTag: b595205e-51d2-51d9-95fd-4b7b333aa5b0
+
+		backingConfiguration
+			valueColumn: Customer.ReleaseId

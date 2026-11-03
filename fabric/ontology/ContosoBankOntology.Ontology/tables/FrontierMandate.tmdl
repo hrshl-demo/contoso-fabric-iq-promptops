@@ -1,0 +1,104 @@
+table FrontierMandate
+	lineageTag: 75026a34-9bcd-5c4b-b625-850b9278e2b1
+
+	column MandateId
+		dataType: string
+		lineageTag: a771c3b1-fbbe-5564-902a-dfe39fefb0cf
+		sourceColumn: mandate_id
+
+	column CustomerId
+		dataType: string
+		lineageTag: 2a499e5a-3b28-5c45-a37f-55eaaf8b207f
+		sourceColumn: customer_id
+
+	column AgentId
+		dataType: string
+		lineageTag: 82727f89-2fce-5840-81bd-c8aa633bf92f
+		sourceColumn: agent_id
+
+	column ConsentId
+		dataType: string
+		lineageTag: 833e36c5-7741-5242-a3c3-45f36d998a92
+		sourceColumn: consent_id
+
+	column SourceAccountId
+		dataType: string
+		lineageTag: bdacf3f4-86a1-5fe4-8ffd-7ae81ece5de3
+		sourceColumn: source_account_id
+
+	column DestinationAccountId
+		dataType: string
+		lineageTag: f626c4ec-43c9-5a14-b36c-738cfa1c0aab
+		sourceColumn: destination_account_id
+
+	column GoalId
+		dataType: string
+		lineageTag: 5726f49a-6040-5774-910f-92a0a378686c
+		sourceColumn: goal_id
+
+	column Status
+		dataType: string
+		lineageTag: de6b94be-54fb-55ba-a7e6-e25f8e4b3b7c
+		sourceColumn: status
+
+	column Currency
+		dataType: string
+		lineageTag: b5b8e3c4-cb45-5ca8-a349-34adbff01c69
+		sourceColumn: currency
+
+	column PerActionLimitInr
+		dataType: double
+		lineageTag: 30dcce07-52ef-5e79-a682-26e15ba3af94
+		sourceColumn: per_action_limit_inr
+
+	column MonthlyLimitInr
+		dataType: double
+		lineageTag: 2b7debc2-6eea-52a4-b44b-cec0aa5e5186
+		sourceColumn: monthly_limit_inr
+
+	column MinimumSourceBalanceInr
+		dataType: double
+		lineageTag: 7aba7158-a930-5df2-83d8-32b62bff2565
+		sourceColumn: minimum_source_balance_inr
+
+	column ValidFrom
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 0b89eed3-fc5e-5a57-9c7c-20b7727a68e4
+		sourceColumn: valid_from
+
+	column ValidFromDateIst
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 811ac0a8-400c-56ca-8798-38d8b96676cf
+		sourceColumn: valid_from_date_ist
+
+	column ValidUntil
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 6152bc55-8167-5e89-a3e3-2ac1fee2a127
+		sourceColumn: valid_until
+
+	column ValidUntilDateIst
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: a16bd87b-929a-54ed-a8c0-170a29675877
+		sourceColumn: valid_until_date_ist
+
+	column EventCount
+		dataType: int64
+		formatString: 0
+		lineageTag: 25c3044d-6c49-5a42-94ca-de8cc7bb263d
+		sourceColumn: event_count
+
+	column ReleaseId
+		dataType: string
+		lineageTag: 858ab6df-b23f-5536-b208-9f5cc062d725
+		sourceColumn: release_id
+
+	partition FrontierMandate = entity
+		mode: directLake
+		source
+			entityName: dim_frontier_mandate
+			schemaName: dbo
+			expressionSource: DatabaseQuery

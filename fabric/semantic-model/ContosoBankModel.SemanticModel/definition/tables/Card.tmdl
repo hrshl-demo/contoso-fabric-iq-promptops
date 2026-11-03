@@ -1,0 +1,206 @@
+/// A debit or credit card linked to an account. Frontier Rhea's credit card card-rhea-frontier is temporarily locked after a dispute. Only masked numbers exist. Credit limit is not cash. Standards: BIAN 13.0.0 Credit Card (custom), Customer Product and Service Directory (custom); Microsoft CDM FICard (semantic reference only). Demo mapping, not certification. Star role: dimension; grain: one card. Lakehouse: dim_card <- silver_card <- cards.json. Official CDM name aliases: FICard.integrationKey, FICard.cardnumber, FICard.purchasingLimit (semantic reference only).
+table Card
+
+	/// Amount currently owed on cards, in rupees.
+	measure 'Card Outstanding (INR)' = SUM(Card[Outstanding Balance (INR)])
+		formatString: #,0.00
+		displayFolder: Liabilities
+
+	/// Approved card credit limits in rupees. A limit is borrowing capacity, not cash.
+	measure 'Card Credit Limit (INR)' = SUM(Card[Credit Limit (INR)])
+		formatString: #,0.00
+		displayFolder: Liabilities
+
+	/// Card outstanding as a share of credit limit.
+	measure 'Credit Utilisation' = DIVIDE([Card Outstanding (INR)], [Card Credit Limit (INR)])
+		formatString: 0.0%
+		displayFolder: Liabilities
+
+	/// Card identifier such as card-rhea-frontier.
+	column 'Card ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: card_id
+
+	/// Card holder.
+	column 'Customer ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	/// Account the card is linked to.
+	column 'Account ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: account_id
+
+	/// Catalogue product of the card.
+	column 'Product ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: product_id
+
+	/// debit or credit.
+	column 'Card Type'
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: card_type
+
+	/// Card status such as active or temporarily_locked_after_dispute.
+	column Status
+		dataType: string
+		summarizeBy: none
+		sourceColumn: status
+
+	/// [PII] Masked card number showing only the last four digits (legacy only). Never read it aloud in full.
+	column 'Masked Number'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: masked_number
+
+	/// Card expiry as MM/YY (legacy only).
+	column 'Expiry MM YY'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: expiry_mm_yy
+
+	/// Approved credit limit. A limit is not available cash. In rupees (INR).
+	column 'Credit Limit (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: credit_limit_inr
+
+	/// Approved credit limit. A limit is not available cash. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Credit Limit (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: credit_limit_paise
+
+	/// Credit still available to spend. In rupees (INR).
+	column 'Available Credit (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: available_credit_inr
+
+	/// Credit still available to spend. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Available Credit (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: available_credit_paise
+
+	/// Amount currently owed on the card. In rupees (INR).
+	column 'Outstanding Balance (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: outstanding_balance_inr
+
+	/// Amount currently owed on the card. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Outstanding Balance (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: outstanding_balance_paise
+
+	/// Minimum payment due on the latest statement (legacy only). In rupees (INR).
+	column 'Minimum Due (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: minimum_due_inr
+
+	/// Minimum payment due on the latest statement (legacy only). Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Minimum Due (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: minimum_due_paise
+
+	/// Annual interest rate on card balances (Frontier only). As a percentage, for example 8.5 means 8.5%.
+	column 'Annual Rate (%)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: annual_rate_pct
+
+	/// Annual interest rate on card balances (Frontier only). In basis points (100 bps = 1%).
+	column 'Annual Rate (bps)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: annual_rate_bps
+
+	/// Day of month the statement is generated (Frontier only).
+	column 'Statement Day'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: statement_day
+
+	/// Day of month payment is due (Frontier only).
+	column 'Payment Due Day'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: payment_due_day
+
+	/// Next payment due date (legacy only).
+	column 'Payment Due On'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: payment_due_on
+
+	/// Start of the current statement period (legacy only).
+	column 'Statement From'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: statement_from
+
+	/// End of the current statement period (legacy only).
+	column 'Statement To'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: statement_to
+
+	/// True when international use is switched on (legacy only).
+	column 'International Enabled'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: international_enabled
+
+	/// True when online use is switched on (legacy only).
+	column 'Online Enabled'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: online_enabled
+
+	/// True when contactless use is switched on (legacy only).
+	column 'Contactless Enabled'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: contactless_enabled
+
+	/// Seed release the row comes from.
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	partition Card = entity
+		mode: directLake
+		source
+			entityName: dim_card
+			expressionSource: 'DirectLake - ContosoBankModel'

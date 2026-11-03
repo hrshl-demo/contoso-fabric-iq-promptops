@@ -1,0 +1,180 @@
+/// A posted account or card transaction. Amount is always positive; Direction says debit or credit and SignedAmountInr carries the sign. Frontier covers Apr-Sep 2026 for Rhea; legacy covers three personas. Do not add transactions across ReleaseId. Standards: BIAN 13.0.0 Payment Execution (custom), Position Keeping (custom); no Microsoft CDM reference. Demo mapping, not certification. Star role: fact; grain: one ledger posting. Lakehouse: fact_transaction <- silver_transaction <- transactions.json.
+table Transaction
+
+	/// Number of transactions.
+	measure 'Transaction Count' = COUNTROWS(Transaction)
+		formatString: #,0
+		displayFolder: Cash Flow
+
+	/// Money out in rupees.
+	measure 'Total Debits (INR)' = CALCULATE(SUM(Transaction[Amount (INR)]), Transaction[Direction] = "debit")
+		formatString: #,0.00
+		displayFolder: Cash Flow
+
+	/// Money in in rupees.
+	measure 'Total Credits (INR)' = CALCULATE(SUM(Transaction[Amount (INR)]), Transaction[Direction] = "credit")
+		formatString: #,0.00
+		displayFolder: Cash Flow
+
+	/// Credits minus debits in rupees.
+	measure 'Net Cash Flow (INR)' = SUM(Transaction[Signed Amount (INR)])
+		formatString: #,0.00
+		displayFolder: Cash Flow
+
+	/// Transactions tied to a dispute or scam incident.
+	measure 'Disputed Transactions' = CALCULATE(COUNTROWS(Transaction), NOT(ISBLANK(Transaction[Dispute Incident ID])))
+		formatString: #,0
+		displayFolder: Cash Flow
+
+	/// Transaction identifier such as txn-frontier-0001.
+	column 'Transaction ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: transaction_id
+
+	/// Customer the transaction belongs to.
+	column 'Customer ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	/// Account the transaction posted to.
+	column 'Account ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: account_id
+
+	/// Card used, when the instrument is a card.
+	column 'Card ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: card_id
+
+	/// Bank statement narration, for example SALARY CREDIT - NORTHWIND TECHNOLOGY INDIA.
+	column Description
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: description
+
+	/// debit (money out) or credit (money in).
+	column Direction
+		dataType: string
+		summarizeBy: none
+		sourceColumn: direction
+
+	/// Spend or income category such as groceries, salary, loan_repayment, dining. 'unclear' means the narration is ambiguous.
+	column Category
+		dataType: string
+		summarizeBy: none
+		sourceColumn: category
+
+	/// How it was paid: account, card or credit_card.
+	column Instrument
+		dataType: string
+		summarizeBy: none
+		sourceColumn: instrument
+
+	/// posted or reversed.
+	column Status
+		dataType: string
+		summarizeBy: none
+		sourceColumn: status
+
+	/// Transaction amount, always positive. In rupees (INR).
+	column 'Amount (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: amount_inr
+
+	/// Transaction amount, always positive. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Amount (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: amount_paise
+
+	/// Amount in INR with sign: credits positive, debits negative. Sum it for net cash flow.
+	column 'Signed Amount (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: signed_amount_inr
+
+	/// When the transaction posted. Instant in UTC.
+	column 'Posted At'
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: posted_at
+
+	/// When the transaction posted. Calendar date in India time (IST), for 'today', 'this month' questions.
+	column 'Posted Date IST'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: posted_date_ist
+
+	/// Value date of the transaction.
+	column 'Value Date'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: value_date
+
+	/// Reference of the other party: employer, household member, own account, card, case or external party (Frontier only).
+	column 'Counterparty Ref'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: counterparty_ref
+
+	/// Kind of counterparty: employer, household_member, account, card, incident, external_party or customer.
+	column 'Counterparty Type'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: counterparty_type
+
+	/// Incident id when the transaction is under dispute or part of a scam case (Frontier only).
+	column 'Dispute Incident ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: dispute_incident_id
+
+	/// Purchase document reference (legacy only).
+	column 'Purchase Reference'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: purchase_reference
+
+	/// Shared-expense settlement reference (legacy only).
+	column 'Settlement Reference'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: settlement_reference
+
+	/// Documents or cases that evidence the transaction (semicolon separated).
+	column 'Evidence Refs'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: evidence_refs
+
+	/// Number of evidence references.
+	column 'Evidence Count'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: evidence_count
+
+	/// Seed release the row comes from.
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	partition Transaction = entity
+		mode: directLake
+		source
+			entityName: fact_transaction
+			expressionSource: 'DirectLake - ContosoBankModel'

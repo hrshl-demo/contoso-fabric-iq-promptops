@@ -1,0 +1,93 @@
+/// [Authority] A recorded mandate action (mandate event) in a mandate's life: created, action executed, action skipped (with the reason, for example obligations protected) or revoked. It is the audit trail of what a delegated agent actually did. Standards: no verified BIAN mapping (custom semantics); no Microsoft CDM reference. Demo mapping, not certification. Star role: fact; grain: one mandate action. Lakehouse: fact_mandate_action <- silver_mandate_action <- mandates.json.
+entity MandateAction
+	lineageTag: 127dbb51-be4d-5680-a775-8d5cfeec3032
+	backingTable: MandateAction
+	keyProperty: EventId
+
+	/// Event identifier such as mandate-event-002.
+	property EventId
+		dataType: string
+		lineageTag: f011d9bb-3bd1-5bdf-8791-8892fc98553d
+
+		backingConfiguration
+			valueColumn: MandateAction.EventId
+
+	/// Mandate the event belongs to.
+	property MandateId
+		dataType: string
+		lineageTag: 50ada63c-9420-57dc-93c2-32875e373549
+
+		backingConfiguration
+			valueColumn: MandateAction.MandateId
+
+	/// created, action_executed, action_skipped or revoked.
+	property EventType
+		dataType: string
+		lineageTag: 8d31c7b0-114d-5013-8ac7-7d26b1335fa1
+
+		backingConfiguration
+			valueColumn: MandateAction.EventType
+
+	/// When the event happened. Instant in UTC.
+	property OccurredAt
+		dataType: dateTime
+		lineageTag: 3528700d-2ee9-5088-9fb1-b020a34b565d
+
+		backingConfiguration
+			valueColumn: MandateAction.OccurredAt
+
+	/// When the event happened. Calendar date in India time (IST), for 'today', 'this month' questions.
+	property OccurredDateIst
+		dataType: dateTime
+		lineageTag: 1366c15b-9355-5b50-bb68-e89c1bb7a3f8
+
+		backingConfiguration
+			valueColumn: MandateAction.OccurredDateIst
+
+	/// Who caused the event: the customer or the agent.
+	property ActorRef
+		dataType: string
+		lineageTag: 954fb299-02b8-5e34-a386-0254aeffc3b8
+
+		backingConfiguration
+			valueColumn: MandateAction.ActorRef
+
+	/// customer or agent.
+	property ActorType
+		dataType: string
+		lineageTag: b93f7eb9-0537-5263-bd97-3b42f37d195c
+
+		backingConfiguration
+			valueColumn: MandateAction.ActorType
+
+	/// Amount moved, for executed actions. In rupees (INR).
+	property AmountInr
+		dataType: double
+		lineageTag: 134ca07b-93ca-5bb6-ab09-180a04c3ffb2
+
+		backingConfiguration
+			valueColumn: MandateAction.AmountInr
+
+	/// Source account balance after an executed action. In rupees (INR).
+	property SourceBalanceAfterInr
+		dataType: double
+		lineageTag: 205e9ae5-0cce-5423-ab96-0a011e7c8802
+
+		backingConfiguration
+			valueColumn: MandateAction.SourceBalanceAfterInr
+
+	/// Why the event happened, for example projected_school_and_card_obligations_protected.
+	property Reason
+		dataType: string
+		lineageTag: 5f5693c1-8f63-56ab-ab65-50161b740d5a
+
+		backingConfiguration
+			valueColumn: MandateAction.Reason
+
+	/// Bank narration of the resulting transaction.
+	property Narration
+		dataType: string
+		lineageTag: 535fa59e-3d8d-573b-9a5e-c1837906bd46
+
+		backingConfiguration
+			valueColumn: MandateAction.Narration

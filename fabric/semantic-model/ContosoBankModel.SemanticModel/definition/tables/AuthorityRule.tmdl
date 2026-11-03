@@ -1,0 +1,39 @@
+/// Who may do what: for each capability (ask, read, calculate, retrieve policy, prepare, approve, execute, review, expand consent) the permission of each actor (customer, Financial Companion, specialist, Rhea agent, active mandate, human specialist, deterministic bank). Analysis, preparation and effect are separate; the default agent mode is prepare-only. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: reference; grain: one authority rule: a capability and the actor's permission for it. Lakehouse: ref_authority_rule <- Curated reference data.
+table AuthorityRule
+
+	/// Identifier: capability / actor.
+	column 'Rule ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: rule_id
+
+	/// Capability such as Approve customer action or Execute bounded surplus action.
+	column Capability
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: capability
+
+	/// Actor: Customer, Financial Companion, Specialist, Rhea agent, Active mandate, Human specialist, Deterministic bank.
+	column Actor
+		dataType: string
+		summarizeBy: none
+		sourceColumn: actor
+
+	/// yes, no or qualified (read PermissionText for the condition).
+	column 'Permission Class'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: permission_class
+
+	/// What the actor may do for the capability, as written in the authority matrix.
+	column 'Permission Text'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: permission_text
+
+	partition AuthorityRule = entity
+		mode: directLake
+		source
+			entityName: ref_authority_rule
+			expressionSource: 'DirectLake - ContosoBankModel'

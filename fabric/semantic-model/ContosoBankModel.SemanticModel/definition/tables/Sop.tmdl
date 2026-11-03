@@ -1,0 +1,58 @@
+/// A standard operating procedure the assistant follows (retirement income review, suspected fraud, card controls, request handling). The procedure text lives in Foundry IQ; this entity says which SOP exists, its scope and which case it applies to. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: dimension; grain: one standard operating procedure. Lakehouse: dim_sop <- silver_sop <- sops.json.
+table Sop
+
+	/// SOP identifier such as SOP-UC03-SUSPECTED-FRAUD.
+	column 'SOP ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: sop_id
+
+	/// SOP title.
+	column Title
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: title
+
+	/// case (one use case) or shared (all cases).
+	column Scope
+		dataType: string
+		summarizeBy: none
+		sourceColumn: scope
+
+	/// Who the SOP is for, for example bank_global.
+	column Audience
+		dataType: string
+		summarizeBy: none
+		sourceColumn: audience
+
+	/// Use case the SOP applies to, for example UC03.
+	column 'Applies To Case'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: applies_to_case
+
+	/// Path of the SOP text in the knowledge store.
+	column 'Knowledge Path'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: knowledge_path
+
+	/// SOP version number.
+	column 'Source Version'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: source_version
+
+	/// Seed release the row comes from.
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	partition Sop = entity
+		mode: directLake
+		source
+			entityName: dim_sop
+			expressionSource: 'DirectLake - ContosoBankModel'

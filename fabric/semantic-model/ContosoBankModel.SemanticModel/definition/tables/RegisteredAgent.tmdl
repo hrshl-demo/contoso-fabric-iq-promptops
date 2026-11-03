@@ -1,0 +1,100 @@
+/// A customer-side AI agent registered with the bank through Know Your Agent (KYA), for example Rhea's personal agent. KYA is registration, not consent or a mandate. An agent cannot register itself, widen its scopes or approve its own prepared action. Standards: no verified BIAN mapping (custom semantics); no Microsoft CDM reference. Demo mapping, not certification. Star role: dimension; grain: one registered agent. Lakehouse: dim_registered_agent <- silver_registered_agent <- agents.json.
+table RegisteredAgent
+
+	/// Agent identifier such as agent-rhea-001.
+	column 'Agent ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: agent_id
+
+	/// Customer the agent acts for.
+	column 'Customer ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	/// Household the agent operates in.
+	column 'Household ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: household_id
+
+	/// Consent that lets the agent read the customer's data.
+	column 'Consent ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: consent_id
+
+	/// Registration type such as personal_agent.
+	column 'Registration Type'
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: registration_type
+
+	/// How authority is delegated, for example household_financial_assistant.
+	column 'Delegation Mode'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: delegation_mode
+
+	/// registered, suspended or revoked.
+	column Status
+		dataType: string
+		summarizeBy: none
+		sourceColumn: status
+
+	/// Scopes the agent may use, such as read:goals or propose:goal_transfer (semicolon separated).
+	column Scopes
+		dataType: string
+		summarizeBy: none
+		sourceColumn: scopes
+
+	/// Scopes the agent is explicitly denied, such as execute:unmandated_transfer (semicolon separated). Denied wins.
+	column 'Denied Scopes'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: denied_scopes
+
+	/// KYA provider name (synthetic registry fixture).
+	column 'KYA Provider Name'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: kya_provider_name
+
+	/// KYA registration id (synthetic).
+	column 'KYA Registration ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: kya_registration_id
+
+	/// How the agent was verified: synthetic_registry_fixture. Not an external certification.
+	column 'KYA Verification Method'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: kya_verification_method
+
+	/// When KYA verification was recorded. Instant in UTC.
+	column 'KYA Verified At'
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: kya_verified_at
+
+	/// Signing key fingerprint. Restricted.
+	column 'KYA Key Fingerprint'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: kya_key_fingerprint
+
+	/// Seed release the row comes from.
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	partition RegisteredAgent = entity
+		mode: directLake
+		source
+			entityName: dim_registered_agent
+			expressionSource: 'DirectLake - ContosoBankModel'

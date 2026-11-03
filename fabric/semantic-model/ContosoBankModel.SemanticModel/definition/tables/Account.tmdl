@@ -1,0 +1,152 @@
+/// A deposit account (salary, reserve, savings). Frontier Rhea has acc-rhea-primary and acc-rhea-reserve. Balances are INR; the *_paise twins are exact integer paise. Posted balance is what the customer owns; available balance is net of holds. Standards: BIAN 13.0.0 Customer Product and Service Directory (custom), Savings Account (custom); Microsoft CDM FHAccount (semantic reference only). Demo mapping, not certification. Star role: dimension; grain: one account, with its balances as at the release business date. Lakehouse: dim_account <- silver_account <- accounts.json. Official CDM name aliases: FHAccount.integrationKey, FHAccount.balance, FHAccount.availableBalance, FHAccount.blockedAmount (semantic reference only).
+table Account
+
+	/// Sum of posted account balances in rupees. Filter ReleaseId before adding customers.
+	measure 'Total Posted Balance (INR)' = SUM(Account[Posted Balance (INR)])
+		formatString: #,0.00
+		displayFolder: Balances
+
+	/// Sum of balances available after holds, in rupees.
+	measure 'Total Available Balance (INR)' = SUM(Account[Available Balance (INR)])
+		formatString: #,0.00
+		displayFolder: Balances
+
+	/// Posted balances plus investments in rupees. Deposits are inside investments for Frontier, so they are not added again.
+	measure 'Total Assets (INR)' = [Total Posted Balance (INR)] + [Total Investments (INR)]
+		formatString: #,0.00
+		displayFolder: Balances
+
+	/// Assets minus liabilities in rupees. Excludes the home's market value: the seed holds no property valuation, so it is negative while a home loan is outstanding.
+	measure 'Net Position (INR)' = [Total Assets (INR)] - [Total Liabilities (INR)]
+		formatString: #,0.00
+		displayFolder: Balances
+
+	/// Account identifier such as acc-rhea-primary.
+	column 'Account ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: account_id
+
+	/// Owning customer.
+	column 'Customer ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	/// Catalogue product the account was opened under, for example CB-SAV-SALARY.
+	column 'Product ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: product_id
+
+	/// Account type such as salary or reserve (Frontier only).
+	column 'Account Type'
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: account_type
+
+	/// Account status such as active.
+	column Status
+		dataType: string
+		summarizeBy: none
+		sourceColumn: status
+
+	/// ISO currency code; always INR in this data.
+	column Currency
+		dataType: string
+		summarizeBy: none
+		sourceColumn: currency
+
+	/// Date the account was opened (legacy only).
+	column 'Opened On'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: opened_on
+
+	/// First date covered by the seeded transaction history (Frontier only).
+	column 'History Start On'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: history_start_on
+
+	/// Date the balances are valid for (the release business date).
+	column 'Balance As On'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: balance_as_on
+
+	/// Balance at the start of the seeded history. In rupees (INR).
+	column 'Opening Balance (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: opening_balance_inr
+
+	/// Balance at the start of the seeded history. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Opening Balance (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: opening_balance_paise
+
+	/// Ledger balance of posted transactions. In rupees (INR).
+	column 'Posted Balance (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: posted_balance_inr
+
+	/// Ledger balance of posted transactions. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Posted Balance (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: posted_balance_paise
+
+	/// Balance the customer can use after holds. In rupees (INR).
+	column 'Available Balance (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: available_balance_inr
+
+	/// Balance the customer can use after holds. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Available Balance (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: available_balance_paise
+
+	/// Amount on hold (legacy only). In rupees (INR).
+	column 'Holds (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: holds_amount_inr
+
+	/// Amount on hold (legacy only). Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Holds (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: holds_amount_paise
+
+	/// Seed release the row comes from.
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	partition Account = entity
+		mode: directLake
+		source
+			entityName: dim_account
+			expressionSource: 'DirectLake - ContosoBankModel'

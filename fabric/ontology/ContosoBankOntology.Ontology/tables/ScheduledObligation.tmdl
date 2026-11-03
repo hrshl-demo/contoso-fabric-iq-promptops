@@ -1,0 +1,65 @@
+table ScheduledObligation
+	lineageTag: b51dc550-d1c0-57ad-9553-7a5851b3823d
+
+	column ObligationId
+		dataType: string
+		lineageTag: bfcde377-1748-5c7b-8abb-6e55d608e0dd
+		sourceColumn: obligation_id
+
+	column CustomerId
+		dataType: string
+		lineageTag: 772c8fee-9638-59cb-9f77-1b66d3c75adf
+		sourceColumn: customer_id
+
+	column Name
+		dataType: string
+		lineageTag: a4409766-fd71-5b74-abd3-49994b45be6d
+		sourceColumn: name
+
+	column SourceAccountId
+		dataType: string
+		lineageTag: 9d442cab-0781-5c56-a82c-b07d4ac4f702
+		sourceColumn: source_account_id
+
+	column PayeeRef
+		dataType: string
+		lineageTag: bf1c2b7f-0ab3-57c4-899e-3a39f53461e6
+		sourceColumn: payee_ref
+
+	column PayeeType
+		dataType: string
+		lineageTag: eec292e8-8d12-523b-9de4-bcd0d91e89c7
+		sourceColumn: payee_type
+
+	column Cadence
+		dataType: string
+		lineageTag: 06649bf9-6b6a-5f68-805e-94e06efdd0d9
+		sourceColumn: cadence
+
+	column DayOfMonth
+		dataType: int64
+		formatString: 0
+		lineageTag: ff667da3-fb58-5586-9b6e-be9bc7258fa9
+		sourceColumn: day_of_month
+
+	column Status
+		dataType: string
+		lineageTag: 551aa628-d05c-5617-9ed5-b8fa86beb720
+		sourceColumn: status
+
+	column AmountInr
+		dataType: double
+		lineageTag: 0f631b9b-74f2-5fde-9b1a-d3fd506bfd44
+		sourceColumn: amount_inr
+
+	column ReleaseId
+		dataType: string
+		lineageTag: a98bfcfb-066e-52b6-b06d-c9126c42a0e2
+		sourceColumn: release_id
+
+	partition ScheduledObligation = entity
+		mode: directLake
+		source
+			entityName: fact_scheduled_obligation
+			schemaName: dbo
+			expressionSource: DatabaseQuery

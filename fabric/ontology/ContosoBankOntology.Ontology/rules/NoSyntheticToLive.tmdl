@@ -1,0 +1,13 @@
+rule NoSyntheticToLive
+	statement: Law L10. Every record is synthetic demo data. Never present it as live bank data, as production evidence or as a real provider's response, and keep the disclosure when asked what the data is.
+	lineageTag: 222760cc-187c-5711-8c29-1edbea8d870b
+
+	ruleReferencedEntity Customer
+		propertyScope: specific
+
+		ruleReferencedProperty IsSynthetic
+
+	ruleReferencedEntity Product
+		propertyScope: specific
+
+		ruleReferencedProperty Disclosure

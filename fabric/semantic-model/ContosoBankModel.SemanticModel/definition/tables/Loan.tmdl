@@ -1,0 +1,185 @@
+/// A loan facility. Frontier Rhea has a floating-rate home loan (loan-home-001) and an education loan. Current principal is what is still owed; EMI is the monthly instalment. A disbursed loan is a liability, not income. Standards: BIAN 13.0.0 Consumer Loan (custom), Customer Product and Service Directory (custom); Microsoft CDM FHLoan (semantic reference only). Demo mapping, not certification. Star role: dimension; grain: one loan. Lakehouse: dim_loan <- silver_loan <- loans.json. Official CDM name aliases: FHLoan.integrationKey, FHLoan.principalAmount, FHLoan.balanceDisplayValue, FHLoan.installmentAmount, FHLoan.interestrate, FHLoan.maturitydate (semantic reference only).
+table Loan
+
+	/// Principal still owed on loans, in rupees.
+	measure 'Loan Principal Outstanding (INR)' = SUM(Loan[Current Principal (INR)])
+		formatString: #,0.00
+		displayFolder: Liabilities
+
+	/// Loan principal plus card outstanding, in rupees.
+	measure 'Total Liabilities (INR)' = [Loan Principal Outstanding (INR)] + [Card Outstanding (INR)]
+		formatString: #,0.00
+		displayFolder: Liabilities
+
+	/// Monthly loan instalments in rupees.
+	measure 'Monthly EMI (INR)' = SUM(Loan[EMI (INR)])
+		formatString: #,0.00
+		displayFolder: Liabilities
+
+	/// Loan identifier such as loan-home-001.
+	column 'Loan ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: loan_id
+
+	/// Borrower.
+	column 'Customer ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	/// Catalogue product of the loan, for example CB-HL-FLOATING.
+	column 'Product ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: product_id
+
+	/// Loan purpose such as owner_occupied_home.
+	column Purpose
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: purpose
+
+	/// floating or fixed.
+	column 'Rate Type'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: rate_type
+
+	/// Annual interest rate of the loan. As a percentage, for example 8.5 means 8.5%.
+	column 'Annual Rate (%)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: annual_rate_pct
+
+	/// Annual interest rate of the loan. In basis points (100 bps = 1%).
+	column 'Annual Rate (bps)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: annual_rate_bps
+
+	/// Principal at the start of the seeded history. In rupees (INR).
+	column 'Opening Principal (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: opening_principal_inr
+
+	/// Principal at the start of the seeded history. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Opening Principal (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: opening_principal_paise
+
+	/// Principal still owed. In rupees (INR).
+	column 'Current Principal (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: current_principal_inr
+
+	/// Principal still owed. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Current Principal (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: current_principal_paise
+
+	/// Monthly instalment. In rupees (INR).
+	column 'EMI (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: emi_inr
+
+	/// Monthly instalment. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'EMI (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: emi_paise
+
+	/// One-time fee charged at origination. In rupees (INR).
+	column 'Origination Fee (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: origination_fee_inr
+
+	/// One-time fee charged at origination. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Origination Fee (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: origination_fee_paise
+
+	/// Borrower type the prepayment terms apply to.
+	column 'Prepayment Applies To'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: prepayment_applies_to
+
+	/// Charge on prepayment. As a percentage, for example 8.5 means 8.5%.
+	column 'Prepayment Charge (%)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: prepayment_charge_pct
+
+	/// Charge on prepayment. In basis points (100 bps = 1%).
+	column 'Prepayment Charge (bps)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: prepayment_charge_bps
+
+	/// Smallest allowed prepayment. In rupees (INR).
+	column 'Prepayment Minimum (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: prepayment_minimum_inr
+
+	/// Smallest allowed prepayment. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Prepayment Minimum (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: prepayment_minimum_paise
+
+	/// Days of notice needed before a prepayment.
+	column 'Prepayment Notice Days'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: prepayment_notice_days
+
+	/// Number of instalments in the seeded repayment schedule.
+	column 'Scheduled Installments'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: scheduled_installments
+
+	/// Seed release the row comes from.
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	partition Loan = entity
+		mode: directLake
+		source
+			entityName: dim_loan
+			expressionSource: 'DirectLake - ContosoBankModel'

@@ -1,0 +1,107 @@
+/// A conversation journey the assistant runs. Legacy J01-J12 are goal-led playbooks (retirement income, scam check, card fit, ...) with triggers, must-establish facts and never-do rules. Frontier F01-F06 are the household journeys, each with specialists, an autonomy ceiling and the operations it may only prepare. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: dimension; grain: one journey (curated reference source). Lakehouse: dim_journey <- Curated reference data.
+table Journey
+
+	/// Journey identifier: J01-J12 (legacy) or F01-F06 (Frontier).
+	column 'Journey ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: journey_id
+
+	/// Journey title.
+	column Title
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: title
+
+	/// legacy (J) or frontier (F).
+	column 'Journey Kind'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: journey_kind
+
+	/// One-line promise of the journey.
+	column 'One Liner'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: one_liner
+
+	/// What the journey must achieve for the customer (legacy).
+	column Goal
+		dataType: string
+		summarizeBy: none
+		sourceColumn: goal
+
+	/// Business unit that owns the journey (legacy).
+	column 'BU ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: bu_id
+
+	/// advise, light_touch or never_sell: how much selling is allowed (legacy).
+	column 'Sales Posture'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: sales_posture
+
+	/// Maximum conversation turns before handoff (legacy, when set).
+	column 'Turn Cap'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: turn_cap
+
+	/// Highest workflow level the journey may request (Frontier). It grants no authority by itself.
+	column 'Autonomy Ceiling'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: autonomy_ceiling
+
+	/// Specialist agents used by the journey (Frontier).
+	column 'Primary Specialists'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: primary_specialists
+
+	/// Operations the journey may only prepare, never execute (Frontier).
+	column 'Allowed Prepared Operations'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: allowed_prepared_operations
+
+	/// Phrases and situations that start the journey (legacy).
+	column 'Triggers Text'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: triggers_text
+
+	/// Facts that must be established before advising (legacy).
+	column 'Must Establish Text'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: must_establish_text
+
+	/// Things the assistant must never do in this journey (legacy).
+	column 'Never Do Text'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: never_do_text
+
+	/// Tools the journey normally uses (legacy).
+	column 'Tool Hints'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: tool_hints
+
+	/// Example customer openers (legacy).
+	column 'Opener Examples'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: opener_examples
+
+	partition Journey = entity
+		mode: directLake
+		source
+			entityName: dim_journey
+			expressionSource: 'DirectLake - ContosoBankModel'

@@ -1,0 +1,19 @@
+rule NoInvisibleSourceUse
+	statement: Law L2. Customer documents may be used as evidence only after the customer selected them and consented to their reading. Cite the Document and the Consent that covers it; a document the customer did not select is not a source.
+	lineageTag: ec00e6a2-796b-5aed-905b-de9d9402fc4b
+
+	ruleReferencedEntity Document
+		propertyScope: specific
+
+		ruleReferencedProperty DocumentId
+
+	ruleReferencedEntity Consent
+		propertyScope: specific
+
+		ruleReferencedProperty Status
+
+		ruleReferencedProperty ExpiresAt
+
+	ruleReferencedRelationship 'Document Owned By Customer'
+
+	ruleReferencedRelationship 'Consent Given By Customer'

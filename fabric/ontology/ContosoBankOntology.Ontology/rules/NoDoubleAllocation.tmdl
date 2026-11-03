@@ -1,0 +1,23 @@
+rule NoDoubleAllocation
+	statement: Law L5. Cash, collateral, commitments and goal balances must never be counted twice across plans or goals. A deposit that also appears as an Investment is one asset, not two: do not add Account balances, Deposit principal and Investment value together without removing the overlap.
+	lineageTag: 46635827-d65e-5048-ba15-1f61125deb04
+
+	ruleReferencedEntity Deposit
+		propertyScope: specific
+
+		ruleReferencedProperty PrincipalInr
+
+	ruleReferencedEntity Investment
+		propertyScope: specific
+
+		ruleReferencedProperty CurrentValueInr
+
+	ruleReferencedEntity Account
+		propertyScope: specific
+
+		ruleReferencedProperty PostedBalanceInr
+
+	ruleReferencedEntity Goal
+		propertyScope: specific
+
+		ruleReferencedProperty CurrentInr

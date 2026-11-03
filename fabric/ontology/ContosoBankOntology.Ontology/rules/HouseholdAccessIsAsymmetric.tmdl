@@ -1,0 +1,19 @@
+rule HouseholdAccessIsAsymmetric
+	statement: Household access is resource-specific. A spouse's view grant does not allow transactions, mandate changes or access changes; a minor has no inferred access; a dependent parent sees the care schedule only. Private messages, accounts and transactions stay outside spouse and dependant grants unless explicitly added.
+	lineageTag: 3a946fd3-56da-503c-b289-3d105958f5cf
+
+	ruleReferencedEntity HouseholdAccessGrant
+		propertyScope: specific
+
+		ruleReferencedProperty Permissions
+
+		ruleReferencedProperty DeniedPermissions
+
+	ruleReferencedEntity HouseholdMember
+		propertyScope: specific
+
+		ruleReferencedProperty RelationToOwner
+
+		ruleReferencedProperty AgeBand
+
+	ruleReferencedRelationship 'Access Grant For Household Member'

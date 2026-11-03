@@ -1,0 +1,123 @@
+table Transaction
+	lineageTag: c161c8dd-00a6-5699-aafa-683a16b06268
+
+	column TransactionId
+		dataType: string
+		lineageTag: d3bfab10-e3cb-5c71-9488-4c7c22778899
+		sourceColumn: transaction_id
+
+	column CustomerId
+		dataType: string
+		lineageTag: 25b7048e-b79e-52e3-8469-84c255ceadd4
+		sourceColumn: customer_id
+
+	column AccountId
+		dataType: string
+		lineageTag: 50a88435-a470-5a22-b21e-823e96dfd527
+		sourceColumn: account_id
+
+	column CardId
+		dataType: string
+		lineageTag: cb3338a2-8fa3-5bcb-a814-f1239b2ddf81
+		sourceColumn: card_id
+
+	column Description
+		dataType: string
+		lineageTag: 4b302bcb-cbec-5db7-8076-31cd42128069
+		sourceColumn: description
+
+	column Direction
+		dataType: string
+		lineageTag: 3869d64c-e83a-5c03-bd11-c991e4b66956
+		sourceColumn: direction
+
+	column Category
+		dataType: string
+		lineageTag: 6a686b95-a0c4-5acc-90f8-0c9bc554e6b9
+		sourceColumn: category
+
+	column Instrument
+		dataType: string
+		lineageTag: 74ebf8f6-45d4-5d0a-8daf-0d8471affa5e
+		sourceColumn: instrument
+
+	column Status
+		dataType: string
+		lineageTag: d2074153-ee35-5521-a8ed-cb9b82c54c88
+		sourceColumn: status
+
+	column AmountInr
+		dataType: double
+		lineageTag: 50b5a167-4c47-5095-8caa-8e1c698b0a57
+		sourceColumn: amount_inr
+
+	column SignedAmountInr
+		dataType: double
+		lineageTag: 1b2a6a71-5075-5d72-8e44-604b2f5f1953
+		sourceColumn: signed_amount_inr
+
+	column PostedAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 68f293e5-bea9-5adc-9e45-15dd4958226c
+		sourceColumn: posted_at
+
+	column PostedDateIst
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 11a8b6c2-093d-535b-bd53-eae4f5b6a7ff
+		sourceColumn: posted_date_ist
+
+	column ValueDate
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 716e1f7f-86f7-57e3-a22c-35b368bbbecd
+		sourceColumn: value_date
+
+	column CounterpartyRef
+		dataType: string
+		lineageTag: 5b716268-839b-5411-aa8c-23284cff584b
+		sourceColumn: counterparty_ref
+
+	column CounterpartyType
+		dataType: string
+		lineageTag: 898c3264-1ce6-5864-8c7c-95fc6b078118
+		sourceColumn: counterparty_type
+
+	column DisputeIncidentId
+		dataType: string
+		lineageTag: 23b21bda-4c2d-5c4a-92a7-cb68f3b34d7f
+		sourceColumn: dispute_incident_id
+
+	column PurchaseReference
+		dataType: string
+		lineageTag: 3bb6f8bf-304a-5e15-a0c5-f6366e3f0c0d
+		sourceColumn: purchase_reference
+
+	column SettlementReference
+		dataType: string
+		lineageTag: d38e6f3f-b8c7-5051-b046-8021ddcc5e8d
+		sourceColumn: settlement_reference
+
+	column EvidenceRefs
+		dataType: string
+		lineageTag: 38774ec5-2426-52b9-9e7a-756e83290a39
+		sourceColumn: evidence_refs
+
+	column EvidenceCount
+		dataType: int64
+		formatString: 0
+		lineageTag: f5e71b53-6339-5480-b703-83b2b779c9bc
+		sourceColumn: evidence_count
+
+	column ReleaseId
+		dataType: string
+		lineageTag: 4d05ea44-d71b-54fe-84a3-a6dd5a2f58b9
+		sourceColumn: release_id
+
+	partition Transaction = entity
+		mode: directLake
+		source
+			entityName: fact_transaction
+			schemaName: dbo
+			expressionSource: DatabaseQuery

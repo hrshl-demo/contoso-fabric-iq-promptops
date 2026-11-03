@@ -1,0 +1,101 @@
+/// [Servicing] A fraud, scam or dispute case on a customer's money, for example an authorised-payment scam and its recovery. Service first: while an incident is unresolved, no product is sold to the customer. Recovery amount is what was credited back. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: fact; grain: one incident. Lakehouse: fact_incident <- silver_incident <- incidents.json.
+entity Incident
+	lineageTag: db6e5515-165f-51ac-b810-f8a6bad249da
+	backingTable: Incident
+	keyProperty: IncidentId
+
+	/// Incident identifier such as case-scam-001.
+	property IncidentId
+		dataType: string
+		lineageTag: a62b5267-cd37-506c-8270-5b97f8e64a1a
+
+		backingConfiguration
+			valueColumn: Incident.IncidentId
+
+	/// Customer affected.
+	property CustomerId
+		dataType: string
+		lineageTag: a7d5e212-f970-54d9-9d2f-c822e75001c6
+
+		backingConfiguration
+			valueColumn: Incident.CustomerId
+
+	/// Type such as authorised_payment_scam or card_duplicate_charge.
+	property IncidentType
+		dataType: string
+		lineageTag: 9f610a25-384c-5623-8d5c-a42a7974fd3a
+
+		backingConfiguration
+			valueColumn: Incident.IncidentType
+
+	/// Case state such as recovery_credit_posted.
+	property Status
+		dataType: string
+		lineageTag: fcf89bd3-8a46-5b64-93c7-f3193d75c1a5
+
+		backingConfiguration
+			valueColumn: Incident.Status
+
+	/// When the incident was detected. Instant in UTC.
+	property DetectedAt
+		dataType: dateTime
+		lineageTag: 984e1a89-4f22-5b6c-825b-0fa3803e05fe
+
+		backingConfiguration
+			valueColumn: Incident.DetectedAt
+
+	/// When the incident was detected. Calendar date in India time (IST), for 'today', 'this month' questions.
+	property DetectedDateIst
+		dataType: dateTime
+		lineageTag: 69d46ad7-aa21-5f89-a8fe-4586488dc80d
+
+		backingConfiguration
+			valueColumn: Incident.DetectedDateIst
+
+	/// Amount involved in the incident. In rupees (INR).
+	property AmountInr
+		dataType: double
+		lineageTag: 0018f015-5bba-528e-8787-7cdc688308db
+
+		backingConfiguration
+			valueColumn: Incident.AmountInr
+
+	/// Amount recovered and credited back. In rupees (INR).
+	property RecoveryAmountInr
+		dataType: double
+		lineageTag: 3f072f26-7a13-552b-9388-a41b52711127
+
+		backingConfiguration
+			valueColumn: Incident.RecoveryAmountInr
+
+	/// Document that evidences the recovery credit.
+	property RecoveryEvidenceDocumentId
+		dataType: string
+		lineageTag: a82af3b5-c42f-546f-aa44-f8d5425c3f33
+
+		backingConfiguration
+			valueColumn: Incident.RecoveryEvidenceDocumentId
+
+	/// Documents that evidence the incident (semicolon separated).
+	property EvidenceDocumentIds
+		dataType: string
+		lineageTag: 71588ae5-9564-5c20-a8b5-1a17a05b9dee
+
+		backingConfiguration
+			valueColumn: Incident.EvidenceDocumentIds
+
+	/// Bank narrations of the affected transactions.
+	property Narration
+		dataType: string
+		lineageTag: 4b554f9f-74bf-587c-b5f6-544366110d2a
+
+		backingConfiguration
+			valueColumn: Incident.Narration
+
+	/// Seed release the row comes from.
+	property ReleaseId
+		dataType: string
+		lineageTag: ba2170f6-112d-5105-939d-ccdfaf52e179
+
+		backingConfiguration
+			valueColumn: Incident.ReleaseId

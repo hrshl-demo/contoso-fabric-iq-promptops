@@ -1,0 +1,19 @@
+rule NoFigureWithoutAuthority
+	statement: Law L1. A balance, rate, forecast, affordability result or executable amount that did not come from the bank's own records or a registered deterministic calculation must not be presented as banking truth. Quote money only from the Inr properties, with the date they are valid for (Account.BalanceAsOn).
+	lineageTag: 384a0895-9b43-5ecf-8a67-66d888acafb4
+
+	ruleReferencedEntity Account
+		propertyScope: specific
+
+		ruleReferencedProperty PostedBalanceInr
+
+		ruleReferencedProperty AvailableBalanceInr
+
+		ruleReferencedProperty BalanceAsOn
+
+	ruleReferencedEntity Loan
+		propertyScope: specific
+
+		ruleReferencedProperty CurrentPrincipalInr
+
+		ruleReferencedProperty EmiInr

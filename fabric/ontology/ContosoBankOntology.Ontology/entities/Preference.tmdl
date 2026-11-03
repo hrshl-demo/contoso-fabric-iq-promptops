@@ -1,0 +1,69 @@
+/// [Goals] A stated customer preference as a field/value pair: contact channel, debt preference, emergency reserve months, which decisions need a human, communication style. Honour them before suggesting anything. Standards: BIAN 13.0.0 Customer Relationship Management (custom); no Microsoft CDM reference. Demo mapping, not certification. Star role: dimension; grain: one preference key per customer. Lakehouse: dim_preference <- silver_preference <- preferences.json.
+entity Preference
+	lineageTag: cc0e2acd-baf0-5196-aa37-8745a50a5265
+	backingTable: Preference
+	keyProperty: PreferenceId
+
+	/// Preference identifier.
+	property PreferenceId
+		dataType: string
+		lineageTag: f08cc309-7a95-5975-a126-4a8edeb5dd9d
+
+		backingConfiguration
+			valueColumn: Preference.PreferenceId
+
+	/// Customer who stated the preference.
+	property CustomerId
+		dataType: string
+		lineageTag: bf1b73a6-a2b8-560e-8c53-6d95cc4f8ffd
+
+		backingConfiguration
+			valueColumn: Preference.CustomerId
+
+	/// Preference name such as contactChannel, debtPreference, communicationStyle.
+	property Field
+		dataType: string
+		lineageTag: c5dc5004-f85b-5068-a653-75f37c832e30
+
+		backingConfiguration
+			valueColumn: Preference.Field
+
+	/// Preference value; lists are semicolon separated.
+	property PreferenceValue
+		dataType: string
+		lineageTag: fd263b61-fb28-5ae9-b8ae-3168470634de
+
+		backingConfiguration
+			valueColumn: Preference.PreferenceValue
+
+	/// Date the preference was recorded (legacy only).
+	property RecordedOn
+		dataType: dateTime
+		lineageTag: d6605f14-715b-5caf-b923-b4f60ecb08e2
+
+		backingConfiguration
+			valueColumn: Preference.RecordedOn
+
+	/// Document in which the customer stated it (legacy only).
+	property StatedIn
+		dataType: string
+		lineageTag: 1ebc1d32-15bd-5132-8396-d87999229d6b
+
+		backingConfiguration
+			valueColumn: Preference.StatedIn
+
+	/// Free-text note (legacy only).
+	property Note
+		dataType: string
+		lineageTag: ad1e2878-e08d-54ef-b9bb-81325aab570f
+
+		backingConfiguration
+			valueColumn: Preference.Note
+
+	/// Seed release the row comes from.
+	property ReleaseId
+		dataType: string
+		lineageTag: 05536a13-647f-503c-a4e3-0b993c32fc0d
+
+		backingConfiguration
+			valueColumn: Preference.ReleaseId

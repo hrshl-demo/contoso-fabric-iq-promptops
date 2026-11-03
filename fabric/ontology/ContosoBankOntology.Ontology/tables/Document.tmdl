@@ -1,0 +1,82 @@
+table Document
+	lineageTag: 1ea0003e-2924-507b-bb6c-e33b3b342723
+
+	column DocumentId
+		dataType: string
+		lineageTag: 48a6cb7c-cd52-550c-8afa-7a81576c5718
+		sourceColumn: document_id
+
+	column CustomerId
+		dataType: string
+		lineageTag: e1f76672-f337-59e5-b77b-6ddd3aae7581
+		sourceColumn: customer_id
+
+	column Title
+		dataType: string
+		lineageTag: 8abdf468-4614-52ab-aa31-9dfdf730c9a7
+		sourceColumn: title
+
+	column DocumentType
+		dataType: string
+		lineageTag: 5fe2f548-c7e2-5c59-9b84-f4f6e08ea234
+		sourceColumn: document_type
+
+	column Issuer
+		dataType: string
+		lineageTag: 9cc7e196-ef64-50c8-bdf4-82f744674794
+		sourceColumn: issuer
+
+	column IssuedOn
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 7e5a2d31-9887-5309-acf5-df05d2cc2047
+		sourceColumn: issued_on
+
+	column PageCount
+		dataType: int64
+		formatString: 0
+		lineageTag: 104fccec-8277-57b9-925a-bf9d6c379032
+		sourceColumn: page_count
+
+	column Purpose
+		dataType: string
+		lineageTag: 8759bbe7-c633-5869-8417-54e4f37ae7f2
+		sourceColumn: purpose
+
+	column Visibility
+		dataType: string
+		lineageTag: ad5abfe0-f7b4-56e4-add5-8d614142fd5b
+		sourceColumn: visibility
+
+	column SourceVersion
+		dataType: int64
+		formatString: 0
+		lineageTag: e036b5bd-3597-5594-8403-866a726dd56f
+		sourceColumn: source_version
+
+	column SupersededByDocumentId
+		dataType: string
+		lineageTag: e4cde718-a5e6-5ec7-b9af-4d9f30c2da68
+		sourceColumn: superseded_by_document_id
+
+	column SupersedesDocumentId
+		dataType: string
+		lineageTag: e33c83de-2cfe-570b-9f3f-a45f0a0b2337
+		sourceColumn: supersedes_document_id
+
+	column FactsText
+		dataType: string
+		lineageTag: 988a06ee-80d0-5712-a4ec-a5d3ecc6ee73
+		sourceColumn: facts_text
+
+	column ReleaseId
+		dataType: string
+		lineageTag: e27c82e6-7bce-5a07-8a36-f408f3da0c70
+		sourceColumn: release_id
+
+	partition Document = entity
+		mode: directLake
+		source
+			entityName: dim_document
+			schemaName: dbo
+			expressionSource: DatabaseQuery

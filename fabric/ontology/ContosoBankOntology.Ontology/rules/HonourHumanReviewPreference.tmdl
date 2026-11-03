@@ -1,0 +1,12 @@
+rule HonourHumanReviewPreference
+	statement: Honour the customer's stated preferences. When Preference field humanReviewFor lists new_credit, insurance_purchase, mandate_change or household_access, those decisions always need a human specialist.
+	lineageTag: 6446d7ec-fa2e-5bc3-a311-eaa6bb79de71
+
+	ruleReferencedEntity Preference
+		propertyScope: specific
+
+		ruleReferencedProperty Field
+
+		ruleReferencedProperty PreferenceValue
+
+	ruleReferencedRelationship 'Preference Stated By Customer'

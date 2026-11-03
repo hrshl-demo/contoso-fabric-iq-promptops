@@ -1,0 +1,64 @@
+table ProtectionGap
+	lineageTag: 19768ee3-3fbe-54a9-853e-4f62695d9d2b
+
+	column ProtectionGapId
+		dataType: string
+		lineageTag: a0bf736e-cebb-575a-ae81-5c74acc481b1
+		sourceColumn: protection_gap_id
+
+	column CustomerId
+		dataType: string
+		lineageTag: c70e433e-a9b0-5c56-9e9c-051e5670570c
+		sourceColumn: customer_id
+
+	column GapType
+		dataType: string
+		lineageTag: bb7dc381-60c6-5fe9-813d-f94430c6ad0d
+		sourceColumn: gap_type
+
+	column ExistingProtectionInr
+		dataType: double
+		lineageTag: 14083c90-fd9a-50f8-abc3-1fb0d52b5e42
+		sourceColumn: existing_protection_inr
+
+	column TargetProtectionInr
+		dataType: double
+		lineageTag: 2dfaf1d1-b326-596e-8a2f-68442f342a75
+		sourceColumn: target_protection_inr
+
+	column GapInr
+		dataType: double
+		lineageTag: 7436a4d3-5d8a-581d-bce6-74ad6c3b22e3
+		sourceColumn: gap_inr
+
+	column IncomeReplacementInr
+		dataType: double
+		lineageTag: f657b410-41c3-51c6-92fc-42173331bec0
+		sourceColumn: income_replacement_inr
+
+	column LoanAndEducationNeedsInr
+		dataType: double
+		lineageTag: 45d2f1e4-4688-50c3-8c5e-a28b581def6c
+		sourceColumn: loan_and_education_needs_inr
+
+	column OffsetLiquidAssetsInr
+		dataType: double
+		lineageTag: 0cacbde1-69d2-5dab-9a15-7ccb307526ed
+		sourceColumn: offset_liquid_assets_inr
+
+	column Disclosure
+		dataType: string
+		lineageTag: 7fdce0ad-fef1-5db3-bd85-ca76830c4ab9
+		sourceColumn: disclosure
+
+	column ReleaseId
+		dataType: string
+		lineageTag: cfb408bd-cbda-5d82-ad25-3e9ad26ab55f
+		sourceColumn: release_id
+
+	partition ProtectionGap = entity
+		mode: directLake
+		source
+			entityName: fact_protection_gap
+			schemaName: dbo
+			expressionSource: DatabaseQuery

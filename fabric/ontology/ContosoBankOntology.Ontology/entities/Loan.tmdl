@@ -1,0 +1,133 @@
+/// [Holdings] A loan facility. Frontier Rhea has a floating-rate home loan (loan-home-001) and an education loan. Current principal is what is still owed; EMI is the monthly instalment. A disbursed loan is a liability, not income. Standards: BIAN 13.0.0 Consumer Loan (custom), Customer Product and Service Directory (custom); Microsoft CDM FHLoan (semantic reference only). Demo mapping, not certification. Star role: dimension; grain: one loan. Lakehouse: dim_loan <- silver_loan <- loans.json. Official CDM name aliases: FHLoan.integrationKey, FHLoan.principalAmount, FHLoan.balanceDisplayValue, FHLoan.installmentAmount, FHLoan.interestrate, FHLoan.maturitydate (semantic reference only).
+entity Loan
+	lineageTag: 6628aa6a-619c-5ca2-9798-a96143b08791
+	backingTable: Loan
+	keyProperty: LoanId
+
+	/// Loan identifier such as loan-home-001.
+	property LoanId
+		dataType: string
+		lineageTag: 85049af7-47f6-5181-be0c-d99f6606d02a
+
+		backingConfiguration
+			valueColumn: Loan.LoanId
+
+	/// Borrower.
+	property CustomerId
+		dataType: string
+		lineageTag: 6dd7fec4-665f-5773-9925-870fa613e7f2
+
+		backingConfiguration
+			valueColumn: Loan.CustomerId
+
+	/// Catalogue product of the loan, for example CB-HL-FLOATING.
+	property ProductId
+		dataType: string
+		lineageTag: 270d5827-65a9-584f-9086-3cde9418fc2c
+
+		backingConfiguration
+			valueColumn: Loan.ProductId
+
+	/// Loan purpose such as owner_occupied_home.
+	property Purpose
+		dataType: string
+		lineageTag: 9b11331d-49ef-5fca-b842-cdebebe222f0
+
+		backingConfiguration
+			valueColumn: Loan.Purpose
+
+	/// floating or fixed.
+	property RateType
+		dataType: string
+		lineageTag: 09397d01-ab96-56e6-9b71-dd644783cff2
+
+		backingConfiguration
+			valueColumn: Loan.RateType
+
+	/// Annual interest rate of the loan. As a percentage, for example 8.5 means 8.5%.
+	property AnnualRatePct
+		dataType: double
+		lineageTag: 34208088-de0c-5a20-9d8e-974601f29ba6
+
+		backingConfiguration
+			valueColumn: Loan.AnnualRatePct
+
+	/// Principal at the start of the seeded history. In rupees (INR).
+	property OpeningPrincipalInr
+		dataType: double
+		lineageTag: 1881d375-3bab-56c9-b8cc-df740c5b3689
+
+		backingConfiguration
+			valueColumn: Loan.OpeningPrincipalInr
+
+	/// Principal still owed. In rupees (INR).
+	property CurrentPrincipalInr
+		dataType: double
+		lineageTag: 9c8b502f-0105-5b58-96e2-514d981f18d6
+
+		backingConfiguration
+			valueColumn: Loan.CurrentPrincipalInr
+
+	/// Monthly instalment. In rupees (INR).
+	property EmiInr
+		dataType: double
+		lineageTag: d610bc46-d870-5fbf-957d-b7f02077730a
+
+		backingConfiguration
+			valueColumn: Loan.EmiInr
+
+	/// One-time fee charged at origination. In rupees (INR).
+	property OriginationFeeInr
+		dataType: double
+		lineageTag: 18b2515e-1391-5dae-972c-cd136070f665
+
+		backingConfiguration
+			valueColumn: Loan.OriginationFeeInr
+
+	/// Borrower type the prepayment terms apply to.
+	property PrepaymentAppliesTo
+		dataType: string
+		lineageTag: 465b46ca-a090-5cb9-ae28-33eb7907cb30
+
+		backingConfiguration
+			valueColumn: Loan.PrepaymentAppliesTo
+
+	/// Charge on prepayment. As a percentage, for example 8.5 means 8.5%.
+	property PrepaymentChargePct
+		dataType: double
+		lineageTag: e0895ffb-c92c-5786-b409-9fa31867e9e9
+
+		backingConfiguration
+			valueColumn: Loan.PrepaymentChargePct
+
+	/// Smallest allowed prepayment. In rupees (INR).
+	property PrepaymentMinimumInr
+		dataType: double
+		lineageTag: 0612fefb-22ad-5bdc-b0bf-9218732abb1b
+
+		backingConfiguration
+			valueColumn: Loan.PrepaymentMinimumInr
+
+	/// Days of notice needed before a prepayment.
+	property PrepaymentNoticeDays
+		dataType: int64
+		lineageTag: c1b7dd14-539c-56a6-92f3-f5dd19d283a9
+
+		backingConfiguration
+			valueColumn: Loan.PrepaymentNoticeDays
+
+	/// Number of instalments in the seeded repayment schedule.
+	property ScheduledInstallments
+		dataType: int64
+		lineageTag: 7c20080f-681d-50e8-9e2c-d6150e76c2fb
+
+		backingConfiguration
+			valueColumn: Loan.ScheduledInstallments
+
+	/// Seed release the row comes from.
+	property ReleaseId
+		dataType: string
+		lineageTag: b5948ac8-b6ac-53b8-ab52-610b015de3a0
+
+		backingConfiguration
+			valueColumn: Loan.ReleaseId

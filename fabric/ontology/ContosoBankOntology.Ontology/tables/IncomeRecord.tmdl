@@ -1,0 +1,64 @@
+table IncomeRecord
+	lineageTag: 930a033b-af75-54b1-b8de-00c5a44e211e
+
+	column IncomeId
+		dataType: string
+		lineageTag: 59a0afff-3d79-5089-9bb4-8d9272deeb4a
+		sourceColumn: income_id
+
+	column CustomerId
+		dataType: string
+		lineageTag: 83a7e38d-0690-527c-984a-8bb672e954eb
+		sourceColumn: customer_id
+
+	column IncomeType
+		dataType: string
+		lineageTag: af83dd99-f111-58d1-9624-afc9528f7ad7
+		sourceColumn: income_type
+
+	column Period
+		dataType: string
+		lineageTag: 44bb90b2-0074-57d8-8158-e81507dc651b
+		sourceColumn: period
+
+	column GrossInr
+		dataType: double
+		lineageTag: 1232b4b3-16bc-59db-af81-f5408df7d5f4
+		sourceColumn: gross_inr
+
+	column NetInr
+		dataType: double
+		lineageTag: 5ba35c14-51a0-52a0-bb0d-a6bc81f9bdab
+		sourceColumn: net_inr
+
+	column IsRecurring
+		dataType: boolean
+		lineageTag: c7b8c0ac-bcde-5381-a272-d0e141aee057
+		sourceColumn: is_recurring
+
+	column EvidenceDocumentId
+		dataType: string
+		lineageTag: 3bded138-7e1b-5772-9263-a2fcae836ecf
+		sourceColumn: evidence_document_id
+
+	column ContributorMemberId
+		dataType: string
+		lineageTag: 808ad2e9-07f2-5047-b5ea-2fed648ed7ed
+		sourceColumn: contributor_member_id
+
+	column Narration
+		dataType: string
+		lineageTag: 0b570633-93ae-54e9-8cac-31e641457844
+		sourceColumn: narration
+
+	column ReleaseId
+		dataType: string
+		lineageTag: 46d374fd-1b9d-5b70-997b-0ff5e6b9c268
+		sourceColumn: release_id
+
+	partition IncomeRecord = entity
+		mode: directLake
+		source
+			entityName: fact_income_record
+			schemaName: dbo
+			expressionSource: DatabaseQuery

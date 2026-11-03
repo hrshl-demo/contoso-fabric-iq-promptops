@@ -1,0 +1,71 @@
+table Incident
+	lineageTag: 7bc88ba4-8134-5953-aaac-611bf68230dc
+
+	column IncidentId
+		dataType: string
+		lineageTag: 1f77a602-4ec4-52c1-b6c1-bd3e96c3ed01
+		sourceColumn: incident_id
+
+	column CustomerId
+		dataType: string
+		lineageTag: 89021d2b-a686-528e-8a81-c0f6c1a57395
+		sourceColumn: customer_id
+
+	column IncidentType
+		dataType: string
+		lineageTag: 02dfc786-8e34-5f15-9ea1-67b01966b2a9
+		sourceColumn: incident_type
+
+	column Status
+		dataType: string
+		lineageTag: 1ee1c4c9-591d-56c3-8d25-ba3ffe59d2c3
+		sourceColumn: status
+
+	column DetectedAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 5243f035-9f99-53f5-a562-5f49f422090c
+		sourceColumn: detected_at
+
+	column DetectedDateIst
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: d0393be6-3c8b-57b2-bbc2-b0dfaaaac3a2
+		sourceColumn: detected_date_ist
+
+	column AmountInr
+		dataType: double
+		lineageTag: 6579ff41-d05e-56c0-9813-f95ba1a663c4
+		sourceColumn: amount_inr
+
+	column RecoveryAmountInr
+		dataType: double
+		lineageTag: 8c9d15a8-a4d7-5b55-b643-94f1826932b7
+		sourceColumn: recovery_amount_inr
+
+	column RecoveryEvidenceDocumentId
+		dataType: string
+		lineageTag: d1f06f0a-25b3-582b-baf6-77d9c56158cd
+		sourceColumn: recovery_evidence_document_id
+
+	column EvidenceDocumentIds
+		dataType: string
+		lineageTag: cddf4a87-faf0-58a8-a049-73aa2ff1594f
+		sourceColumn: evidence_document_ids
+
+	column Narration
+		dataType: string
+		lineageTag: bf85f4a2-26f2-50e2-949b-8817d98b543f
+		sourceColumn: narration
+
+	column ReleaseId
+		dataType: string
+		lineageTag: a68dc217-655e-595a-a94b-eb8ee58ac1de
+		sourceColumn: release_id
+
+	partition Incident = entity
+		mode: directLake
+		source
+			entityName: fact_incident
+			schemaName: dbo
+			expressionSource: DatabaseQuery

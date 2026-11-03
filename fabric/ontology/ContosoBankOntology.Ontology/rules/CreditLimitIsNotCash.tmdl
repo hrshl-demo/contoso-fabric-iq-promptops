@@ -1,0 +1,12 @@
+rule CreditLimitIsNotCash
+	statement: A card's CreditLimitInr and AvailableCreditInr are borrowing capacity, not an asset or a cash balance. Never add them to account balances or net position.
+	lineageTag: 65dde0c7-92f8-579b-b1d8-0716420851e9
+
+	ruleReferencedEntity Card
+		propertyScope: specific
+
+		ruleReferencedProperty CreditLimitInr
+
+		ruleReferencedProperty AvailableCreditInr
+
+		ruleReferencedProperty OutstandingBalanceInr

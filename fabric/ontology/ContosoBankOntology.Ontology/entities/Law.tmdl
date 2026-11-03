@@ -1,0 +1,29 @@
+/// [Policy] One of the bank's twelve non-negotiable design laws for the conversational and agentic experience (no figure without authority, no consent by implication, no execution by language, no double allocation, no future money as cash, no stale authority, no self-expanding agent, no sales during harm, ...). The same laws are loaded as ontology rules. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: reference; grain: one design law. Lakehouse: ref_law <- Curated reference data.
+entity Law
+	lineageTag: 9aeb50e0-3150-5ab4-a783-6c9e82ae26cf
+	backingTable: Law
+	keyProperty: LawId
+
+	/// Law identifier L1-L12.
+	property LawId
+		dataType: string
+		lineageTag: df674c54-42be-5bd9-b5e8-562dbae172a9
+
+		backingConfiguration
+			valueColumn: Law.LawId
+
+	/// Short name of the law.
+	property Name
+		dataType: string
+		lineageTag: b0cf2107-b56e-55a0-ab37-a7f67b24a4d3
+
+		backingConfiguration
+			valueColumn: Law.Name
+
+	/// Behaviour the law requires.
+	property RequiredBehavior
+		dataType: string
+		lineageTag: cbb7e7a9-0033-50cb-846b-185d47417303
+
+		backingConfiguration
+			valueColumn: Law.RequiredBehavior

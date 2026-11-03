@@ -1,0 +1,24 @@
+table Law
+	lineageTag: ac16d5ea-e215-5f54-89e0-85c10bee5fcb
+
+	column LawId
+		dataType: string
+		lineageTag: 337f3c24-eb72-5114-b51c-7ca73b8542ce
+		sourceColumn: law_id
+
+	column Name
+		dataType: string
+		lineageTag: 258a1a73-6d65-5bd6-9180-63e72717617a
+		sourceColumn: name
+
+	column RequiredBehavior
+		dataType: string
+		lineageTag: e3383566-68b4-5f6d-b925-a41ed9ee54cd
+		sourceColumn: required_behavior
+
+	partition Law = entity
+		mode: directLake
+		source
+			entityName: ref_law
+			schemaName: dbo
+			expressionSource: DatabaseQuery

@@ -1,0 +1,117 @@
+/// [Servicing] A customer document: salary slip, school fee circular, scam message, card statement, FD renewal notice, loan offer. Documents are evidence only when the customer selected them and consented; FactsText holds the key facts in readable form. Content itself is in Foundry IQ, not here. Standards: BIAN 13.0.0 Document Directory (custom); Microsoft CDM CustomDocument (semantic reference only). Demo mapping, not certification. Star role: dimension; grain: one document. Lakehouse: dim_document <- silver_document <- documents.json.
+entity Document
+	lineageTag: c3c6d409-43b0-51b0-b4b8-1408431b765e
+	backingTable: Document
+	keyProperty: DocumentId
+
+	/// Document identifier such as doc-school-fee or DOC-N-PENSION.
+	property DocumentId
+		dataType: string
+		lineageTag: a4b6220c-c8e3-539e-bc7d-22be4fd25cd8
+
+		backingConfiguration
+			valueColumn: Document.DocumentId
+
+	/// Customer who owns the document.
+	property CustomerId
+		dataType: string
+		lineageTag: f4ce0082-7de8-5c0e-8c08-036de0831afb
+
+		backingConfiguration
+			valueColumn: Document.CustomerId
+
+	/// Document title (legacy only).
+	property Title
+		dataType: string
+		lineageTag: 4712a049-f8e5-5144-b3b3-e92b943a534e
+
+		backingConfiguration
+			valueColumn: Document.Title
+
+	/// Kind of document such as salary_slip, school_fee_evidence, pension_advice, invoice.
+	property DocumentType
+		dataType: string
+		lineageTag: 33fdd6b2-8ff1-524f-acbb-f5bd1a227c2b
+
+		backingConfiguration
+			valueColumn: Document.DocumentType
+
+	/// Who issued the document.
+	property Issuer
+		dataType: string
+		lineageTag: 7443a28e-c282-54df-a08e-e1918f62d9f2
+
+		backingConfiguration
+			valueColumn: Document.Issuer
+
+	/// Issue date (Frontier only).
+	property IssuedOn
+		dataType: dateTime
+		lineageTag: 5f9468e7-a05a-5c06-aea4-e0f1147ef324
+
+		backingConfiguration
+			valueColumn: Document.IssuedOn
+
+	/// Number of pages (legacy only).
+	property PageCount
+		dataType: int64
+		lineageTag: 029e1941-63ae-5373-b2f1-cfa8b2d336ab
+
+		backingConfiguration
+			valueColumn: Document.PageCount
+
+	/// Why the document exists in the seed, for example evidence_analysis.
+	property Purpose
+		dataType: string
+		lineageTag: 0f025042-09f3-5f7c-b173-394dfe4b9c27
+
+		backingConfiguration
+			valueColumn: Document.Purpose
+
+	/// Who may see it, for example owner_seed (legacy only).
+	property Visibility
+		dataType: string
+		lineageTag: a7368dc4-0d74-5f38-b1ee-ec7f427bc8ab
+
+		backingConfiguration
+			valueColumn: Document.Visibility
+
+	/// Document version number (legacy only).
+	property SourceVersion
+		dataType: int64
+		lineageTag: 62b83286-2049-586e-9ea8-9ca6f3999c4a
+
+		backingConfiguration
+			valueColumn: Document.SourceVersion
+
+	/// Newer document that supersedes this one.
+	property SupersededByDocumentId
+		dataType: string
+		lineageTag: d85cae74-2eba-5da3-96ce-1a5eaffec0a7
+
+		backingConfiguration
+			valueColumn: Document.SupersededByDocumentId
+
+	/// Older document this one supersedes.
+	property SupersedesDocumentId
+		dataType: string
+		lineageTag: 84ae122e-c98e-521d-92e1-8323543bc9e3
+
+		backingConfiguration
+			valueColumn: Document.SupersedesDocumentId
+
+	/// Key facts stated in the document as readable text: amounts in INR, lists comma separated.
+	property FactsText
+		dataType: string
+		lineageTag: 983e9294-ceba-51e6-afcd-7b12092748b6
+
+		backingConfiguration
+			valueColumn: Document.FactsText
+
+	/// Seed release the row comes from.
+	property ReleaseId
+		dataType: string
+		lineageTag: 61b4e755-2a71-5290-9515-7b313b60b35a
+
+		backingConfiguration
+			valueColumn: Document.ReleaseId

@@ -1,0 +1,93 @@
+/// [Money] A recurring commitment that leaves an account on a fixed day: loan EMI, school fee, card payment, SIP, premium. Obligations are committed cash: they reduce what can safely be moved or invested. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: fact; grain: one scheduled obligation. Lakehouse: fact_scheduled_obligation <- silver_scheduled_obligation <- scheduled-obligations.json.
+entity ScheduledObligation
+	lineageTag: b903a28e-c659-53a0-b5e6-9515a4d8349f
+	backingTable: ScheduledObligation
+	keyProperty: ObligationId
+
+	/// Obligation identifier such as obl-home-emi.
+	property ObligationId
+		dataType: string
+		lineageTag: 225fd924-21a9-5311-8791-7fd1fe35de4c
+
+		backingConfiguration
+			valueColumn: ScheduledObligation.ObligationId
+
+	/// Customer who owes the obligation.
+	property CustomerId
+		dataType: string
+		lineageTag: 1e7dde70-9692-5d48-8897-4963bb40b58f
+
+		backingConfiguration
+			valueColumn: ScheduledObligation.CustomerId
+
+	/// Obligation name such as Home loan EMI.
+	property Name
+		dataType: string
+		lineageTag: 12694848-a40c-5c55-9f9c-27fff814fa9e
+
+		backingConfiguration
+			valueColumn: ScheduledObligation.Name
+
+	/// Account the payment leaves.
+	property SourceAccountId
+		dataType: string
+		lineageTag: b4f076dd-b425-5412-8940-17bd0f69d589
+
+		backingConfiguration
+			valueColumn: ScheduledObligation.SourceAccountId
+
+	/// What is being paid: loan, card, document or account reference.
+	property PayeeRef
+		dataType: string
+		lineageTag: 5e71a152-dc62-5b9d-abbc-1d35187fc74d
+
+		backingConfiguration
+			valueColumn: ScheduledObligation.PayeeRef
+
+	/// Kind of payee: loan, card, document, account.
+	property PayeeType
+		dataType: string
+		lineageTag: ba3957e8-74eb-5f80-bf6c-af96e1368f40
+
+		backingConfiguration
+			valueColumn: ScheduledObligation.PayeeType
+
+	/// monthly, quarterly or annual.
+	property Cadence
+		dataType: string
+		lineageTag: 7068ef48-2463-5d36-b4bd-7b649e4db6df
+
+		backingConfiguration
+			valueColumn: ScheduledObligation.Cadence
+
+	/// Day of the month the payment is due.
+	property DayOfMonth
+		dataType: int64
+		lineageTag: f23f7e32-b55f-5384-bfc3-501c82d9a461
+
+		backingConfiguration
+			valueColumn: ScheduledObligation.DayOfMonth
+
+	/// Obligation status such as active.
+	property Status
+		dataType: string
+		lineageTag: 20f200b6-4958-5ed7-becc-9017facbb401
+
+		backingConfiguration
+			valueColumn: ScheduledObligation.Status
+
+	/// Amount per payment. In rupees (INR).
+	property AmountInr
+		dataType: double
+		lineageTag: 5e7743e9-64b2-5c0a-a932-2c247a0696ef
+
+		backingConfiguration
+			valueColumn: ScheduledObligation.AmountInr
+
+	/// Seed release the row comes from.
+	property ReleaseId
+		dataType: string
+		lineageTag: 0df682a7-494a-5ab5-87f1-11b8e5685149
+
+		backingConfiguration
+			valueColumn: ScheduledObligation.ReleaseId

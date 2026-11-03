@@ -1,0 +1,121 @@
+/// A fixed deposit. Frontier Rhea holds dep-rhea-liquid-001 (liquid, withdrawable with a penalty). Maturity proceeds are not spendable cash until a maturity posting exists. The same money can also be an Investment: for net position or total assets count it once, through Investment (Law L5). Standards: BIAN 13.0.0 Customer Product and Service Directory (custom), Term Deposit (custom, partly provisional); Microsoft CDM FHSaving (semantic reference only). Demo mapping, not certification. Star role: dimension; grain: one deposit. Lakehouse: dim_deposit <- silver_deposit <- deposits.json. Official CDM name aliases: FHSaving.integrationKey, FHSaving.maturitydate, FHSaving.interestrate (semantic reference only).
+table Deposit
+
+	/// Sum of fixed deposit principal in rupees. A Frontier deposit also appears as an investment: do not add both.
+	measure 'Total Deposits (INR)' = SUM(Deposit[Principal (INR)])
+		formatString: #,0.00
+		displayFolder: Balances
+
+	/// Deposit identifier such as dep-rhea-liquid-001.
+	column 'Deposit ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: deposit_id
+
+	/// Depositor.
+	column 'Customer ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	/// Catalogue product of the deposit.
+	column 'Product ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: product_id
+
+	/// Account the deposit is linked to (legacy only).
+	column 'Linked Account ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: linked_account_id
+
+	/// Deposit status such as active (legacy only).
+	column Status
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: status
+
+	/// Amount placed in the deposit. In rupees (INR).
+	column 'Principal (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: principal_inr
+
+	/// Amount placed in the deposit. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Principal (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: principal_paise
+
+	/// Annual interest rate (Frontier only). As a percentage, for example 8.5 means 8.5%.
+	column 'Annual Rate (%)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: annual_rate_pct
+
+	/// Annual interest rate (Frontier only). In basis points (100 bps = 1%).
+	column 'Annual Rate (bps)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: annual_rate_bps
+
+	/// Date the deposit was opened.
+	column 'Opened On'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: opened_on
+
+	/// Maturity date. A date alone creates no interest or cash.
+	column 'Matures On'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: matures_on
+
+	/// How quickly the money can be reached, for example available_with_penalty (Frontier only).
+	column 'Liquidity Class'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: liquidity_class
+
+	/// What happens at maturity, for example renew_principal_and_interest (legacy only).
+	column 'Maturity Instruction'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: maturity_instruction
+
+	/// Penalty for withdrawing before maturity (Frontier only). As a percentage, for example 8.5 means 8.5%.
+	column 'Premature Penalty (%)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: premature_penalty_pct
+
+	/// Penalty for withdrawing before maturity (Frontier only). In basis points (100 bps = 1%).
+	column 'Premature Penalty (bps)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: premature_penalty_bps
+
+	/// Seed release the row comes from.
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	partition Deposit = entity
+		mode: directLake
+		source
+			entityName: dim_deposit
+			expressionSource: 'DirectLake - ContosoBankModel'
