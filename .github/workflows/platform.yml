@@ -68,6 +68,7 @@ env:
   CD_PIPELINE_OBJECT_ID: ${{ vars.CD_PIPELINE_OBJECT_ID }}
   CD_CONSUMER_OBJECT_IDS: ${{ vars.CD_CONSUMER_OBJECT_IDS }}
   CD_SP_GROUP_NAME: ${{ vars.CD_SP_GROUP_NAME }}
+  CD_DATA_SOURCE: ${{ vars.CD_DATA_SOURCE }}
 
 jobs:
   guards:

@@ -81,7 +81,7 @@ def test_the_capacity_guard_job_fits_a_status_call_and_a_full_pause():
 def test_the_platform_passes_every_list_the_settings_need():
     env = load("platform.yml")["env"]
     for name in ("CD_RESOURCE_GROUP", "CD_CAPACITY", "CD_LOCATION", "CD_WORKSPACE_DEV", "CD_WORKSPACE_PROD", "CD_ADMIN_OBJECT_IDS", "CD_ADMIN_UPNS",
-                 "CD_PIPELINE_OBJECT_ID", "CD_CONSUMER_OBJECT_IDS", "CD_SP_GROUP_NAME", "CD_DEADLINE_MIN"):
+                 "CD_PIPELINE_OBJECT_ID", "CD_CONSUMER_OBJECT_IDS", "CD_SP_GROUP_NAME", "CD_DATA_SOURCE", "CD_DEADLINE_MIN"):
         assert env[name] == "${{ vars." + name + " }}", name
 
 
