@@ -1,0 +1,84 @@
+silver:
+  - table: silver_customer
+    entity: Customer
+    profile: true
+    profile_entity: Customer
+    ontology_entity: Customer
+    domain: Party
+    serves: [customer]
+    grain: One persona record per seed release.
+    description: One persona record per seed release. Conformed to the CDM profile entity Customer (realises the ontology entity Customer; official reference Contact (semantic reference only)). Attributes without a seed counterpart stay null; other seed fields the ontology needs are x columns.
+    notes: 'CRM-only parties (a name on a CRM case with no persona record) are not profile Customer records: they come from silver_crm_case (customerId, customerName) and gold applies the same precedence by source order as v1.'
+    cdm: {entity: Contact, status: custom, reference: verified-reference}
+    bian:
+      - {domain: Party Reference Data Directory, control_record: PartyReferenceDataDirectoryEntry, custom: 4, provisional: 0}
+    sources:
+      - {release: retail-frontier-v1, file: personas.json}
+      - {release: retail4-v1, file: personas.json}
+    key: [ownerId]
+    owner: ownerId
+    common:                                        # app/data_xray/projection.py 431-435 (bank_records: Customer)
+      cite: [app/data_xray/projection.py:431-435, app/frontier/data.py:93-100]
+      source_kind: bank_record                     # put() default (325): the Customer call passes none
+      state: {const: customer}                     # 434
+      label: {from: [displayName, name]}           # 434 persona displayName; a Frontier persona's displayName defaults to its name (data.py 99); else ownerId
+    columns:
+      - {col: ownerId, origin: profile, type: string, from: ownerId}
+      - {col: displayName, origin: profile, type: string, from: [displayName, name], pii: true}
+      - {col: city, origin: profile, type: string, from: city, pii: true}
+      - {col: cohort, origin: profile, type: string, from: cohort}
+      - {col: xAgeYears, origin: extension, type: integer, from: age, unit: years, desc: Age in years at the seed business date., pii: true}
+      - {col: xEmploymentStatus, origin: extension, type: string, from: employmentStatus, desc: Employment status such as salaried or retired.}
+      - {col: xHouseholdId, origin: extension, type: string, from: householdId, desc: Household the customer belongs to (Frontier only).}
+      - {col: xCustomerVisiblePrimaryOwner, origin: extension, type: boolean, from: customerVisiblePrimaryOwner, desc: True when the customer is the only customer-visible primary owner of a household (Frontier only).}
+      - {col: xContactPhoneMasked, origin: extension, type: string, from: contact.phoneMasked, desc: 'Registered mobile number, already masked. Never read digits aloud.', pii: true}
+      - {col: xNarrative, origin: extension, type: string, from: narrative, desc: Short narrative of the persona's situation and goals (legacy personas only).}
+      - {col: xKycDateOfBirth, origin: extension, type: date, from: kyc.dateOfBirth, desc: 'Date of birth from KYC. Restricted: identity verification only.', restricted: true}
+      - {col: xKycAddress, origin: extension, type: string, from: kyc.address, desc: Residential address from KYC. Restricted., restricted: true}
+      - {col: xContactEmail, origin: extension, type: string, from: contact.email, desc: Registered email address. Restricted., restricted: true}
+  - table: silver_household
+    entity: Household
+    profile: false
+    ontology_entity: Household
+    domain: Party
+    serves: [household]
+    grain: One household per Frontier primary-owner persona record.
+    description: 'One household per Frontier primary-owner persona record. Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    notes: 'Derived from the Frontier persona record that names the household: the seed has no household file (its members are in silver_household_member).'
+    sources:
+      - {release: retail-frontier-v1, file: personas.json}
+    key: [householdId]
+    owner: ownerId
+    common:                                        # extension entity: the app's put() defaults (app/data_xray/projection.py 322-338)
+      cite: app/data_xray/projection.py:322-338
+      source_kind: bank_record
+      state: {const: recorded}                     # the seed record carries no lifecycle field
+    columns:
+      - {col: householdId, origin: extension, type: string, from: householdId, desc: Household identifier such as household-bansal., nullable: false}
+      - {col: primaryOwnerName, origin: extension, type: string, from: name, pii: true}
+      - {col: primaryOwnerId, origin: extension, type: string, from: ownerId, desc: The customer who owns the household relationship.}
+  - table: silver_household_member
+    entity: HouseholdMember
+    profile: false
+    ontology_entity: HouseholdMember
+    domain: Party
+    serves: [household_member]
+    grain: One household member record.
+    description: 'One household member record. Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    sources:
+      - {release: retail-frontier-v1, file: household.json}
+    key: [memberId]
+    owner: primaryOwnerId
+    common:                                        # extension entity: the app's put() defaults (app/data_xray/projection.py 322-338)
+      cite: app/data_xray/projection.py:322-338
+      source_kind: bank_record
+      state: {const: recorded}
+      label: {from: [name]}
+    columns:
+      - {col: memberId, origin: extension, type: string, from: memberId, desc: Household member identifier such as member-vivek., nullable: false}
+      - {col: householdId, origin: extension, type: string, from: householdId, desc: Household the member belongs to.}
+      - {col: primaryOwnerId, origin: extension, type: string, from: primaryOwnerId, desc: Primary owner customer of the household.}
+      - {col: name, origin: extension, type: string, from: name, desc: Member name., pii: true}
+      - {col: relationship, origin: extension, type: string, from: relationship, desc: 'Relationship to the primary owner: spouse, child or parent.'}
+      - {col: ageBand, origin: extension, type: string, from: ageBand, desc: 'Age band: adult, minor or elderly.', pii: true}
+      - {col: dependent, origin: extension, type: boolean, from: dependent, desc: True when the member is financially dependent on the primary owner.}

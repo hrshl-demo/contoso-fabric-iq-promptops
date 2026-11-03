@@ -1,0 +1,111 @@
+{
+  "journeyId": "J09",
+  "title": "Credit and BNPL, explained",
+  "oneLiner": "Understand what credit actually costs before you use it.",
+  "buId": "BU-CARDS",
+  "icon": "book",
+  "accentHue": 48,
+  "salesPosture": "educate_only",
+  "goal": "Leave the customer genuinely able to explain, in their own words, how interest, minimum due and BNPL instalments work - and only then, if they ask, discuss a product.",
+  "triggers": [
+    "how does a credit card work",
+    "minimum due",
+    "bnpl",
+    "buy now pay later",
+    "credit score",
+    "is interest charged if",
+    "emi on card",
+    "should i get a credit card",
+    "what is a billing cycle",
+    "interest free period"
+  ],
+  "antiTriggers": [
+    "my card bill is higher than expected"
+  ],
+  "sopIds": [
+    "SOP-UC09-CREDIT-EDUCATION",
+    "SOP-SHARED-CATALOGUE-USE",
+    "SOP-SHARED-PRODUCT-SUITABILITY"
+  ],
+  "productIds": [
+    "CB-CARD-STARTER-SECURED",
+    "CB-CARD-DEBIT",
+    "CB-CARD-CLASSIC"
+  ],
+  "evidenceHints": [
+    "DOC-V-BNPL-OFFER",
+    "DOC-V-CARD-TERMS",
+    "DOC-V-CREDIT-QUESTION"
+  ],
+  "documentChoiceStages": [
+    "consequence"
+  ],
+  "toolHints": [
+    "knowledge_search",
+    "catalogue_lookup",
+    "document_read",
+    "holdings",
+    "spend_analysis"
+  ],
+  "stages": [
+    {
+      "id": "misconception",
+      "goal": "Find the specific thing they have wrong. There is almost always exactly one, and it is usually the minimum due. Ask with `quick_replies` carrying what people usually have wrong: `How interest is charged`, `What the minimum due does`, `How BNPL works`.",
+      "exitWhen": "The misconception is identified."
+    },
+    {
+      "id": "correct",
+      "goal": "Correct it with a concrete worked example using round numbers, not a definition. Hand back with `quick_replies` about the explanation and never about a product: `That makes sense`, `Show me another example`.",
+      "exitWhen": "The correction has been given with an example."
+    },
+    {
+      "id": "teachback",
+      "goal": "Ask them to put it back in their own words, or answer a short scenario - with `quick_replies` carrying the answers to that scenario, plus `Move on`. Keep every chip about understanding: this journey teaches, so a chip offering a product is still selling one.",
+      "exitWhen": "They have demonstrated understanding, or asked to move on."
+    },
+    {
+      "id": "consequence",
+      "goal": "Connect it to their actual situation - an offer in front of them, or a habit. Hand back with `quick_replies`: `That is my situation`, `Mine is different`.",
+      "exitWhen": "The connection is made."
+    },
+    {
+      "id": "optional_products",
+      "goal": "ONLY if they explicitly ask about getting a card: compare honestly, including not getting one. Only once they have asked may `quick_replies` name products, and the row must keep the honest answer on it: one chip per card, `Stay as I am`.",
+      "exitWhen": "They have opted in and been shown options, or never opted in."
+    }
+  ],
+  "mustEstablish": [
+    "What they currently believe, before correcting anything.",
+    "Whether there is a live offer or instalment plan in front of them.",
+    "Whether they are asking to learn or asking to buy. These need different conversations."
+  ],
+  "neverDo": [
+    "Do not sell. A learning question is not a buying signal, and answering it with a product is the fastest way to lose someone's trust at twenty-five.",
+    "Do not enter the product stage unless they explicitly ask. Not 'seems interested' - explicitly ask.",
+    "Do not moralise about debt. Explain the mechanism and let them decide.",
+    "Do not state or estimate a credit score. The bank does not set it and you cannot see it.",
+    "Do not describe BNPL as interest-free without the conditions under which it stops being interest-free."
+  ],
+  "objectionPaths": [
+    {
+      "signal": "asks directly for a card",
+      "respondBy": "This is the opt-in. Compare honestly - including the secured option and the option of not taking one - and state eligibility truthfully."
+    },
+    {
+      "signal": "thinks paying the minimum is fine",
+      "respondBy": "This is the central misconception. Work a concrete example showing the balance after six months of minimum payments. Do not lecture; let the number do it."
+    }
+  ],
+  "completion": {
+    "default": "The next action is an honest non-sale ending: the misconception is corrected with a worked example and the customer can restate it; discuss products only if they explicitly ask.",
+    "nivedita": "The next action is a safety explanation - how a card is misused by others, and what protects her. Do not teach revolving credit mechanics she has no use for.",
+    "rhea": "She likely understands the mechanics. The next action is a precise answer to the specific term she is asking about, with no product turn unless she asks.",
+    "ravi": "His core journey. Teach and do not sell. Finish with a learning card he can keep, not an application. If he opts in to products, the secured card is the honest starting point and say why."
+  },
+  "turnCap": 14,
+  "openers": [
+    "Is buy now pay later actually free?",
+    "What happens if I only pay the minimum due on my card?",
+    "Should I get a credit card, and what would it really cost me?"
+  ]
+}

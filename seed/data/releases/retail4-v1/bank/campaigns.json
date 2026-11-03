@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "retail4-bank-v1",
+  "releaseId": "retail4-v1",
+  "syntheticLabel": "Synthetic demonstration data. Not a real bank.",
+  "generatedFor": "businessDate 2026-09-15",
+  "_units": {
+    "amountCroreINR": "Reporting aggregate amount in crore INR as a float; 1 crore = INR 10,000,000.",
+    "portfolioCroreINR": "Reporting aggregate portfolio in crore INR as a float.",
+    "amountMinor": "Exact transactional money, if present, is integer paise. These aggregate files do not use exact retail amounts."
+  },
+  "campaigns": [
+    {
+      "campaignId": "CMP-2026-001",
+      "name": "Senior Secure Monsoon 2026",
+      "buId": "BU-RETAIL-DEPOSITS",
+      "status": "live",
+      "startDate": "2026-07-15",
+      "endDate": "2026-09-30",
+      "channel": "branch",
+      "targetSegment": "Customers aged 60+ with maturing deposits or pension credits.",
+      "productIds": [
+        "CB-FD-SENIOR-INCOME",
+        "CB-FD-SENIOR-FLEX",
+        "CB-SAV-SENIOR"
+      ],
+      "reach": 82000,
+      "engaged": 18400,
+      "converted": 5220,
+      "conversionPercent": 28.37,
+      "revenueAttributedCroreINR": 18.4,
+      "costCroreINR": 2.1
+    },
+    {
+      "campaignId": "CMP-2026-002",
+      "name": "Festive Family Cashback Boost",
+      "buId": "BU-CARDS",
+      "status": "planned",
+      "startDate": "2026-10-01",
+      "endDate": "2026-11-20",
+      "channel": "mobileapp",
+      "targetSegment": "Salary-account households with high grocery, education, and utility spends.",
+      "productIds": [
+        "CB-CARD-FAMILY-CASHBACK",
+        "CB-CARD-CLASSIC"
+      ],
+      "reach": 240000,
+      "engaged": 67200,
+      "converted": 15800,
+      "conversionPercent": 23.51,
+      "revenueAttributedCroreINR": 26.7,
+      "costCroreINR": 5.4
+    },
+    {
+      "campaignId": "CMP-2026-003",
+      "name": "Home Loan Clause Clarity Drive",
+      "buId": "BU-LENDING",
+      "status": "live",
+      "startDate": "2026-08-01",
+      "endDate": "2026-09-25",
+      "channel": "website",
+      "targetSegment": "Salaried customers comparing fixed obligations before buying a first or larger home.",
+      "productIds": [
+        "CB-HL-STANDARD",
+        "CB-HL-FLEX"
+      ],
+      "reach": 51000,
+      "engaged": 11700,
+      "converted": 1020,
+      "conversionPercent": 8.72,
+      "revenueAttributedCroreINR": 31.3,
+      "costCroreINR": 4.8
+    },
+    {
+      "campaignId": "CMP-2026-004",
+      "name": "Health Top-Up Renewal Save",
+      "buId": "BU-BANCASSURANCE",
+      "status": "live",
+      "startDate": "2026-08-10",
+      "endDate": "2026-09-18",
+      "channel": "whatsappchatbot",
+      "targetSegment": "Existing health policy holders with renewal hesitation or deductible questions.",
+      "productIds": [
+        "CB-HEALTH-BASE",
+        "CB-HEALTH-TOPUP"
+      ],
+      "reach": 68000,
+      "engaged": 9800,
+      "converted": 840,
+      "conversionPercent": 8.57,
+      "revenueAttributedCroreINR": 4.6,
+      "costCroreINR": 2.9
+    },
+    {
+      "campaignId": "CMP-2026-005",
+      "name": "First Salary Digital Welcome",
+      "buId": "BU-DIGITAL-PAYMENTS",
+      "status": "completed",
+      "startDate": "2026-06-01",
+      "endDate": "2026-08-31",
+      "channel": "email",
+      "targetSegment": "New-to-bank customers aged 21-30 with expected salary onboarding.",
+      "productIds": [
+        "CB-SAV-SALARY",
+        "CB-RD-STARTER",
+        "CB-CARD-STARTER-SECURED"
+      ],
+      "reach": 125000,
+      "engaged": 35400,
+      "converted": 11250,
+      "conversionPercent": 31.78,
+      "revenueAttributedCroreINR": 12.2,
+      "costCroreINR": 3.0
+    },
+    {
+      "campaignId": "CMP-2026-006",
+      "name": "Refund Confidence Desk",
+      "buId": "BU-SERVICE-COLLECTIONS",
+      "status": "completed",
+      "startDate": "2026-07-01",
+      "endDate": "2026-08-20",
+      "channel": "mobileapp",
+      "targetSegment": "Card and digital-payment users with merchant refund disputes in the last quarter.",
+      "productIds": [
+        "CB-CARD-CLASSIC",
+        "CB-CARD-FAMILY-CASHBACK",
+        "CB-CARD-DEBIT"
+      ],
+      "reach": 42000,
+      "engaged": 16400,
+      "converted": 9100,
+      "conversionPercent": 55.49,
+      "revenueAttributedCroreINR": 3.8,
+      "costCroreINR": 1.2
+    }
+  ]
+}

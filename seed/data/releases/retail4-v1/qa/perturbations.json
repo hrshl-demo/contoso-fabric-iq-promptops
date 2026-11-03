@@ -1,0 +1,485 @@
+{
+  "_warning": "QA ONLY. Never indexed, never placed in model context, never shown to the assistant. A perturbation changes evidence or stated intent; it can never set a recommendation, a winning product or a fit score.",
+  "count": 23,
+  "materialisedCount": 19,
+  "perturbations": {
+    "nivedita-ambiguous-bill-item": {
+      "affects": [
+        "DOC-N-MEDICAL-ESTIMATE"
+      ],
+      "case": "UC02",
+      "changes": "source_version",
+      "description": "The estimate's pre-admission diagnostics line gains a date, resolving whether it falls inside the window.",
+      "materialisationNote": "Declared for a later phase. No revised document, record or social asset is published in this release, so this scenario cannot be presented yet.",
+      "materialised": false
+    },
+    "nivedita-decline-cover-marketing": {
+      "affects": [
+        "consent:product_discussion"
+      ],
+      "case": "UC02",
+      "changes": "stated_intent",
+      "description": "Nivedita explicitly declines any product discussion. Analysis only.",
+      "materialisationNote": "Declared for a later phase. No revised document, record or social asset is published in this release, so this scenario cannot be presented yet.",
+      "materialised": false
+    },
+    "nivedita-legitimate-context": {
+      "affects": [
+        "DOC-N-LEGITIMATE-NOTICE"
+      ],
+      "case": "UC03",
+      "changes": "source_selection",
+      "description": "The genuine re-KYC notice is presented instead, so a blanket 'this is fraud' answer is wrong.",
+      "materialisationNote": "Declared for a later phase. No revised document, record or social asset is published in this release, so this scenario cannot be presented yet.",
+      "materialised": false
+    },
+    "nivedita-liquidity-priority": {
+      "affects": [
+        "pref-niv-02"
+      ],
+      "case": "UC01",
+      "changes": "stated_intent",
+      "description": "Nivedita states that easy access matters more than a higher monthly payout.",
+      "materialised": true,
+      "presenterAction": {
+        "action": "selectVariant",
+        "note": "Changes the accepted access priority only. It does not set a score, a fit rating, a recommendation or a winning product.",
+        "recordRef": "pref-niv-02"
+      },
+      "revisedRecord": {
+        "dataset": "revised-records.json",
+        "revisionId": "rev-niv-liquidity-priority"
+      },
+      "variantGroup": "pref-niv-02:liquidityPreference"
+    },
+    "nivedita-pressure-message": {
+      "affects": [
+        "DOC-N-SCAM-CHAT"
+      ],
+      "case": "UC03",
+      "changes": "source_version",
+      "description": "The chat escalates: a deadline and a threat of account suspension are added.",
+      "materialisationNote": "Declared for a later phase. No revised document, record or social asset is published in this release, so this scenario cannot be presented yet.",
+      "materialised": false
+    },
+    "nivedita-renewal-clause-change": {
+      "affects": [
+        "DOC-N-FD-RENEWAL"
+      ],
+      "case": "UC01",
+      "changes": "source_version",
+      "description": "A revised DOC-N-FD-RENEWAL states the renewal rate explicitly and shortens the instruction window.",
+      "materialised": true,
+      "presenterAction": {
+        "action": "replaceSourceVersion",
+        "documentRef": "DOC-N-FD-RENEWAL@2",
+        "note": "The asset bytes and the source version both change, so the extraction must be re-run and the customer must adopt the new version. A cached read of version 1 is no longer valid evidence.",
+        "requiresReAdoption": true,
+        "requiresReExtraction": true
+      },
+      "revisedDocument": {
+        "documentId": "DOC-N-FD-RENEWAL-V2",
+        "fromSourceVersion": 1,
+        "supersedes": "DOC-N-FD-RENEWAL",
+        "toSourceVersion": 2
+      },
+      "revisedRecord": {
+        "dataset": "revised-records.json",
+        "revisionId": "rev-nivedita-renewal-clause-change"
+      },
+      "variantGroup": "DOC-N-FD-RENEWAL:sourceVersion"
+    },
+    "ravi-dinner-only": {
+      "affects": [
+        "DOC-V-GROUP-CHAT"
+      ],
+      "case": "UC10",
+      "changes": "source_version",
+      "description": "The group chat is revised so one participant clearly joined for the dinner only.",
+      "materialised": true,
+      "presenterAction": {
+        "action": "selectVariant",
+        "documentRef": "DOC-V-GROUP-CHAT@2",
+        "note": "A later chat export settles what Meera joined. The cab stays unresolved.",
+        "requiresReAdoption": true,
+        "requiresReExtraction": true
+      },
+      "revisedDocument": {
+        "documentId": "DOC-V-GROUP-CHAT-V2",
+        "fromSourceVersion": 1,
+        "supersedes": "DOC-V-GROUP-CHAT",
+        "toSourceVersion": 2
+      },
+      "revisedRecord": {
+        "dataset": "revised-records.json",
+        "revisionId": "rev-ravi-dinner-only"
+      },
+      "variantGroup": "DOC-V-GROUP-CHAT:sourceVersion"
+    },
+    "ravi-domestic-no-upgrade": {
+      "affects": [
+        "goal-rav-01"
+      ],
+      "case": "UC10",
+      "changes": "stated_intent",
+      "description": "Ravi confirms all travel is domestic, removing the case for a travel card.",
+      "materialised": true,
+      "presenterAction": {
+        "action": "selectVariant",
+        "note": "Changes a stated position or an evidence version. It sets no score, ranking or recommendation.",
+        "recordRef": "goal-rav-01"
+      },
+      "revisedRecord": {
+        "dataset": "revised-records.json",
+        "revisionId": "rev-rav-domestic-no-upgrade"
+      },
+      "variantGroup": "goal-rav-01:travelScope"
+    },
+    "ravi-extra-revisions": {
+      "affects": [
+        "DOC-V-CLIENT-CHAT"
+      ],
+      "case": "UC11",
+      "changes": "source_version",
+      "description": "The client chat adds further scope beyond the agreed revisions.",
+      "materialised": true,
+      "presenterAction": {
+        "action": "selectVariant",
+        "documentRef": "DOC-V-CLIENT-CHAT@2",
+        "note": "Further scope arrives, still called small tweaks, still tied to an undated go-live.",
+        "requiresReAdoption": true,
+        "requiresReExtraction": true
+      },
+      "revisedDocument": {
+        "documentId": "DOC-V-CLIENT-CHAT-V2",
+        "fromSourceVersion": 1,
+        "supersedes": "DOC-V-CLIENT-CHAT",
+        "toSourceVersion": 2
+      },
+      "revisedRecord": {
+        "dataset": "revised-records.json",
+        "revisionId": "rev-ravi-extra-revisions"
+      },
+      "variantGroup": "DOC-V-CLIENT-CHAT:sourceVersion"
+    },
+    "ravi-irregular-income": {
+      "affects": [
+        "DOC-V-INVOICE-DRAFT"
+      ],
+      "case": "UC11",
+      "changes": "source_version",
+      "description": "The invoice due terms become even less certain, with go-live postponed indefinitely.",
+      "materialised": true,
+      "presenterAction": {
+        "action": "selectVariant",
+        "documentRef": "DOC-V-INVOICE-DRAFT@2",
+        "note": "The due trigger loses its date; the receivable is no closer to being cash.",
+        "requiresReAdoption": true,
+        "requiresReExtraction": true
+      },
+      "revisedDocument": {
+        "documentId": "DOC-V-INVOICE-DRAFT-V2",
+        "fromSourceVersion": 1,
+        "supersedes": "DOC-V-INVOICE-DRAFT",
+        "toSourceVersion": 2
+      },
+      "revisedRecord": {
+        "dataset": "revised-records.json",
+        "revisionId": "rev-ravi-irregular-income"
+      },
+      "variantGroup": "DOC-V-INVOICE-DRAFT:sourceVersion"
+    },
+    "ravi-minimum-due-misconception": {
+      "affects": [
+        "DOC-V-CREDIT-QUESTION"
+      ],
+      "case": "UC09",
+      "changes": "baseline",
+      "description": "The default state: Ravi believes paying the minimum due carries no extra charge.",
+      "isBaselineVariant": true,
+      "materialised": true,
+      "presenterAction": {
+        "action": "selectVariant",
+        "note": "Changes a stated position or an evidence version. It sets no score, ranking or recommendation.",
+        "recordRef": "DOC-V-CREDIT-QUESTION"
+      },
+      "revisedRecord": {
+        "dataset": "revised-records.json",
+        "revisionId": "rev-rav-minimum-due-misconception"
+      },
+      "variantGroup": "DOC-V-CREDIT-QUESTION:belief"
+    },
+    "ravi-no-bundle": {
+      "affects": [
+        "goal-rav-01"
+      ],
+      "case": "UC08",
+      "changes": "stated_intent",
+      "description": "Ravi declines any bundled product with the salary account.",
+      "materialised": true,
+      "presenterAction": {
+        "action": "selectVariant",
+        "note": "Changes a stated position or an evidence version. It sets no score, ranking or recommendation.",
+        "recordRef": "goal-rav-01"
+      },
+      "revisedRecord": {
+        "dataset": "revised-records.json",
+        "revisionId": "rev-rav-no-bundle"
+      },
+      "variantGroup": "goal-rav-01:declinedProductTypes"
+    },
+    "ravi-no-credit-product": {
+      "affects": [
+        "goal-rav-03"
+      ],
+      "case": "UC09",
+      "changes": "stated_intent",
+      "description": "Ravi states he wants understanding only and no credit product at all.",
+      "materialised": true,
+      "presenterAction": {
+        "action": "selectVariant",
+        "note": "Changes a stated position or an evidence version. It sets no score, ranking or recommendation.",
+        "recordRef": "goal-rav-03"
+      },
+      "revisedRecord": {
+        "dataset": "revised-records.json",
+        "revisionId": "rev-rav-no-credit-product"
+      },
+      "variantGroup": "goal-rav-03:declinedProductTypes"
+    },
+    "ravi-social-metric-change": {
+      "affects": [
+        "ravi-creates"
+      ],
+      "case": "UC11",
+      "changes": "source_version",
+      "description": "A second /ravisocial snapshot shows materially different follower and like counts.",
+      "materialised": true,
+      "presenterAction": {
+        "action": "selectVariant",
+        "note": "Changes a stated position or an evidence version. It sets no score, ranking or recommendation.",
+        "recordRef": "ravi-creates"
+      },
+      "revisedRecord": {
+        "dataset": "revised-records.json",
+        "revisionId": "rev-rav-social-metric-change"
+      },
+      "variantGroup": "ravi-creates:snapshot"
+    },
+    "ravi-variable-bonus": {
+      "affects": [
+        "DOC-V-SALARY-ADDENDUM"
+      ],
+      "case": "UC08",
+      "changes": "source_version",
+      "description": "The salary addendum is revised so the variable component looks larger and stays annual.",
+      "materialised": true,
+      "presenterAction": {
+        "action": "selectVariant",
+        "documentRef": "DOC-V-SALARY-ADDENDUM@2",
+        "note": "The bonus looks bigger while the timing is unchanged, so first-year monthly cash is still nil.",
+        "requiresReAdoption": true,
+        "requiresReExtraction": true
+      },
+      "revisedDocument": {
+        "documentId": "DOC-V-SALARY-ADDENDUM-V2",
+        "fromSourceVersion": 1,
+        "supersedes": "DOC-V-SALARY-ADDENDUM",
+        "toSourceVersion": 2
+      },
+      "revisedRecord": {
+        "dataset": "revised-records.json",
+        "revisionId": "rev-ravi-variable-bonus"
+      },
+      "variantGroup": "DOC-V-SALARY-ADDENDUM:sourceVersion"
+    },
+    "rhea-education-first": {
+      "affects": [
+        "goal-rhe-02"
+      ],
+      "case": "UC04",
+      "changes": "stated_intent",
+      "description": "Rhea ranks the school fee above the possible relocation.",
+      "materialised": true,
+      "presenterAction": {
+        "action": "selectVariant",
+        "note": "Changes a stated ranking only. It does not set a score, a fit rating or a recommendation, and it does not decide the relocation either way.",
+        "recordRef": "goal-rhe-02"
+      },
+      "revisedRecord": {
+        "dataset": "revised-records.json",
+        "revisionId": "rev-rhe-education-first"
+      },
+      "variantGroup": "goal-rhe-02:statedRank"
+    },
+    "rhea-offer-condition-revised": {
+      "affects": [
+        "DOC-R-HOME-OFFER-A"
+      ],
+      "case": "UC05",
+      "changes": "source_version",
+      "description": "Offer A is revised: the prepayment lock-in shortens and the charge changes.",
+      "materialised": true,
+      "presenterAction": {
+        "action": "replaceSourceVersion",
+        "documentRef": "DOC-R-HOME-OFFER-A@2",
+        "note": "Rate, LTV, tenure and fee are unchanged; only the prepayment lock-in and charge move. Any comparison that turned on the old clause must be redone.",
+        "requiresReAdoption": true,
+        "requiresReExtraction": true
+      },
+      "revisedDocument": {
+        "documentId": "DOC-R-HOME-OFFER-A-V2",
+        "fromSourceVersion": 1,
+        "supersedes": "DOC-R-HOME-OFFER-A",
+        "toSourceVersion": 2
+      },
+      "revisedRecord": {
+        "dataset": "revised-records.json",
+        "revisionId": "rev-rhea-offer-condition-revised"
+      },
+      "variantGroup": "DOC-R-HOME-OFFER-A:sourceVersion"
+    },
+    "rhea-one-off-travel": {
+      "affects": [
+        "DOC-R-TRAVEL-RECEIPT"
+      ],
+      "case": "UC06",
+      "changes": "source_version",
+      "description": "A consolidated travel statement shows one booking reference, a return itinerary and no prior bookings in twenty-four months.",
+      "materialised": true,
+      "note": "Declared upstream as stated_intent. Materialised as a source_version change because the evidence, not an assertion, is what should move: a document that reports the booking history lets the case reason, where 'she says it was one-off' would simply hand it the answer.",
+      "presenterAction": {
+        "action": "replaceSourceVersion",
+        "documentRef": "DOC-R-TRAVEL-RECEIPT@2",
+        "note": "The statement reports what was booked and does not characterise the trip. Whether one holiday is a travel pattern remains a reading, not a fact the document supplies.",
+        "requiresReAdoption": true,
+        "requiresReExtraction": true
+      },
+      "revisedDocument": {
+        "documentId": "DOC-R-TRAVEL-RECEIPT-V2",
+        "fromSourceVersion": 1,
+        "supersedes": "DOC-R-TRAVEL-RECEIPT",
+        "toSourceVersion": 2
+      },
+      "revisedRecord": {
+        "dataset": "revised-records.json",
+        "revisionId": "rev-rhea-one-off-travel"
+      },
+      "variantGroup": "DOC-R-TRAVEL-RECEIPT:sourceVersion"
+    },
+    "rhea-prepayment-priority": {
+      "affects": [
+        "goal-rhe-01"
+      ],
+      "case": "UC05",
+      "changes": "stated_intent",
+      "description": "Rhea states she intends to prepay from the bonus, which changes which clause matters.",
+      "materialised": true,
+      "presenterAction": {
+        "action": "selectVariant",
+        "note": "Changes a stated intent only. Which offer suits her is still to be reasoned about; this decides nothing.",
+        "recordRef": "goal-rhe-01"
+      },
+      "revisedRecord": {
+        "dataset": "revised-records.json",
+        "revisionId": "rev-rhe-prepayment-priority"
+      },
+      "variantGroup": "goal-rhe-01:statedIntents"
+    },
+    "rhea-refund-posted": {
+      "affects": [
+        "txn-rhe-9014"
+      ],
+      "case": "UC07",
+      "changes": "posted_event",
+      "description": "An authorised synthetic refund posts against the original purchase, changing the evidence timeline.",
+      "materialised": true,
+      "postingInput": {
+        "amountMinor": 2175000,
+        "currency": "INR",
+        "occurredAt": "2026-09-15T11:20:00+05:30",
+        "originalTransactionId": "txn-rhe-9014",
+        "refundReference": "UW-2026-55841-RF"
+      },
+      "presenterAction": {
+        "action": "selectVariant",
+        "note": "Inserts the refund credit and re-folds the card. The refund posts after the statement closed, so the statement does not move and the ledger and the statement stop agreeing - which is the point. Apply the derived values shipped with the variant rather than recomputing them.",
+        "recomputesDerivedBalances": true,
+        "recordRef": "txn-rhe-9014"
+      },
+      "revisedRecord": {
+        "dataset": "revised-records.json",
+        "revisionId": "rev-rhe-refund-posted"
+      },
+      "variantGroup": "txn-rhe-9014:refund-state"
+    },
+    "rhea-refund-promise-only": {
+      "affects": [
+        "txn-rhe-9014"
+      ],
+      "case": "UC07",
+      "changes": "baseline",
+      "description": "The default state: the merchant promised a refund and the ledger has none.",
+      "isBaselineVariant": true,
+      "materialised": true,
+      "presenterAction": {
+        "action": "selectVariant",
+        "note": "This IS the shipped release state, so selecting it is the revert for this group. It applies no change.",
+        "recordRef": "txn-rhe-9014"
+      },
+      "revisedRecord": {
+        "dataset": "revised-records.json",
+        "revisionId": "rev-rhe-refund-promise-only"
+      },
+      "variantGroup": "txn-rhe-9014:refund-state"
+    },
+    "rhea-relocation-uncertain": {
+      "affects": [
+        "DOC-R-RELOCATION-LETTER"
+      ],
+      "case": "UC04",
+      "changes": "source_version",
+      "description": "The relocation letter is revised to remove the indicative month entirely.",
+      "materialised": true,
+      "presenterAction": {
+        "action": "replaceSourceVersion",
+        "documentRef": "DOC-R-RELOCATION-LETTER@2",
+        "note": "The asset bytes and the source version both change, so the extraction must be re-run. Any advice that leaned on the 2027-02 indicative month is stale, because that month no longer appears in the document.",
+        "requiresReAdoption": true,
+        "requiresReExtraction": true
+      },
+      "revisedDocument": {
+        "documentId": "DOC-R-RELOCATION-LETTER-V2",
+        "fromSourceVersion": 1,
+        "supersedes": "DOC-R-RELOCATION-LETTER",
+        "toSourceVersion": 2
+      },
+      "revisedRecord": {
+        "dataset": "revised-records.json",
+        "revisionId": "rev-rhea-relocation-uncertain"
+      },
+      "variantGroup": "DOC-R-RELOCATION-LETTER:sourceVersion"
+    },
+    "rhea-zero-annual-fee": {
+      "affects": [
+        "pref-rhe-01"
+      ],
+      "case": "UC06",
+      "changes": "stated_intent",
+      "description": "Rhea states she will not pay any annual fee, which can make keeping the current card correct.",
+      "materialised": true,
+      "presenterAction": {
+        "action": "selectVariant",
+        "note": "Changes a stated tolerance only. Keeping the current card may now be the right answer, but this does not make it so.",
+        "recordRef": "pref-rhe-01"
+      },
+      "revisedRecord": {
+        "dataset": "revised-records.json",
+        "revisionId": "rev-rhe-zero-annual-fee"
+      },
+      "variantGroup": "pref-rhe-01:annualFeeTolerance"
+    }
+  },
+  "releaseId": "retail4-v1",
+  "schemaVersion": "retail4-seed-v1"
+}

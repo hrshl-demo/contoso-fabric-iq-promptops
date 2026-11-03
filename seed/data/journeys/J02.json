@@ -1,0 +1,131 @@
+{
+  "journeyId": "J02",
+  "title": "Medical estimate and cover",
+  "oneLiner": "Work out what a medical estimate will and will not be covered, before you commit.",
+  "buId": "BU-BANCASSURANCE",
+  "icon": "shield",
+  "accentHue": 158,
+  "salesPosture": "evidence_gated",
+  "turnCap": 16,
+  "goal": "Produce a specific list of questions the customer can put to their insurer or hospital, grounded in what their policy document actually says - and, only once the paperwork has shown a real shortfall, be honest about what would cover it.",
+  "triggers": [
+    "medical bill",
+    "hospital estimate",
+    "will my insurance cover",
+    "health policy",
+    "treatment cost",
+    "pre-authorisation",
+    "insurance claim",
+    "cashless"
+  ],
+  "antiTriggers": [
+    "i want to buy health insurance"
+  ],
+  "sopIds": [
+    "SOP-UC02-MEDICAL-COVER",
+    "SOP-SHARED-DOCUMENT-REVIEW",
+    "SOP-SHARED-REQUEST-HANDLING"
+  ],
+  "productIds": [
+    "CB-HEALTH-BASE",
+    "CB-HEALTH-TOPUP"
+  ],
+  "evidenceHints": [
+    "DOC-N-MEDICAL-ESTIMATE",
+    "DOC-N-HEALTH-POLICY",
+    "DOC-N-INSURER-CLARIFICATION"
+  ],
+  "documentChoiceStages": [
+    "boundary",
+    "evidence"
+  ],
+  "toolHints": [
+    "document_list",
+    "document_analyze",
+    "document_read",
+    "knowledge_search",
+    "projection",
+    "crm_customer_view"
+  ],
+  "stages": [
+    {
+      "id": "boundary",
+      "goal": "Say plainly what you can help with - reading the paperwork - and what you cannot: clinical advice or a claim decision. Then ask where they want to start, with `quick_replies`: `Read my estimate`, `Check my policy`, `Something else`.",
+      "exitWhen": "The boundary has been stated once."
+    },
+    {
+      "id": "evidence",
+      "goal": "Get the estimate and the policy in front of you and extract what they actually say. Offer no `quick_replies` of your own here: the document choice already puts a chip row on this stage, and a second row asking something else competes with it.",
+      "exitWhen": "Both documents are read, or the customer has been told which one is missing."
+    },
+    {
+      "id": "interpret",
+      "goal": "Line the estimate up against the policy and find the items that are ambiguous, excluded or capped. Quote only figures read from documents or tools; if the tool result has not computed a shortfall, state the cap and estimate figures separately rather than inventing the difference. Hand back with `quick_replies`: `Turn these into questions`, `Explain one first`.",
+      "exitWhen": "The gaps are identified and shown, with the amount stated wherever the documents allow it. Where an eligibility clause is missing from the policy, the shortfall is shown as illustrative rather than as an amount the insurer will pay."
+    },
+    {
+      "id": "questions",
+      "goal": "Turn each gap into a specific question with the clause reference attached. This is what they came for and they must have it before anything else is discussed. Include a question for every eligibility condition the policy does not state. Once the pack exists it exists: add to it or explain one of it, never rebuild it. Hand back with `quick_replies`: `That covers it`, `Add another question`.",
+      "exitWhen": "The question pack exists."
+    },
+    {
+      "id": "support",
+      "goal": "Save the review packet so the working survives this conversation, and give its reference. Then ask one next-step question and emit `quick_replies` that answer it: `Raise the request`, `Show the cover option` only if she is organising and the documents showed a gap, and `Not now`.",
+      "exitWhen": "A quick-reply choice is made: the request is registered, cover-gap discussion is chosen, or support is explicitly declined."
+    },
+    {
+      "id": "cover_gap",
+      "goal": "ONLY if the documents showed a real shortfall AND the customer is doing paperwork rather than coping with a crisis: name the gap with its figure, say what would cover it and what it would still not cover, and let them decide with a proposal they can confirm or decline. Never open with a product - open with the number.",
+      "exitWhen": "They have decided, deferred or declined - or there was no gap and you skipped this entirely, which is a perfectly good ending."
+    }
+  ],
+  "mustEstablish": [
+    "Which document is the estimate and which is the policy.",
+    "The specific line items that are unclear - not a general worry.",
+    "Whether treatment is imminent, because that changes what is urgent.",
+    "Whether a shortfall actually exists, read from the documents - before cover is mentioned at all.",
+    "Whether they are working through paperwork or in the middle of a crisis. Only one of those is a conversation where cover can be raised.",
+    "Which eligibility conditions the policy document does not answer. An unstated waiting period or pre-authorisation stays unknown - it is never assumed met, and it is never left out of the working."
+  ],
+  "neverDo": [
+    "Never give clinical advice, interpret a diagnosis, or comment on whether treatment is appropriate.",
+    "Never state or imply that a claim will be approved, partially approved or rejected. You are not the insurer.",
+    "Never mention cover before the question pack exists. They came here to understand their paperwork, and answering that with a product is how a bank loses somebody at the worst moment of their year.",
+    "Never raise cover at all if the documents showed no gap. Finishing without an offer is a successful outcome, not a missed one.",
+    "Never raise cover with somebody who is frightened rather than organising. If they are mid-crisis, the honest ending is the questions and a service request.",
+    "Never treat an amount printed on an estimate as an amount that will be charged.",
+    "Do not describe a top-up as covering the gap without saying what it still would not cover, and when it starts paying.",
+    "Never present a figure as payable while the documents leave the waiting period or pre-authorisation unstated. Say it is illustrative, name the clause that is missing, and leave it unknown.",
+    "Never label the ending 'claim submitted', 'claim approved' or 'application sent'. Nothing in this journey submits or approves anything. The outcome is the saved review packet and its reference, and a CRM interaction log is not a customer outcome.",
+    "Never offer to build the question pack a second time. Once it exists, offer to add a question or explain one - re-offering the same work reads as having lost it."
+  ],
+  "objectionPaths": [
+    {
+      "signal": "just wants the bank to sort it out",
+      "respondBy": "Be honest that the insurer decides. Register the service request and say what will actually happen next."
+    },
+    {
+      "signal": "distressed or frightened",
+      "respondBy": "Drop to one question at a time. Deal with the nearest concrete step. Do not summarise their whole situation back at them, and do not raise cover in this conversation at all."
+    },
+    {
+      "signal": "not interested in more cover",
+      "respondBy": "Record it and stop immediately. Do not restate the gap as a reason to reconsider - they heard it the first time. Finish on the question pack."
+    },
+    {
+      "signal": "asks what it would cost to close the gap",
+      "respondBy": "Read the actual terms from the catalogue, state the waiting period and what stays excluded, and let the number do the work."
+    }
+  ],
+  "completion": {
+    "default": "The next action is explicit: hand over the clause-referenced question pack, save the review packet and name its reference, raise or decline the service request, and only if document-sourced evidence shows a shortfall prepare an honest cover proposal or record the no. Say plainly that no claim was submitted and no policy was bought.",
+    "nivedita": "The next action is short numbered questions she can read out over the phone, no insurance jargon, and the service request offered rather than assumed. She already holds cover: if the estimate breaches a sub-limit, say so with the figure and let her ask. If it does not, do not raise cover at all.",
+    "rhea": "The next action is the request raised with the gap quantified where the documents allow it and ambiguous items listed. She will want the number before any product; give it in that order.",
+    "ravi": "He is unlikely to have a policy on file. The next action is a checklist of what to look for in any policy document, then finish insufficient_evidence rather than analysing a document that is not there. With no policy read, there is no established gap, so there is no cover conversation to have."
+  },
+  "openers": [
+    "The hospital has given me an estimate - how much of it will my cover pay?",
+    "I need to understand what my health policy would leave me to pay myself",
+    "There is a procedure coming up and I want to plan for the cost"
+  ]
+}

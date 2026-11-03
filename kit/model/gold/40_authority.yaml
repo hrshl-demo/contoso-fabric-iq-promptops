@@ -1,0 +1,201 @@
+tables:
+  - table: consent
+    entity: Consent
+    tier: core
+    domain: Authority
+    kind: dimension
+    grain: "One consent."
+    physical: dim_consent
+    silver: [silver_frontier_consent, silver_consent]
+    description: "A recorded customer consent: who may see or do what, for which purpose, until when. Consent is specific and revocable: a conversation, upload or earlier consent never creates a new permission. Agent read consent and mandate consent are separate consents."
+    synonyms: [permission, authorisation, authorization, grant of consent]
+    sources:
+      - {silver: silver_frontier_consent}
+      - {silver: silver_consent}
+    post: [consent_status]
+    columns:
+      - {col: consent_id, type: string, key: true, from: consentId, desc: "Consent identifier such as consent-household-view."}
+      - {col: customer_id, type: string, from: _owner_id, t: owner, desc: "Customer who gave the consent."}
+      - {col: purpose, type: string, default_label: true, from: purpose, desc: "What the consent is for, for example view_household_goals_and_obligations or evidence_analysis."}
+      - {col: status, type: string, from: xStatus, desc: "granted or revoked. Derived from RevokedAt when the seed has no status."}
+      - {instant: granted_at, label: Granted At, from: [recordedAt, at], desc: "When consent was granted."}
+      - {instant: expires_at, label: Expires At, from: expiresAt, desc: "When consent expires. An expired consent gives no access."}
+      - {instant: revoked_at, label: Revoked At, from: revokedAt, desc: "When consent was revoked, if it was."}
+      - {col: subject_ref, type: string, from: subjectId, desc: "Who or what the consent is about: a household member, an agent or a mandate."}
+      - {col: subject_type, type: string, from: subjectId, t: ref_type, desc: "Kind of subject: household_member, agent or mandate."}
+      - {col: subject_member_id, type: string, from: subjectId, t: "prefix:member-", desc: "Household member id when the subject is a household member."}
+      - {col: recipient_scope, type: string, from: xRecipientScope, desc: "Who may receive the data, for example contoso_demo_assistant (legacy only)."}
+      - {col: revision, type: int, from: xRevision, desc: "Consent revision number (legacy only)."}
+      - {col: resource_count, type: int, from: xResourceRefsCount, desc: "Number of documents the consent covers (legacy only)."}
+      - {col: release_id, type: string, from: _release_id, desc: "Seed release the row comes from."}
+
+  - table: consent_resource
+    entity: ConsentResource
+    tier: extended
+    domain: Authority
+    kind: bridge
+    grain: "One document covered by a consent."
+    grain_key: [consent_id, document_id]
+    physical: bridge_consent_resource
+    silver: [silver_consent_resource]
+    description: "A document that a legacy consent covers. Use it to check whether a document may be read under a consent."
+    synonyms: [consented document, covered resource]
+    sources:
+      - {silver: silver_consent_resource}
+    columns:
+      - {col: link_id, type: string, key: true, tpl: "{consentId}>{sourceId}", desc: "Link identifier: consent id > document id."}
+      - {col: consent_id, type: string, from: consentId, desc: "Consent that covers the document."}
+      - {col: document_id, type: string, default_label: true, from: sourceId, desc: "Document covered by the consent."}
+      - {col: source_version, type: int, from: resourceVersion, desc: "Document version the consent covers."}
+
+  - table: access_grant
+    entity: HouseholdAccessGrant
+    tier: core
+    domain: Authority
+    kind: dimension
+    grain: "One access grant."
+    physical: dim_household_access_grant
+    renamed_from: {entity: AccessGrant, physical: dim_access_grant}
+    silver: [silver_household_access_grant]
+    description: "A household access grant (permission grant): what a household member (or agent) may see or do on the owner's data. Frontier: Vivek can view goals, obligations and budget only; Anika (minor) has no access; Savitri sees the care schedule only. Denied permissions always win; a relationship never implies permission."
+    synonyms: [access grant, household access, permission grant, sharing grant, viewer access]
+    sources:
+      - {silver: silver_household_access_grant}
+    columns:
+      - {col: grant_id, type: string, key: true, from: grantId, desc: "Grant identifier such as grant-vivek-view."}
+      - {col: customer_id, type: string, from: _owner_id, t: owner, desc: "Owner whose data is shared."}
+      - {col: household_id, type: string, from: xHouseholdId, desc: "Household the grant belongs to."}
+      - {col: consent_id, type: string, from: xConsentRef, desc: "Consent that backs the grant. Null for an inactive grant with no consent."}
+      - {col: subject_ref, type: string, default_label: true, from: subjectId, desc: "Who holds the grant: a household member id."}
+      - {col: subject_member_id, type: string, from: subjectId, t: "prefix:member-", desc: "Household member id when the grantee is a household member."}
+      - {col: status, type: string, from: xStatus, desc: "active or inactive."}
+      - {col: permissions, type: string, from: permissions, desc: "Permissions granted, such as view:goals (semicolon separated)."}
+      - {col: denied_permissions, type: string, from: xDeniedPermissions, desc: "Permissions explicitly denied, such as transact or change_access (semicolon separated). Denied wins."}
+      - {col: release_id, type: string, from: _release_id, desc: "Seed release the row comes from."}
+
+  - table: grant_permission
+    entity: GrantPermission
+    tier: extended
+    domain: Authority
+    kind: bridge
+    grain: "One allowed or denied permission of an access grant."
+    grain_key: [grant_id, permission, is_denied]
+    physical: bridge_grant_permission
+    silver: [silver_grant_permission]
+    description: "One allowed or denied permission of an access grant, split into action and resource (view:goals = action view on resource goals)."
+    synonyms: [permission line, allowed action, denied action]
+    sources:
+      - {silver: silver_grant_permission}
+    columns:
+      - {col: grant_permission_id, type: string, key: true, tpl: "{grantId}#{permissionKind}#{ordinal:02d}", desc: "Identifier: grant id, allow or deny, sequence."}
+      - {col: grant_id, type: string, from: grantId, desc: "Access grant the permission belongs to."}
+      - {col: permission, type: string, default_label: true, from: permission, desc: "Permission string such as view:goals or transact."}
+      - {col: action, type: string, from: permission, t: "re:^([^:]+)", desc: "Action part of the permission: view, transact, change_mandates, change_access."}
+      - {col: resource, type: string, from: permission, t: "re:^[^:]+:(.+)$", desc: "Resource part of the permission, when present: goals, scheduled_obligations, private_messages."}
+      - {col: is_denied, type: bool, from: isDenied, desc: "True when the permission is explicitly denied."}
+
+  - table: registered_agent
+    entity: RegisteredAgent
+    tier: core
+    domain: Authority
+    kind: dimension
+    grain: "One registered agent."
+    physical: dim_registered_agent
+    silver: [silver_registered_agent]
+    description: "A customer-side AI agent registered with the bank through Know Your Agent (KYA), for example Rhea's personal agent. KYA is registration, not consent or a mandate. An agent cannot register itself, widen its scopes or approve its own prepared action."
+    synonyms: [personal agent, customer agent, delegate, AI agent, KYA agent]
+    sources:
+      - {silver: silver_registered_agent}
+    columns:
+      - {col: agent_id, type: string, key: true, from: agentId, desc: "Agent identifier such as agent-rhea-001."}
+      - {col: customer_id, type: string, from: _owner_id, t: owner, desc: "Customer the agent acts for."}
+      - {col: household_id, type: string, from: xHouseholdId, desc: "Household the agent operates in."}
+      - {col: consent_id, type: string, from: xConsentRef, desc: "Consent that lets the agent read the customer's data."}
+      - {col: registration_type, type: string, default_label: true, from: xRegistrationType, desc: "Registration type such as personal_agent."}
+      - {col: delegation_mode, type: string, from: xDelegationMode, desc: "How authority is delegated, for example household_financial_assistant."}
+      - {col: status, type: string, from: status, desc: "registered, suspended or revoked."}
+      - {col: scopes, type: string, from: xScopes, desc: "Scopes the agent may use, such as read:goals or propose:goal_transfer (semicolon separated)."}
+      - {col: denied_scopes, type: string, from: xDeniedScopes, desc: "Scopes the agent is explicitly denied, such as execute:unmandated_transfer (semicolon separated). Denied wins."}
+      - {col: kya_provider_name, type: string, from: xKyaProviderName, desc: "KYA provider name (synthetic registry fixture)."}
+      - {col: kya_registration_id, type: string, from: xKyaProviderRegistrationId, desc: "KYA registration id (synthetic)."}
+      - {col: kya_verification_method, type: string, from: xKyaVerificationMethod, desc: "How the agent was verified: synthetic_registry_fixture. Not an external certification."}
+      - {instant: kya_verified_at, label: KYA Verified At, from: xKyaVerifiedAt, desc: "When KYA verification was recorded."}
+      - {col: kya_key_fingerprint, type: string, ontology: false, from: xKyaSigningKeyFingerprint, desc: "Signing key fingerprint. Restricted."}
+      - {col: release_id, type: string, from: _release_id, desc: "Seed release the row comes from."}
+
+  - table: agent_scope
+    entity: AgentScope
+    tier: extended
+    domain: Authority
+    kind: bridge
+    grain: "One allowed or denied scope of a registered agent."
+    grain_key: [agent_id, scope, is_denied]
+    physical: bridge_agent_scope
+    silver: [silver_agent_scope]
+    description: "One allowed or denied scope of a registered agent, split into action and resource (read:goals = action read on resource goals)."
+    synonyms: [scope, agent permission, denied scope]
+    sources:
+      - {silver: silver_agent_scope}
+    columns:
+      - {col: agent_scope_id, type: string, key: true, tpl: "{agentId}#{scopeKind}#{ordinal:02d}", desc: "Identifier: agent id, allow or deny, sequence."}
+      - {col: agent_id, type: string, from: agentId, desc: "Agent the scope belongs to."}
+      - {col: scope, type: string, default_label: true, from: scope, desc: "Scope string such as propose:goal_transfer or open:credit."}
+      - {col: action, type: string, from: scope, t: "re:^([^:]+)", desc: "Action part: read, propose, notify, execute, open, purchase, change."}
+      - {col: resource, type: string, from: scope, t: "re:^[^:]+:(.+)$", desc: "Resource part: financial_health, goals, goal_transfer, unmandated_transfer, credit, insurance, household_access."}
+      - {col: is_denied, type: bool, from: isDenied, desc: "True when the scope is explicitly denied."}
+
+  - table: mandate
+    entity: FrontierMandate
+    tier: core
+    domain: Authority
+    kind: dimension
+    grain: "One mandate."
+    physical: dim_frontier_mandate
+    renamed_from: {entity: Mandate, physical: dim_mandate}
+    silver: [silver_frontier_mandate]
+    description: "A mandate: a bounded standing authority for an agent to move surplus cash into a goal (surplus_to_goal) within a per-action cap, a monthly cap and a minimum balance that must remain in the source account. Frontier mandate-surplus-001 has been revoked; a revoked, paused or expired mandate cannot execute."
+    synonyms: [mandate, delegated mandate, surplus-to-goal mandate, standing authority, delegated authority, auto-transfer rule, surplus rule]
+    sources:
+      - {silver: silver_frontier_mandate}
+    columns:
+      - {col: mandate_id, type: string, key: true, from: mandateId, desc: "Mandate identifier such as mandate-surplus-001."}
+      - {col: customer_id, type: string, from: _owner_id, t: owner, desc: "Customer who granted the mandate."}
+      - {col: agent_id, type: string, from: agentId, desc: "Registered agent bound to the mandate."}
+      - {col: consent_id, type: string, from: consentId, desc: "Mandate consent, separate from the agent's read consent."}
+      - {col: source_account_id, type: string, from: sourceAccountId, desc: "Account money may leave."}
+      - {col: destination_account_id, type: string, from: xDestinationAccountId, desc: "Account money may go to."}
+      - {col: goal_id, type: string, default_label: true, from: targetGoalId, desc: "Goal the mandate funds."}
+      - {col: status, type: string, from: status, desc: "active, paused, revoked or expired. Only active may execute."}
+      - {col: currency, type: string, from: currency, desc: "Currency of the limits; INR."}
+      - {money: per_action_limit, label: Per Action Limit, from: perExecutionLimitMinor, desc: "Largest amount allowed in one action."}
+      - {money: monthly_limit, label: Monthly Limit, from: monthlyLimitMinor, desc: "Largest total allowed in one calendar month."}
+      - {money: minimum_source_balance, label: Minimum Source Balance, from: protectedCashMinor, desc: "The source account must still hold at least this after an action."}
+      - {instant: valid_from, date_col: valid_from_date_ist, label: Valid From, from: effectiveFrom, desc: "Start of validity."}
+      - {instant: valid_until, date_col: valid_until_date_ist, label: Valid Until, from: expiresAt, desc: "End of validity."}
+      - {col: event_count, type: int, from: xHistoryCount, desc: "Number of recorded mandate events."}
+      - {col: release_id, type: string, from: _release_id, desc: "Seed release the row comes from."}
+
+  - table: mandate_event
+    entity: MandateAction
+    tier: core
+    domain: Authority
+    kind: fact
+    grain: "One mandate action."
+    physical: fact_mandate_action
+    renamed_from: {entity: MandateEvent, physical: fact_mandate_event}
+    silver: [silver_mandate_action]
+    description: "A recorded mandate action (mandate event) in a mandate's life: created, action executed, action skipped (with the reason, for example obligations protected) or revoked. It is the audit trail of what a delegated agent actually did."
+    synonyms: [mandate event, mandate action, executed or skipped action, mandate history, delegated action, agent action log]
+    sources:
+      - {silver: silver_mandate_action}
+    columns:
+      - {col: event_id, type: string, key: true, from: actionRecordId, desc: "Event identifier such as mandate-event-002."}
+      - {col: mandate_id, type: string, from: mandateId, desc: "Mandate the event belongs to."}
+      - {col: event_type, type: string, default_label: true, from: xEventType, desc: "created, action_executed, action_skipped or revoked."}
+      - {instant: occurred_at, date_col: occurred_date_ist, label: Occurred At, from: recordedAt, desc: "When the event happened."}
+      - {col: actor_ref, type: string, from: xActorRef, desc: "Who caused the event: the customer or the agent."}
+      - {col: actor_type, type: string, from: xActorRef, t: ref_type, desc: "customer or agent."}
+      - {money: amount, label: Amount, from: amountMinor, desc: "Amount moved, for executed actions."}
+      - {money: source_balance_after, label: Source Balance After, from: protectedCashAfterMinor, desc: "Source account balance after an executed action."}
+      - {col: reason, type: string, from: reasons, desc: "Why the event happened, for example projected_school_and_card_obligations_protected."}
+      - {col: narration, type: string, from: xTransactionDescriptions, desc: "Bank narration of the resulting transaction."}

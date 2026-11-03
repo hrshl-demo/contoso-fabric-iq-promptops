@@ -1,0 +1,199 @@
+[
+  {
+    "customerIntent": "Wants a predictable monthly amount to cover household costs.",
+    "declinedProductTypes": [],
+    "fundingProductIds": [
+      "CB-FD-SENIOR-INCOME",
+      "CB-FD-STANDARD",
+      "CB-SWEEP-FLEX"
+    ],
+    "goalId": "goal-niv-01",
+    "linkedSourceIds": [
+      "DOC-N-RETIREMENT-NOTE"
+    ],
+    "ownerId": "nivedita",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "statedIntents": [],
+    "statedPriority": "high",
+    "statedRank": null,
+    "status": "active",
+    "targetAmount": {
+      "amountMinor": 3800000,
+      "currency": "INR"
+    },
+    "targetDate": null,
+    "targetFrequency": "monthly",
+    "title": "Keep a steady monthly income after retirement",
+    "travelScope": "unstated"
+  },
+  {
+    "customerIntent": "Wants some savings available at short notice for hospital costs.",
+    "declinedProductTypes": [],
+    "fundingProductIds": [
+      "CB-SAV-SENIOR",
+      "CB-SWEEP-FLEX",
+      "CB-FD-SENIOR-FLEX"
+    ],
+    "goalId": "goal-niv-02",
+    "linkedSourceIds": [
+      "DOC-N-RETIREMENT-NOTE",
+      "DOC-N-MEDICAL-ESTIMATE"
+    ],
+    "ownerId": "nivedita",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "statedIntents": [],
+    "statedPriority": "high",
+    "statedRank": null,
+    "status": "active",
+    "targetAmount": null,
+    "targetDate": null,
+    "title": "Keep money reachable for medical needs",
+    "travelScope": "unstated"
+  },
+  {
+    "customerIntent": "Building a down payment; comparing loan structures.",
+    "declinedProductTypes": [],
+    "fundingProductIds": [
+      "CB-HL-STANDARD",
+      "CB-HL-FLEX",
+      "CB-RD-GOAL"
+    ],
+    "goalId": "goal-rhe-01",
+    "linkedSourceIds": [
+      "DOC-R-HOME-OFFER-A",
+      "DOC-R-HOME-OFFER-B"
+    ],
+    "ownerId": "rhea",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "statedIntents": [],
+    "statedPriority": "high",
+    "statedRank": null,
+    "status": "active",
+    "targetAmount": {
+      "amountMinor": 250000000,
+      "currency": "INR"
+    },
+    "targetDate": "2027-06-30",
+    "title": "Buy a home",
+    "travelScope": "unstated"
+  },
+  {
+    "customerIntent": "The term fee has risen and must be met from monthly income.",
+    "declinedProductTypes": [],
+    "fundingProductIds": [
+      "CB-RD-GOAL",
+      "CB-CARD-FAMILY-CASHBACK"
+    ],
+    "goalId": "goal-rhe-02",
+    "linkedSourceIds": [
+      "DOC-R-SCHOOL-CIRCULAR"
+    ],
+    "ownerId": "rhea",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "statedIntents": [],
+    "statedPriority": "high",
+    "statedRank": null,
+    "status": "active",
+    "targetAmount": {
+      "amountMinor": 2680000,
+      "currency": "INR"
+    },
+    "targetDate": null,
+    "targetFrequency": "per_term",
+    "title": "Cover the revised school fees",
+    "travelScope": "unstated"
+  },
+  {
+    "customerIntent": "Mentioned as a possible commitment; nothing decided.",
+    "declinedProductTypes": [],
+    "fundingProductIds": [],
+    "goalId": "goal-rhe-03",
+    "linkedSourceIds": [
+      "DOC-R-FAMILY-NOTE"
+    ],
+    "ownerId": "rhea",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "statedIntents": [],
+    "statedPriority": "medium",
+    "statedRank": null,
+    "status": "exploring",
+    "targetAmount": null,
+    "targetDate": null,
+    "title": "Support a parent if needed",
+    "travelScope": "unstated"
+  },
+  {
+    "customerIntent": "Wants a plan before the first salary arrives, not after.",
+    "declinedProductTypes": [],
+    "fundingProductIds": [
+      "CB-SAV-SALARY",
+      "CB-RD-STARTER"
+    ],
+    "goalId": "goal-rav-01",
+    "linkedSourceIds": [
+      "DOC-V-OFFER-LETTER"
+    ],
+    "ownerId": "ravi",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "statedIntents": [],
+    "statedPriority": "high",
+    "statedRank": null,
+    "status": "active",
+    "targetAmount": null,
+    "targetDate": "2026-10-31",
+    "title": "Manage the first salary sensibly",
+    "travelScope": "unstated"
+  },
+  {
+    "customerIntent": "Equipment for freelance work; timing depends on client payments.",
+    "declinedProductTypes": [],
+    "fundingProductIds": [
+      "CB-RD-STARTER",
+      "CB-RD-GOAL"
+    ],
+    "goalId": "goal-rav-02",
+    "linkedSourceIds": [
+      "DOC-V-CLIENT-BRIEF"
+    ],
+    "ownerId": "ravi",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "statedIntents": [],
+    "statedPriority": "medium",
+    "statedRank": null,
+    "status": "active",
+    "targetAmount": {
+      "amountMinor": 4500000,
+      "currency": "INR"
+    },
+    "targetDate": null,
+    "title": "Save for a second camera lens",
+    "travelScope": "unstated"
+  },
+  {
+    "customerIntent": "Wants to understand terms. Has NOT asked for a credit product.",
+    "declinedProductTypes": [],
+    "fundingProductIds": [],
+    "goalId": "goal-rav-03",
+    "linkedSourceIds": [
+      "DOC-V-CREDIT-QUESTION"
+    ],
+    "ownerId": "ravi",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "statedIntents": [],
+    "statedPriority": "high",
+    "statedRank": null,
+    "status": "active",
+    "targetAmount": null,
+    "targetDate": null,
+    "title": "Understand how credit actually works",
+    "travelScope": "unstated"
+  }
+]

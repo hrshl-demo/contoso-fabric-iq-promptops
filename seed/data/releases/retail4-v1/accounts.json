@@ -1,0 +1,86 @@
+[
+  {
+    "accountId": "acc-niv-sav-01",
+    "availableBalance": {
+      "amountMinor": 35460800,
+      "currency": "INR"
+    },
+    "currency": "INR",
+    "holds": {
+      "amountMinor": 0,
+      "currency": "INR"
+    },
+    "openedOn": "2021-12-08",
+    "openingBalance": {
+      "amountMinor": 28460000,
+      "currency": "INR"
+    },
+    "ownerId": "nivedita",
+    "postedBalance": {
+      "amountMinor": 35460800,
+      "currency": "INR"
+    },
+    "productId": "CB-SAV-CLASSIC",
+    "productVersion": "v1",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "status": "active",
+    "version": 1
+  },
+  {
+    "accountId": "acc-rhe-sal-01",
+    "availableBalance": {
+      "amountMinor": 49113100,
+      "currency": "INR"
+    },
+    "currency": "INR",
+    "holds": {
+      "amountMinor": 0,
+      "currency": "INR"
+    },
+    "openedOn": "2020-08-21",
+    "openingBalance": {
+      "amountMinor": 41230000,
+      "currency": "INR"
+    },
+    "ownerId": "rhea",
+    "postedBalance": {
+      "amountMinor": 49113100,
+      "currency": "INR"
+    },
+    "productId": "CB-SAV-SALARY",
+    "productVersion": "v1",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "status": "active",
+    "version": 1
+  },
+  {
+    "accountId": "acc-rav-sav-01",
+    "availableBalance": {
+      "amountMinor": 4745400,
+      "currency": "INR"
+    },
+    "currency": "INR",
+    "holds": {
+      "amountMinor": 0,
+      "currency": "INR"
+    },
+    "openedOn": "2023-08-11",
+    "openingBalance": {
+      "amountMinor": 7840000,
+      "currency": "INR"
+    },
+    "ownerId": "ravi",
+    "postedBalance": {
+      "amountMinor": 4745400,
+      "currency": "INR"
+    },
+    "productId": "CB-SAV-CLASSIC",
+    "productVersion": "v1",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "status": "active",
+    "version": 1
+  }
+]

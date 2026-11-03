@@ -1,0 +1,640 @@
+gold_table,gold_column,silver_table,silver_column,transform
+customer,customer_id,silver_customer,_owner_id,owner
+customer,customer_id,silver_crm_case,_owner_id,owner
+customer,display_name,silver_customer,displayName,
+customer,display_name,silver_crm_case,customerName,
+customer,age,silver_customer,xAgeYears,
+customer,city,silver_customer,city,
+customer,employment_status,silver_customer,xEmploymentStatus,
+customer,segment,silver_customer,cohort,
+customer,segment,,,context $segment = household_primary_owner
+customer,household_id,silver_customer,xHouseholdId,
+customer,is_primary_owner,silver_customer,xCustomerVisiblePrimaryOwner,
+customer,phone_masked,silver_customer,xContactPhoneMasked,
+customer,profile_summary,silver_customer,xNarrative,
+customer,source_kind,,,"context $source_kind = crm_case_party, persona"
+customer,superseded_by_customer_id,silver_customer,_owner_id,superseded_by
+customer,superseded_by_customer_id,silver_crm_case,_owner_id,superseded_by
+customer,is_synthetic,,,const: true
+customer,release_id,silver_customer,_release_id,
+customer,release_id,silver_crm_case,_release_id,
+customer,date_of_birth,silver_customer,xKycDateOfBirth,
+customer,kyc_address,silver_customer,xKycAddress,
+customer,email,silver_customer,xContactEmail,
+household,household_id,silver_household,householdId,
+household,display_name,silver_household,primaryOwnerName,
+household,primary_customer_id,silver_household,_owner_id,owner
+household,release_id,silver_household,_release_id,
+household_member,member_id,silver_household_member,memberId,
+household_member,household_id,silver_household_member,householdId,
+household_member,primary_customer_id,silver_household_member,_owner_id,owner
+household_member,display_name,silver_household_member,name,
+household_member,relation_to_owner,silver_household_member,relationship,
+household_member,age_band,silver_household_member,ageBand,
+household_member,is_dependent,silver_household_member,dependent,
+household_member,release_id,silver_household_member,_release_id,
+account,account_id,silver_account,accountId,
+account,customer_id,silver_account,_owner_id,owner
+account,product_id,silver_account,productId,
+account,account_type,silver_account,xAccountType,
+account,status,silver_account,xStatus,
+account,currency,silver_account,currency,
+account,opened_on,silver_account,openedOn,
+account,history_start_on,silver_account,xHistoryStart,
+account,balance_as_on,silver_account,xBalanceAsOf,
+account,balance_as_on,silver_account,xReleaseBusinessDate,
+account,opening_balance_inr,silver_account,xOpeningBalanceMinor,minor_to_inr
+account,opening_balance_paise,silver_account,xOpeningBalanceMinor,minor_to_paise
+account,posted_balance_inr,silver_account,postedBalanceMinor,minor_to_inr
+account,posted_balance_paise,silver_account,postedBalanceMinor,minor_to_paise
+account,available_balance_inr,silver_account,availableBalanceMinor,minor_to_inr
+account,available_balance_paise,silver_account,availableBalanceMinor,minor_to_paise
+account,holds_amount_inr,silver_account,holdsMinor,minor_to_inr
+account,holds_amount_paise,silver_account,holdsMinor,minor_to_paise
+account,release_id,silver_account,_release_id,
+card,card_id,silver_card,cardId,
+card,customer_id,silver_card,_owner_id,owner
+card,account_id,silver_card,linkedAccountId,
+card,product_id,silver_card,productId,
+card,card_type,silver_card,cardType,
+card,status,silver_card,xStatus,
+card,masked_number,silver_card,maskedNumber,
+card,expiry_mm_yy,silver_card,expiry,
+card,credit_limit_inr,silver_card,limitMinor,minor_to_inr
+card,credit_limit_paise,silver_card,limitMinor,minor_to_paise
+card,available_credit_inr,silver_card,availableCreditMinor,minor_to_inr
+card,available_credit_paise,silver_card,availableCreditMinor,minor_to_paise
+card,outstanding_balance_inr,silver_card,outstandingMinor,minor_to_inr
+card,outstanding_balance_paise,silver_card,outstandingMinor,minor_to_paise
+card,minimum_due_inr,silver_card,xMinimumDueMinor,minor_to_inr
+card,minimum_due_paise,silver_card,xMinimumDueMinor,minor_to_paise
+card,annual_rate_pct,silver_card,xAnnualRateBps,pct_from_bps
+card,annual_rate_bps,silver_card,xAnnualRateBps,int
+card,statement_day,silver_card,xStatementDay,
+card,payment_due_day,silver_card,xPaymentDueDay,
+card,payment_due_on,silver_card,xPaymentDueDate,
+card,statement_from,silver_card,xStatementPeriodFrom,
+card,statement_to,silver_card,xStatementPeriodTo,
+card,international_enabled,silver_card,xControlsInternationalTransactions,
+card,online_enabled,silver_card,xControlsOnlineTransactions,
+card,contactless_enabled,silver_card,xControlsContactless,
+card,release_id,silver_card,_release_id,
+deposit,deposit_id,silver_deposit,depositId,
+deposit,customer_id,silver_deposit,_owner_id,owner
+deposit,product_id,silver_deposit,productId,
+deposit,linked_account_id,silver_deposit,linkedAccountId,
+deposit,status,silver_deposit,xStatus,
+deposit,principal_inr,silver_deposit,principalMinor,minor_to_inr
+deposit,principal_paise,silver_deposit,principalMinor,minor_to_paise
+deposit,annual_rate_pct,silver_deposit,ratePct,dec_to_float
+deposit,annual_rate_bps,silver_deposit,ratePct,dec_to_bps
+deposit,opened_on,silver_deposit,openedOn,
+deposit,matures_on,silver_deposit,maturesOn,
+deposit,liquidity_class,silver_deposit,xLiquidityClass,
+deposit,maturity_instruction,silver_deposit,xMaturityInstruction,
+deposit,premature_penalty_pct,silver_deposit,xPrematureWithdrawalPenaltyBps,pct_from_bps
+deposit,premature_penalty_bps,silver_deposit,xPrematureWithdrawalPenaltyBps,int
+deposit,release_id,silver_deposit,_release_id,
+loan,loan_id,silver_loan,liabilityId,
+loan,customer_id,silver_loan,_owner_id,owner
+loan,product_id,silver_loan,productId,
+loan,purpose,silver_loan,xPurpose,
+loan,rate_type,silver_loan,xRateType,
+loan,annual_rate_pct,silver_loan,ratePct,dec_to_float
+loan,annual_rate_bps,silver_loan,ratePct,dec_to_bps
+loan,opening_principal_inr,silver_loan,xOpeningPrincipalMinor,minor_to_inr
+loan,opening_principal_paise,silver_loan,xOpeningPrincipalMinor,minor_to_paise
+loan,current_principal_inr,silver_loan,outstandingMinor,minor_to_inr
+loan,current_principal_paise,silver_loan,outstandingMinor,minor_to_paise
+loan,emi_inr,silver_loan,monthlyPaymentMinor,minor_to_inr
+loan,emi_paise,silver_loan,monthlyPaymentMinor,minor_to_paise
+loan,origination_fee_inr,silver_loan,xOriginationFeeMinor,minor_to_inr
+loan,origination_fee_paise,silver_loan,xOriginationFeeMinor,minor_to_paise
+loan,prepayment_applies_to,silver_loan,xPrepaymentTermsAppliesTo,
+loan,prepayment_charge_pct,silver_loan,xPrepaymentTermsChargeBps,pct_from_bps
+loan,prepayment_charge_bps,silver_loan,xPrepaymentTermsChargeBps,int
+loan,prepayment_minimum_inr,silver_loan,xPrepaymentTermsMinimumAmountMinor,minor_to_inr
+loan,prepayment_minimum_paise,silver_loan,xPrepaymentTermsMinimumAmountMinor,minor_to_paise
+loan,prepayment_notice_days,silver_loan,xPrepaymentTermsNoticeDays,
+loan,scheduled_installments,silver_loan,xRepaymentScheduleCount,
+loan,release_id,silver_loan,_release_id,
+loan_installment,installment_id,silver_loan_installment,loanId,
+loan_installment,installment_id,silver_loan_installment,ordinal,
+loan_installment,loan_id,silver_loan_installment,loanId,
+loan_installment,installment_number,silver_loan_installment,installmentNumber,
+loan_installment,due_on,silver_loan_installment,dueDate,
+loan_installment,status,silver_loan_installment,status,
+loan_installment,opening_principal_inr,silver_loan_installment,openingPrincipalMinor,minor_to_inr
+loan_installment,opening_principal_paise,silver_loan_installment,openingPrincipalMinor,minor_to_paise
+loan_installment,principal_paid_inr,silver_loan_installment,principalPaidMinor,minor_to_inr
+loan_installment,principal_paid_paise,silver_loan_installment,principalPaidMinor,minor_to_paise
+loan_installment,interest_paid_inr,silver_loan_installment,interestPaidMinor,minor_to_inr
+loan_installment,interest_paid_paise,silver_loan_installment,interestPaidMinor,minor_to_paise
+loan_installment,fees_paid_inr,silver_loan_installment,feesPaidMinor,minor_to_inr
+loan_installment,fees_paid_paise,silver_loan_installment,feesPaidMinor,minor_to_paise
+loan_installment,total_paid_inr,silver_loan_installment,totalPaidMinor,minor_to_inr
+loan_installment,total_paid_paise,silver_loan_installment,totalPaidMinor,minor_to_paise
+loan_installment,closing_principal_inr,silver_loan_installment,closingPrincipalMinor,minor_to_inr
+loan_installment,closing_principal_paise,silver_loan_installment,closingPrincipalMinor,minor_to_paise
+loan_installment,payment_description,silver_loan_installment,paymentTransactionDescription,
+insurance_policy,policy_id,silver_protection_policy,policyId,
+insurance_policy,customer_id,silver_protection_policy,_owner_id,owner
+insurance_policy,product_id,silver_protection_policy,productId,
+insurance_policy,policy_type,silver_protection_policy,coverType,
+insurance_policy,status,silver_protection_policy,xStatus,
+insurance_policy,insurer,silver_protection_policy,xInsurer,
+insurance_policy,premium_inr,silver_protection_policy,premiumMinor,minor_to_inr
+insurance_policy,premium_paise,silver_protection_policy,premiumMinor,minor_to_paise
+insurance_policy,premium_cadence,silver_protection_policy,premiumFrequency,
+insurance_policy,sum_insured_inr,silver_protection_policy,sumInsuredMinor,minor_to_inr
+insurance_policy,sum_insured_paise,silver_protection_policy,sumInsuredMinor,minor_to_paise
+insurance_policy,beneficiary_member_ids,silver_protection_policy,xBeneficiaries,
+insurance_policy,covered_member_ids,silver_protection_policy,xCoveredMembers,
+insurance_policy,started_on,silver_protection_policy,startedOn,
+insurance_policy,renews_on,silver_protection_policy,renewsOn,
+insurance_policy,linked_account_id,silver_protection_policy,linkedAccountId,
+insurance_policy,co_pay_pct,silver_protection_policy,xCoPayPct,dec_to_float
+insurance_policy,initial_waiting_days,silver_protection_policy,xWaitingPeriodsInitialDays,
+insurance_policy,pre_existing_waiting_months,silver_protection_policy,xWaitingPeriodsPreExistingMonths,
+insurance_policy,policy_number,silver_protection_policy,xPolicyNumber,
+insurance_policy,release_id,silver_protection_policy,_release_id,
+protection_gap,protection_gap_id,silver_protection_gap,protectionGapId,
+protection_gap,customer_id,silver_protection_gap,_owner_id,owner
+protection_gap,gap_type,silver_protection_gap,gapType,
+protection_gap,existing_protection_inr,silver_protection_gap,existingProtectionMinor,minor_to_inr
+protection_gap,existing_protection_paise,silver_protection_gap,existingProtectionMinor,minor_to_paise
+protection_gap,target_protection_inr,silver_protection_gap,targetProtectionMinor,minor_to_inr
+protection_gap,target_protection_paise,silver_protection_gap,targetProtectionMinor,minor_to_paise
+protection_gap,gap_inr,silver_protection_gap,gapMinor,minor_to_inr
+protection_gap,gap_paise,silver_protection_gap,gapMinor,minor_to_paise
+protection_gap,income_replacement_inr,silver_protection_gap,basisIncomeReplacementMinor,minor_to_inr
+protection_gap,income_replacement_paise,silver_protection_gap,basisIncomeReplacementMinor,minor_to_paise
+protection_gap,loan_and_education_needs_inr,silver_protection_gap,basisLoanAndEducationNeedsMinor,minor_to_inr
+protection_gap,loan_and_education_needs_paise,silver_protection_gap,basisLoanAndEducationNeedsMinor,minor_to_paise
+protection_gap,offset_liquid_assets_inr,silver_protection_gap,basisOffsetLiquidAssetsMinor,minor_to_inr
+protection_gap,offset_liquid_assets_paise,silver_protection_gap,basisOffsetLiquidAssetsMinor,minor_to_paise
+protection_gap,disclosure,silver_protection_gap,disclosure,
+protection_gap,release_id,silver_protection_gap,_release_id,
+investment,investment_id,silver_investment,investmentId,
+investment,customer_id,silver_investment,_owner_id,owner
+investment,product_id,silver_investment,productId,
+investment,investment_type,silver_investment,investmentType,
+investment,liquidity,silver_investment,liquidity,
+investment,current_value_inr,silver_investment,currentValueMinor,minor_to_inr
+investment,current_value_paise,silver_investment,currentValueMinor,minor_to_paise
+investment,goal_ids,silver_investment,goalRefs,
+investment,release_id,silver_investment,_release_id,
+investment_goal,link_id,silver_investment_goal,investmentId,
+investment_goal,link_id,silver_investment_goal,goalId,
+investment_goal,investment_id,silver_investment_goal,investmentId,
+investment_goal,goal_id,silver_investment_goal,goalId,
+transaction,transaction_id,silver_transaction,transactionId,
+transaction,customer_id,silver_transaction,_owner_id,owner
+transaction,account_id,silver_transaction,accountId,
+transaction,card_id,silver_transaction,cardId,
+transaction,description,silver_transaction,description,
+transaction,direction,silver_transaction,direction,
+transaction,category,silver_transaction,category,
+transaction,instrument,silver_transaction,xInstrument,
+transaction,status,silver_transaction,xStatus,
+transaction,amount_inr,silver_transaction,amountMinor,minor_to_inr
+transaction,amount_paise,silver_transaction,amountMinor,minor_to_paise
+transaction,signed_amount_inr,,,const: null
+transaction,signed_amount_inr,silver_transaction,amountMinor,post hook txn_signed via amount_inr
+transaction,signed_amount_inr,silver_transaction,direction,post hook txn_signed via direction
+transaction,posted_at,silver_transaction,postedAt,ts
+transaction,posted_date_ist,silver_transaction,postedAt,ist_date
+transaction,value_date,silver_transaction,valueDate,
+transaction,counterparty_ref,silver_transaction,xCounterpartyRef,
+transaction,counterparty_type,silver_transaction,xCounterpartyRef,ref_type
+transaction,dispute_incident_id,silver_transaction,xDisputeRef,
+transaction,purchase_reference,silver_transaction,xPurchaseReference,
+transaction,settlement_reference,silver_transaction,xSettlementReference,
+transaction,evidence_refs,silver_transaction,xSourceRefs,
+transaction,evidence_count,silver_transaction,xSourceRefsCount,
+transaction,release_id,silver_transaction,_release_id,
+transaction_evidence,evidence_id,silver_transaction_evidence,transactionId,
+transaction_evidence,evidence_id,silver_transaction_evidence,sourceRef,
+transaction_evidence,transaction_id,silver_transaction_evidence,transactionId,
+transaction_evidence,source_ref,silver_transaction_evidence,sourceRef,
+transaction_evidence,source_type,silver_transaction_evidence,sourceRef,ref_type
+transaction_evidence,document_id,silver_transaction_evidence,sourceRef,"prefix:doc-,DOC-"
+transaction_evidence,incident_id,silver_transaction_evidence,sourceRef,prefix:case-
+scheduled_obligation,obligation_id,silver_scheduled_obligation,obligationId,
+scheduled_obligation,customer_id,silver_scheduled_obligation,_owner_id,owner
+scheduled_obligation,name,silver_scheduled_obligation,name,
+scheduled_obligation,source_account_id,silver_scheduled_obligation,sourceAccountId,
+scheduled_obligation,payee_ref,silver_scheduled_obligation,payeeRef,
+scheduled_obligation,payee_type,silver_scheduled_obligation,payeeRef,ref_type
+scheduled_obligation,cadence,silver_scheduled_obligation,cadence,
+scheduled_obligation,day_of_month,silver_scheduled_obligation,dayOfMonth,
+scheduled_obligation,status,silver_scheduled_obligation,status,
+scheduled_obligation,amount_inr,silver_scheduled_obligation,amountMinor,minor_to_inr
+scheduled_obligation,amount_paise,silver_scheduled_obligation,amountMinor,minor_to_paise
+scheduled_obligation,release_id,silver_scheduled_obligation,_release_id,
+income_record,income_id,silver_income_record,incomeId,
+income_record,customer_id,silver_income_record,_owner_id,owner
+income_record,income_type,silver_income_record,incomeType,
+income_record,period,silver_income_record,period,
+income_record,gross_inr,silver_income_record,grossMinor,minor_to_inr
+income_record,gross_paise,silver_income_record,grossMinor,minor_to_paise
+income_record,net_inr,silver_income_record,netMinor,minor_to_inr
+income_record,net_paise,silver_income_record,netMinor,minor_to_paise
+income_record,is_recurring,silver_income_record,recurring,
+income_record,evidence_document_id,silver_income_record,evidenceRef,
+income_record,contributor_member_id,silver_income_record,contributorRef,
+income_record,narration,silver_income_record,transactionDescription,
+income_record,release_id,silver_income_record,_release_id,
+goal,goal_id,silver_goal,goalId,
+goal,customer_id,silver_goal,_owner_id,owner
+goal,name,silver_goal,title,
+goal,priority_rank,silver_goal,xPriorityRank,
+goal,stated_priority,silver_goal,priority,
+goal,status,silver_goal,xStatus,
+goal,target_inr,silver_goal,targetAmountMinor,minor_to_inr
+goal,target_paise,silver_goal,targetAmountMinor,minor_to_paise
+goal,current_inr,silver_goal,allocatedAmountMinor,minor_to_inr
+goal,current_paise,silver_goal,allocatedAmountMinor,minor_to_paise
+goal,progress_pct,,,const: null
+goal,progress_pct,silver_goal,targetAmountMinor,post hook goal_progress via target_inr
+goal,progress_pct,silver_goal,allocatedAmountMinor,post hook goal_progress via current_inr
+goal,progress_pct,silver_goal,xTargetFrequency,post hook goal_progress via target_frequency
+goal,target_date,silver_goal,targetDate,
+goal,target_frequency,silver_goal,xTargetFrequency,
+goal,intent_summary,silver_goal,xCustomerIntent,
+goal,funding_product_ids,silver_goal,xFundingProductIds,
+goal,release_id,silver_goal,_release_id,
+preference,preference_id,silver_preference,preferenceId,
+preference,customer_id,silver_preference,_owner_id,owner
+preference,field,silver_preference,field,
+preference,preference_value,silver_preference,value,
+preference,recorded_on,silver_preference,recordedOn,
+preference,stated_in,silver_preference,xStatedIn,
+preference,note,silver_preference,xNote,
+preference,release_id,silver_preference,_release_id,
+consent,consent_id,silver_frontier_consent,consentId,
+consent,consent_id,silver_consent,consentId,
+consent,customer_id,silver_frontier_consent,_owner_id,owner
+consent,customer_id,silver_consent,_owner_id,owner
+consent,purpose,silver_frontier_consent,purpose,
+consent,purpose,silver_consent,purpose,
+consent,status,silver_frontier_consent,xStatus,
+consent,status,silver_frontier_consent,revokedAt,post hook consent_status via revoked_at
+consent,status,silver_consent,revokedAt,post hook consent_status via revoked_at
+consent,granted_at,silver_frontier_consent,recordedAt,ts
+consent,granted_at,silver_consent,at,ts
+consent,expires_at,silver_frontier_consent,expiresAt,ts
+consent,expires_at,silver_consent,expiresAt,ts
+consent,revoked_at,silver_frontier_consent,revokedAt,ts
+consent,revoked_at,silver_consent,revokedAt,ts
+consent,subject_ref,silver_frontier_consent,subjectId,
+consent,subject_type,silver_frontier_consent,subjectId,ref_type
+consent,subject_member_id,silver_frontier_consent,subjectId,prefix:member-
+consent,recipient_scope,silver_consent,xRecipientScope,
+consent,revision,silver_consent,xRevision,
+consent,resource_count,silver_consent,xResourceRefsCount,
+consent,release_id,silver_frontier_consent,_release_id,
+consent,release_id,silver_consent,_release_id,
+consent_resource,link_id,silver_consent_resource,consentId,
+consent_resource,link_id,silver_consent_resource,sourceId,
+consent_resource,consent_id,silver_consent_resource,consentId,
+consent_resource,document_id,silver_consent_resource,sourceId,
+consent_resource,source_version,silver_consent_resource,resourceVersion,
+access_grant,grant_id,silver_household_access_grant,grantId,
+access_grant,customer_id,silver_household_access_grant,_owner_id,owner
+access_grant,household_id,silver_household_access_grant,xHouseholdId,
+access_grant,consent_id,silver_household_access_grant,xConsentRef,
+access_grant,subject_ref,silver_household_access_grant,subjectId,
+access_grant,subject_member_id,silver_household_access_grant,subjectId,prefix:member-
+access_grant,status,silver_household_access_grant,xStatus,
+access_grant,permissions,silver_household_access_grant,permissions,
+access_grant,denied_permissions,silver_household_access_grant,xDeniedPermissions,
+access_grant,release_id,silver_household_access_grant,_release_id,
+grant_permission,grant_permission_id,silver_grant_permission,grantId,
+grant_permission,grant_permission_id,silver_grant_permission,permissionKind,
+grant_permission,grant_permission_id,silver_grant_permission,ordinal,
+grant_permission,grant_id,silver_grant_permission,grantId,
+grant_permission,permission,silver_grant_permission,permission,
+grant_permission,action,silver_grant_permission,permission,re:^([^:]+)
+grant_permission,resource,silver_grant_permission,permission,re:^[^:]+:(.+)$
+grant_permission,is_denied,silver_grant_permission,isDenied,
+registered_agent,agent_id,silver_registered_agent,agentId,
+registered_agent,customer_id,silver_registered_agent,_owner_id,owner
+registered_agent,household_id,silver_registered_agent,xHouseholdId,
+registered_agent,consent_id,silver_registered_agent,xConsentRef,
+registered_agent,registration_type,silver_registered_agent,xRegistrationType,
+registered_agent,delegation_mode,silver_registered_agent,xDelegationMode,
+registered_agent,status,silver_registered_agent,status,
+registered_agent,scopes,silver_registered_agent,xScopes,
+registered_agent,denied_scopes,silver_registered_agent,xDeniedScopes,
+registered_agent,kya_provider_name,silver_registered_agent,xKyaProviderName,
+registered_agent,kya_registration_id,silver_registered_agent,xKyaProviderRegistrationId,
+registered_agent,kya_verification_method,silver_registered_agent,xKyaVerificationMethod,
+registered_agent,kya_verified_at,silver_registered_agent,xKyaVerifiedAt,ts
+registered_agent,kya_key_fingerprint,silver_registered_agent,xKyaSigningKeyFingerprint,
+registered_agent,release_id,silver_registered_agent,_release_id,
+agent_scope,agent_scope_id,silver_agent_scope,agentId,
+agent_scope,agent_scope_id,silver_agent_scope,scopeKind,
+agent_scope,agent_scope_id,silver_agent_scope,ordinal,
+agent_scope,agent_id,silver_agent_scope,agentId,
+agent_scope,scope,silver_agent_scope,scope,
+agent_scope,action,silver_agent_scope,scope,re:^([^:]+)
+agent_scope,resource,silver_agent_scope,scope,re:^[^:]+:(.+)$
+agent_scope,is_denied,silver_agent_scope,isDenied,
+mandate,mandate_id,silver_frontier_mandate,mandateId,
+mandate,customer_id,silver_frontier_mandate,_owner_id,owner
+mandate,agent_id,silver_frontier_mandate,agentId,
+mandate,consent_id,silver_frontier_mandate,consentId,
+mandate,source_account_id,silver_frontier_mandate,sourceAccountId,
+mandate,destination_account_id,silver_frontier_mandate,xDestinationAccountId,
+mandate,goal_id,silver_frontier_mandate,targetGoalId,
+mandate,status,silver_frontier_mandate,status,
+mandate,currency,silver_frontier_mandate,currency,
+mandate,per_action_limit_inr,silver_frontier_mandate,perExecutionLimitMinor,minor_to_inr
+mandate,per_action_limit_paise,silver_frontier_mandate,perExecutionLimitMinor,minor_to_paise
+mandate,monthly_limit_inr,silver_frontier_mandate,monthlyLimitMinor,minor_to_inr
+mandate,monthly_limit_paise,silver_frontier_mandate,monthlyLimitMinor,minor_to_paise
+mandate,minimum_source_balance_inr,silver_frontier_mandate,protectedCashMinor,minor_to_inr
+mandate,minimum_source_balance_paise,silver_frontier_mandate,protectedCashMinor,minor_to_paise
+mandate,valid_from,silver_frontier_mandate,effectiveFrom,ts
+mandate,valid_from_date_ist,silver_frontier_mandate,effectiveFrom,ist_date
+mandate,valid_until,silver_frontier_mandate,expiresAt,ts
+mandate,valid_until_date_ist,silver_frontier_mandate,expiresAt,ist_date
+mandate,event_count,silver_frontier_mandate,xHistoryCount,
+mandate,release_id,silver_frontier_mandate,_release_id,
+mandate_event,event_id,silver_mandate_action,actionRecordId,
+mandate_event,mandate_id,silver_mandate_action,mandateId,
+mandate_event,event_type,silver_mandate_action,xEventType,
+mandate_event,occurred_at,silver_mandate_action,recordedAt,ts
+mandate_event,occurred_date_ist,silver_mandate_action,recordedAt,ist_date
+mandate_event,actor_ref,silver_mandate_action,xActorRef,
+mandate_event,actor_type,silver_mandate_action,xActorRef,ref_type
+mandate_event,amount_inr,silver_mandate_action,amountMinor,minor_to_inr
+mandate_event,amount_paise,silver_mandate_action,amountMinor,minor_to_paise
+mandate_event,source_balance_after_inr,silver_mandate_action,protectedCashAfterMinor,minor_to_inr
+mandate_event,source_balance_after_paise,silver_mandate_action,protectedCashAfterMinor,minor_to_paise
+mandate_event,reason,silver_mandate_action,reasons,
+mandate_event,narration,silver_mandate_action,xTransactionDescriptions,
+incident,incident_id,silver_incident,incidentId,
+incident,customer_id,silver_incident,_owner_id,owner
+incident,incident_type,silver_incident,incidentType,
+incident,status,silver_incident,status,
+incident,detected_at,silver_incident,detectedAt,ts
+incident,detected_date_ist,silver_incident,detectedAt,ist_date
+incident,amount_inr,silver_incident,amountMinor,minor_to_inr
+incident,amount_paise,silver_incident,amountMinor,minor_to_paise
+incident,recovery_amount_inr,silver_incident,recoveryAmountMinor,minor_to_inr
+incident,recovery_amount_paise,silver_incident,recoveryAmountMinor,minor_to_paise
+incident,recovery_evidence_document_id,silver_incident,recoveryEvidenceRef,
+incident,evidence_document_ids,silver_incident,evidenceRefs,
+incident,narration,silver_incident,transactionDescriptions,
+incident,release_id,silver_incident,_release_id,
+service_record,service_record_id,silver_service_case,serviceRequestId,
+service_record,customer_id,silver_service_case,_owner_id,owner
+service_record,incident_id,silver_service_case,caseId,
+service_record,channel,silver_service_case,xChannel,
+service_record,opened_at,silver_service_case,createdAt,ts
+service_record,opened_date_ist,silver_service_case,createdAt,ist_date
+service_record,actions,silver_service_case,xActions,
+service_record,handoff_team,silver_service_case,xHumanHandoffTeam,
+service_record,handoff_reason,silver_service_case,xHumanHandoffReason,
+service_record,handoff_at,silver_service_case,xHumanHandoffOccurredAt,ts
+service_record,release_id,silver_service_case,_release_id,
+proactive_event,event_id,silver_proactive_candidate,candidateId,
+proactive_event,event_type,silver_proactive_candidate,kind,
+proactive_event,as_of_date,silver_proactive_candidate,xAsOf,
+proactive_event,evidence_refs,silver_proactive_candidate,sourceRefs,
+proactive_event,disclosure,silver_proactive_candidate,xDisclosure,
+proactive_event,release_id,silver_proactive_candidate,_release_id,
+service_request_type,service_type_id,reference: service-requests.json,serviceTypeId,
+service_request_type,title,reference: service-requests.json,title,
+service_request_type,summary,reference: service-requests.json,summary,
+service_request_type,bu_id,reference: service-requests.json,buId,
+service_request_type,journey_ids,reference: service-requests.json,journeyIds,join
+service_request_type,priority,reference: service-requests.json,priority,
+service_request_type,case_title,reference: service-requests.json,caseTitle,
+service_request_type,stage_ladder,reference: service-requests.json,stageLadder,join
+service_request_type,activation_mode,reference: service-requests.json,activationMode,
+service_request_type,recorded_outcome,reference: service-requests.json,recordedOutcome,
+service_request_type,never_claim,reference: service-requests.json,neverClaim,join
+document,document_id,silver_document,documentId,
+document,customer_id,silver_document,_owner_id,owner
+document,title,silver_document,title,
+document,document_type,silver_document,documentKind,
+document,issuer,silver_document,xIssuer,
+document,issuer,silver_document,xSource,
+document,issued_on,silver_document,issuedOn,
+document,page_count,silver_document,pageCount,
+document,purpose,silver_document,xPurpose,
+document,visibility,silver_document,xVisibility,
+document,source_version,silver_document,sourceVersion,
+document,superseded_by_document_id,silver_document,xSupersededByDocumentId,
+document,supersedes_document_id,silver_document,xSupersedesDocumentId,
+document,facts_text,silver_document,xFactsText,
+document,release_id,silver_document,_release_id,
+crm_case,case_id,silver_crm_case,caseId,
+crm_case,customer_id,silver_crm_case,_owner_id,owner
+crm_case,title,silver_crm_case,title,
+crm_case,summary,silver_crm_case,summary,
+crm_case,stage,silver_crm_case,stage,
+crm_case,priority,silver_crm_case,priority,
+crm_case,sentiment,silver_crm_case,sentiment,
+crm_case,channel,silver_crm_case,channel,
+crm_case,origin,silver_crm_case,origin,
+crm_case,bu_id,silver_crm_case,buId,
+crm_case,journey_id,silver_crm_case,journeyId,
+crm_case,owner_rm_id,silver_crm_case,ownerRmId,
+crm_case,product_ids,silver_crm_case,productIds,
+crm_case,interactions,silver_crm_case,interactions,
+crm_case,objection_reason,silver_crm_case,objectionReason,
+crm_case,objection_product_id,silver_crm_case,objectionProductId,
+crm_case,opened_at,silver_crm_case,openedAt,ts
+crm_case,opened_date_ist,silver_crm_case,openedAt,ist_date
+crm_case,updated_at,silver_crm_case,updatedAt,ts
+crm_case,sla_due_at,silver_crm_case,slaDueAt,ts
+crm_case,release_id,silver_crm_case,_release_id,
+product,product_id,silver_product,productId,
+product,display_name,silver_product,name,
+product,display_name,silver_product,xProductType,
+product,display_name,silver_product,productId,post hook product_names via product_id
+product,display_name,silver_product,productFamily,post hook product_names via family
+product,display_name,silver_product,xProductType,post hook product_names via family
+product,family,silver_product,productFamily,
+product,family,silver_product,xProductType,
+product,data_role,silver_product,xDataRole,
+product,status,silver_product,xStatus,
+product,issuer,silver_product,xIssuer,
+product,catalogue_version,silver_product,xCatalogueVersion,
+product,effective_from,silver_product,xEffectiveFrom,
+product,effective_to,silver_product,xEffectiveTo,
+product,audience,silver_product,xAudienceDescription,
+product,main_tradeoff,silver_product,xMainTradeoff,
+product,why_not_suitable,silver_product,xWhyNotSuitable,
+product,rate_terms,silver_product,xRateTerms,
+product,liquidity_terms,silver_product,xLiquidityTerms,
+product,benefits_text,silver_product,xBenefits,
+product,fees_text,silver_product,xFees,
+product,limitations_text,silver_product,xLimitations,
+product,required_evidence,silver_product,xRequiredEvidence,
+product,supported_actions,silver_product,xSupportedActions,
+product,underwriting_required,silver_product,xUnderwritingRequired,
+product,min_age,silver_product,xEligibilityRulesMinimumAge,
+product,min_monthly_income_inr,silver_product,xEligibilityRulesMinimumMonthlyIncomeMinor,minor_to_inr
+product,min_principal_inr,silver_product,xEligibilityRulesMinimumPrincipalMinor,minor_to_inr
+product,min_principal_inr,silver_product,minimumPrincipalMinor,minor_to_inr
+product,max_principal_inr,silver_product,maximumPrincipalMinor,minor_to_inr
+product,interest_rate_pct,silver_product,ratePct,dec_to_float
+product,annual_fee_inr,silver_product,annualFeeMinor,minor_to_inr
+product,monthly_fee_inr,silver_product,monthlyFeeMinor,minor_to_inr
+product,minimum_balance_inr,silver_product,xParametersMinimumBalanceMinor,minor_to_inr
+product,processing_fee_pct,silver_product,xParametersProcessingFeePct,dec_to_float
+product,prepayment_charge_pct,silver_product,xParametersPrepaymentChargePct,dec_to_float
+product,early_withdrawal_penalty_pct,silver_product,xParametersPrematureWithdrawalPenaltyPct,dec_to_float
+product,min_term_months,silver_product,minimumTermMonths,
+product,max_term_months,silver_product,xParametersMaximumTermMonths,
+product,max_tenure_years,silver_product,xParametersMaximumTenureYears,
+product,max_ltv_pct,silver_product,xParametersMaximumLtvPct,dec_to_float
+product,cashback_pct,silver_product,xParametersCashbackPct,dec_to_float
+product,forex_markup_pct,silver_product,xParametersForexMarkupPct,dec_to_float
+product,monthly_premium_inr,silver_product,monthlyPremiumMinor,minor_to_inr
+product,sum_insured_inr,silver_product,sumInsuredMinor,minor_to_inr
+product,rate_type,silver_product,xParametersRateType,
+product,payout_mode,silver_product,xParametersPayoutMode,
+product,disclosure,silver_product,xDisclosureText,
+product,release_id,silver_product,xReleaseId,
+product,release_id,silver_product,_release_id,
+product_parameter,parameter_id,silver_product_parameter,productId,
+product_parameter,parameter_id,silver_product_parameter,parameterName,
+product_parameter,product_id,silver_product_parameter,productId,
+product_parameter,parameter_name,silver_product_parameter,parameterName,
+product_parameter,value_text,silver_product_parameter,valueBoolean,str
+product_parameter,value_text,silver_product_parameter,valueText,str
+product_parameter,value_number,silver_product_parameter,valueInteger,dec_to_float
+product_parameter,value_number,silver_product_parameter,valueDecimal,dec_to_float
+journey,journey_id,reference: journeys/J[0-9][0-9].json; reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,journeyId,
+journey,title,reference: journeys/J[0-9][0-9].json; reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,title,
+journey,journey_kind,reference: journeys/J[0-9][0-9].json; reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,$kind,
+journey,one_liner,reference: journeys/J[0-9][0-9].json; reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,oneLiner,
+journey,goal,reference: journeys/J[0-9][0-9].json; reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,goal,
+journey,bu_id,reference: journeys/J[0-9][0-9].json; reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,buId,
+journey,sales_posture,reference: journeys/J[0-9][0-9].json; reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,salesPosture,
+journey,turn_cap,reference: journeys/J[0-9][0-9].json; reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,turnCap,
+journey,autonomy_ceiling,reference: journeys/J[0-9][0-9].json; reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,autonomyCeiling,
+journey,primary_specialists,reference: journeys/J[0-9][0-9].json; reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,primarySpecialists,
+journey,allowed_prepared_operations,reference: journeys/J[0-9][0-9].json; reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,allowedOperations,
+journey,triggers_text,reference: journeys/J[0-9][0-9].json; reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,triggers,join
+journey,must_establish_text,reference: journeys/J[0-9][0-9].json; reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,mustEstablish,join
+journey,never_do_text,reference: journeys/J[0-9][0-9].json; reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,neverDo,join
+journey,tool_hints,reference: journeys/J[0-9][0-9].json; reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,toolHints,join
+journey,opener_examples,reference: journeys/J[0-9][0-9].json; reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,openers,join
+sop,sop_id,silver_sop,sopId,
+sop,title,silver_sop,title,
+sop,scope,silver_sop,scope,
+sop,audience,silver_sop,audience,
+sop,applies_to_case,silver_sop,appliesToCase,
+sop,knowledge_path,silver_sop,knowledgePath,
+sop,source_version,silver_sop,sopVersion,
+sop,release_id,silver_sop,_release_id,
+journey_sop,link_id,reference: journeys/J[0-9][0-9].json,^.journeyId,
+journey_sop,link_id,reference: journeys/J[0-9][0-9].json,@,
+journey_sop,journey_id,reference: journeys/J[0-9][0-9].json,^.journeyId,
+journey_sop,sop_id,reference: journeys/J[0-9][0-9].json,@,
+journey_product,link_id,reference: journeys/J[0-9][0-9].json,^.journeyId,
+journey_product,link_id,reference: journeys/J[0-9][0-9].json,@,
+journey_product,journey_id,reference: journeys/J[0-9][0-9].json,^.journeyId,
+journey_product,product_id,reference: journeys/J[0-9][0-9].json,@,
+law,law_id,reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,Law,re:^(L\d+)
+law,name,reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,Law,re:^L\d+:\s*(.*)$
+law,required_behavior,reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,Required behavior,
+authority_rule,rule_id,reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,capability,
+authority_rule,rule_id,reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,actor,
+authority_rule,capability,reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,capability,
+authority_rule,actor,reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,actor,
+authority_rule,permission_class,reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,text,perm_class
+authority_rule,permission_text,reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,text,
+frontier_requirement,requirement_id,reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,Requirement,
+frontier_requirement,retail_requirement,reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,Retail requirement,
+frontier_requirement,journey_id,reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,Journey,re:^(F\d\d)
+frontier_requirement,deterministic_outcome,reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,Implemented deterministic outcome,
+bank_agent,agent_name,reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,Agent,
+bank_agent,form,reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,Form,
+bank_agent,responsibility,reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,Responsibility,
+bank_agent,direct_ledger_authority,reference: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md,Direct ledger authority,
+business_unit,bu_id,silver_business_unit,buId,
+business_unit,name,silver_business_unit,name,
+business_unit,short_name,silver_business_unit,shortName,
+business_unit,head_name,silver_business_unit,head,
+business_unit,description,silver_business_unit,description,
+business_unit,health_status,silver_business_unit,healthStatus,
+business_unit,portfolio_crore_inr,silver_business_unit,portfolioCroreINR,dec_to_float
+business_unit,customers,silver_business_unit,customers,
+business_unit,nim_pct,silver_business_unit,nimPercent,dec_to_float
+business_unit,yoy_growth_pct,silver_business_unit,yoyGrowthPercent,dec_to_float
+business_unit,target_attainment_pct,silver_business_unit,targetAttainmentPercent,dec_to_float
+region,region_id,silver_region,regionId,
+region,city,silver_region,city,
+region,state,silver_region,stateName,
+region,branches,silver_region,branches,
+region,customers,silver_region,customers,
+region,deposits_crore_inr,silver_region,depositsCroreINR,dec_to_float
+region,advances_crore_inr,silver_region,advancesCroreINR,dec_to_float
+region,yoy_growth_pct,silver_region,yoyGrowthPercent,dec_to_float
+region,nps_score,silver_region,npsScore,
+region,digital_adoption_pct,silver_region,digitalAdoptionPercent,dec_to_float
+relationship_manager,rm_id,silver_relationship_manager,rmId,
+relationship_manager,name,silver_relationship_manager,name,
+relationship_manager,role,silver_relationship_manager,role,
+relationship_manager,bu_id,silver_relationship_manager,buId,
+relationship_manager,region_id,silver_relationship_manager,regionId,
+relationship_manager,portfolio_customers,silver_relationship_manager,portfolioCustomers,
+relationship_manager,open_cases,silver_relationship_manager,openCases,
+relationship_manager,sla_breaches,silver_relationship_manager,slaBreaches,
+relationship_manager,csat_score,silver_relationship_manager,csatScore,dec_to_float
+relationship_manager,specialisations,silver_relationship_manager,specialisations,
+campaign,campaign_id,silver_campaign,campaignId,
+campaign,name,silver_campaign,name,
+campaign,bu_id,silver_campaign,buId,
+campaign,status,silver_campaign,status,
+campaign,start_date,silver_campaign,startDate,
+campaign,end_date,silver_campaign,endDate,
+campaign,channel,silver_campaign,channel,
+campaign,target_segment,silver_campaign,targetSegment,
+campaign,reach,silver_campaign,reach,
+campaign,engaged,silver_campaign,engaged,
+campaign,converted,silver_campaign,converted,
+campaign,conversion_pct,silver_campaign,conversionPercent,dec_to_float
+campaign,revenue_attributed_crore_inr,silver_campaign,revenueAttributedCroreINR,dec_to_float
+campaign,product_ids,silver_campaign,productIds,
+monthly_metric,metric_id,silver_monthly_metric,buId,
+monthly_metric,metric_id,silver_monthly_metric,month,
+monthly_metric,bu_id,silver_monthly_metric,buId,
+monthly_metric,month,silver_monthly_metric,month,
+monthly_metric,portfolio_crore_inr,silver_monthly_metric,portfolioCroreINR,dec_to_float
+monthly_metric,revenue_crore_inr,silver_monthly_metric,revenueCroreINR,dec_to_float
+monthly_metric,new_customers,silver_monthly_metric,newCustomers,
+monthly_metric,cases_opened,silver_monthly_metric,casesOpened,
+monthly_metric,cases_resolved,silver_monthly_metric,casesResolved,
+risk_alert,alert_id,silver_risk_alert,alertId,
+risk_alert,title,silver_risk_alert,title,
+risk_alert,severity,silver_risk_alert,severity,
+risk_alert,detail,silver_risk_alert,detail,
+risk_alert,bu_id,silver_risk_alert,buId,
+risk_alert,raised_at,silver_risk_alert,raisedAt,ts
+fraud_signal,signal_id,silver_fraud_signal,signalId,
+fraud_signal,label,silver_fraud_signal,signalLabel,
+fraud_signal,detected_last_30d,silver_fraud_signal,detectedLast30d,
+fraud_signal,blocked_last_30d,silver_fraud_signal,blockedLast30d,
+fraud_signal,trend,silver_fraud_signal,trend,
+product_business_unit,link_id,silver_product_business_unit,buId,
+product_business_unit,link_id,silver_product_business_unit,productId,
+product_business_unit,bu_id,silver_product_business_unit,buId,
+product_business_unit,product_id,silver_product_business_unit,productId,
+calendar,date,reference: custom calendar,date,
+calendar,year,reference: custom calendar,year,
+calendar,month_number,reference: custom calendar,month,
+calendar,month_name,reference: custom calendar,monthName,
+calendar,year_month,reference: custom calendar,yearMonth,
+calendar,quarter,reference: custom calendar,quarter,
+calendar,weekday,reference: custom calendar,weekday,
+calendar,is_weekend,reference: custom calendar,isWeekend,
+calendar,fiscal_year,reference: custom calendar,fiscalYear,

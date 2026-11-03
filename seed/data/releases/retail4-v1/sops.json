@@ -1,0 +1,342 @@
+[
+  {
+    "appliesToCase": "UC01",
+    "audience": "bank_global",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T15:01:40Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "sop::SOP-UC01-RETIREMENT-INCOME",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "2c3b75a67a7afb562c8e818d7d735a889dfb50de0e8eaf7df664db48e64daf2d",
+      "responseId": "resp_0501ecfa62b4f685006aa6bacd318c8197938b3e7dd3e97fbd",
+      "specSha256": "1145421c110042d35016811c64d87d6a4264d18a3cc37ecd91f410a3e6732cb8"
+    },
+    "knowledgePath": "knowledge/SOP-UC01-RETIREMENT-INCOME.md",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "scope": "case",
+    "sopId": "SOP-UC01-RETIREMENT-INCOME",
+    "sourceVersion": 1,
+    "title": "Retirement income and deposit review"
+  },
+  {
+    "appliesToCase": "UC02",
+    "audience": "bank_global",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T15:01:52Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "sop::SOP-UC02-MEDICAL-COVER",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "66449db67cd64f0bac3c76cfe8e027d13c22ed74afe02fc0824fd120bed31c5e",
+      "responseId": "resp_063e161439f010da006aa6bad5a4248190ac861e6a2f8376a7",
+      "specSha256": "a29ab8cb25b5c5de6da752481a1e528da52499fccc21ea749d908b662babe4fd"
+    },
+    "knowledgePath": "knowledge/SOP-UC02-MEDICAL-COVER.md",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "scope": "case",
+    "sopId": "SOP-UC02-MEDICAL-COVER",
+    "sourceVersion": 1,
+    "title": "Medical estimate and cover review"
+  },
+  {
+    "appliesToCase": "UC03",
+    "audience": "bank_global",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T15:02:02Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "sop::SOP-UC03-SUSPECTED-FRAUD",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "cfb177781e02095676907100d828790034be7b7ca6f990fd2fa3a5b66f0fbf0f",
+      "responseId": "resp_0e2ff43fc1fee83e006aa6bae183dc8197ab82e8549fa6f26e",
+      "specSha256": "9a10643d2416d705ff8c1bf6098891c5780db1b61e20aa297999dd06c2a350f8"
+    },
+    "knowledgePath": "knowledge/SOP-UC03-SUSPECTED-FRAUD.md",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "scope": "case",
+    "sopId": "SOP-UC03-SUSPECTED-FRAUD",
+    "sourceVersion": 1,
+    "title": "Suspicious contact handling"
+  },
+  {
+    "appliesToCase": "UC04",
+    "audience": "bank_global",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T15:02:08Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "sop::SOP-UC04-FAMILY-DECISIONS",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "6a3fbe344faa8c848cdf6a5208fe831a92ac596790180b14b7c8713a97cb2953",
+      "responseId": "resp_04d18c7f0347670c006aa6baeb13e08190b394a228bc7d1c09",
+      "specSha256": "bc4d14cdbd9bcb1b45cb3f743844796aa86b4e94f01270bc960f169c595d8d70"
+    },
+    "knowledgePath": "knowledge/SOP-UC04-FAMILY-DECISIONS.md",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "scope": "case",
+    "sopId": "SOP-UC04-FAMILY-DECISIONS",
+    "sourceVersion": 1,
+    "title": "Competing household commitments"
+  },
+  {
+    "appliesToCase": "UC05",
+    "audience": "bank_global",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T15:02:16Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "sop::SOP-UC05-HOME-LOAN-CLAUSES",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "792742a20375b65f1675559dedb0a555ddb9a95c224cc07b65d3c23a04c7237d",
+      "responseId": "resp_0105f0e5080f9c02006aa6baf18d788195a527f7427812e204",
+      "specSha256": "fab8df134ac43e20ad8c2bee4bde5aeeffd71f0c3ece0d15d540736928662bfa"
+    },
+    "knowledgePath": "knowledge/SOP-UC05-HOME-LOAN-CLAUSES.md",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "scope": "case",
+    "sopId": "SOP-UC05-HOME-LOAN-CLAUSES",
+    "sourceVersion": 1,
+    "title": "Home loan clause comparison"
+  },
+  {
+    "appliesToCase": "UC06",
+    "audience": "bank_global",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T15:02:24Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "sop::SOP-UC06-SPEND-AND-BENEFITS",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "8bd45c5997b540174fcf8e4df189fc6f424e161b6abd7099341806cb8dcdf310",
+      "responseId": "resp_05f5e2804c0838aa006aa6baf9811c8190b796942bffd4f3e8",
+      "specSha256": "0d41092c3bdad4952a669c2049771b5bec24dd4c2a292803405a3802bf4f8524"
+    },
+    "knowledgePath": "knowledge/SOP-UC06-SPEND-AND-BENEFITS.md",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "scope": "case",
+    "sopId": "SOP-UC06-SPEND-AND-BENEFITS",
+    "sourceVersion": 1,
+    "title": "Spending review and card suitability"
+  },
+  {
+    "appliesToCase": "UC07",
+    "audience": "bank_global",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T15:02:32Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "sop::SOP-UC07-REFUND-DISPUTE",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "6e25eee5c7a852a90172caa7d8e5cc878e632dadd0f8d73a3c0ecfe8adf1b32b",
+      "responseId": "resp_070b95705b093fa4006aa6bb0113ac81909710d3cf9d2547bf",
+      "specSha256": "306a1a5d7d89e2744bace0459e19b42379b72c4da776551b687ce48c15956e89"
+    },
+    "knowledgePath": "knowledge/SOP-UC07-REFUND-DISPUTE.md",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "scope": "case",
+    "sopId": "SOP-UC07-REFUND-DISPUTE",
+    "sourceVersion": 1,
+    "title": "Purchase and refund resolution"
+  },
+  {
+    "appliesToCase": "UC08",
+    "audience": "bank_global",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T15:02:39Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "sop::SOP-UC08-FIRST-SALARY",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "1a3b29a180479d11a76773c42d8b417743f3228d7d8044aeea41a14bb4eac7be",
+      "responseId": "resp_0bfb2873fd9a18c8006aa6bb09377c819592280ea5b620d9bc",
+      "specSha256": "600482dede60260a762529eb5d8252ab8de4e116d79f975e48af688d92837f38"
+    },
+    "knowledgePath": "knowledge/SOP-UC08-FIRST-SALARY.md",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "scope": "case",
+    "sopId": "SOP-UC08-FIRST-SALARY",
+    "sourceVersion": 1,
+    "title": "First salary account review"
+  },
+  {
+    "appliesToCase": "UC09",
+    "audience": "bank_global",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T15:02:47Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "sop::SOP-UC09-CREDIT-EDUCATION",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "20bd664741089b7720392601ed60d763b10876e079976c855b3438b1b5e8156b",
+      "responseId": "resp_0612458d712603b6006aa6bb105f3c81939b6fd35ed68c88dc",
+      "specSha256": "8c2fa64b3ea85cd4ed5e27eedd0d5040412e46da83ae5b1b3fb92c46871c1dab"
+    },
+    "knowledgePath": "knowledge/SOP-UC09-CREDIT-EDUCATION.md",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "scope": "case",
+    "sopId": "SOP-UC09-CREDIT-EDUCATION",
+    "sourceVersion": 1,
+    "title": "Credit and BNPL education"
+  },
+  {
+    "appliesToCase": "UC10",
+    "audience": "bank_global",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T15:02:54Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "sop::SOP-UC10-GROUP-EXPENSES",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "005f858b9207ac31f3025b3d441dd40a7b45441d4aa930145619034c0ff6be91",
+      "responseId": "resp_0716eac4e36e7e93006aa6bb18b0f48193b27010f7c14c118e",
+      "specSha256": "49e35e8cc2c65549baafc0b56bb8969e7eaa0d70157797289aba631538257294"
+    },
+    "knowledgePath": "knowledge/SOP-UC10-GROUP-EXPENSES.md",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "scope": "case",
+    "sopId": "SOP-UC10-GROUP-EXPENSES",
+    "sourceVersion": 1,
+    "title": "Group expense interpretation"
+  },
+  {
+    "appliesToCase": "UC11",
+    "audience": "bank_global",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T15:03:04Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "sop::SOP-UC11-IRREGULAR-INCOME",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "df31c1118fec7512a95167afa767bd71e3a154ed782c48e36d4ccac1d951130c",
+      "responseId": "resp_01ffadb4b06b6bb4006aa6bb1fb5788194b8c59bc5e03868c2",
+      "specSha256": "c1b713b4c6477b1824a6087691c3cc030d06561c42b6ac64e914eae2eb276113"
+    },
+    "knowledgePath": "knowledge/SOP-UC11-IRREGULAR-INCOME.md",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "scope": "case",
+    "sopId": "SOP-UC11-IRREGULAR-INCOME",
+    "sourceVersion": 1,
+    "title": "Side-hustle income and planning"
+  },
+  {
+    "appliesToCase": null,
+    "audience": "bank_global",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T15:03:12Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "sop::SOP-SHARED-PRODUCT-SUITABILITY",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "5e88480fb26df85d4b958307f00c6618c2592404ad06db3bb771ef254f2417c1",
+      "responseId": "resp_02065f222169babc006aa6bb29bc7c8193b1247a634130eb25",
+      "specSha256": "ebdf923da158dbe50ee938d50c2227886586dcd270d170a97071a66615e775fd"
+    },
+    "knowledgePath": "knowledge/SOP-SHARED-PRODUCT-SUITABILITY.md",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "scope": "shared",
+    "sopId": "SOP-SHARED-PRODUCT-SUITABILITY",
+    "sourceVersion": 1,
+    "title": "Product suitability and comparison"
+  },
+  {
+    "appliesToCase": null,
+    "audience": "bank_global",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T15:03:20Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "sop::SOP-SHARED-DOCUMENT-REVIEW",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "f987337fb96a57bea7c1db13f49343f20b360dc53285e3e650b67f4c571eadb1",
+      "responseId": "resp_0851e2e0295dcd05006aa6bb316a6081978063ed54649dea4b",
+      "specSha256": "e7c5554393e575c2e00f952109d401d87cfdad7cd43315fcbb9cff6e22c458bd"
+    },
+    "knowledgePath": "knowledge/SOP-SHARED-DOCUMENT-REVIEW.md",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "scope": "shared",
+    "sopId": "SOP-SHARED-DOCUMENT-REVIEW",
+    "sourceVersion": 1,
+    "title": "Document review and fact adoption"
+  },
+  {
+    "appliesToCase": null,
+    "audience": "bank_global",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T15:03:25Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "sop::SOP-SHARED-CARD-CONTROLS",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "8351d9011ec88fcc51b3ce992ab668f8e5ab3dafde06120e7ff743a9fce1ee42",
+      "responseId": "resp_05c03dd629f5453e006aa6bb39473481969ab2911448f628da",
+      "specSha256": "fdfe910501c7f72b37bc5c4cbe4db14f6f4d1cbae7823f3e9325e150831a6510"
+    },
+    "knowledgePath": "knowledge/SOP-SHARED-CARD-CONTROLS.md",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "scope": "shared",
+    "sopId": "SOP-SHARED-CARD-CONTROLS",
+    "sourceVersion": 1,
+    "title": "Card controls and instructions"
+  },
+  {
+    "appliesToCase": null,
+    "audience": "bank_global",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T15:03:32Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "sop::SOP-SHARED-REQUEST-HANDLING",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "6e123d1b69b9c7c36280909e208b65c0e9351c144d6e988f3fb036472f0e7000",
+      "responseId": "resp_02098918ee26d82a006aa6bb3e7ab08197a41c093458d631f5",
+      "specSha256": "da31301f4895636993d782426fb155a8e811f4be6540d1294604a255534e2299"
+    },
+    "knowledgePath": "knowledge/SOP-SHARED-REQUEST-HANDLING.md",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "scope": "shared",
+    "sopId": "SOP-SHARED-REQUEST-HANDLING",
+    "sourceVersion": 1,
+    "title": "Customer request handling and status"
+  },
+  {
+    "appliesToCase": null,
+    "audience": "bank_global",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T15:03:40Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "sop::SOP-SHARED-VOICE-HANDOFF",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "7880aaf063336711685e40a3b6e44144c69a4a41ff9e57f2143f468b25bdaf6d",
+      "responseId": "resp_08b02d669f6a052a006aa6bb45d48c81939bdc9a97a4c1fc69",
+      "specSha256": "4f4c7dc476614ff1644d9a6051b945612586d067ac3e854828c6c988bee954e4"
+    },
+    "knowledgePath": "knowledge/SOP-SHARED-VOICE-HANDOFF.md",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "scope": "shared",
+    "sopId": "SOP-SHARED-VOICE-HANDOFF",
+    "sourceVersion": 1,
+    "title": "Voice support handoff"
+  },
+  {
+    "appliesToCase": null,
+    "audience": "bank_global",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T15:03:48Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "sop::SOP-SHARED-CATALOGUE-USE",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "d3983572347e56839929259719b8bf75a333d941341269d6bd8aec8ab77243a8",
+      "responseId": "resp_099acd9c59f61d41006aa6bb4d7e7c81958c95fe7d99984cd5",
+      "specSha256": "44a46a2396177718c8a755b50269001f7dec53485b8da4a10c733b53574a6e24"
+    },
+    "knowledgePath": "knowledge/SOP-SHARED-CATALOGUE-USE.md",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "scope": "shared",
+    "sopId": "SOP-SHARED-CATALOGUE-USE",
+    "sourceVersion": 1,
+    "title": "Safe use of the product catalogue"
+  }
+]

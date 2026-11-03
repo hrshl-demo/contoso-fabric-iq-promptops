@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "retail4-bank-v1",
+  "releaseId": "retail4-v1",
+  "syntheticLabel": "Synthetic demonstration data. Not a real bank.",
+  "generatedFor": "businessDate 2026-09-15",
+  "_units": {
+    "amountCroreINR": "Reporting aggregate amount in crore INR as a float; 1 crore = INR 10,000,000.",
+    "portfolioCroreINR": "Reporting aggregate portfolio in crore INR as a float.",
+    "amountMinor": "Exact transactional money, if present, is integer paise. These aggregate files do not use exact retail amounts."
+  },
+  "byFamily": [
+    {
+      "family": "savings",
+      "label": "Savings accounts",
+      "amountCroreINR": 15700.0,
+      "sharePercent": 27.07,
+      "yoyGrowthPercent": 8.1
+    },
+    {
+      "family": "fixed_deposit",
+      "label": "Fixed deposits",
+      "amountCroreINR": 12600.0,
+      "sharePercent": 21.72,
+      "yoyGrowthPercent": 5.8
+    },
+    {
+      "family": "recurring_deposit",
+      "label": "Recurring deposits",
+      "amountCroreINR": 1600.0,
+      "sharePercent": 2.76,
+      "yoyGrowthPercent": 6.9
+    },
+    {
+      "family": "cards",
+      "label": "Credit and debit cards",
+      "amountCroreINR": 4500.0,
+      "sharePercent": 7.76,
+      "yoyGrowthPercent": 19.8
+    },
+    {
+      "family": "home_loan",
+      "label": "Home loans",
+      "amountCroreINR": 19800.0,
+      "sharePercent": 34.14,
+      "yoyGrowthPercent": 3.1
+    },
+    {
+      "family": "health_bancassurance",
+      "label": "Health and bancassurance",
+      "amountCroreINR": 2200.0,
+      "sharePercent": 3.79,
+      "yoyGrowthPercent": -4.6
+    },
+    {
+      "family": "sweep",
+      "label": "Flexi sweep balances",
+      "amountCroreINR": 1600.0,
+      "sharePercent": 2.76,
+      "yoyGrowthPercent": 9.3
+    }
+  ],
+  "byTenure": [
+    {
+      "bucket": "on_demand",
+      "label": "On demand and transactional",
+      "customers": 1680000,
+      "amountCroreINR": 20800.0,
+      "sharePercent": 35.86
+    },
+    {
+      "bucket": "lt_1y",
+      "label": "Less than 1 year",
+      "customers": 280000,
+      "amountCroreINR": 2400.0,
+      "sharePercent": 4.14
+    },
+    {
+      "bucket": "1_3y",
+      "label": "1 to 3 years",
+      "customers": 310000,
+      "amountCroreINR": 11800.0,
+      "sharePercent": 20.34
+    },
+    {
+      "bucket": "3_5y",
+      "label": "3 to 5 years",
+      "customers": 145000,
+      "amountCroreINR": 8500.0,
+      "sharePercent": 14.66
+    },
+    {
+      "bucket": "gt_5y",
+      "label": "More than 5 years",
+      "customers": 116000,
+      "amountCroreINR": 14500.0,
+      "sharePercent": 25.0
+    }
+  ],
+  "byCustomerAge": [
+    {
+      "bucket": "18_25",
+      "label": "18-25 years",
+      "customers": 330000,
+      "amountCroreINR": 4200.0,
+      "sharePercent": 7.24
+    },
+    {
+      "bucket": "26_35",
+      "label": "26-35 years",
+      "customers": 620000,
+      "amountCroreINR": 9800.0,
+      "sharePercent": 16.9
+    },
+    {
+      "bucket": "36_50",
+      "label": "36-50 years",
+      "customers": 780000,
+      "amountCroreINR": 22100.0,
+      "sharePercent": 38.1
+    },
+    {
+      "bucket": "51_65",
+      "label": "51-65 years",
+      "customers": 470000,
+      "amountCroreINR": 15500.0,
+      "sharePercent": 26.72
+    },
+    {
+      "bucket": "65_plus",
+      "label": "65+ years",
+      "customers": 200000,
+      "amountCroreINR": 6400.0,
+      "sharePercent": 11.03
+    }
+  ]
+}

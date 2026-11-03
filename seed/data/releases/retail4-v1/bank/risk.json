@@ -1,0 +1,157 @@
+{
+  "schemaVersion": "retail4-bank-v1",
+  "releaseId": "retail4-v1",
+  "syntheticLabel": "Synthetic demonstration data. Not a real bank.",
+  "generatedFor": "businessDate 2026-09-15",
+  "_units": {
+    "amountCroreINR": "Reporting aggregate amount in crore INR as a float; 1 crore = INR 10,000,000.",
+    "portfolioCroreINR": "Reporting aggregate portfolio in crore INR as a float.",
+    "amountMinor": "Exact transactional money, if present, is integer paise. These aggregate files do not use exact retail amounts."
+  },
+  "npaBuckets": [
+    {
+      "bucket": "standard",
+      "label": "Standard",
+      "amountCroreINR": 23959.8,
+      "accounts": 812000,
+      "sharePercent": 97.4
+    },
+    {
+      "bucket": "sma_0",
+      "label": "SMA-0: 1-30 DPD",
+      "amountCroreINR": 125.0,
+      "accounts": 11600,
+      "sharePercent": 0.51
+    },
+    {
+      "bucket": "sma_1",
+      "label": "SMA-1: 31-60 DPD",
+      "amountCroreINR": 100.0,
+      "accounts": 7200,
+      "sharePercent": 0.41
+    },
+    {
+      "bucket": "sma_2",
+      "label": "SMA-2: 61-90 DPD",
+      "amountCroreINR": 75.0,
+      "accounts": 4200,
+      "sharePercent": 0.3
+    },
+    {
+      "bucket": "npa",
+      "label": "NPA: over 90 DPD",
+      "amountCroreINR": 340.2,
+      "accounts": 9600,
+      "sharePercent": 1.38
+    }
+  ],
+  "byBu": [
+    {
+      "buId": "BU-RETAIL-DEPOSITS",
+      "grossNpaPercent": 0.0,
+      "netNpaPercent": 0.0,
+      "provisionCoveragePercent": 100.0
+    },
+    {
+      "buId": "BU-CARDS",
+      "grossNpaPercent": 1.85,
+      "netNpaPercent": 0.62,
+      "provisionCoveragePercent": 66.5
+    },
+    {
+      "buId": "BU-LENDING",
+      "grossNpaPercent": 1.28,
+      "netNpaPercent": 0.44,
+      "provisionCoveragePercent": 65.6
+    },
+    {
+      "buId": "BU-BANCASSURANCE",
+      "grossNpaPercent": 0.0,
+      "netNpaPercent": 0.0,
+      "provisionCoveragePercent": 100.0
+    },
+    {
+      "buId": "BU-DIGITAL-PAYMENTS",
+      "grossNpaPercent": 0.32,
+      "netNpaPercent": 0.12,
+      "provisionCoveragePercent": 62.5
+    },
+    {
+      "buId": "BU-SERVICE-COLLECTIONS",
+      "grossNpaPercent": 1.42,
+      "netNpaPercent": 0.49,
+      "provisionCoveragePercent": 65.5
+    }
+  ],
+  "fraudSignals": [
+    {
+      "signalId": "FRD-IMP-CALL",
+      "label": "Impersonation calls",
+      "detectedLast30d": 1840,
+      "blockedLast30d": 1615,
+      "trend": "up"
+    },
+    {
+      "signalId": "FRD-UPI-COLLECT",
+      "label": "UPI collect abuse",
+      "detectedLast30d": 970,
+      "blockedLast30d": 910,
+      "trend": "flat"
+    },
+    {
+      "signalId": "FRD-CNP",
+      "label": "Card-not-present attempts",
+      "detectedLast30d": 1280,
+      "blockedLast30d": 1196,
+      "trend": "down"
+    },
+    {
+      "signalId": "FRD-PHISH-SMS",
+      "label": "Phishing SMS links",
+      "detectedLast30d": 2210,
+      "blockedLast30d": 2055,
+      "trend": "up"
+    },
+    {
+      "signalId": "FRD-MULE",
+      "label": "Mule account indicators",
+      "detectedLast30d": 146,
+      "blockedLast30d": 102,
+      "trend": "up"
+    }
+  ],
+  "alerts": [
+    {
+      "alertId": "RISK-ALERT-001",
+      "severity": "high",
+      "title": "Phishing SMS spike around refund keywords",
+      "detail": "Detected attempts are clustering around failed refund and KYC update language in western metros.",
+      "buId": "BU-SERVICE-COLLECTIONS",
+      "raisedAt": "2026-09-15T09:20:00+05:30"
+    },
+    {
+      "alertId": "RISK-ALERT-002",
+      "severity": "caution",
+      "title": "Bancassurance persistency below plan",
+      "detail": "Renewal saves are lagging the September target and need assisted callbacks for 60+ customers.",
+      "buId": "BU-BANCASSURANCE",
+      "raisedAt": "2026-09-14T17:45:00+05:30"
+    },
+    {
+      "alertId": "RISK-ALERT-003",
+      "severity": "info",
+      "title": "Home loan early bucket improving",
+      "detail": "SMA-0 balance has declined for two consecutive weeks after payment reminders were tuned.",
+      "buId": "BU-LENDING",
+      "raisedAt": "2026-09-13T12:10:00+05:30"
+    },
+    {
+      "alertId": "RISK-ALERT-004",
+      "severity": "caution",
+      "title": "Secured starter card education needed",
+      "detail": "First-job customers are asking for credit before salary credits post; eligibility messaging should remain conservative.",
+      "buId": "BU-CARDS",
+      "raisedAt": "2026-09-15T11:05:00+05:30"
+    }
+  ]
+}

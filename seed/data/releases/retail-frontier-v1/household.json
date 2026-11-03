@@ -1,0 +1,44 @@
+[
+  {
+    "ageBand": "adult",
+    "customerVisiblePrimaryOwner": false,
+    "dependent": false,
+    "householdId": "household-bansal",
+    "memberId": "member-vivek",
+    "name": "Vivek Bansal",
+    "ownerId": "rhea",
+    "primaryOwnerId": "rhea",
+    "relationship": "spouse",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  },
+  {
+    "ageBand": "school_age",
+    "customerVisiblePrimaryOwner": false,
+    "dependent": true,
+    "householdId": "household-bansal",
+    "memberId": "member-anika",
+    "name": "Anika Bansal",
+    "ownerId": "rhea",
+    "primaryOwnerId": "rhea",
+    "relationship": "child",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  },
+  {
+    "ageBand": "elderly",
+    "customerVisiblePrimaryOwner": false,
+    "dependent": true,
+    "householdId": "household-bansal",
+    "memberId": "member-savitri",
+    "name": "Savitri Bansal",
+    "ownerId": "rhea",
+    "primaryOwnerId": "rhea",
+    "relationship": "parent",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  }
+]

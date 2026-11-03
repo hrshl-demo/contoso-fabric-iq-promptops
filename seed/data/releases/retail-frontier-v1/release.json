@@ -1,0 +1,192 @@
+{
+  "approval": {
+    "approvedAt": "2026-10-13T15:04:40Z",
+    "contentManifestSha256": "a3ce1dc58cd74c2ce34f0b115c998b2f7ccea359ecd0b5375b5d2fc5250106ab",
+    "note": "Explicit user approval in this Copilot session to activate the synthetic Frontier Retail demo release and deploy the live environment.",
+    "reviewerId": "user-live-approval-20261013"
+  },
+  "approvedCatalogueVersion": "frontier-data-v1",
+  "authoringProvenance": {
+    "authoredAt": "2026-10-13T13:53:15Z",
+    "authoredItems": 0,
+    "baseUrl": null,
+    "composedItems": 198,
+    "deployment": "deterministic-python",
+    "deterministicScaffoldSha256": "ff635891ea8678ef21d7962ccc34bcc291ce7c53dc090b46c3e9b01198fea8db",
+    "model": "none",
+    "modelProvenanceSource": "not_observed",
+    "modelVersion": "1",
+    "operator": "frontier-release-generator"
+  },
+  "businessDate": "2026-09-30",
+  "contractVersion": "retail-frontier-1.0",
+  "counts": {
+    "accessGrants": 4,
+    "accounts": 2,
+    "agents": 1,
+    "cards": 1,
+    "deposits": 1,
+    "documents": 12,
+    "goals": 6,
+    "householdMembers": 3,
+    "incidents": 2,
+    "incomeRecords": 12,
+    "insurancePolicies": 3,
+    "investments": 4,
+    "knowledgeChunks": 0,
+    "loans": 2,
+    "mandates": 1,
+    "personas": 1,
+    "perturbations": 0,
+    "policies": 3,
+    "proactiveEvents": 5,
+    "products": 8,
+    "scheduledObligations": 8,
+    "serviceRecords": 3,
+    "socialProfiles": 0,
+    "sops": 0,
+    "transactions": 114
+  },
+  "createdAt": "2026-10-13T13:53:15Z",
+  "files": {
+    "access-grants.json": {
+      "bytes": 2116,
+      "contentType": "application/json",
+      "sha256": "e6ea89dd1e5b2157b433881722a89e3b1c95cd812f034e0f7605b66a9837865f"
+    },
+    "accounts.json": {
+      "bytes": 1245,
+      "contentType": "application/json",
+      "sha256": "7f245f86818122c288353cfecc939cfe84bfc782166db180b84925a6863e8465"
+    },
+    "agents.json": {
+      "bytes": 1025,
+      "contentType": "application/json",
+      "sha256": "13957f2d62c47174f5de84182aaa74f10d602100c6c038c4b8b7ec4e5676fc9b"
+    },
+    "cards.json": {
+      "bytes": 746,
+      "contentType": "application/json",
+      "sha256": "712c088ab9f86c5943135eef4ec391f88363ec6faec2731bfdfef5f2f5620a0c"
+    },
+    "consents.json": {
+      "bytes": 1547,
+      "contentType": "application/json",
+      "sha256": "d7880d887b05338cc0f40def3bb3b5d0d48cc9e8daf5f1cfcd78f174a1c9caa1"
+    },
+    "deposits.json": {
+      "bytes": 473,
+      "contentType": "application/json",
+      "sha256": "166567d5794b8702d71f622c2f19330d3022ce6dbcd6b6dedac9987b2251ba88"
+    },
+    "documents.json": {
+      "bytes": 6282,
+      "contentType": "application/json",
+      "sha256": "ed2434bcc2ad18cb787fcc9da47e733d03d1e97225d42026cf2ad1cdc1e0ff7e"
+    },
+    "goals.json": {
+      "bytes": 2530,
+      "contentType": "application/json",
+      "sha256": "9c242deca96dffe626f89d24b10cf6c4a6ac27f0f95ab43095ed30d2d4d0739c"
+    },
+    "household.json": {
+      "bytes": 1181,
+      "contentType": "application/json",
+      "sha256": "12aa9a6d7fba98efa09d7039183c965c4c378a7e00e2f51c7a1175850fa02752"
+    },
+    "incidents.json": {
+      "bytes": 1343,
+      "contentType": "application/json",
+      "sha256": "ed89db31169f556133e638417afbdfb0a67afc32f29f11cd1e2972df1d854431"
+    },
+    "income.json": {
+      "bytes": 5955,
+      "contentType": "application/json",
+      "sha256": "a336f73f5831cd83a171043f85b17bdd80ff605fbedb5fb84885bc8f591ed54e"
+    },
+    "insurance.json": {
+      "bytes": 1968,
+      "contentType": "application/json",
+      "sha256": "7f53f5908cc3acd935d55c833075b2e2dd94a4719b2a077794d65056cf459ebf"
+    },
+    "investments.json": {
+      "bytes": 1689,
+      "contentType": "application/json",
+      "sha256": "3d5b5f273f5046dfed2475abf3f90697719126d5b6e2dbee5306c45bd527df21"
+    },
+    "loans.json": {
+      "bytes": 10942,
+      "contentType": "application/json",
+      "sha256": "e31d2d617cc7070ff42dc2beb84922316ef97a01f8ef8b7a1112aaf48c13aee4"
+    },
+    "mandates.json": {
+      "bytes": 1982,
+      "contentType": "application/json",
+      "sha256": "285686db5685bd2c9c81186fefa28c6eadce921cebe84c4aa7f6bdb9165056d5"
+    },
+    "personas.json": {
+      "bytes": 452,
+      "contentType": "application/json",
+      "sha256": "671a3a5e30e3a2e45b4508866a902d5fd97a6ad2a4d2d4050e414315f0b14fea"
+    },
+    "preferences.json": {
+      "bytes": 449,
+      "contentType": "application/json",
+      "sha256": "09ccc3d6ea5b41cd180cb50f30cf8b08c599e5c9b85d00740a53baa0365454c6"
+    },
+    "proactive-events.json": {
+      "bytes": 3194,
+      "contentType": "application/json",
+      "sha256": "da1141c924669d176b54ccf7276ceff9a31bb23456012b28c1b6247287b98a7f"
+    },
+    "products.json": {
+      "bytes": 1775,
+      "contentType": "application/json",
+      "sha256": "c8471ca71f4843affbbf0d2c0c00c4b2ac34cd9538b4167171f8e49d085db3a2"
+    },
+    "scheduled-obligations.json": {
+      "bytes": 3460,
+      "contentType": "application/json",
+      "sha256": "2de9a9f2f0150ef945d177d67caf04fbf7a49827713f054af3fe38cce06d00c2"
+    },
+    "service-records.json": {
+      "bytes": 1667,
+      "contentType": "application/json",
+      "sha256": "3ffad1f6ee4437449b7c51e63f7b416ec44644c4a0e73ce98d90bccb8855c169"
+    },
+    "social-profiles.json": {
+      "bytes": 3,
+      "contentType": "application/json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "transactions.json": {
+      "bytes": 72461,
+      "contentType": "application/json",
+      "sha256": "049313c3653e9815e532237d42c0d53c3f573a4c6d75eb01e909cbde5f721d9b"
+    }
+  },
+  "releaseId": "retail-frontier-v1",
+  "releaseStatus": "approved",
+  "schemaCompatibility": {
+    "maxContractVersion": "retail-frontier-1.0",
+    "minContractVersion": "retail-frontier-1.0",
+    "sessionSchemaVersion": "retail-frontier-session-v1"
+  },
+  "schemaVersion": "retail-frontier-seed-v1",
+  "seed": {
+    "deterministicSeed": 20261013,
+    "personaIds": [
+      "rhea"
+    ],
+    "productIds": [
+      "CB-SAV-SALARY",
+      "CB-SAV-RESERVE",
+      "CB-CARD-FRONTIER",
+      "CB-HL-FLOATING",
+      "CB-EDU-TERM",
+      "CB-FD-LIQUID",
+      "CB-MF-INDEX",
+      "CB-TERM-LIFE"
+    ]
+  }
+}

@@ -1,0 +1,135 @@
+[
+  {
+    "amount": {
+      "amountMinor": 4850000,
+      "currency": "INR"
+    },
+    "cadence": "monthly",
+    "dayOfMonth": 5,
+    "name": "Home loan EMI",
+    "obligationId": "obl-home-emi",
+    "ownerId": "rhea",
+    "payeeRef": "loan-home-001",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "sourceAccountId": "acc-rhea-primary",
+    "status": "active",
+    "synthetic": true
+  },
+  {
+    "amount": {
+      "amountMinor": 1250000,
+      "currency": "INR"
+    },
+    "cadence": "monthly",
+    "dayOfMonth": 7,
+    "name": "School tuition",
+    "obligationId": "obl-school-fee",
+    "ownerId": "rhea",
+    "payeeRef": "doc-school-fee",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "sourceAccountId": "acc-rhea-primary",
+    "status": "active",
+    "synthetic": true
+  },
+  {
+    "amount": {
+      "amountMinor": 1275000,
+      "currency": "INR"
+    },
+    "cadence": "monthly",
+    "dayOfMonth": 8,
+    "name": "Education loan EMI",
+    "obligationId": "obl-education-emi",
+    "ownerId": "rhea",
+    "payeeRef": "loan-education-001",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "sourceAccountId": "acc-rhea-primary",
+    "status": "active",
+    "synthetic": true
+  },
+  {
+    "amount": {
+      "amountMinor": 2500000,
+      "currency": "INR"
+    },
+    "cadence": "monthly",
+    "dayOfMonth": 10,
+    "name": "Index fund SIP",
+    "obligationId": "obl-sip",
+    "ownerId": "rhea",
+    "payeeRef": "inv-index-fund",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "sourceAccountId": "acc-rhea-primary",
+    "status": "active",
+    "synthetic": true
+  },
+  {
+    "amount": {
+      "amountMinor": 550000,
+      "currency": "INR"
+    },
+    "cadence": "monthly",
+    "dayOfMonth": 18,
+    "name": "Insurance premiums",
+    "obligationId": "obl-insurance",
+    "ownerId": "rhea",
+    "payeeRef": "policy-term-001",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "sourceAccountId": "acc-rhea-primary",
+    "status": "active",
+    "synthetic": true
+  },
+  {
+    "amountRule": "statement_due",
+    "cadence": "monthly",
+    "dayOfMonth": 20,
+    "name": "Credit card payment",
+    "obligationId": "obl-card",
+    "ownerId": "rhea",
+    "payeeRef": "card-rhea-frontier",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "sourceAccountId": "acc-rhea-primary",
+    "status": "active",
+    "synthetic": true
+  },
+  {
+    "amount": {
+      "amountMinor": 2000000,
+      "currency": "INR"
+    },
+    "cadence": "monthly",
+    "dayOfMonth": 22,
+    "name": "Emergency reserve transfer",
+    "obligationId": "obl-reserve",
+    "ownerId": "rhea",
+    "payeeRef": "acc-rhea-reserve",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "sourceAccountId": "acc-rhea-primary",
+    "status": "active",
+    "synthetic": true
+  },
+  {
+    "amount": {
+      "amountMinor": 900000,
+      "currency": "INR"
+    },
+    "cadence": "monthly",
+    "dayOfMonth": 16,
+    "name": "Parent care support",
+    "obligationId": "obl-parent-care",
+    "ownerId": "rhea",
+    "payeeRef": "member-savitri",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "sourceAccountId": "acc-rhea-primary",
+    "status": "active",
+    "synthetic": true
+  }
+]

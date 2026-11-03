@@ -1,0 +1,222 @@
+{
+ "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/graphIndex/definition/dataSources/1.0.0/schema.json",
+ "dataSources": [
+  {
+   "name": "Customer",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/customer"
+   }
+  },
+  {
+   "name": "Household",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/household"
+   }
+  },
+  {
+   "name": "Account",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/account"
+   }
+  },
+  {
+   "name": "Card",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/card"
+   }
+  },
+  {
+   "name": "Transaction",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/transaction"
+   }
+  },
+  {
+   "name": "Goal",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/goal"
+   }
+  },
+  {
+   "name": "Consent",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/consent"
+   }
+  },
+  {
+   "name": "AccessGrant",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/access_grant"
+   }
+  },
+  {
+   "name": "RegisteredAgent",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/registered_agent"
+   }
+  },
+  {
+   "name": "Mandate",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/mandate"
+   }
+  },
+  {
+   "name": "MandateEvent",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/mandate_event"
+   }
+  },
+  {
+   "name": "Law",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/law"
+   }
+  },
+  {
+   "name": "HouseholdMember",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/household_member"
+   }
+  },
+  {
+   "name": "Deposit",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/deposit"
+   }
+  },
+  {
+   "name": "Loan",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/loan"
+   }
+  },
+  {
+   "name": "LoanInstallment",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/loan_installment"
+   }
+  },
+  {
+   "name": "InsurancePolicy",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/insurance_policy"
+   }
+  },
+  {
+   "name": "ProtectionGap",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/protection_gap"
+   }
+  },
+  {
+   "name": "Investment",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/investment"
+   }
+  },
+  {
+   "name": "ScheduledObligation",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/scheduled_obligation"
+   }
+  },
+  {
+   "name": "IncomeRecord",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/income_record"
+   }
+  },
+  {
+   "name": "Preference",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/preference"
+   }
+  },
+  {
+   "name": "Incident",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/incident"
+   }
+  },
+  {
+   "name": "ServiceRecord",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/service_record"
+   }
+  },
+  {
+   "name": "ServiceRequestType",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/service_request_type"
+   }
+  },
+  {
+   "name": "Document",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/document"
+   }
+  },
+  {
+   "name": "CrmCase",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/crm_case"
+   }
+  },
+  {
+   "name": "Product",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/product"
+   }
+  },
+  {
+   "name": "Journey",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/journey"
+   }
+  },
+  {
+   "name": "Sop",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/sop"
+   }
+  },
+  {
+   "name": "AuthorityRule",
+   "type": "DeltaTable",
+   "properties": {
+    "path": "abfss://<WORKSPACE_ID>@onelake.pbidedicated.windows.net/<LAKEHOUSE_ID>/Tables/authority_rule"
+   }
+  }
+ ]
+}

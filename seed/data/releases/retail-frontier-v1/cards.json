@@ -1,0 +1,32 @@
+[
+  {
+    "accountId": "acc-rhea-primary",
+    "annualRateBps": 4200,
+    "availableCredit": {
+      "amountMinor": 20800000,
+      "currency": "INR"
+    },
+    "cardId": "card-rhea-frontier",
+    "cardType": "credit",
+    "creditLimit": {
+      "amountMinor": 25000000,
+      "currency": "INR"
+    },
+    "currentBalance": {
+      "amountMinor": 4200000,
+      "currency": "INR"
+    },
+    "openingBalance": {
+      "amountMinor": 4200000,
+      "currency": "INR"
+    },
+    "ownerId": "rhea",
+    "paymentDueDay": 10,
+    "productId": "CB-CARD-FRONTIER",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "statementDay": 20,
+    "status": "temporarily_locked_after_dispute",
+    "synthetic": true
+  }
+]

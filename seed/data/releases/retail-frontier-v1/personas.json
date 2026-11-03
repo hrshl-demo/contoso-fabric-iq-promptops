@@ -1,0 +1,17 @@
+[
+  {
+    "age": 41,
+    "city": "Pune",
+    "customerVisiblePrimaryOwner": true,
+    "disclosure": "Synthetic demo customer. Not a real person.",
+    "employmentStatus": "salaried",
+    "householdId": "household-bansal",
+    "name": "Rhea Bansal",
+    "ownerId": "rhea",
+    "personaId": "rhea",
+    "privacyLabel": "primary_customer",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  }
+]

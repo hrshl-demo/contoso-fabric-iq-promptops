@@ -1,0 +1,2581 @@
+{
+ "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/graphIndex/definition/graphDefinition/1.0.0/schema.json",
+ "nodeTables": [
+  {
+   "nodeTypeAlias": "c4375f7f-077f-5d51-9944-2605a9d7ab52",
+   "id": "c4375f7f-077f-5d51-9944-2605a9d7ab52",
+   "dataSourceName": "Customer",
+   "propertyMappings": [
+    {
+     "propertyName": "CustomerId",
+     "sourceColumn": "customer_id"
+    },
+    {
+     "propertyName": "DisplayName",
+     "sourceColumn": "display_name"
+    },
+    {
+     "propertyName": "Age",
+     "sourceColumn": "age"
+    },
+    {
+     "propertyName": "City",
+     "sourceColumn": "city"
+    },
+    {
+     "propertyName": "EmploymentStatus",
+     "sourceColumn": "employment_status"
+    },
+    {
+     "propertyName": "Segment",
+     "sourceColumn": "segment"
+    },
+    {
+     "propertyName": "HouseholdId",
+     "sourceColumn": "household_id"
+    },
+    {
+     "propertyName": "IsPrimaryOwner",
+     "sourceColumn": "is_primary_owner"
+    },
+    {
+     "propertyName": "PhoneMasked",
+     "sourceColumn": "phone_masked"
+    },
+    {
+     "propertyName": "ProfileSummary",
+     "sourceColumn": "profile_summary"
+    },
+    {
+     "propertyName": "SourceKind",
+     "sourceColumn": "source_kind"
+    },
+    {
+     "propertyName": "SupersededByCustomerId",
+     "sourceColumn": "superseded_by_customer_id"
+    },
+    {
+     "propertyName": "IsSynthetic",
+     "sourceColumn": "is_synthetic"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "bb2f59ce-a1bc-530e-8b13-5f84beb5b024",
+   "id": "bb2f59ce-a1bc-530e-8b13-5f84beb5b024",
+   "dataSourceName": "Household",
+   "propertyMappings": [
+    {
+     "propertyName": "HouseholdId",
+     "sourceColumn": "household_id"
+    },
+    {
+     "propertyName": "DisplayName",
+     "sourceColumn": "display_name"
+    },
+    {
+     "propertyName": "PrimaryCustomerId",
+     "sourceColumn": "primary_customer_id"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "ab43aee1-3bea-5137-879c-37897eefcf5b",
+   "id": "ab43aee1-3bea-5137-879c-37897eefcf5b",
+   "dataSourceName": "Account",
+   "propertyMappings": [
+    {
+     "propertyName": "AccountId",
+     "sourceColumn": "account_id"
+    },
+    {
+     "propertyName": "CustomerId",
+     "sourceColumn": "customer_id"
+    },
+    {
+     "propertyName": "ProductId",
+     "sourceColumn": "product_id"
+    },
+    {
+     "propertyName": "AccountType",
+     "sourceColumn": "account_type"
+    },
+    {
+     "propertyName": "Status",
+     "sourceColumn": "status"
+    },
+    {
+     "propertyName": "Currency",
+     "sourceColumn": "currency"
+    },
+    {
+     "propertyName": "OpenedOn",
+     "sourceColumn": "opened_on"
+    },
+    {
+     "propertyName": "HistoryStartOn",
+     "sourceColumn": "history_start_on"
+    },
+    {
+     "propertyName": "BalanceAsOn",
+     "sourceColumn": "balance_as_on"
+    },
+    {
+     "propertyName": "OpeningBalanceInr",
+     "sourceColumn": "opening_balance_inr"
+    },
+    {
+     "propertyName": "PostedBalanceInr",
+     "sourceColumn": "posted_balance_inr"
+    },
+    {
+     "propertyName": "AvailableBalanceInr",
+     "sourceColumn": "available_balance_inr"
+    },
+    {
+     "propertyName": "HoldsAmountInr",
+     "sourceColumn": "holds_amount_inr"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "39a1515c-66b3-5c56-bad5-203ed3c733d9",
+   "id": "39a1515c-66b3-5c56-bad5-203ed3c733d9",
+   "dataSourceName": "Card",
+   "propertyMappings": [
+    {
+     "propertyName": "CardId",
+     "sourceColumn": "card_id"
+    },
+    {
+     "propertyName": "CustomerId",
+     "sourceColumn": "customer_id"
+    },
+    {
+     "propertyName": "AccountId",
+     "sourceColumn": "account_id"
+    },
+    {
+     "propertyName": "ProductId",
+     "sourceColumn": "product_id"
+    },
+    {
+     "propertyName": "CardType",
+     "sourceColumn": "card_type"
+    },
+    {
+     "propertyName": "Status",
+     "sourceColumn": "status"
+    },
+    {
+     "propertyName": "MaskedNumber",
+     "sourceColumn": "masked_number"
+    },
+    {
+     "propertyName": "ExpiryMmYy",
+     "sourceColumn": "expiry_mm_yy"
+    },
+    {
+     "propertyName": "CreditLimitInr",
+     "sourceColumn": "credit_limit_inr"
+    },
+    {
+     "propertyName": "AvailableCreditInr",
+     "sourceColumn": "available_credit_inr"
+    },
+    {
+     "propertyName": "OutstandingBalanceInr",
+     "sourceColumn": "outstanding_balance_inr"
+    },
+    {
+     "propertyName": "MinimumDueInr",
+     "sourceColumn": "minimum_due_inr"
+    },
+    {
+     "propertyName": "AnnualRatePct",
+     "sourceColumn": "annual_rate_pct"
+    },
+    {
+     "propertyName": "StatementDay",
+     "sourceColumn": "statement_day"
+    },
+    {
+     "propertyName": "PaymentDueDay",
+     "sourceColumn": "payment_due_day"
+    },
+    {
+     "propertyName": "PaymentDueOn",
+     "sourceColumn": "payment_due_on"
+    },
+    {
+     "propertyName": "StatementFrom",
+     "sourceColumn": "statement_from"
+    },
+    {
+     "propertyName": "StatementTo",
+     "sourceColumn": "statement_to"
+    },
+    {
+     "propertyName": "InternationalEnabled",
+     "sourceColumn": "international_enabled"
+    },
+    {
+     "propertyName": "OnlineEnabled",
+     "sourceColumn": "online_enabled"
+    },
+    {
+     "propertyName": "ContactlessEnabled",
+     "sourceColumn": "contactless_enabled"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "879d6c37-4fb1-5e7b-b2e7-16eedd467dcf",
+   "id": "879d6c37-4fb1-5e7b-b2e7-16eedd467dcf",
+   "dataSourceName": "Transaction",
+   "propertyMappings": [
+    {
+     "propertyName": "TransactionId",
+     "sourceColumn": "transaction_id"
+    },
+    {
+     "propertyName": "CustomerId",
+     "sourceColumn": "customer_id"
+    },
+    {
+     "propertyName": "AccountId",
+     "sourceColumn": "account_id"
+    },
+    {
+     "propertyName": "CardId",
+     "sourceColumn": "card_id"
+    },
+    {
+     "propertyName": "Description",
+     "sourceColumn": "description"
+    },
+    {
+     "propertyName": "Direction",
+     "sourceColumn": "direction"
+    },
+    {
+     "propertyName": "Category",
+     "sourceColumn": "category"
+    },
+    {
+     "propertyName": "Instrument",
+     "sourceColumn": "instrument"
+    },
+    {
+     "propertyName": "Status",
+     "sourceColumn": "status"
+    },
+    {
+     "propertyName": "AmountInr",
+     "sourceColumn": "amount_inr"
+    },
+    {
+     "propertyName": "SignedAmountInr",
+     "sourceColumn": "signed_amount_inr"
+    },
+    {
+     "propertyName": "PostedAt",
+     "sourceColumn": "posted_at"
+    },
+    {
+     "propertyName": "PostedDateIst",
+     "sourceColumn": "posted_date_ist"
+    },
+    {
+     "propertyName": "ValueDate",
+     "sourceColumn": "value_date"
+    },
+    {
+     "propertyName": "CounterpartyRef",
+     "sourceColumn": "counterparty_ref"
+    },
+    {
+     "propertyName": "CounterpartyType",
+     "sourceColumn": "counterparty_type"
+    },
+    {
+     "propertyName": "DisputeIncidentId",
+     "sourceColumn": "dispute_incident_id"
+    },
+    {
+     "propertyName": "PurchaseReference",
+     "sourceColumn": "purchase_reference"
+    },
+    {
+     "propertyName": "SettlementReference",
+     "sourceColumn": "settlement_reference"
+    },
+    {
+     "propertyName": "EvidenceRefs",
+     "sourceColumn": "evidence_refs"
+    },
+    {
+     "propertyName": "EvidenceCount",
+     "sourceColumn": "evidence_count"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "c17442a5-8aeb-5e8b-8f74-2717b32b0b0a",
+   "id": "c17442a5-8aeb-5e8b-8f74-2717b32b0b0a",
+   "dataSourceName": "Goal",
+   "propertyMappings": [
+    {
+     "propertyName": "GoalId",
+     "sourceColumn": "goal_id"
+    },
+    {
+     "propertyName": "CustomerId",
+     "sourceColumn": "customer_id"
+    },
+    {
+     "propertyName": "Name",
+     "sourceColumn": "name"
+    },
+    {
+     "propertyName": "PriorityRank",
+     "sourceColumn": "priority_rank"
+    },
+    {
+     "propertyName": "StatedPriority",
+     "sourceColumn": "stated_priority"
+    },
+    {
+     "propertyName": "Status",
+     "sourceColumn": "status"
+    },
+    {
+     "propertyName": "TargetInr",
+     "sourceColumn": "target_inr"
+    },
+    {
+     "propertyName": "CurrentInr",
+     "sourceColumn": "current_inr"
+    },
+    {
+     "propertyName": "ProgressPct",
+     "sourceColumn": "progress_pct"
+    },
+    {
+     "propertyName": "TargetDate",
+     "sourceColumn": "target_date"
+    },
+    {
+     "propertyName": "TargetFrequency",
+     "sourceColumn": "target_frequency"
+    },
+    {
+     "propertyName": "IntentSummary",
+     "sourceColumn": "intent_summary"
+    },
+    {
+     "propertyName": "FundingProductIds",
+     "sourceColumn": "funding_product_ids"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "00aec499-66ef-5300-98b2-35c69ce760b3",
+   "id": "00aec499-66ef-5300-98b2-35c69ce760b3",
+   "dataSourceName": "Consent",
+   "propertyMappings": [
+    {
+     "propertyName": "ConsentId",
+     "sourceColumn": "consent_id"
+    },
+    {
+     "propertyName": "CustomerId",
+     "sourceColumn": "customer_id"
+    },
+    {
+     "propertyName": "Purpose",
+     "sourceColumn": "purpose"
+    },
+    {
+     "propertyName": "Status",
+     "sourceColumn": "status"
+    },
+    {
+     "propertyName": "GrantedAt",
+     "sourceColumn": "granted_at"
+    },
+    {
+     "propertyName": "ExpiresAt",
+     "sourceColumn": "expires_at"
+    },
+    {
+     "propertyName": "RevokedAt",
+     "sourceColumn": "revoked_at"
+    },
+    {
+     "propertyName": "SubjectRef",
+     "sourceColumn": "subject_ref"
+    },
+    {
+     "propertyName": "SubjectType",
+     "sourceColumn": "subject_type"
+    },
+    {
+     "propertyName": "SubjectMemberId",
+     "sourceColumn": "subject_member_id"
+    },
+    {
+     "propertyName": "RecipientScope",
+     "sourceColumn": "recipient_scope"
+    },
+    {
+     "propertyName": "Revision",
+     "sourceColumn": "revision"
+    },
+    {
+     "propertyName": "ResourceCount",
+     "sourceColumn": "resource_count"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "1e1f990d-75e9-5670-b881-989ddb387f7e",
+   "id": "1e1f990d-75e9-5670-b881-989ddb387f7e",
+   "dataSourceName": "AccessGrant",
+   "propertyMappings": [
+    {
+     "propertyName": "GrantId",
+     "sourceColumn": "grant_id"
+    },
+    {
+     "propertyName": "CustomerId",
+     "sourceColumn": "customer_id"
+    },
+    {
+     "propertyName": "HouseholdId",
+     "sourceColumn": "household_id"
+    },
+    {
+     "propertyName": "ConsentId",
+     "sourceColumn": "consent_id"
+    },
+    {
+     "propertyName": "SubjectRef",
+     "sourceColumn": "subject_ref"
+    },
+    {
+     "propertyName": "SubjectMemberId",
+     "sourceColumn": "subject_member_id"
+    },
+    {
+     "propertyName": "Status",
+     "sourceColumn": "status"
+    },
+    {
+     "propertyName": "Permissions",
+     "sourceColumn": "permissions"
+    },
+    {
+     "propertyName": "DeniedPermissions",
+     "sourceColumn": "denied_permissions"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "e7756072-7522-5dc7-b96d-5b811886e2a0",
+   "id": "e7756072-7522-5dc7-b96d-5b811886e2a0",
+   "dataSourceName": "RegisteredAgent",
+   "propertyMappings": [
+    {
+     "propertyName": "AgentId",
+     "sourceColumn": "agent_id"
+    },
+    {
+     "propertyName": "CustomerId",
+     "sourceColumn": "customer_id"
+    },
+    {
+     "propertyName": "HouseholdId",
+     "sourceColumn": "household_id"
+    },
+    {
+     "propertyName": "ConsentId",
+     "sourceColumn": "consent_id"
+    },
+    {
+     "propertyName": "RegistrationType",
+     "sourceColumn": "registration_type"
+    },
+    {
+     "propertyName": "DelegationMode",
+     "sourceColumn": "delegation_mode"
+    },
+    {
+     "propertyName": "Status",
+     "sourceColumn": "status"
+    },
+    {
+     "propertyName": "Scopes",
+     "sourceColumn": "scopes"
+    },
+    {
+     "propertyName": "DeniedScopes",
+     "sourceColumn": "denied_scopes"
+    },
+    {
+     "propertyName": "KyaProviderName",
+     "sourceColumn": "kya_provider_name"
+    },
+    {
+     "propertyName": "KyaRegistrationId",
+     "sourceColumn": "kya_registration_id"
+    },
+    {
+     "propertyName": "KyaVerificationMethod",
+     "sourceColumn": "kya_verification_method"
+    },
+    {
+     "propertyName": "KyaVerifiedAt",
+     "sourceColumn": "kya_verified_at"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "c333d90d-f2df-5a8e-bd4b-1c04bfbfed9d",
+   "id": "c333d90d-f2df-5a8e-bd4b-1c04bfbfed9d",
+   "dataSourceName": "Mandate",
+   "propertyMappings": [
+    {
+     "propertyName": "MandateId",
+     "sourceColumn": "mandate_id"
+    },
+    {
+     "propertyName": "CustomerId",
+     "sourceColumn": "customer_id"
+    },
+    {
+     "propertyName": "AgentId",
+     "sourceColumn": "agent_id"
+    },
+    {
+     "propertyName": "ConsentId",
+     "sourceColumn": "consent_id"
+    },
+    {
+     "propertyName": "SourceAccountId",
+     "sourceColumn": "source_account_id"
+    },
+    {
+     "propertyName": "DestinationAccountId",
+     "sourceColumn": "destination_account_id"
+    },
+    {
+     "propertyName": "GoalId",
+     "sourceColumn": "goal_id"
+    },
+    {
+     "propertyName": "Status",
+     "sourceColumn": "status"
+    },
+    {
+     "propertyName": "Currency",
+     "sourceColumn": "currency"
+    },
+    {
+     "propertyName": "PerActionLimitInr",
+     "sourceColumn": "per_action_limit_inr"
+    },
+    {
+     "propertyName": "MonthlyLimitInr",
+     "sourceColumn": "monthly_limit_inr"
+    },
+    {
+     "propertyName": "MinimumSourceBalanceInr",
+     "sourceColumn": "minimum_source_balance_inr"
+    },
+    {
+     "propertyName": "ValidFrom",
+     "sourceColumn": "valid_from"
+    },
+    {
+     "propertyName": "ValidFromDateIst",
+     "sourceColumn": "valid_from_date_ist"
+    },
+    {
+     "propertyName": "ValidUntil",
+     "sourceColumn": "valid_until"
+    },
+    {
+     "propertyName": "ValidUntilDateIst",
+     "sourceColumn": "valid_until_date_ist"
+    },
+    {
+     "propertyName": "EventCount",
+     "sourceColumn": "event_count"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "21f7794e-d908-5566-a978-7ad1517f9d73",
+   "id": "21f7794e-d908-5566-a978-7ad1517f9d73",
+   "dataSourceName": "MandateEvent",
+   "propertyMappings": [
+    {
+     "propertyName": "EventId",
+     "sourceColumn": "event_id"
+    },
+    {
+     "propertyName": "MandateId",
+     "sourceColumn": "mandate_id"
+    },
+    {
+     "propertyName": "EventType",
+     "sourceColumn": "event_type"
+    },
+    {
+     "propertyName": "OccurredAt",
+     "sourceColumn": "occurred_at"
+    },
+    {
+     "propertyName": "OccurredDateIst",
+     "sourceColumn": "occurred_date_ist"
+    },
+    {
+     "propertyName": "ActorRef",
+     "sourceColumn": "actor_ref"
+    },
+    {
+     "propertyName": "ActorType",
+     "sourceColumn": "actor_type"
+    },
+    {
+     "propertyName": "AmountInr",
+     "sourceColumn": "amount_inr"
+    },
+    {
+     "propertyName": "SourceBalanceAfterInr",
+     "sourceColumn": "source_balance_after_inr"
+    },
+    {
+     "propertyName": "Reason",
+     "sourceColumn": "reason"
+    },
+    {
+     "propertyName": "Narration",
+     "sourceColumn": "narration"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "9aeb50e0-3150-5ab4-a783-6c9e82ae26cf",
+   "id": "9aeb50e0-3150-5ab4-a783-6c9e82ae26cf",
+   "dataSourceName": "Law",
+   "propertyMappings": [
+    {
+     "propertyName": "LawId",
+     "sourceColumn": "law_id"
+    },
+    {
+     "propertyName": "Name",
+     "sourceColumn": "name"
+    },
+    {
+     "propertyName": "RequiredBehavior",
+     "sourceColumn": "required_behavior"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "19883471-04b2-5acf-be06-de0c1c8d5cef",
+   "id": "19883471-04b2-5acf-be06-de0c1c8d5cef",
+   "dataSourceName": "HouseholdMember",
+   "propertyMappings": [
+    {
+     "propertyName": "MemberId",
+     "sourceColumn": "member_id"
+    },
+    {
+     "propertyName": "HouseholdId",
+     "sourceColumn": "household_id"
+    },
+    {
+     "propertyName": "PrimaryCustomerId",
+     "sourceColumn": "primary_customer_id"
+    },
+    {
+     "propertyName": "DisplayName",
+     "sourceColumn": "display_name"
+    },
+    {
+     "propertyName": "RelationToOwner",
+     "sourceColumn": "relation_to_owner"
+    },
+    {
+     "propertyName": "AgeBand",
+     "sourceColumn": "age_band"
+    },
+    {
+     "propertyName": "IsDependent",
+     "sourceColumn": "is_dependent"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "7deac48a-0e94-5f08-95eb-23c2cb555742",
+   "id": "7deac48a-0e94-5f08-95eb-23c2cb555742",
+   "dataSourceName": "Deposit",
+   "propertyMappings": [
+    {
+     "propertyName": "DepositId",
+     "sourceColumn": "deposit_id"
+    },
+    {
+     "propertyName": "CustomerId",
+     "sourceColumn": "customer_id"
+    },
+    {
+     "propertyName": "ProductId",
+     "sourceColumn": "product_id"
+    },
+    {
+     "propertyName": "LinkedAccountId",
+     "sourceColumn": "linked_account_id"
+    },
+    {
+     "propertyName": "Status",
+     "sourceColumn": "status"
+    },
+    {
+     "propertyName": "PrincipalInr",
+     "sourceColumn": "principal_inr"
+    },
+    {
+     "propertyName": "AnnualRatePct",
+     "sourceColumn": "annual_rate_pct"
+    },
+    {
+     "propertyName": "OpenedOn",
+     "sourceColumn": "opened_on"
+    },
+    {
+     "propertyName": "MaturesOn",
+     "sourceColumn": "matures_on"
+    },
+    {
+     "propertyName": "LiquidityClass",
+     "sourceColumn": "liquidity_class"
+    },
+    {
+     "propertyName": "MaturityInstruction",
+     "sourceColumn": "maturity_instruction"
+    },
+    {
+     "propertyName": "PrematurePenaltyPct",
+     "sourceColumn": "premature_penalty_pct"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "6628aa6a-619c-5ca2-9798-a96143b08791",
+   "id": "6628aa6a-619c-5ca2-9798-a96143b08791",
+   "dataSourceName": "Loan",
+   "propertyMappings": [
+    {
+     "propertyName": "LoanId",
+     "sourceColumn": "loan_id"
+    },
+    {
+     "propertyName": "CustomerId",
+     "sourceColumn": "customer_id"
+    },
+    {
+     "propertyName": "ProductId",
+     "sourceColumn": "product_id"
+    },
+    {
+     "propertyName": "Purpose",
+     "sourceColumn": "purpose"
+    },
+    {
+     "propertyName": "RateType",
+     "sourceColumn": "rate_type"
+    },
+    {
+     "propertyName": "AnnualRatePct",
+     "sourceColumn": "annual_rate_pct"
+    },
+    {
+     "propertyName": "OpeningPrincipalInr",
+     "sourceColumn": "opening_principal_inr"
+    },
+    {
+     "propertyName": "CurrentPrincipalInr",
+     "sourceColumn": "current_principal_inr"
+    },
+    {
+     "propertyName": "EmiInr",
+     "sourceColumn": "emi_inr"
+    },
+    {
+     "propertyName": "OriginationFeeInr",
+     "sourceColumn": "origination_fee_inr"
+    },
+    {
+     "propertyName": "PrepaymentAppliesTo",
+     "sourceColumn": "prepayment_applies_to"
+    },
+    {
+     "propertyName": "PrepaymentChargePct",
+     "sourceColumn": "prepayment_charge_pct"
+    },
+    {
+     "propertyName": "PrepaymentMinimumInr",
+     "sourceColumn": "prepayment_minimum_inr"
+    },
+    {
+     "propertyName": "PrepaymentNoticeDays",
+     "sourceColumn": "prepayment_notice_days"
+    },
+    {
+     "propertyName": "ScheduledInstallments",
+     "sourceColumn": "scheduled_installments"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "24463247-50b8-5ebc-bd8b-047d376121da",
+   "id": "24463247-50b8-5ebc-bd8b-047d376121da",
+   "dataSourceName": "LoanInstallment",
+   "propertyMappings": [
+    {
+     "propertyName": "InstallmentId",
+     "sourceColumn": "installment_id"
+    },
+    {
+     "propertyName": "LoanId",
+     "sourceColumn": "loan_id"
+    },
+    {
+     "propertyName": "InstallmentNumber",
+     "sourceColumn": "installment_number"
+    },
+    {
+     "propertyName": "DueOn",
+     "sourceColumn": "due_on"
+    },
+    {
+     "propertyName": "Status",
+     "sourceColumn": "status"
+    },
+    {
+     "propertyName": "OpeningPrincipalInr",
+     "sourceColumn": "opening_principal_inr"
+    },
+    {
+     "propertyName": "PrincipalPaidInr",
+     "sourceColumn": "principal_paid_inr"
+    },
+    {
+     "propertyName": "InterestPaidInr",
+     "sourceColumn": "interest_paid_inr"
+    },
+    {
+     "propertyName": "FeesPaidInr",
+     "sourceColumn": "fees_paid_inr"
+    },
+    {
+     "propertyName": "TotalPaidInr",
+     "sourceColumn": "total_paid_inr"
+    },
+    {
+     "propertyName": "ClosingPrincipalInr",
+     "sourceColumn": "closing_principal_inr"
+    },
+    {
+     "propertyName": "PaymentDescription",
+     "sourceColumn": "payment_description"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "786a72bf-2cc3-5546-9169-f49d6a39304a",
+   "id": "786a72bf-2cc3-5546-9169-f49d6a39304a",
+   "dataSourceName": "InsurancePolicy",
+   "propertyMappings": [
+    {
+     "propertyName": "PolicyId",
+     "sourceColumn": "policy_id"
+    },
+    {
+     "propertyName": "CustomerId",
+     "sourceColumn": "customer_id"
+    },
+    {
+     "propertyName": "ProductId",
+     "sourceColumn": "product_id"
+    },
+    {
+     "propertyName": "PolicyType",
+     "sourceColumn": "policy_type"
+    },
+    {
+     "propertyName": "Status",
+     "sourceColumn": "status"
+    },
+    {
+     "propertyName": "Insurer",
+     "sourceColumn": "insurer"
+    },
+    {
+     "propertyName": "PremiumInr",
+     "sourceColumn": "premium_inr"
+    },
+    {
+     "propertyName": "PremiumCadence",
+     "sourceColumn": "premium_cadence"
+    },
+    {
+     "propertyName": "SumInsuredInr",
+     "sourceColumn": "sum_insured_inr"
+    },
+    {
+     "propertyName": "BeneficiaryMemberIds",
+     "sourceColumn": "beneficiary_member_ids"
+    },
+    {
+     "propertyName": "CoveredMemberIds",
+     "sourceColumn": "covered_member_ids"
+    },
+    {
+     "propertyName": "StartedOn",
+     "sourceColumn": "started_on"
+    },
+    {
+     "propertyName": "RenewsOn",
+     "sourceColumn": "renews_on"
+    },
+    {
+     "propertyName": "LinkedAccountId",
+     "sourceColumn": "linked_account_id"
+    },
+    {
+     "propertyName": "CoPayPct",
+     "sourceColumn": "co_pay_pct"
+    },
+    {
+     "propertyName": "InitialWaitingDays",
+     "sourceColumn": "initial_waiting_days"
+    },
+    {
+     "propertyName": "PreExistingWaitingMonths",
+     "sourceColumn": "pre_existing_waiting_months"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "8769891a-f6bd-546f-944c-d161aea6d228",
+   "id": "8769891a-f6bd-546f-944c-d161aea6d228",
+   "dataSourceName": "ProtectionGap",
+   "propertyMappings": [
+    {
+     "propertyName": "ProtectionGapId",
+     "sourceColumn": "protection_gap_id"
+    },
+    {
+     "propertyName": "CustomerId",
+     "sourceColumn": "customer_id"
+    },
+    {
+     "propertyName": "GapType",
+     "sourceColumn": "gap_type"
+    },
+    {
+     "propertyName": "ExistingProtectionInr",
+     "sourceColumn": "existing_protection_inr"
+    },
+    {
+     "propertyName": "TargetProtectionInr",
+     "sourceColumn": "target_protection_inr"
+    },
+    {
+     "propertyName": "GapInr",
+     "sourceColumn": "gap_inr"
+    },
+    {
+     "propertyName": "IncomeReplacementInr",
+     "sourceColumn": "income_replacement_inr"
+    },
+    {
+     "propertyName": "LoanAndEducationNeedsInr",
+     "sourceColumn": "loan_and_education_needs_inr"
+    },
+    {
+     "propertyName": "OffsetLiquidAssetsInr",
+     "sourceColumn": "offset_liquid_assets_inr"
+    },
+    {
+     "propertyName": "Disclosure",
+     "sourceColumn": "disclosure"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "47862fb4-f2ed-52a1-b298-4619e0e57a4f",
+   "id": "47862fb4-f2ed-52a1-b298-4619e0e57a4f",
+   "dataSourceName": "Investment",
+   "propertyMappings": [
+    {
+     "propertyName": "InvestmentId",
+     "sourceColumn": "investment_id"
+    },
+    {
+     "propertyName": "CustomerId",
+     "sourceColumn": "customer_id"
+    },
+    {
+     "propertyName": "ProductId",
+     "sourceColumn": "product_id"
+    },
+    {
+     "propertyName": "InvestmentType",
+     "sourceColumn": "investment_type"
+    },
+    {
+     "propertyName": "Liquidity",
+     "sourceColumn": "liquidity"
+    },
+    {
+     "propertyName": "CurrentValueInr",
+     "sourceColumn": "current_value_inr"
+    },
+    {
+     "propertyName": "GoalIds",
+     "sourceColumn": "goal_ids"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "b903a28e-c659-53a0-b5e6-9515a4d8349f",
+   "id": "b903a28e-c659-53a0-b5e6-9515a4d8349f",
+   "dataSourceName": "ScheduledObligation",
+   "propertyMappings": [
+    {
+     "propertyName": "ObligationId",
+     "sourceColumn": "obligation_id"
+    },
+    {
+     "propertyName": "CustomerId",
+     "sourceColumn": "customer_id"
+    },
+    {
+     "propertyName": "Name",
+     "sourceColumn": "name"
+    },
+    {
+     "propertyName": "SourceAccountId",
+     "sourceColumn": "source_account_id"
+    },
+    {
+     "propertyName": "PayeeRef",
+     "sourceColumn": "payee_ref"
+    },
+    {
+     "propertyName": "PayeeType",
+     "sourceColumn": "payee_type"
+    },
+    {
+     "propertyName": "Cadence",
+     "sourceColumn": "cadence"
+    },
+    {
+     "propertyName": "DayOfMonth",
+     "sourceColumn": "day_of_month"
+    },
+    {
+     "propertyName": "Status",
+     "sourceColumn": "status"
+    },
+    {
+     "propertyName": "AmountInr",
+     "sourceColumn": "amount_inr"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "b535bef6-1235-594c-9b1c-3c60a063827e",
+   "id": "b535bef6-1235-594c-9b1c-3c60a063827e",
+   "dataSourceName": "IncomeRecord",
+   "propertyMappings": [
+    {
+     "propertyName": "IncomeId",
+     "sourceColumn": "income_id"
+    },
+    {
+     "propertyName": "CustomerId",
+     "sourceColumn": "customer_id"
+    },
+    {
+     "propertyName": "IncomeType",
+     "sourceColumn": "income_type"
+    },
+    {
+     "propertyName": "Period",
+     "sourceColumn": "period"
+    },
+    {
+     "propertyName": "GrossInr",
+     "sourceColumn": "gross_inr"
+    },
+    {
+     "propertyName": "NetInr",
+     "sourceColumn": "net_inr"
+    },
+    {
+     "propertyName": "IsRecurring",
+     "sourceColumn": "is_recurring"
+    },
+    {
+     "propertyName": "EvidenceDocumentId",
+     "sourceColumn": "evidence_document_id"
+    },
+    {
+     "propertyName": "ContributorMemberId",
+     "sourceColumn": "contributor_member_id"
+    },
+    {
+     "propertyName": "Narration",
+     "sourceColumn": "narration"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "cc0e2acd-baf0-5196-aa37-8745a50a5265",
+   "id": "cc0e2acd-baf0-5196-aa37-8745a50a5265",
+   "dataSourceName": "Preference",
+   "propertyMappings": [
+    {
+     "propertyName": "PreferenceId",
+     "sourceColumn": "preference_id"
+    },
+    {
+     "propertyName": "CustomerId",
+     "sourceColumn": "customer_id"
+    },
+    {
+     "propertyName": "Field",
+     "sourceColumn": "field"
+    },
+    {
+     "propertyName": "PreferenceValue",
+     "sourceColumn": "preference_value"
+    },
+    {
+     "propertyName": "RecordedOn",
+     "sourceColumn": "recorded_on"
+    },
+    {
+     "propertyName": "StatedIn",
+     "sourceColumn": "stated_in"
+    },
+    {
+     "propertyName": "Note",
+     "sourceColumn": "note"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "db6e5515-165f-51ac-b810-f8a6bad249da",
+   "id": "db6e5515-165f-51ac-b810-f8a6bad249da",
+   "dataSourceName": "Incident",
+   "propertyMappings": [
+    {
+     "propertyName": "IncidentId",
+     "sourceColumn": "incident_id"
+    },
+    {
+     "propertyName": "CustomerId",
+     "sourceColumn": "customer_id"
+    },
+    {
+     "propertyName": "IncidentType",
+     "sourceColumn": "incident_type"
+    },
+    {
+     "propertyName": "Status",
+     "sourceColumn": "status"
+    },
+    {
+     "propertyName": "DetectedAt",
+     "sourceColumn": "detected_at"
+    },
+    {
+     "propertyName": "DetectedDateIst",
+     "sourceColumn": "detected_date_ist"
+    },
+    {
+     "propertyName": "AmountInr",
+     "sourceColumn": "amount_inr"
+    },
+    {
+     "propertyName": "RecoveryAmountInr",
+     "sourceColumn": "recovery_amount_inr"
+    },
+    {
+     "propertyName": "RecoveryEvidenceDocumentId",
+     "sourceColumn": "recovery_evidence_document_id"
+    },
+    {
+     "propertyName": "EvidenceDocumentIds",
+     "sourceColumn": "evidence_document_ids"
+    },
+    {
+     "propertyName": "Narration",
+     "sourceColumn": "narration"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "941c02f4-8fa3-5c76-ad05-157cb76c9472",
+   "id": "941c02f4-8fa3-5c76-ad05-157cb76c9472",
+   "dataSourceName": "ServiceRecord",
+   "propertyMappings": [
+    {
+     "propertyName": "ServiceRecordId",
+     "sourceColumn": "service_record_id"
+    },
+    {
+     "propertyName": "CustomerId",
+     "sourceColumn": "customer_id"
+    },
+    {
+     "propertyName": "IncidentId",
+     "sourceColumn": "incident_id"
+    },
+    {
+     "propertyName": "Channel",
+     "sourceColumn": "channel"
+    },
+    {
+     "propertyName": "OpenedAt",
+     "sourceColumn": "opened_at"
+    },
+    {
+     "propertyName": "OpenedDateIst",
+     "sourceColumn": "opened_date_ist"
+    },
+    {
+     "propertyName": "Actions",
+     "sourceColumn": "actions"
+    },
+    {
+     "propertyName": "HandoffTeam",
+     "sourceColumn": "handoff_team"
+    },
+    {
+     "propertyName": "HandoffReason",
+     "sourceColumn": "handoff_reason"
+    },
+    {
+     "propertyName": "HandoffAt",
+     "sourceColumn": "handoff_at"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "fdff0d42-b77a-5892-a00b-69073d812952",
+   "id": "fdff0d42-b77a-5892-a00b-69073d812952",
+   "dataSourceName": "ServiceRequestType",
+   "propertyMappings": [
+    {
+     "propertyName": "ServiceTypeId",
+     "sourceColumn": "service_type_id"
+    },
+    {
+     "propertyName": "Title",
+     "sourceColumn": "title"
+    },
+    {
+     "propertyName": "Summary",
+     "sourceColumn": "summary"
+    },
+    {
+     "propertyName": "BuId",
+     "sourceColumn": "bu_id"
+    },
+    {
+     "propertyName": "JourneyIds",
+     "sourceColumn": "journey_ids"
+    },
+    {
+     "propertyName": "Priority",
+     "sourceColumn": "priority"
+    },
+    {
+     "propertyName": "CaseTitle",
+     "sourceColumn": "case_title"
+    },
+    {
+     "propertyName": "StageLadder",
+     "sourceColumn": "stage_ladder"
+    },
+    {
+     "propertyName": "ActivationMode",
+     "sourceColumn": "activation_mode"
+    },
+    {
+     "propertyName": "RecordedOutcome",
+     "sourceColumn": "recorded_outcome"
+    },
+    {
+     "propertyName": "NeverClaim",
+     "sourceColumn": "never_claim"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "c3c6d409-43b0-51b0-b4b8-1408431b765e",
+   "id": "c3c6d409-43b0-51b0-b4b8-1408431b765e",
+   "dataSourceName": "Document",
+   "propertyMappings": [
+    {
+     "propertyName": "DocumentId",
+     "sourceColumn": "document_id"
+    },
+    {
+     "propertyName": "CustomerId",
+     "sourceColumn": "customer_id"
+    },
+    {
+     "propertyName": "Title",
+     "sourceColumn": "title"
+    },
+    {
+     "propertyName": "DocumentType",
+     "sourceColumn": "document_type"
+    },
+    {
+     "propertyName": "Issuer",
+     "sourceColumn": "issuer"
+    },
+    {
+     "propertyName": "IssuedOn",
+     "sourceColumn": "issued_on"
+    },
+    {
+     "propertyName": "PageCount",
+     "sourceColumn": "page_count"
+    },
+    {
+     "propertyName": "Purpose",
+     "sourceColumn": "purpose"
+    },
+    {
+     "propertyName": "Visibility",
+     "sourceColumn": "visibility"
+    },
+    {
+     "propertyName": "SourceVersion",
+     "sourceColumn": "source_version"
+    },
+    {
+     "propertyName": "SupersededByDocumentId",
+     "sourceColumn": "superseded_by_document_id"
+    },
+    {
+     "propertyName": "SupersedesDocumentId",
+     "sourceColumn": "supersedes_document_id"
+    },
+    {
+     "propertyName": "FactsText",
+     "sourceColumn": "facts_text"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "f5724a44-334f-59e4-aab6-bc59a3442a5c",
+   "id": "f5724a44-334f-59e4-aab6-bc59a3442a5c",
+   "dataSourceName": "CrmCase",
+   "propertyMappings": [
+    {
+     "propertyName": "CaseId",
+     "sourceColumn": "case_id"
+    },
+    {
+     "propertyName": "CustomerId",
+     "sourceColumn": "customer_id"
+    },
+    {
+     "propertyName": "Title",
+     "sourceColumn": "title"
+    },
+    {
+     "propertyName": "Summary",
+     "sourceColumn": "summary"
+    },
+    {
+     "propertyName": "Stage",
+     "sourceColumn": "stage"
+    },
+    {
+     "propertyName": "Priority",
+     "sourceColumn": "priority"
+    },
+    {
+     "propertyName": "Sentiment",
+     "sourceColumn": "sentiment"
+    },
+    {
+     "propertyName": "Channel",
+     "sourceColumn": "channel"
+    },
+    {
+     "propertyName": "Origin",
+     "sourceColumn": "origin"
+    },
+    {
+     "propertyName": "BuId",
+     "sourceColumn": "bu_id"
+    },
+    {
+     "propertyName": "JourneyId",
+     "sourceColumn": "journey_id"
+    },
+    {
+     "propertyName": "OwnerRmId",
+     "sourceColumn": "owner_rm_id"
+    },
+    {
+     "propertyName": "ProductIds",
+     "sourceColumn": "product_ids"
+    },
+    {
+     "propertyName": "Interactions",
+     "sourceColumn": "interactions"
+    },
+    {
+     "propertyName": "ObjectionReason",
+     "sourceColumn": "objection_reason"
+    },
+    {
+     "propertyName": "ObjectionProductId",
+     "sourceColumn": "objection_product_id"
+    },
+    {
+     "propertyName": "OpenedAt",
+     "sourceColumn": "opened_at"
+    },
+    {
+     "propertyName": "OpenedDateIst",
+     "sourceColumn": "opened_date_ist"
+    },
+    {
+     "propertyName": "UpdatedAt",
+     "sourceColumn": "updated_at"
+    },
+    {
+     "propertyName": "SlaDueAt",
+     "sourceColumn": "sla_due_at"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "88492470-b71d-5ef2-968e-d5836f6efebe",
+   "id": "88492470-b71d-5ef2-968e-d5836f6efebe",
+   "dataSourceName": "Product",
+   "propertyMappings": [
+    {
+     "propertyName": "ProductId",
+     "sourceColumn": "product_id"
+    },
+    {
+     "propertyName": "DisplayName",
+     "sourceColumn": "display_name"
+    },
+    {
+     "propertyName": "Family",
+     "sourceColumn": "family"
+    },
+    {
+     "propertyName": "DataRole",
+     "sourceColumn": "data_role"
+    },
+    {
+     "propertyName": "Status",
+     "sourceColumn": "status"
+    },
+    {
+     "propertyName": "Issuer",
+     "sourceColumn": "issuer"
+    },
+    {
+     "propertyName": "CatalogueVersion",
+     "sourceColumn": "catalogue_version"
+    },
+    {
+     "propertyName": "EffectiveFrom",
+     "sourceColumn": "effective_from"
+    },
+    {
+     "propertyName": "EffectiveTo",
+     "sourceColumn": "effective_to"
+    },
+    {
+     "propertyName": "Audience",
+     "sourceColumn": "audience"
+    },
+    {
+     "propertyName": "MainTradeoff",
+     "sourceColumn": "main_tradeoff"
+    },
+    {
+     "propertyName": "WhyNotSuitable",
+     "sourceColumn": "why_not_suitable"
+    },
+    {
+     "propertyName": "RateTerms",
+     "sourceColumn": "rate_terms"
+    },
+    {
+     "propertyName": "LiquidityTerms",
+     "sourceColumn": "liquidity_terms"
+    },
+    {
+     "propertyName": "BenefitsText",
+     "sourceColumn": "benefits_text"
+    },
+    {
+     "propertyName": "FeesText",
+     "sourceColumn": "fees_text"
+    },
+    {
+     "propertyName": "LimitationsText",
+     "sourceColumn": "limitations_text"
+    },
+    {
+     "propertyName": "RequiredEvidence",
+     "sourceColumn": "required_evidence"
+    },
+    {
+     "propertyName": "SupportedActions",
+     "sourceColumn": "supported_actions"
+    },
+    {
+     "propertyName": "UnderwritingRequired",
+     "sourceColumn": "underwriting_required"
+    },
+    {
+     "propertyName": "MinAge",
+     "sourceColumn": "min_age"
+    },
+    {
+     "propertyName": "MinMonthlyIncomeInr",
+     "sourceColumn": "min_monthly_income_inr"
+    },
+    {
+     "propertyName": "MinPrincipalInr",
+     "sourceColumn": "min_principal_inr"
+    },
+    {
+     "propertyName": "MaxPrincipalInr",
+     "sourceColumn": "max_principal_inr"
+    },
+    {
+     "propertyName": "InterestRatePct",
+     "sourceColumn": "interest_rate_pct"
+    },
+    {
+     "propertyName": "AnnualFeeInr",
+     "sourceColumn": "annual_fee_inr"
+    },
+    {
+     "propertyName": "MonthlyFeeInr",
+     "sourceColumn": "monthly_fee_inr"
+    },
+    {
+     "propertyName": "MinimumBalanceInr",
+     "sourceColumn": "minimum_balance_inr"
+    },
+    {
+     "propertyName": "ProcessingFeePct",
+     "sourceColumn": "processing_fee_pct"
+    },
+    {
+     "propertyName": "PrepaymentChargePct",
+     "sourceColumn": "prepayment_charge_pct"
+    },
+    {
+     "propertyName": "EarlyWithdrawalPenaltyPct",
+     "sourceColumn": "early_withdrawal_penalty_pct"
+    },
+    {
+     "propertyName": "MinTermMonths",
+     "sourceColumn": "min_term_months"
+    },
+    {
+     "propertyName": "MaxTermMonths",
+     "sourceColumn": "max_term_months"
+    },
+    {
+     "propertyName": "MaxTenureYears",
+     "sourceColumn": "max_tenure_years"
+    },
+    {
+     "propertyName": "MaxLtvPct",
+     "sourceColumn": "max_ltv_pct"
+    },
+    {
+     "propertyName": "CashbackPct",
+     "sourceColumn": "cashback_pct"
+    },
+    {
+     "propertyName": "ForexMarkupPct",
+     "sourceColumn": "forex_markup_pct"
+    },
+    {
+     "propertyName": "MonthlyPremiumInr",
+     "sourceColumn": "monthly_premium_inr"
+    },
+    {
+     "propertyName": "SumInsuredInr",
+     "sourceColumn": "sum_insured_inr"
+    },
+    {
+     "propertyName": "RateType",
+     "sourceColumn": "rate_type"
+    },
+    {
+     "propertyName": "PayoutMode",
+     "sourceColumn": "payout_mode"
+    },
+    {
+     "propertyName": "Disclosure",
+     "sourceColumn": "disclosure"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "7a79462c-0cd6-5c44-9aa8-df2b3875f888",
+   "id": "7a79462c-0cd6-5c44-9aa8-df2b3875f888",
+   "dataSourceName": "Journey",
+   "propertyMappings": [
+    {
+     "propertyName": "JourneyId",
+     "sourceColumn": "journey_id"
+    },
+    {
+     "propertyName": "Title",
+     "sourceColumn": "title"
+    },
+    {
+     "propertyName": "JourneyKind",
+     "sourceColumn": "journey_kind"
+    },
+    {
+     "propertyName": "OneLiner",
+     "sourceColumn": "one_liner"
+    },
+    {
+     "propertyName": "Goal",
+     "sourceColumn": "goal"
+    },
+    {
+     "propertyName": "BuId",
+     "sourceColumn": "bu_id"
+    },
+    {
+     "propertyName": "SalesPosture",
+     "sourceColumn": "sales_posture"
+    },
+    {
+     "propertyName": "TurnCap",
+     "sourceColumn": "turn_cap"
+    },
+    {
+     "propertyName": "AutonomyCeiling",
+     "sourceColumn": "autonomy_ceiling"
+    },
+    {
+     "propertyName": "PrimarySpecialists",
+     "sourceColumn": "primary_specialists"
+    },
+    {
+     "propertyName": "AllowedPreparedOperations",
+     "sourceColumn": "allowed_prepared_operations"
+    },
+    {
+     "propertyName": "TriggersText",
+     "sourceColumn": "triggers_text"
+    },
+    {
+     "propertyName": "MustEstablishText",
+     "sourceColumn": "must_establish_text"
+    },
+    {
+     "propertyName": "NeverDoText",
+     "sourceColumn": "never_do_text"
+    },
+    {
+     "propertyName": "ToolHints",
+     "sourceColumn": "tool_hints"
+    },
+    {
+     "propertyName": "OpenerExamples",
+     "sourceColumn": "opener_examples"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "15910522-fb1d-5057-8e26-c3d52ff49138",
+   "id": "15910522-fb1d-5057-8e26-c3d52ff49138",
+   "dataSourceName": "Sop",
+   "propertyMappings": [
+    {
+     "propertyName": "SopId",
+     "sourceColumn": "sop_id"
+    },
+    {
+     "propertyName": "Title",
+     "sourceColumn": "title"
+    },
+    {
+     "propertyName": "Scope",
+     "sourceColumn": "scope"
+    },
+    {
+     "propertyName": "Audience",
+     "sourceColumn": "audience"
+    },
+    {
+     "propertyName": "AppliesToCase",
+     "sourceColumn": "applies_to_case"
+    },
+    {
+     "propertyName": "KnowledgePath",
+     "sourceColumn": "knowledge_path"
+    },
+    {
+     "propertyName": "SourceVersion",
+     "sourceColumn": "source_version"
+    },
+    {
+     "propertyName": "ReleaseId",
+     "sourceColumn": "release_id"
+    }
+   ]
+  },
+  {
+   "nodeTypeAlias": "03fcd055-eee1-5378-ba94-f21bdaa08c5c",
+   "id": "03fcd055-eee1-5378-ba94-f21bdaa08c5c",
+   "dataSourceName": "AuthorityRule",
+   "propertyMappings": [
+    {
+     "propertyName": "RuleId",
+     "sourceColumn": "rule_id"
+    },
+    {
+     "propertyName": "Capability",
+     "sourceColumn": "capability"
+    },
+    {
+     "propertyName": "Actor",
+     "sourceColumn": "actor"
+    },
+    {
+     "propertyName": "PermissionClass",
+     "sourceColumn": "permission_class"
+    },
+    {
+     "propertyName": "PermissionText",
+     "sourceColumn": "permission_text"
+    }
+   ]
+  }
+ ],
+ "edgeTables": [
+  {
+   "edgeTypeAlias": "fd95dd13-8d3c-506c-9c9e-4fb2a1cb5347",
+   "id": "fd95dd13-8d3c-506c-9c9e-4fb2a1cb5347",
+   "edgeIdMapping": [],
+   "dataSourceName": "Customer",
+   "sourceNodeKeyColumns": [
+    "customer_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "household_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "7f83c6f4-1ce2-5a6e-b2e4-991e7e4cefd7",
+   "id": "7f83c6f4-1ce2-5a6e-b2e4-991e7e4cefd7",
+   "edgeIdMapping": [],
+   "dataSourceName": "Household",
+   "sourceNodeKeyColumns": [
+    "household_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "primary_customer_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "a956e79f-5c78-5d09-b2d4-247fe96cd9d6",
+   "id": "a956e79f-5c78-5d09-b2d4-247fe96cd9d6",
+   "edgeIdMapping": [],
+   "dataSourceName": "Account",
+   "sourceNodeKeyColumns": [
+    "account_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "customer_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "ea835ac3-90f4-5ee9-9c85-ad3f945b41a1",
+   "id": "ea835ac3-90f4-5ee9-9c85-ad3f945b41a1",
+   "edgeIdMapping": [],
+   "dataSourceName": "Card",
+   "sourceNodeKeyColumns": [
+    "card_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "account_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "5e38f667-8654-5694-88a8-103f90aa03d3",
+   "id": "5e38f667-8654-5694-88a8-103f90aa03d3",
+   "edgeIdMapping": [],
+   "dataSourceName": "Card",
+   "sourceNodeKeyColumns": [
+    "card_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "customer_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "15cb07b5-c2aa-5508-964f-7f4051593361",
+   "id": "15cb07b5-c2aa-5508-964f-7f4051593361",
+   "edgeIdMapping": [],
+   "dataSourceName": "Transaction",
+   "sourceNodeKeyColumns": [
+    "transaction_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "account_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "78308c0c-694f-5004-9872-ec3e108cc1b9",
+   "id": "78308c0c-694f-5004-9872-ec3e108cc1b9",
+   "edgeIdMapping": [],
+   "dataSourceName": "Transaction",
+   "sourceNodeKeyColumns": [
+    "transaction_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "customer_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "267b0f17-84cd-5da3-9aba-9917cad4ac8b",
+   "id": "267b0f17-84cd-5da3-9aba-9917cad4ac8b",
+   "edgeIdMapping": [],
+   "dataSourceName": "Transaction",
+   "sourceNodeKeyColumns": [
+    "transaction_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "card_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "51f8ed64-f20a-5672-b00e-e584a367c594",
+   "id": "51f8ed64-f20a-5672-b00e-e584a367c594",
+   "edgeIdMapping": [],
+   "dataSourceName": "Goal",
+   "sourceNodeKeyColumns": [
+    "goal_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "customer_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "9ab9ca26-4ae8-5997-836e-333634469749",
+   "id": "9ab9ca26-4ae8-5997-836e-333634469749",
+   "edgeIdMapping": [],
+   "dataSourceName": "Consent",
+   "sourceNodeKeyColumns": [
+    "consent_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "customer_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "919d6e46-31ba-5dd5-a9d2-8ce14f1ee65f",
+   "id": "919d6e46-31ba-5dd5-a9d2-8ce14f1ee65f",
+   "edgeIdMapping": [],
+   "dataSourceName": "AccessGrant",
+   "sourceNodeKeyColumns": [
+    "grant_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "customer_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "5666852a-d295-50e3-866d-fab6eeffde4c",
+   "id": "5666852a-d295-50e3-866d-fab6eeffde4c",
+   "edgeIdMapping": [],
+   "dataSourceName": "AccessGrant",
+   "sourceNodeKeyColumns": [
+    "grant_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "consent_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "1e69b18f-0fef-56df-8f93-5c9c0cb7a9fa",
+   "id": "1e69b18f-0fef-56df-8f93-5c9c0cb7a9fa",
+   "edgeIdMapping": [],
+   "dataSourceName": "AccessGrant",
+   "sourceNodeKeyColumns": [
+    "grant_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "household_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "48511324-35af-5b5b-8d4f-c5ef7be24b16",
+   "id": "48511324-35af-5b5b-8d4f-c5ef7be24b16",
+   "edgeIdMapping": [],
+   "dataSourceName": "RegisteredAgent",
+   "sourceNodeKeyColumns": [
+    "agent_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "customer_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "3aa2825e-0b9d-5626-81f2-b443010afc85",
+   "id": "3aa2825e-0b9d-5626-81f2-b443010afc85",
+   "edgeIdMapping": [],
+   "dataSourceName": "RegisteredAgent",
+   "sourceNodeKeyColumns": [
+    "agent_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "consent_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "16ee23ad-13e4-5d5c-9324-ba49da9b3d18",
+   "id": "16ee23ad-13e4-5d5c-9324-ba49da9b3d18",
+   "edgeIdMapping": [],
+   "dataSourceName": "Mandate",
+   "sourceNodeKeyColumns": [
+    "mandate_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "customer_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "7c3275d0-f3ec-5040-af7b-12c011a3a276",
+   "id": "7c3275d0-f3ec-5040-af7b-12c011a3a276",
+   "edgeIdMapping": [],
+   "dataSourceName": "Mandate",
+   "sourceNodeKeyColumns": [
+    "mandate_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "agent_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "b75ebc73-61a0-56fb-b83f-08aa9d4e6993",
+   "id": "b75ebc73-61a0-56fb-b83f-08aa9d4e6993",
+   "edgeIdMapping": [],
+   "dataSourceName": "Mandate",
+   "sourceNodeKeyColumns": [
+    "mandate_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "consent_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "6a12c0bf-7e51-52e2-b01a-f213f810305c",
+   "id": "6a12c0bf-7e51-52e2-b01a-f213f810305c",
+   "edgeIdMapping": [],
+   "dataSourceName": "Mandate",
+   "sourceNodeKeyColumns": [
+    "mandate_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "source_account_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "dc1ae432-4111-588e-9e47-0301d811239b",
+   "id": "dc1ae432-4111-588e-9e47-0301d811239b",
+   "edgeIdMapping": [],
+   "dataSourceName": "Mandate",
+   "sourceNodeKeyColumns": [
+    "mandate_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "destination_account_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "770696ba-6590-506b-b463-2257d87656e1",
+   "id": "770696ba-6590-506b-b463-2257d87656e1",
+   "edgeIdMapping": [],
+   "dataSourceName": "Mandate",
+   "sourceNodeKeyColumns": [
+    "mandate_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "goal_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "3eb376fd-9699-53f8-9d5e-2743917ea826",
+   "id": "3eb376fd-9699-53f8-9d5e-2743917ea826",
+   "edgeIdMapping": [],
+   "dataSourceName": "MandateEvent",
+   "sourceNodeKeyColumns": [
+    "event_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "mandate_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "812a526d-16a4-5054-947a-69be28929874",
+   "id": "812a526d-16a4-5054-947a-69be28929874",
+   "edgeIdMapping": [],
+   "dataSourceName": "HouseholdMember",
+   "sourceNodeKeyColumns": [
+    "member_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "household_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "b6d7da5a-7dbe-505a-af2e-096e92a52f9b",
+   "id": "b6d7da5a-7dbe-505a-af2e-096e92a52f9b",
+   "edgeIdMapping": [],
+   "dataSourceName": "HouseholdMember",
+   "sourceNodeKeyColumns": [
+    "member_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "primary_customer_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "c1f5f04d-930e-5f28-910f-561021ded224",
+   "id": "c1f5f04d-930e-5f28-910f-561021ded224",
+   "edgeIdMapping": [],
+   "dataSourceName": "Account",
+   "sourceNodeKeyColumns": [
+    "account_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "product_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "34fbad8a-fe40-588f-90fe-831af29467a3",
+   "id": "34fbad8a-fe40-588f-90fe-831af29467a3",
+   "edgeIdMapping": [],
+   "dataSourceName": "Card",
+   "sourceNodeKeyColumns": [
+    "card_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "product_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "408030e2-e7d5-508d-aecd-58bc64d621ec",
+   "id": "408030e2-e7d5-508d-aecd-58bc64d621ec",
+   "edgeIdMapping": [],
+   "dataSourceName": "Deposit",
+   "sourceNodeKeyColumns": [
+    "deposit_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "customer_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "98a8fcac-37b9-5a28-99bb-1619ccb44209",
+   "id": "98a8fcac-37b9-5a28-99bb-1619ccb44209",
+   "edgeIdMapping": [],
+   "dataSourceName": "Deposit",
+   "sourceNodeKeyColumns": [
+    "deposit_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "product_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "f4737ad9-e8f7-5086-ac63-297683e0a1bc",
+   "id": "f4737ad9-e8f7-5086-ac63-297683e0a1bc",
+   "edgeIdMapping": [],
+   "dataSourceName": "Deposit",
+   "sourceNodeKeyColumns": [
+    "deposit_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "linked_account_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "c5eef833-a3a8-52db-b9b0-f966bf987664",
+   "id": "c5eef833-a3a8-52db-b9b0-f966bf987664",
+   "edgeIdMapping": [],
+   "dataSourceName": "Loan",
+   "sourceNodeKeyColumns": [
+    "loan_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "customer_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "ab87b5b6-c18c-5dfe-919e-d1a743359011",
+   "id": "ab87b5b6-c18c-5dfe-919e-d1a743359011",
+   "edgeIdMapping": [],
+   "dataSourceName": "Loan",
+   "sourceNodeKeyColumns": [
+    "loan_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "product_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "72c7c715-59e9-509e-9994-43dc6ffa62cb",
+   "id": "72c7c715-59e9-509e-9994-43dc6ffa62cb",
+   "edgeIdMapping": [],
+   "dataSourceName": "LoanInstallment",
+   "sourceNodeKeyColumns": [
+    "installment_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "loan_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "e69be200-4f98-5dda-8109-eb1641385815",
+   "id": "e69be200-4f98-5dda-8109-eb1641385815",
+   "edgeIdMapping": [],
+   "dataSourceName": "InsurancePolicy",
+   "sourceNodeKeyColumns": [
+    "policy_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "customer_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "343ef327-cbac-5acf-b40a-d65d9bb1c840",
+   "id": "343ef327-cbac-5acf-b40a-d65d9bb1c840",
+   "edgeIdMapping": [],
+   "dataSourceName": "InsurancePolicy",
+   "sourceNodeKeyColumns": [
+    "policy_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "product_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "cfdc79c4-1373-52a4-ba07-765edaf9d659",
+   "id": "cfdc79c4-1373-52a4-ba07-765edaf9d659",
+   "edgeIdMapping": [],
+   "dataSourceName": "InsurancePolicy",
+   "sourceNodeKeyColumns": [
+    "policy_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "linked_account_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "e1c55ac6-f241-5158-aad2-faa6db7b46d9",
+   "id": "e1c55ac6-f241-5158-aad2-faa6db7b46d9",
+   "edgeIdMapping": [],
+   "dataSourceName": "ProtectionGap",
+   "sourceNodeKeyColumns": [
+    "protection_gap_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "customer_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "5d0a473c-27b4-5cd9-86aa-1e6c0e1a39d6",
+   "id": "5d0a473c-27b4-5cd9-86aa-1e6c0e1a39d6",
+   "edgeIdMapping": [],
+   "dataSourceName": "Investment",
+   "sourceNodeKeyColumns": [
+    "investment_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "customer_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "6e10fd1f-6574-57b2-96ad-9a18e1f4324e",
+   "id": "6e10fd1f-6574-57b2-96ad-9a18e1f4324e",
+   "edgeIdMapping": [],
+   "dataSourceName": "Investment",
+   "sourceNodeKeyColumns": [
+    "investment_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "product_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "2ebb68f0-c69e-54bc-b788-69c64c4bfaf8",
+   "id": "2ebb68f0-c69e-54bc-b788-69c64c4bfaf8",
+   "edgeIdMapping": [],
+   "dataSourceName": "Transaction",
+   "sourceNodeKeyColumns": [
+    "transaction_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "dispute_incident_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "a0266e41-82a8-5a2f-b6dc-35c56f1df17a",
+   "id": "a0266e41-82a8-5a2f-b6dc-35c56f1df17a",
+   "edgeIdMapping": [],
+   "dataSourceName": "ScheduledObligation",
+   "sourceNodeKeyColumns": [
+    "obligation_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "source_account_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "25790ec3-13ce-586a-9a03-2278e55a3598",
+   "id": "25790ec3-13ce-586a-9a03-2278e55a3598",
+   "edgeIdMapping": [],
+   "dataSourceName": "ScheduledObligation",
+   "sourceNodeKeyColumns": [
+    "obligation_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "customer_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "09295eda-b8ad-533a-ad59-7a22c3b8b6aa",
+   "id": "09295eda-b8ad-533a-ad59-7a22c3b8b6aa",
+   "edgeIdMapping": [],
+   "dataSourceName": "IncomeRecord",
+   "sourceNodeKeyColumns": [
+    "income_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "customer_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "dda25994-0640-5626-9b61-39e81f314f92",
+   "id": "dda25994-0640-5626-9b61-39e81f314f92",
+   "edgeIdMapping": [],
+   "dataSourceName": "IncomeRecord",
+   "sourceNodeKeyColumns": [
+    "income_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "evidence_document_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "93652f69-09fc-5875-ab98-914b2037ca04",
+   "id": "93652f69-09fc-5875-ab98-914b2037ca04",
+   "edgeIdMapping": [],
+   "dataSourceName": "IncomeRecord",
+   "sourceNodeKeyColumns": [
+    "income_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "contributor_member_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "de85f3e4-39e4-5311-a6a7-666540c612ba",
+   "id": "de85f3e4-39e4-5311-a6a7-666540c612ba",
+   "edgeIdMapping": [],
+   "dataSourceName": "Preference",
+   "sourceNodeKeyColumns": [
+    "preference_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "customer_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "c4654312-45d0-5c01-9bd9-53931eacd5a4",
+   "id": "c4654312-45d0-5c01-9bd9-53931eacd5a4",
+   "edgeIdMapping": [],
+   "dataSourceName": "Consent",
+   "sourceNodeKeyColumns": [
+    "consent_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "subject_member_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "c4ff844d-5716-5297-8317-9948278f18d7",
+   "id": "c4ff844d-5716-5297-8317-9948278f18d7",
+   "edgeIdMapping": [],
+   "dataSourceName": "AccessGrant",
+   "sourceNodeKeyColumns": [
+    "grant_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "subject_member_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "0c4e55d1-6b6b-58aa-97ed-fa3458619027",
+   "id": "0c4e55d1-6b6b-58aa-97ed-fa3458619027",
+   "edgeIdMapping": [],
+   "dataSourceName": "Incident",
+   "sourceNodeKeyColumns": [
+    "incident_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "customer_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "5c9e1956-55a2-585b-bc92-b8cbc8cbca56",
+   "id": "5c9e1956-55a2-585b-bc92-b8cbc8cbca56",
+   "edgeIdMapping": [],
+   "dataSourceName": "ServiceRecord",
+   "sourceNodeKeyColumns": [
+    "service_record_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "customer_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "28befc57-06ba-58b2-8c65-d700c35fd3ce",
+   "id": "28befc57-06ba-58b2-8c65-d700c35fd3ce",
+   "edgeIdMapping": [],
+   "dataSourceName": "ServiceRecord",
+   "sourceNodeKeyColumns": [
+    "service_record_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "incident_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "37d531e4-00c8-5a90-89bf-bded6d567769",
+   "id": "37d531e4-00c8-5a90-89bf-bded6d567769",
+   "edgeIdMapping": [],
+   "dataSourceName": "Document",
+   "sourceNodeKeyColumns": [
+    "document_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "customer_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "01ce27b8-2077-5f9d-bed6-17082e062451",
+   "id": "01ce27b8-2077-5f9d-bed6-17082e062451",
+   "edgeIdMapping": [],
+   "dataSourceName": "CrmCase",
+   "sourceNodeKeyColumns": [
+    "case_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "customer_id"
+   ]
+  },
+  {
+   "edgeTypeAlias": "279ca426-bd98-5f36-b32c-984ae18b2b09",
+   "id": "279ca426-bd98-5f36-b32c-984ae18b2b09",
+   "edgeIdMapping": [],
+   "dataSourceName": "CrmCase",
+   "sourceNodeKeyColumns": [
+    "case_id"
+   ],
+   "propertyMappings": [],
+   "destinationNodeKeyColumns": [
+    "journey_id"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,881 @@
+[
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC01",
+    "changes": [],
+    "derived": [],
+    "isBaseline": true,
+    "ownerId": "nivedita",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-niv-liquidity-baseline",
+    "scenario": "nivedita-liquidity-priority-baseline",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "She has named both steady income and easy access without ranking them.",
+    "variantGroup": "pref-niv-02:liquidityPreference"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC01",
+    "changes": [
+      {
+        "after": "access_over_payout",
+        "before": "unstated",
+        "dataset": "preferences.json",
+        "field": "value",
+        "id": "pref-niv-02",
+        "idField": "preferenceId",
+        "op": "replace_field"
+      },
+      {
+        "after": "DOC-N-RETIREMENT-NOTE",
+        "before": null,
+        "dataset": "preferences.json",
+        "field": "statedIn",
+        "id": "pref-niv-02",
+        "idField": "preferenceId",
+        "op": "replace_field"
+      }
+    ],
+    "derived": [],
+    "isBaseline": false,
+    "ownerId": "nivedita",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-niv-liquidity-priority",
+    "scenario": "nivedita-liquidity-priority",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "She ranks easy access above a higher monthly payout.",
+    "variantGroup": "pref-niv-02:liquidityPreference"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC04",
+    "changes": [],
+    "derived": [],
+    "isBaseline": true,
+    "ownerId": "rhea",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-rhe-education-baseline",
+    "scenario": "rhea-education-first-baseline",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "She has not ranked the school fee against the possible relocation.",
+    "variantGroup": "goal-rhe-02:statedRank"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC04",
+    "changes": [
+      {
+        "after": 1,
+        "before": null,
+        "dataset": "goals.json",
+        "field": "statedRank",
+        "id": "goal-rhe-02",
+        "idField": "goalId",
+        "op": "replace_field"
+      },
+      {
+        "after": "The term fee has risen and must be met from monthly income. She has said this comes first, ahead of the possible relocation.",
+        "before": "The term fee has risen and must be met from monthly income.",
+        "dataset": "goals.json",
+        "field": "customerIntent",
+        "id": "goal-rhe-02",
+        "idField": "goalId",
+        "op": "replace_field"
+      },
+      {
+        "after": [
+          "DOC-R-SCHOOL-CIRCULAR",
+          "DOC-R-RELOCATION-LETTER"
+        ],
+        "before": [
+          "DOC-R-SCHOOL-CIRCULAR"
+        ],
+        "dataset": "goals.json",
+        "field": "linkedSourceIds",
+        "id": "goal-rhe-02",
+        "idField": "goalId",
+        "op": "replace_field"
+      }
+    ],
+    "derived": [],
+    "isBaseline": false,
+    "ownerId": "rhea",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-rhe-education-first",
+    "scenario": "rhea-education-first",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "She ranks the school fee above the possible relocation.",
+    "variantGroup": "goal-rhe-02:statedRank"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC05",
+    "changes": [],
+    "derived": [],
+    "isBaseline": true,
+    "ownerId": "rhea",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-rhe-prepayment-baseline",
+    "scenario": "rhea-prepayment-priority-baseline",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "She is comparing loan structures and has said nothing about prepaying.",
+    "variantGroup": "goal-rhe-01:statedIntents"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC05",
+    "changes": [
+      {
+        "after": [
+          "prepay_from_bonus"
+        ],
+        "before": [],
+        "dataset": "goals.json",
+        "field": "statedIntents",
+        "id": "goal-rhe-01",
+        "idField": "goalId",
+        "op": "replace_field"
+      },
+      {
+        "after": "Building a down payment; comparing loan structures. She has said she intends to prepay from the annual bonus.",
+        "before": "Building a down payment; comparing loan structures.",
+        "dataset": "goals.json",
+        "field": "customerIntent",
+        "id": "goal-rhe-01",
+        "idField": "goalId",
+        "op": "replace_field"
+      },
+      {
+        "after": [
+          "DOC-R-HOME-OFFER-A",
+          "DOC-R-HOME-OFFER-B",
+          "DOC-R-BONUS-LETTER"
+        ],
+        "before": [
+          "DOC-R-HOME-OFFER-A",
+          "DOC-R-HOME-OFFER-B"
+        ],
+        "dataset": "goals.json",
+        "field": "linkedSourceIds",
+        "id": "goal-rhe-01",
+        "idField": "goalId",
+        "op": "replace_field"
+      }
+    ],
+    "derived": [],
+    "isBaseline": false,
+    "ownerId": "rhea",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-rhe-prepayment-priority",
+    "scenario": "rhea-prepayment-priority",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "She intends to prepay from the bonus, which changes which clause matters.",
+    "variantGroup": "goal-rhe-01:statedIntents"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC06",
+    "changes": [],
+    "derived": [],
+    "isBaseline": true,
+    "ownerId": "rhea",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-rhe-annual-fee-baseline",
+    "scenario": "rhea-zero-annual-fee-baseline",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "She has not said what annual fee, if any, she is willing to pay.",
+    "variantGroup": "pref-rhe-01:annualFeeTolerance"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC06",
+    "changes": [
+      {
+        "after": "no_annual_fee",
+        "before": "unstated",
+        "dataset": "preferences.json",
+        "field": "value",
+        "id": "pref-rhe-01",
+        "idField": "preferenceId",
+        "op": "replace_field"
+      },
+      {
+        "after": "DOC-R-CARD-STATEMENT",
+        "before": null,
+        "dataset": "preferences.json",
+        "field": "statedIn",
+        "id": "pref-rhe-01",
+        "idField": "preferenceId",
+        "op": "replace_field"
+      }
+    ],
+    "derived": [],
+    "isBaseline": false,
+    "ownerId": "rhea",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-rhe-zero-annual-fee",
+    "scenario": "rhea-zero-annual-fee",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "She will not pay any annual fee.",
+    "variantGroup": "pref-rhe-01:annualFeeTolerance"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC08",
+    "changes": [],
+    "derived": [],
+    "isBaseline": true,
+    "ownerId": "ravi",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-rav-no-bundle-baseline",
+    "scenario": "ravi-no-bundle-baseline",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "He has not declined anything; nothing has been offered.",
+    "variantGroup": "goal-rav-01:declinedProductTypes"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC08",
+    "changes": [
+      {
+        "after": [
+          "bundled_with_salary_account"
+        ],
+        "before": [],
+        "dataset": "goals.json",
+        "field": "declinedProductTypes",
+        "id": "goal-rav-01",
+        "idField": "goalId",
+        "op": "replace_field"
+      },
+      {
+        "after": "Wants a plan before the first salary arrives, not after. He has said he does not want anything bundled with the salary account.",
+        "before": "Wants a plan before the first salary arrives, not after.",
+        "dataset": "goals.json",
+        "field": "customerIntent",
+        "id": "goal-rav-01",
+        "idField": "goalId",
+        "op": "replace_field"
+      }
+    ],
+    "derived": [],
+    "isBaseline": false,
+    "ownerId": "ravi",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-rav-no-bundle",
+    "scenario": "ravi-no-bundle",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "He declines any product bundled with the salary account.",
+    "variantGroup": "goal-rav-01:declinedProductTypes"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC10",
+    "changes": [],
+    "derived": [],
+    "isBaseline": true,
+    "ownerId": "ravi",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-rav-travel-baseline",
+    "scenario": "ravi-domestic-no-upgrade-baseline",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "He has not said whether his travel is domestic or international.",
+    "variantGroup": "goal-rav-01:travelScope"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC10",
+    "changes": [
+      {
+        "after": "domestic_only",
+        "before": "unstated",
+        "dataset": "goals.json",
+        "field": "travelScope",
+        "id": "goal-rav-01",
+        "idField": "goalId",
+        "op": "replace_field"
+      },
+      {
+        "after": [
+          "DOC-V-OFFER-LETTER",
+          "DOC-V-TRIP-RECEIPTS"
+        ],
+        "before": [
+          "DOC-V-OFFER-LETTER"
+        ],
+        "dataset": "goals.json",
+        "field": "linkedSourceIds",
+        "id": "goal-rav-01",
+        "idField": "goalId",
+        "op": "replace_field"
+      }
+    ],
+    "derived": [],
+    "isBaseline": false,
+    "ownerId": "ravi",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-rav-domestic-no-upgrade",
+    "scenario": "ravi-domestic-no-upgrade",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "He confirms all his travel is domestic.",
+    "variantGroup": "goal-rav-01:travelScope"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC09",
+    "changes": [],
+    "derived": [],
+    "isBaseline": true,
+    "ownerId": "ravi",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-rav-no-credit-baseline",
+    "scenario": "ravi-no-credit-product-baseline",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "He has asked to understand credit and has not ruled a product in or out.",
+    "variantGroup": "goal-rav-03:declinedProductTypes"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC09",
+    "changes": [
+      {
+        "after": [
+          "any_credit_product"
+        ],
+        "before": [],
+        "dataset": "goals.json",
+        "field": "declinedProductTypes",
+        "id": "goal-rav-03",
+        "idField": "goalId",
+        "op": "replace_field"
+      },
+      {
+        "after": "Wants to understand terms. He has now said explicitly that he does not want any credit product at all.",
+        "before": "Wants to understand terms. Has NOT asked for a credit product.",
+        "dataset": "goals.json",
+        "field": "customerIntent",
+        "id": "goal-rav-03",
+        "idField": "goalId",
+        "op": "replace_field"
+      }
+    ],
+    "derived": [],
+    "isBaseline": false,
+    "ownerId": "ravi",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-rav-no-credit-product",
+    "scenario": "ravi-no-credit-product",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "He wants understanding only and no credit product at all.",
+    "variantGroup": "goal-rav-03:declinedProductTypes"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC09",
+    "changes": [],
+    "derived": [],
+    "isBaseline": true,
+    "ownerId": "ravi",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-rav-minimum-due-misconception",
+    "scenario": "ravi-minimum-due-misconception",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "The shipped state: he believes paying the minimum due carries no extra charge.",
+    "variantGroup": "DOC-V-CREDIT-QUESTION:belief"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC11",
+    "changes": [],
+    "derived": [],
+    "isBaseline": true,
+    "ownerId": "ravi",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-rav-social-baseline",
+    "scenario": "ravi-social-metric-change-baseline",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "The 2026-09-12 capture of /ravisocial is the current one.",
+    "variantGroup": "ravi-creates:snapshot"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC11",
+    "changes": [
+      {
+        "after": true,
+        "before": false,
+        "dataset": "social-profiles.json",
+        "field": "isCurrentSnapshot",
+        "id": "ravi-creates-v2",
+        "idField": "profileSlug",
+        "op": "replace_field"
+      },
+      {
+        "after": false,
+        "before": true,
+        "dataset": "social-profiles.json",
+        "field": "isCurrentSnapshot",
+        "id": "ravi-creates",
+        "idField": "profileSlug",
+        "op": "replace_field"
+      }
+    ],
+    "derived": [],
+    "isBaseline": false,
+    "ownerId": "ravi",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-rav-social-metric-change",
+    "scenario": "ravi-social-metric-change",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "A later capture of /ravisocial shows materially different follower and like counts.",
+    "variantGroup": "ravi-creates:snapshot"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC01",
+    "changes": [],
+    "derived": [],
+    "isBaseline": true,
+    "ownerId": "nivedita",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-nivedita-renewal-clause-change-baseline",
+    "scenario": "nivedita-renewal-clause-change-baseline",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "Only version 1 of DOC-N-FD-RENEWAL is in her documents.",
+    "variantGroup": "DOC-N-FD-RENEWAL:sourceVersion"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC01",
+    "changes": [
+      {
+        "after": true,
+        "before": false,
+        "dataset": "documents.json",
+        "field": "inCustomerDocumentSet",
+        "id": "DOC-N-FD-RENEWAL-V2",
+        "idField": "documentId",
+        "op": "replace_field"
+      }
+    ],
+    "derived": [],
+    "isBaseline": false,
+    "ownerId": "nivedita",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-nivedita-renewal-clause-change",
+    "scenario": "nivedita-renewal-clause-change",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "The revised renewal notice arrives, naming the rate and shortening the window.",
+    "variantGroup": "DOC-N-FD-RENEWAL:sourceVersion"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC04",
+    "changes": [],
+    "derived": [],
+    "isBaseline": true,
+    "ownerId": "rhea",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-rhea-relocation-uncertain-baseline",
+    "scenario": "rhea-relocation-uncertain-baseline",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "Only version 1 of DOC-R-RELOCATION-LETTER is in her documents.",
+    "variantGroup": "DOC-R-RELOCATION-LETTER:sourceVersion"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC04",
+    "changes": [
+      {
+        "after": true,
+        "before": false,
+        "dataset": "documents.json",
+        "field": "inCustomerDocumentSet",
+        "id": "DOC-R-RELOCATION-LETTER-V2",
+        "idField": "documentId",
+        "op": "replace_field"
+      }
+    ],
+    "derived": [],
+    "isBaseline": false,
+    "ownerId": "rhea",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-rhea-relocation-uncertain",
+    "scenario": "rhea-relocation-uncertain",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "The revised relocation letter arrives, withdrawing the indicative month.",
+    "variantGroup": "DOC-R-RELOCATION-LETTER:sourceVersion"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC05",
+    "changes": [],
+    "derived": [],
+    "isBaseline": true,
+    "ownerId": "rhea",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-rhea-offer-condition-revised-baseline",
+    "scenario": "rhea-offer-condition-revised-baseline",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "Only version 1 of DOC-R-HOME-OFFER-A is in her documents.",
+    "variantGroup": "DOC-R-HOME-OFFER-A:sourceVersion"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC05",
+    "changes": [
+      {
+        "after": true,
+        "before": false,
+        "dataset": "documents.json",
+        "field": "inCustomerDocumentSet",
+        "id": "DOC-R-HOME-OFFER-A-V2",
+        "idField": "documentId",
+        "op": "replace_field"
+      }
+    ],
+    "derived": [],
+    "isBaseline": false,
+    "ownerId": "rhea",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-rhea-offer-condition-revised",
+    "scenario": "rhea-offer-condition-revised",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "The revised Offer A sheet arrives, changing the prepayment lock-in and charge.",
+    "variantGroup": "DOC-R-HOME-OFFER-A:sourceVersion"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC06",
+    "changes": [],
+    "derived": [],
+    "isBaseline": true,
+    "ownerId": "rhea",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-rhea-one-off-travel-baseline",
+    "scenario": "rhea-one-off-travel-baseline",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "Only version 1 of DOC-R-TRAVEL-RECEIPT is in her documents.",
+    "variantGroup": "DOC-R-TRAVEL-RECEIPT:sourceVersion"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC06",
+    "changes": [
+      {
+        "after": true,
+        "before": false,
+        "dataset": "documents.json",
+        "field": "inCustomerDocumentSet",
+        "id": "DOC-R-TRAVEL-RECEIPT-V2",
+        "idField": "documentId",
+        "op": "replace_field"
+      }
+    ],
+    "derived": [],
+    "isBaseline": false,
+    "ownerId": "rhea",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-rhea-one-off-travel",
+    "scenario": "rhea-one-off-travel",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "The consolidated travel statement arrives, showing the booking history.",
+    "variantGroup": "DOC-R-TRAVEL-RECEIPT:sourceVersion"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC08",
+    "changes": [],
+    "derived": [],
+    "isBaseline": true,
+    "ownerId": "ravi",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-ravi-variable-bonus-baseline",
+    "scenario": "ravi-variable-bonus-baseline",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "Only version 1 of DOC-V-SALARY-ADDENDUM is in her documents.",
+    "variantGroup": "DOC-V-SALARY-ADDENDUM:sourceVersion"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC08",
+    "changes": [
+      {
+        "after": true,
+        "before": false,
+        "dataset": "documents.json",
+        "field": "inCustomerDocumentSet",
+        "id": "DOC-V-SALARY-ADDENDUM-V2",
+        "idField": "documentId",
+        "op": "replace_field"
+      }
+    ],
+    "derived": [],
+    "isBaseline": false,
+    "ownerId": "ravi",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-ravi-variable-bonus",
+    "scenario": "ravi-variable-bonus",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "The revised addendum arrives, naming a larger indicative variable component.",
+    "variantGroup": "DOC-V-SALARY-ADDENDUM:sourceVersion"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC10",
+    "changes": [],
+    "derived": [],
+    "isBaseline": true,
+    "ownerId": "ravi",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-ravi-dinner-only-baseline",
+    "scenario": "ravi-dinner-only-baseline",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "Only version 1 of DOC-V-GROUP-CHAT is in her documents.",
+    "variantGroup": "DOC-V-GROUP-CHAT:sourceVersion"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC10",
+    "changes": [
+      {
+        "after": true,
+        "before": false,
+        "dataset": "documents.json",
+        "field": "inCustomerDocumentSet",
+        "id": "DOC-V-GROUP-CHAT-V2",
+        "idField": "documentId",
+        "op": "replace_field"
+      }
+    ],
+    "derived": [],
+    "isBaseline": false,
+    "ownerId": "ravi",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-ravi-dinner-only",
+    "scenario": "ravi-dinner-only",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "A later export of the group chat arrives, with the messages sent since.",
+    "variantGroup": "DOC-V-GROUP-CHAT:sourceVersion"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC11",
+    "changes": [],
+    "derived": [],
+    "isBaseline": true,
+    "ownerId": "ravi",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-ravi-extra-revisions-baseline",
+    "scenario": "ravi-extra-revisions-baseline",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "Only version 1 of DOC-V-CLIENT-CHAT is in her documents.",
+    "variantGroup": "DOC-V-CLIENT-CHAT:sourceVersion"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC11",
+    "changes": [
+      {
+        "after": true,
+        "before": false,
+        "dataset": "documents.json",
+        "field": "inCustomerDocumentSet",
+        "id": "DOC-V-CLIENT-CHAT-V2",
+        "idField": "documentId",
+        "op": "replace_field"
+      }
+    ],
+    "derived": [],
+    "isBaseline": false,
+    "ownerId": "ravi",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-ravi-extra-revisions",
+    "scenario": "ravi-extra-revisions",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "A later export of the client chat arrives, carrying further scope.",
+    "variantGroup": "DOC-V-CLIENT-CHAT:sourceVersion"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC11",
+    "changes": [],
+    "derived": [],
+    "isBaseline": true,
+    "ownerId": "ravi",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-ravi-irregular-income-baseline",
+    "scenario": "ravi-irregular-income-baseline",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "Only version 1 of DOC-V-INVOICE-DRAFT is in her documents.",
+    "variantGroup": "DOC-V-INVOICE-DRAFT:sourceVersion"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC11",
+    "changes": [
+      {
+        "after": true,
+        "before": false,
+        "dataset": "documents.json",
+        "field": "inCustomerDocumentSet",
+        "id": "DOC-V-INVOICE-DRAFT-V2",
+        "idField": "documentId",
+        "op": "replace_field"
+      }
+    ],
+    "derived": [],
+    "isBaseline": false,
+    "ownerId": "ravi",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-ravi-irregular-income",
+    "scenario": "ravi-irregular-income",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "The revised invoice draft arrives, with go-live postponed indefinitely.",
+    "variantGroup": "DOC-V-INVOICE-DRAFT:sourceVersion"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC07",
+    "changes": [],
+    "derived": [],
+    "isBaseline": true,
+    "ownerId": "rhea",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-rhe-refund-promise-only",
+    "scenario": "rhea-refund-promise-only",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "The merchant promised a refund and the ledger has none.",
+    "variantGroup": "txn-rhe-9014:refund-state"
+  },
+  {
+    "approvedByDemoOwner": true,
+    "case": "UC07",
+    "changes": [
+      {
+        "after": {
+          "accountId": null,
+          "amount": {
+            "amountMinor": 2175000,
+            "currency": "INR"
+          },
+          "cardId": "card-rhe-cc-01",
+          "category": "shopping",
+          "description": "URBANWEAVE FURNISHINGS - REFUND",
+          "direction": "credit",
+          "instrument": "card",
+          "ownerId": "rhea",
+          "postedAt": "2026-09-15T11:20:00+05:30",
+          "purchaseReference": "pur-rhe-refund-01",
+          "refundOf": "txn-rhe-9014",
+          "refundReference": "UW-2026-55841-RF",
+          "sourceRefs": [
+            "DOC-R-REFUND-RECEIPT",
+            "DOC-R-MERCHANT-CHAT"
+          ],
+          "status": "posted",
+          "transactionId": "txn-rhe-9018",
+          "valueDate": "2026-09-15"
+        },
+        "before": null,
+        "dataset": "transactions.json",
+        "id": "txn-rhe-9018",
+        "idField": "transactionId",
+        "op": "insert_record",
+        "record": {
+          "accountId": null,
+          "amount": {
+            "amountMinor": 2175000,
+            "currency": "INR"
+          },
+          "cardId": "card-rhe-cc-01",
+          "category": "shopping",
+          "description": "URBANWEAVE FURNISHINGS - REFUND",
+          "direction": "credit",
+          "instrument": "card",
+          "ownerId": "rhea",
+          "postedAt": "2026-09-15T11:20:00+05:30",
+          "purchaseReference": "pur-rhe-refund-01",
+          "refundOf": "txn-rhe-9014",
+          "refundReference": "UW-2026-55841-RF",
+          "sourceRefs": [
+            "DOC-R-REFUND-RECEIPT",
+            "DOC-R-MERCHANT-CHAT"
+          ],
+          "status": "posted",
+          "transactionId": "txn-rhe-9018",
+          "valueDate": "2026-09-15"
+        }
+      }
+    ],
+    "derived": [
+      {
+        "after": {
+          "amountMinor": 9894000,
+          "currency": "INR"
+        },
+        "before": {
+          "amountMinor": 12069000,
+          "currency": "INR"
+        },
+        "dataset": "cards.json",
+        "field": "currentOutstanding",
+        "id": "card-rhe-cc-01",
+        "idField": "cardId"
+      },
+      {
+        "after": {
+          "amountMinor": 494700,
+          "currency": "INR"
+        },
+        "before": {
+          "amountMinor": 603450,
+          "currency": "INR"
+        },
+        "dataset": "cards.json",
+        "field": "minimumDue",
+        "id": "card-rhe-cc-01",
+        "idField": "cardId"
+      },
+      {
+        "after": {
+          "amountMinor": 15106000,
+          "currency": "INR"
+        },
+        "before": {
+          "amountMinor": 12931000,
+          "currency": "INR"
+        },
+        "dataset": "cards.json",
+        "field": "availableCredit",
+        "id": "card-rhe-cc-01",
+        "idField": "cardId"
+      },
+      {
+        "after": true,
+        "before": false,
+        "dataset": "cards.json",
+        "field": "outstandingIncludesPostingsAfterStatement",
+        "id": "card-rhe-cc-01",
+        "idField": "cardId"
+      }
+    ],
+    "isBaseline": false,
+    "ownerId": "rhea",
+    "releaseId": "retail4-v1",
+    "revisionId": "rev-rhe-refund-posted",
+    "scenario": "rhea-refund-posted",
+    "schemaVersion": "retail4-seed-v1",
+    "summary": "An authorised refund posts against the original purchase, after the statement closed.",
+    "unchanged": [
+      {
+        "dataset": "cards.json",
+        "field": "statementSummary",
+        "id": "card-rhe-cc-01",
+        "idField": "cardId",
+        "reason": "The refund posted on 2026-09-15, after the statement period closed on 2026-09-13. A statement is a record of a closed period and does not change; the ledger and the statement are simply no longer equal."
+      }
+    ],
+    "variantGroup": "txn-rhe-9014:refund-state"
+  }
+]

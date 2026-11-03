@@ -1,0 +1,84 @@
+[
+  {
+    "beneficiaries": [
+      "member-vivek",
+      "member-anika"
+    ],
+    "ownerId": "rhea",
+    "policyId": "policy-term-001",
+    "policyType": "term_life",
+    "premium": {
+      "amountMinor": 350000,
+      "currency": "INR"
+    },
+    "premiumCadence": "monthly",
+    "productId": "CB-TERM-LIFE",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "status": "active",
+    "sumInsured": {
+      "amountMinor": 1500000000,
+      "currency": "INR"
+    },
+    "synthetic": true
+  },
+  {
+    "coveredMembers": [
+      "rhea",
+      "member-vivek",
+      "member-anika",
+      "member-savitri"
+    ],
+    "ownerId": "rhea",
+    "policyId": "policy-health-001",
+    "policyType": "family_health",
+    "premium": {
+      "amountMinor": 200000,
+      "currency": "INR"
+    },
+    "premiumCadence": "monthly",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "status": "active",
+    "sumInsured": {
+      "amountMinor": 100000000,
+      "currency": "INR"
+    },
+    "synthetic": true
+  },
+  {
+    "basis": {
+      "incomeReplacement": {
+        "amountMinor": 1800000000,
+        "currency": "INR"
+      },
+      "loanAndEducationNeeds": {
+        "amountMinor": 720000000,
+        "currency": "INR"
+      },
+      "offsetLiquidAssets": {
+        "amountMinor": 120000000,
+        "currency": "INR"
+      }
+    },
+    "disclosure": "Synthetic planning gap only; not a recommendation, quote, or underwriting outcome.",
+    "existingProtection": {
+      "amountMinor": 1500000000,
+      "currency": "INR"
+    },
+    "gap": {
+      "amountMinor": 900000000,
+      "currency": "INR"
+    },
+    "gapType": "life_cover",
+    "ownerId": "rhea",
+    "protectionGapId": "gap-life-001",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true,
+    "targetProtection": {
+      "amountMinor": 2400000000,
+      "currency": "INR"
+    }
+  }
+]

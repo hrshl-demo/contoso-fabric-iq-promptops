@@ -1,0 +1,130 @@
+{
+  "journeyId": "J01",
+  "title": "Retirement income and deposits",
+  "oneLiner": "Turn a maturing deposit into the income and access you actually need.",
+  "buId": "BU-RETAIL-DEPOSITS",
+  "icon": "vault",
+  "accentHue": 198,
+  "goal": "Reach a decision the customer can state in their own words about what happens to a maturing or idle deposit - how much becomes income, how much stays reachable, and how much keeps growing.",
+  "triggers": [
+    "my FD is maturing",
+    "fixed deposit renewal",
+    "what do I do with my deposit",
+    "monthly income from savings",
+    "retirement income",
+    "senior citizen deposit",
+    "reinvest my deposit",
+    "deposit interest rate",
+    "laddering"
+  ],
+  "antiTriggers": [
+    "recurring deposit for a goal",
+    "where did my money go"
+  ],
+  "sopIds": [
+    "SOP-UC01-RETIREMENT-INCOME",
+    "SOP-SHARED-PRODUCT-SUITABILITY",
+    "SOP-SHARED-CATALOGUE-USE"
+  ],
+  "productIds": [
+    "CB-FD-SENIOR-INCOME",
+    "CB-FD-SENIOR-FLEX",
+    "CB-FD-STANDARD",
+    "CB-SWEEP-FLEX",
+    "CB-SAV-SENIOR"
+  ],
+  "evidenceHints": [
+    "DOC-N-PENSION",
+    "DOC-N-FD-RENEWAL",
+    "DOC-N-RETIREMENT-NOTE"
+  ],
+  "documentChoiceStages": [
+    "position"
+  ],
+  "toolHints": [
+    "holdings",
+    "profile",
+    "catalogue_lookup",
+    "knowledge_search",
+    "document_read",
+    "projection"
+  ],
+  "stages": [
+    {
+      "id": "understand",
+      "goal": "Find out what is prompting this now, and whether a deposit is genuinely maturing. Ask it with `quick_replies`: `My deposit is maturing`, `I want monthly income`, `Just looking ahead`.",
+      "exitWhen": "You know the trigger and have looked at their actual deposits."
+    },
+    {
+      "id": "position",
+      "goal": "State their real position back to them from the system of record - amount, maturity date, current rate. Then ask whether that matches what they expected, with `quick_replies`: `That is right`, `Something is missing`.",
+      "exitWhen": "They have seen and accepted the figures."
+    },
+    {
+      "id": "priorities",
+      "goal": "Use the customer's current payout choice rather than an older income goal. A lump-sum choice means on-maturity payout; do not ask them to choose monthly income again. Separate the reachable reserve and investment horizon from household spending. Ask only the material detail that is still missing. If the payout choice itself is missing, offer `quick_replies`: `Monthly income`, `Lump sum at maturity`, `Not sure yet`. Explain provisional catalogue options while collecting the facts needed for a priced proposal.",
+      "exitWhen": "You can say in one sentence what this money is for."
+    },
+    {
+      "id": "options",
+      "goal": "Show two or three real catalogue options against those priorities, with the tradeoff each one costs. Offer `quick_replies` naming the options you just showed - the product names, never their rates - plus `Neither of these`.",
+      "exitWhen": "They have reacted to the options."
+    },
+    {
+      "id": "decide",
+      "goal": "Get to a choice, a deferral, or a clear no. All three are fine, so offer all three as `quick_replies`: the option they leaned towards, `Think it over`, `No thank you`.",
+      "exitWhen": "A decision or a recorded objection exists."
+    },
+    {
+      "id": "act",
+      "goal": "Prepare the proposal for human confirmation, or save the plan. Choosing a product is not consent: the confirmation names the exact amount, the rate and the proposal version. If any figure has moved since, the confirmation is refused and re-proposed rather than honoured.",
+      "exitWhen": "A proposal is on screen or the plan is saved."
+    }
+  ],
+  "mustEstablish": [
+    "The actual maturing amount and date, read from holdings - never from memory.",
+    "Whether they need money arriving monthly, or a lump sum later.",
+    "How much must stay reachable for an emergency.",
+    "Whether any part of this is already spoken for.",
+    "Whether the income figure is gross or net. Tax withholding on a senior deposit is not known from the catalogue, so it is stated as unknown rather than assumed to be nil."
+  ],
+  "neverDo": [
+    "Do not assume the whole amount should be reinvested. Some of it is usually someone's emergency buffer.",
+    "Do not quote a rate you have not read from the catalogue this turn.",
+    "Do not present a longer lock-in as strictly better because the rate is higher.",
+    "Do not add a credit limit to any total. It is borrowing capacity, not money held.",
+    "Do not state an income figure without the principal and the rate it was computed from, in the same breath. A payout figure the customer cannot reconcile is the recorded failure this journey exists to fix.",
+    "Do not describe a quarterly or on-maturity payout as money arriving monthly. A monthly equivalent is an illustration, and it is labelled as one; four payouts a year is not twelve.",
+    "Do not compute income on the full maturing amount. It is computed on what is left after the reachable reserve, and the amount you used is shown.",
+    "Do not wait for the `Something is missing` chip before accepting a correction. A figure corrected in ordinary prose is the same correction, and it invalidates the same figures.",
+    "Do not replace an explicit lump-sum preference with the persona's older monthly-income goal. A higher headline rate on a monthly or quarterly product does not make it match an on-maturity choice.",
+    "Do not invent compounding or final maturity proceeds. When only principal is recorded, label it as the planning principal, exclude unverified accrued interest, and verify final funding before execution."
+  ],
+  "objectionPaths": [
+    {
+      "signal": "wants to keep it where it is",
+      "respondBy": "Confirm that is a legitimate choice, state what it costs them in plain terms, log it, and stop."
+    },
+    {
+      "signal": "another bank is offering more",
+      "respondBy": "Do not argue the rate. Ask what lock-in and premature-withdrawal terms come with it, since that is usually where the difference lives."
+    },
+    {
+      "signal": "wants to ask family first",
+      "respondBy": "Save the comparison so it survives the conversation, and offer to pick it up later. Do not press."
+    }
+  ],
+  "completion": {
+    "default": "The next action is explicit: prepare the chosen deposit or sweep proposal for confirmation, save the renewal plan for later, or record the declined option and reason.",
+    "nivedita": "The next action follows her current payout choice, not an assumed monthly-income need. For a lump sum, compare suitable on-maturity options; CB-FD-STANDARD is an approved option to consider, not an automatic winner. For income, distinguish the actual payout frequency from a monthly equivalent. Show the planning principal, reachable reserve, horizon and early-access trade-off, then a product or renewal review she can confirm, a saved plan, or an explicit decline. Do not re-ask answered questions or require three separate confirmations before showing relevant options.",
+    "rhea": "The next action is a twenty-second comparison with the fine print flagged, followed by the product proposal she can confirm or a saved deferral with a date.",
+    "ravi": "He is unlikely to hold a maturing deposit. If he does not, do not force it - explain how a deposit ladder works using his actual balances, save that learning plan, and finish insufficient_evidence rather than inventing a holding."
+  },
+  "turnCap": 14,
+  "salesPosture": "advise",
+  "openers": [
+    "My fixed deposit matures this month and I am not sure what to do with it",
+    "I want a steady monthly income once I stop working",
+    "Should I renew my deposit or move the money somewhere else?"
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "journeyId": "J05",
+  "title": "Home-loan offer and fine print",
+  "oneLiner": "Compare loan offers on the clauses that actually cost money.",
+  "buId": "BU-LENDING",
+  "icon": "doc",
+  "accentHue": 32,
+  "goal": "Produce a clause-level comparison of the offers in front of the customer, surfacing the terms that change what they pay, and reach a decision or a clear deferral.",
+  "triggers": [
+    "home loan offer",
+    "compare loan offers",
+    "prepayment penalty",
+    "emi",
+    "interest rate reset",
+    "loan fine print",
+    "processing fee",
+    "which loan is better",
+    "floating or fixed"
+  ],
+  "antiTriggers": [],
+  "sopIds": [
+    "SOP-UC05-HOME-LOAN-CLAUSES",
+    "SOP-SHARED-DOCUMENT-REVIEW",
+    "SOP-SHARED-PRODUCT-SUITABILITY"
+  ],
+  "productIds": [
+    "CB-HL-STANDARD",
+    "CB-HL-FLEX",
+    "CB-HL-FIXED",
+    "CB-RD-GOAL"
+  ],
+  "evidenceHints": [
+    "DOC-R-HOME-OFFER-A",
+    "DOC-R-HOME-OFFER-B",
+    "DOC-R-BONUS-LETTER"
+  ],
+  "documentChoiceStages": [
+    "extract"
+  ],
+  "toolHints": [
+    "document_list",
+    "document_analyze",
+    "catalogue_lookup",
+    "knowledge_search",
+    "projection"
+  ],
+  "stages": [
+    {
+      "id": "understand",
+      "goal": "Establish what they are actually deciding between and what worries them about it. Ask the worry with `quick_replies`: `The rate`, `The prepayment terms`, `The fees`, `Something else`.",
+      "exitWhen": "The decision and the worry are both named."
+    },
+    {
+      "id": "extract",
+      "goal": "Read the offers and pull out the clauses that carry cost: rate basis, reset, prepayment, fees, insurance bundling. Hand back with `quick_replies`: `Show me the comparison`, `Explain a clause first`.",
+      "exitWhen": "Clauses are extracted from real documents."
+    },
+    {
+      "id": "reconcile",
+      "goal": "Put the clauses side by side and show where the offers genuinely differ. Then ask which difference matters most, with `quick_replies` naming those clauses in their words.",
+      "exitWhen": "The comparison has been shown."
+    },
+    {
+      "id": "consequence",
+      "goal": "Translate the differences into what they mean in their situation - especially for prepayment plans. Ask the prepayment question, which decides which offer wins, with `quick_replies`: `I plan to prepay`, `I will not prepay`, `Not sure yet`.",
+      "exitWhen": "The practical consequence is stated, including any term the offers leave unanswered."
+    },
+    {
+      "id": "decide",
+      "goal": "Reach a choice, a question to go back with, or a deferral. If a term that changes the cost is still unanswered, say so and offer the question list rather than a choice. Offer these as `quick_replies`: one chip per offer by name, `Give me the question list`, `Think it over`.",
+      "exitWhen": "A decision, a question list, or a recorded objection exists."
+    }
+  ],
+  "mustEstablish": [
+    "Which offers are being compared and from where.",
+    "Whether they intend to prepay - it changes which offer wins more often than the headline rate does.",
+    "Tenure and whether the rate is fixed, floating or fixed-then-floating.",
+    "What is bundled that they may not want.",
+    "Whose paper each offer is. The customer's own offers are the comparison; a Contoso product is a third thing that may be shown beside them and may never stand in for one."
+  ],
+  "neverDo": [
+    "Do not compare on headline rate alone. The headline rate is the part designed to be compared.",
+    "Do not state a clause you have not extracted from the actual document this turn.",
+    "Do not imply approval. A comparison is not a sanction.",
+    "Do not quietly ignore a Contoso product being worse on a clause. Say it.",
+    "Do not answer a clause from the catalogue. If an offer does not carry a term, the answer is that it does not say - never the figure a Contoso product happens to state.",
+    "Do not name a better offer while a term that changes the cost is unanswered. A missing prepayment charge is unknown, not nil, and unknown decides more of these than the rate does.",
+    "Do not quote a floating-rate total as a price. It is what the loan costs if the rate stands still, which it will not."
+  ],
+  "objectionPaths": [
+    {
+      "signal": "the other bank is cheaper",
+      "respondBy": "It may well be. Show the clause-level picture and let it stand. If Contoso loses, say so."
+    },
+    {
+      "signal": "overwhelmed by the paperwork",
+      "respondBy": "Cut to the three clauses that carry the most money and park the rest."
+    }
+  ],
+  "completion": {
+    "default": "The next action is explicit: take the selected loan offer forward for confirmation, or leave with a specific question list for the lender and a deferred decision date. Either way say plainly that no application has been made and that only the lender can approve a loan.",
+    "nivedita": "Rare for her. If it is about a family member's loan, the next action is a question list for them, keeping her own position out unless she offers it.",
+    "rhea": "Her core journey. The next action is the offer she can take forward, led by the clause that costs the most given her prepayment intent, not the rate.",
+    "ravi": "Almost certainly exploratory. Teach what the clauses mean using real catalogue terms and finish with a saved comparison plan, not an application."
+  },
+  "turnCap": 14,
+  "salesPosture": "advise",
+  "openers": [
+    "I have two home loan offers and I cannot tell which one is better",
+    "What should I be looking for in the fine print of a home loan?",
+    "Is a floating rate better than a fixed one in my situation?"
+  ]
+}

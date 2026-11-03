@@ -1,0 +1,52 @@
+[
+  {
+    "accountId": "acc-rhea-primary",
+    "accountType": "salary",
+    "availableBalance": {
+      "amountMinor": 100830000,
+      "currency": "INR"
+    },
+    "balanceAsOf": "2026-09-30",
+    "currency": "INR",
+    "historyStart": "2026-04-01",
+    "openingBalance": {
+      "amountMinor": 45000000,
+      "currency": "INR"
+    },
+    "ownerId": "rhea",
+    "postedBalance": {
+      "amountMinor": 100830000,
+      "currency": "INR"
+    },
+    "productId": "CB-SAV-SALARY",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "status": "active",
+    "synthetic": true
+  },
+  {
+    "accountId": "acc-rhea-reserve",
+    "accountType": "emergency_reserve",
+    "availableBalance": {
+      "amountMinor": 43500000,
+      "currency": "INR"
+    },
+    "balanceAsOf": "2026-09-30",
+    "currency": "INR",
+    "historyStart": "2026-04-01",
+    "openingBalance": {
+      "amountMinor": 30000000,
+      "currency": "INR"
+    },
+    "ownerId": "rhea",
+    "postedBalance": {
+      "amountMinor": 43500000,
+      "currency": "INR"
+    },
+    "productId": "CB-SAV-RESERVE",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "status": "active",
+    "synthetic": true
+  }
+]

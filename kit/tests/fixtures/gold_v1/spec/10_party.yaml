@@ -1,0 +1,63 @@
+tables:
+  - table: customer
+    entity: Customer
+    tier: core
+    domain: Party
+    allow_duplicates: true   # CRM cases repeat the persona ids; the persona row wins by source order
+    description: "A person the bank serves or tracks: Frontier primary customer Rhea Bansal (CustomerId rhea), legacy personas (Nivedita, Ravi, and the older copy of Rhea as rhea~legacy) and CRM-only parties. Never merge rows across ReleaseId; Frontier supersedes legacy."
+    synonyms: [client, caller, user, account holder, banking customer, persona]
+    sources:
+      - {release: retail-frontier-v1, file: personas.json, set: {segment: household_primary_owner, source_kind: persona}}
+      - {release: retail4-v1, file: personas.json, set: {source_kind: persona}}
+      - {release: retail4-v1, file: bank/crm-cases.json, list: cases, set: {source_kind: crm_case_party}}
+    columns:
+      - {col: customer_id, type: string, key: true, from: [ownerId, customerId], t: owner, desc: "Stable customer identifier, for example rhea or nivedita. Legacy copies of a Frontier customer end in ~legacy."}
+      - {col: display_name, type: string, default_label: true, pii: true, from: [name, displayName, customerName], desc: "Customer display name."}
+      - {col: age, type: int, pii: true, from: age, desc: "Age in years at the seed business date."}
+      - {col: city, type: string, pii: true, from: city, desc: "City of residence."}
+      - {col: employment_status, type: string, from: employmentStatus, desc: "Employment status such as salaried or retired."}
+      - {col: segment, type: string, from: [cohort, "$segment"], desc: "Customer cohort: household_primary_owner (Frontier), retirement, millennial or gen-z (legacy). Null for CRM-only parties."}
+      - {col: household_id, type: string, from: householdId, desc: "Household the customer belongs to (Frontier only)."}
+      - {col: is_primary_owner, type: bool, from: customerVisiblePrimaryOwner, desc: "True when the customer is the only customer-visible primary owner of a household (Frontier only)."}
+      - {col: phone_masked, type: string, pii: true, from: contact.phoneMasked, desc: "Registered mobile number, already masked. Never read digits aloud."}
+      - {col: profile_summary, type: string, from: narrative, desc: "Short narrative of the persona's situation and goals (legacy personas only)."}
+      - {col: source_kind, type: string, from: "$source_kind", desc: "Where the row comes from: persona (full profile) or crm_case_party (name only, seen in CRM cases)."}
+      - {col: superseded_by_customer_id, type: string, from: [ownerId, customerId], t: superseded_by, desc: "For a legacy copy of a Frontier customer: the CustomerId that supersedes it. Never combine the two."}
+      - {col: is_synthetic, type: bool, const: true, desc: "Always true: every record in this demo is synthetic and must never be presented as live bank data."}
+      - {col: release_id, type: string, from: "$release", desc: "Seed release the row comes from: retail-frontier-v1 (current) or retail4-v1 (legacy)."}
+      # restricted: stays in the lakehouse (OneLake security candidate), not exposed to agents through the ontology
+      - {col: date_of_birth, type: date, pii: true, ontology: false, from: kyc.dateOfBirth, desc: "Date of birth from KYC. Restricted: identity verification only."}
+      - {col: kyc_address, type: string, pii: true, ontology: false, from: kyc.address, desc: "Residential address from KYC. Restricted."}
+      - {col: email, type: string, pii: true, ontology: false, from: contact.email, desc: "Registered email address. Restricted."}
+
+  - table: household
+    entity: Household
+    tier: core
+    domain: Party
+    description: "A household that shares goals, obligations and delegated access. Frontier has one: household-bansal (Rhea, spouse Vivek, child Anika, parent Savitri). Access inside a household is resource-specific and asymmetric."
+    synonyms: [family, family unit]
+    sources:
+      - {release: retail-frontier-v1, file: personas.json}
+    columns:
+      - {col: household_id, type: string, key: true, from: householdId, desc: "Household identifier such as household-bansal."}
+      - {col: display_name, type: string, default_label: true, tpl: "{name} household", desc: "Household name derived from the primary owner."}
+      - {col: primary_customer_id, type: string, from: ownerId, t: owner, desc: "The customer who owns the household relationship."}
+      - {col: release_id, type: string, from: "$release", desc: "Seed release the row comes from."}
+
+  - table: household_member
+    entity: HouseholdMember
+    tier: core
+    domain: Party
+    description: "A person in a customer's household (spouse, child, parent). Members are not customers: they only hold the access the owner explicitly granted. A minor has no inferred data access."
+    synonyms: [family member, dependent, spouse, beneficiary]
+    sources:
+      - {release: retail-frontier-v1, file: household.json}
+    columns:
+      - {col: member_id, type: string, key: true, from: memberId, desc: "Household member identifier such as member-vivek."}
+      - {col: household_id, type: string, from: householdId, desc: "Household the member belongs to."}
+      - {col: primary_customer_id, type: string, from: primaryOwnerId, t: owner, desc: "Primary owner customer of the household."}
+      - {col: display_name, type: string, default_label: true, pii: true, from: name, desc: "Member name."}
+      - {col: relation_to_owner, type: string, from: relationship, desc: "Relationship to the primary owner: spouse, child or parent."}
+      - {col: age_band, type: string, pii: true, from: ageBand, desc: "Age band: adult, minor or elderly."}
+      - {col: is_dependent, type: bool, from: dependent, desc: "True when the member is financially dependent on the primary owner."}
+      - {col: release_id, type: string, from: "$release", desc: "Seed release the row comes from."}

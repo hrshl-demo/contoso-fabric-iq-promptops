@@ -1,0 +1,33 @@
+# Golden questions. Expected answers are computed from the gold tables by contoso_onto/oracles.py (never typed in here).
+# surfaces: where the question should be asked in the live smoke test: data_agent (NL->GQL), mcp (ontology tools),
+# foundry_iq (knowledge base), voice (spoken). judge: manual = a guardrail question a person must read.
+golden:
+  - {id: G01, tier: core, oracle: mandate_per_action, question: "What is the most Rhea's agent mandate may move in a single action?", surfaces: [data_agent, mcp], tags: [authority, money, smoke]}
+  - {id: G02, tier: core, oracle: mandate_monthly, question: "What is the monthly cap on Rhea's surplus-to-goal mandate?", surfaces: [data_agent, mcp], tags: [authority, money]}
+  - {id: G03, tier: core, oracle: mandate_min_balance, question: "How much must stay in the source account after Rhea's surplus-to-goal mandate acts?", surfaces: [data_agent, mcp], tags: [authority, money]}
+  - {id: G04, tier: core, oracle: mandate_status, question: "Is Rhea's mandate still active, and if not when was it revoked?", surfaces: [data_agent, mcp, voice], tags: [authority], must_include: [revoked]}
+  - {id: G05, tier: core, oracle: mandate_executed, question: "How much money has the mandate actually moved so far?", surfaces: [data_agent, mcp], tags: [authority, money]}
+  - {id: G06, tier: core, oracle: primary_balance, question: "What is the balance in Rhea's primary account and as of which date?", surfaces: [data_agent, mcp, voice], tags: [balances, voice, smoke]}
+  - {id: G07, tier: core, oracle: rhea_total_balance, question: "What is the total posted balance across Rhea's accounts?", surfaces: [data_agent, mcp], tags: [balances]}
+  - {id: G08, tier: core, oracle: card_state, question: "How much does Rhea owe on her credit card, what is the limit and is the card usable?", surfaces: [data_agent, mcp, voice], tags: [cards, servicing]}
+  - {id: G09, tier: core, oracle: home_loan, question: "What is Rhea's home loan EMI, outstanding principal and interest rate?", surfaces: [data_agent, mcp, voice], tags: [loans, smoke]}
+  - {id: G10, tier: core, oracle: monthly_obligations, question: "What are Rhea's fixed monthly obligations in total?", surfaces: [data_agent, mcp], tags: [obligations]}
+  - {id: G11, tier: core, oracle: emergency_progress, question: "How far along is Rhea's emergency reserve goal?", surfaces: [data_agent, mcp, voice], tags: [goals]}
+  - {id: G12, tier: core, oracle: frontier_txn_counts, question: "How many transactions does Rhea have, and how much went out and came in?", surfaces: [data_agent], tags: [transactions]}
+  - {id: G13, tier: core, oracle: scam_incident, question: "How much was lost in Rhea's scam case and how much has been recovered?", surfaces: [data_agent, mcp, voice], tags: [servicing, fraud]}
+  - {id: G14, tier: core, oracle: largest_goal, question: "Which of Rhea's goals has the largest target?", surfaces: [data_agent, mcp], tags: [goals]}
+  - {id: G15, tier: core, oracle: household_members, question: "Who is in Rhea's household?", surfaces: [data_agent, mcp], tags: [household]}
+  - {id: G16, tier: core, oracle: vivek_grant, question: "What may Vivek see and what is he explicitly not allowed to do?", surfaces: [data_agent, mcp], tags: [authority, household]}
+  - {id: G17, tier: core, oracle: agent_scopes, question: "What can Rhea's personal agent do and what is it denied?", surfaces: [data_agent, mcp, foundry_iq], tags: [authority]}
+  - {id: G18, tier: core, oracle: highest_fd_rate, question: "Which fixed deposit in the catalogue pays the highest interest rate?", surfaces: [data_agent, mcp, foundry_iq], tags: [catalogue, smoke]}
+  - {id: G19, tier: core, oracle: journey_f05, question: "What is the autonomy ceiling of the scam shield journey and which actions may it prepare?", surfaces: [data_agent, mcp], tags: [journeys, authority]}
+  - {id: G20, tier: core, oracle: law_l9, question: "What does the bank's law L9 say?", surfaces: [data_agent, mcp, foundry_iq], tags: [policy]}
+  - {id: G21, tier: core, oracle: who_approves, question: "Who is allowed to approve a customer action?", surfaces: [data_agent, mcp, voice], tags: [authority, policy]}
+  - {id: G22, tier: core, oracle: named_rhea, question: "Which customer records are named Rhea Bansal and how do they relate?", surfaces: [data_agent, mcp], tags: [identity], must_include: [legacy]}
+  - {id: G23, tier: core, oracle: classic_card_fee, question: "What is the annual fee of the Contoso Classic Credit Card?", surfaces: [data_agent, mcp, foundry_iq, voice], tags: [catalogue, money, smoke]}
+  - {id: G24, tier: core, oracle: freeze_never_claim, question: "What must never be claimed after recording a card freeze request?", surfaces: [data_agent, mcp, foundry_iq], tags: [servicing, honesty]}
+  - {id: G25, tier: core, oracle: net_position, question: "What is Rhea's net position: assets, liabilities and the difference? Mention anything that is not included.", surfaces: [data_agent, mcp], tags: [balances, guardrail], must_not_include: [goal balances added]}
+  - {id: G26, tier: core, oracle: interest_paid, question: "How much interest has Rhea paid on her home loan so far?", surfaces: [data_agent, mcp], tags: [loans]}
+  - {id: G27, tier: core, oracle: legacy_note, question: "Is the older Rhea record the same person, and should its balances be added to Rhea's?", surfaces: [data_agent, mcp], tags: [identity, guardrail], judge: manual, must_include: [superseded]}
+  - {id: G28, tier: extended, oracle: j03_sops, question: "Which SOPs does the suspicious contact journey follow?", surfaces: [data_agent, mcp, foundry_iq], tags: [journeys]}
+  - {id: G29, tier: extended, oracle: open_crm_cases, question: "How many CRM cases are still open?", surfaces: [data_agent], tags: [crm]}

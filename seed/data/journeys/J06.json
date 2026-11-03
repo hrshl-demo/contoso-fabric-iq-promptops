@@ -1,0 +1,121 @@
+{
+  "journeyId": "J06",
+  "title": "Spending and card benefits",
+  "oneLiner": "Understand where the money went, and whether your card still fits.",
+  "buId": "BU-CARDS",
+  "icon": "card",
+  "accentHue": 288,
+  "goal": "Explain the customer's actual spending pattern from their transactions, and establish whether their current card fits it - including the answer 'yes, keep it'.",
+  "triggers": [
+    "where is my money going",
+    "spending breakdown",
+    "my bill is higher",
+    "card benefits",
+    "cashback",
+    "is my card right for me",
+    "annual fee",
+    "reward points",
+    "what did i spend on"
+  ],
+  "antiTriggers": [
+    "i did not authorise this",
+    "refund"
+  ],
+  "sopIds": [
+    "SOP-UC06-SPEND-AND-BENEFITS",
+    "SOP-SHARED-PRODUCT-SUITABILITY",
+    "SOP-SHARED-CATALOGUE-USE"
+  ],
+  "productIds": [
+    "CB-CARD-CLASSIC",
+    "CB-CARD-FAMILY-CASHBACK",
+    "CB-CARD-TRAVEL-REWARDS",
+    "CB-CARD-DEBIT",
+    "CB-CARD-TRAVEL-DEBIT"
+  ],
+  "evidenceHints": [
+    "DOC-R-CARD-STATEMENT",
+    "DOC-R-MERCHANT-RECEIPTS",
+    "DOC-R-TRAVEL-RECEIPT"
+  ],
+  "documentChoiceStages": [
+    "explain"
+  ],
+  "toolHints": [
+    "spend_analysis",
+    "transactions_query",
+    "document_read",
+    "document_analyze",
+    "holdings",
+    "catalogue_lookup"
+  ],
+  "stages": [
+    {
+      "id": "surprise",
+      "goal": "Find what actually prompted this - usually one specific charge or one higher-than-expected bill. Ask with `quick_replies`: `A charge I do not recognise`, `The bill is higher`, `Just curious`.",
+      "exitWhen": "The trigger is identified, or they confirm it is general curiosity."
+    },
+    {
+      "id": "pattern",
+      "goal": "Show the real spend pattern from transactions, with a chart, over a period that makes sense. Then ask the question that decides the whole answer, with `quick_replies`: `It happens every month`, `That was a one-off`. Use the last month that actually finished. A request for the month in progress is answered with the part-month figure, labelled partial.",
+      "exitWhen": "The pattern has been shown and reacted to."
+    },
+    {
+      "id": "explain",
+      "goal": "Explain the specific items that caused the surprise, then hand back with `quick_replies`: `That explains it`, `There is another charge`.",
+      "exitWhen": "The surprise is accounted for."
+    },
+    {
+      "id": "fit",
+      "goal": "Check the current card's benefits against that actual pattern. Ask what they actually value, with `quick_replies`: `Cashback`, `Travel`, `No annual fee`, `Keep it simple`.",
+      "exitWhen": "The fit - good or bad - has been stated."
+    },
+    {
+      "id": "decide",
+      "goal": "Either recommend a change with the tradeoff, or confirm keeping the current card is correct. Offer `quick_replies` that give staying put equal weight: the card you named, `Keep my current card`, `Think it over`. A completed month is the only basis for this; a part-month total is not a monthly one.",
+      "exitWhen": "A decision or a keep-current conclusion exists."
+    }
+  ],
+  "mustEstablish": [
+    "The real spend distribution from transactions, not an impression.",
+    "Whether a spike is recurring or a one-off - this decides the whole answer.",
+    "What they actually value: simplicity, cashback, travel, or no annual fee.",
+    "The annual fee they pay today.",
+    "Which period the spending figures cover, and whether that month has finished. A part-month total is not a monthly one and cannot be compared with one.",
+    "That the figure called spending is spending. Transfers to the customer's own savings, fund purchases and card-bill payments are separate totals, not part of it."
+  ],
+  "neverDo": [
+    "Do not recommend a card change off one unusual month. Ask whether the spike repeats.",
+    "Do not present reward rates without the caps and the annual fee. An uncapped-sounding benefit that caps at 750 a month is not uncapped.",
+    "Do not treat 'keep your current card' as a failed outcome. It is frequently the right answer and should be said with the same confidence as a recommendation.",
+    "Do not quote a benefit you have not read from the catalogue this turn.",
+    "Do not print a paise figure as rupees. The transactions are held in minor units, and INR 1,17,724 shown as INR 1,17,72,400 is this journey's recorded failure - it reads as an ordinary large number.",
+    "Do not call a month complete before it has ended. On 19 September the last completed month is August; the month in progress is a partial period and is labelled one wherever it is shown.",
+    "Do not add transfers to the customer's own savings, fund purchases or card-bill payments into a spending total. The card bill is the same money as the card purchases arriving a second time.",
+    "Do not work out the spending that would make a card pay for itself. Chasing a percentage back on money the customer did not have to part with leaves them worse off, and justifying an annual fee is the bank's job.",
+    "Do not convert reward points into rupees without a sourced conversion rate. Points stay points; a rupee equivalent built on an assumed redemption value is a claim the product has not made."
+  ],
+  "objectionPaths": [
+    {
+      "signal": "does not want another card",
+      "respondBy": "Take it at face value and move to getting more from the existing one. Record the objection so it is not raised again."
+    },
+    {
+      "signal": "the spike was a one-off",
+      "respondBy": "Then say plainly that no change is warranted, and stop. Do not look for a second reason to switch."
+    }
+  ],
+  "completion": {
+    "default": "The next action is explicit: confirm the current card still fits, prepare a card-change proposal, or save the spend explanation with the surprise accounted for.",
+    "nivedita": "Keep it to the explanation. Her spending is stable and a card change is rarely warranted - the next action is to confirm no change rather than looking for one.",
+    "rhea": "Her core journey. The next action is either the card proposal the pattern supports or a clear confirmation that the current card still fits, after separating household and travel spend.",
+    "ravi": "Visual first - show the chart before the words. He is on a debit card; the next action here is a spend explanation, because a credit product needs his explicit opt-in and belongs in J09."
+  },
+  "turnCap": 14,
+  "salesPosture": "advise",
+  "openers": [
+    "Where is my money actually going every month?",
+    "Is my card still the right one for the way I spend?",
+    "Show me what I spent the most on recently"
+  ]
+}

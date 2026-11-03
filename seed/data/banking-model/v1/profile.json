@@ -1,0 +1,5176 @@
+{
+  "formatVersion": 1,
+  "namespace": "contosoBanking",
+  "profileVersion": "contoso-banking-v1",
+  "mappingVersion": "contoso-bian13-v1",
+  "bianRelease": "13.0.0",
+  "definitionDocument": "banking.cdm.json",
+  "manifestDocument": "banking.manifest.cdm.json",
+  "typeDocument": "profile.types.cdm.json",
+  "entityDefinitions": [
+    {
+      "name": "Customer",
+      "label": "Customer",
+      "family": "customers",
+      "description": "Selected synthetic customer, not a global customer directory.",
+      "attributes": [
+        {
+          "name": "ownerId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Server-selected customer business identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "displayName",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Customer display name from the selected persona.",
+          "cdmType": "string"
+        },
+        {
+          "name": "city",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded city, not an inferred location.",
+          "cdmType": "string"
+        },
+        {
+          "name": "cohort",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Declared synthetic demonstration cohort.",
+          "cdmType": "string"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/Customer",
+      "cdmReference": {
+        "entityName": "Contact",
+        "url": "https://raw.githubusercontent.com/microsoft/CDM/dd21d715e05ebf740a11356c80b5c3b4c38a89c2/schemaDocuments/FinancialServices/RetailBankingCoreDataModel/Contact.cdm.json",
+        "commit": "dd21d715e05ebf740a11356c80b5c3b4c38a89c2",
+        "sha256": "25a0da3900404b7ed5aac3d707e256ef78666ac617b9d9bc677197f283da99af",
+        "artifact": "vendor/cdm/references/Contact.cdm.json",
+        "referenceStatus": "verified-reference",
+        "mappingStatus": "custom",
+        "limitation": "Semantic reference only. This thin contosoBanking entity does not extend or instantiate the full official entity."
+      },
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "PartyRelationship",
+      "label": "Party relationship",
+      "family": "customers",
+      "description": "Explicit permitted recipient relationship; names do not establish family or ownership.",
+      "attributes": [
+        {
+          "name": "relationshipId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Registered recipient key used for this explicit relationship.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "customerId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Customer named by the owner-scoped recipient evidence.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "relatedPartyRef",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "External party reference, not another customer's profile.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Relationship role supported by the evidence kind.",
+          "cdmType": "string"
+        },
+        {
+          "name": "evidenceId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Applied verified-recipient evidence identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/PartyRelationship",
+      "cdmReference": {
+        "entityName": "Relationship",
+        "url": "https://raw.githubusercontent.com/microsoft/CDM/dd21d715e05ebf740a11356c80b5c3b4c38a89c2/schemaDocuments/FinancialServices/RetailBankingCoreDataModel/Relationship.cdm.json",
+        "commit": "dd21d715e05ebf740a11356c80b5c3b4c38a89c2",
+        "sha256": "6c07bdecb7606aa4ef5f6afad4d085fde13dc1fecdf07361e6cce7e23f7d731f",
+        "artifact": "vendor/cdm/references/Relationship.cdm.json",
+        "referenceStatus": "verified-reference",
+        "mappingStatus": "custom",
+        "limitation": "Semantic reference only. This thin contosoBanking entity does not extend or instantiate the full official entity."
+      },
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "Product",
+      "label": "Catalogue product",
+      "family": "products",
+      "description": "Reviewed ProductPackage catalogue entry; not an owned financial holding.",
+      "attributes": [
+        {
+          "name": "productId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Version-independent catalogue product identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "productVersion",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded product terms version, separate from a holding version.",
+          "cdmType": "string"
+        },
+        {
+          "name": "productFamily",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Catalogue family used for subtype-specific semantics.",
+          "cdmType": "string"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Published synthetic product name.",
+          "cdmType": "string"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Currency of catalogue terms; this reviewed release declares INR.",
+          "cdmType": "string"
+        },
+        {
+          "name": "ratePct",
+          "type": "decimal",
+          "nullable": true,
+          "unit": "percentage points",
+          "description": "Declared annual interest percentage, not a fractional rate or guaranteed payout.",
+          "cdmType": "contosoBanking.exactDecimal"
+        },
+        {
+          "name": "annualFeeMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Annual catalogue fee converted exactly from rupees to paise.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "monthlyFeeMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Monthly catalogue fee converted exactly from rupees to paise.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "monthlyPremiumMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Monthly protection premium, not sum insured; rupees converted to paise.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "sumInsuredMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Catalogue coverage ceiling in paise, not an approved claim.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "minimumPrincipalMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Declared minimum loan principal in paise, only where supplied.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "maximumPrincipalMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Declared maximum loan principal in paise, not an approval.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "minimumTermMonths",
+          "type": "integer",
+          "nullable": true,
+          "unit": "calendar months",
+          "description": "Declared minimum whole-month term, not an inferred maturity.",
+          "cdmType": "integer"
+        },
+        {
+          "name": "maximumTermMonths",
+          "type": "integer",
+          "nullable": true,
+          "unit": "calendar months",
+          "description": "Declared maximum whole-month term; years require explicit multiplication by twelve.",
+          "cdmType": "integer"
+        },
+        {
+          "name": "requiresDecision",
+          "type": "boolean",
+          "nullable": true,
+          "unit": null,
+          "description": "Derived independent-decision requirement for a new facility under the shared bank policy and approved product family; not catalogue underwritingRequired, an approval or a servicing-action requirement.",
+          "cdmType": "boolean"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/Product",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "Account",
+      "label": "Deposit account",
+      "family": "holdings",
+      "description": "One current owner savings account; balances and holds remain distinct.",
+      "attributes": [
+        {
+          "name": "accountId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Account business identifier, not a GUID.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "productId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact catalogue reference of the current account product.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded account currency.",
+          "cdmType": "string"
+        },
+        {
+          "name": "postedBalanceMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Posted account balance, not available funds plus holds.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "availableBalanceMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Funds currently available after recorded holds.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "holdsMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Recorded held amount, already part of posted wealth.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "openedOn",
+          "type": "date",
+          "nullable": true,
+          "unit": "calendar date (YYYY-MM-DD), no implicit midnight/timezone",
+          "description": "Recorded account opening date.",
+          "cdmType": "date"
+        },
+        {
+          "name": "version",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Persisted account revision.",
+          "cdmType": "integer"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/Account",
+      "cdmReference": {
+        "entityName": "FHAccount",
+        "url": "https://raw.githubusercontent.com/microsoft/CDM/dd21d715e05ebf740a11356c80b5c3b4c38a89c2/schemaDocuments/FinancialServices/RetailBankingCoreDataModel/Fh_account.cdm.json",
+        "commit": "dd21d715e05ebf740a11356c80b5c3b4c38a89c2",
+        "sha256": "516e7cf5b7ea81a380e0b68ecb7f49a43111bbf3fef55085ccf2253a12167086",
+        "artifact": "vendor/cdm/references/Fh_account.cdm.json",
+        "referenceStatus": "verified-reference",
+        "mappingStatus": "custom",
+        "limitation": "Semantic reference only. This thin contosoBanking entity does not extend or instantiate the full official entity."
+      },
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "Card",
+      "label": "Card",
+      "family": "holdings",
+      "description": "One credit, debit or prepaid card; only credit cards map to the Credit Card facility domain.",
+      "attributes": [
+        {
+          "name": "cardId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Card business identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "productId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact catalogue product reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "linkedAccountId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Owned linked bank account reference, not a guessed association.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "cardType",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded credit, debit or prepaid subtype.",
+          "cdmType": "string"
+        },
+        {
+          "name": "maskedNumber",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Already masked card display number; never full card data.",
+          "cdmType": "string"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Currency from a recorded monetary component or the linked owned account.",
+          "cdmType": "string"
+        },
+        {
+          "name": "limitMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Credit facility limit, not money credited or prepaid value.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "outstandingMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Current recorded credit-card liability.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "availableCreditMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Unused credit capacity, not cash.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "prepaidBalanceMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Loaded prepaid value, distinct from a credit limit.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "expiry",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded month/year text; deliberately not an invented calendar date.",
+          "cdmType": "string"
+        },
+        {
+          "name": "version",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Persisted card revision.",
+          "cdmType": "integer"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/Card",
+      "cdmReference": {
+        "entityName": "FICard",
+        "url": "https://raw.githubusercontent.com/microsoft/CDM/dd21d715e05ebf740a11356c80b5c3b4c38a89c2/schemaDocuments/FinancialServices/RetailBankingCoreDataModel/Fi_card.cdm.json",
+        "commit": "dd21d715e05ebf740a11356c80b5c3b4c38a89c2",
+        "sha256": "bc8de79855fed2c864092b2276a2eba6fad7d850b41a8bb593bc99135433b20b",
+        "artifact": "vendor/cdm/references/Fi_card.cdm.json",
+        "referenceStatus": "verified-reference",
+        "mappingStatus": "custom",
+        "limitation": "Semantic reference only. This thin contosoBanking entity does not extend or instantiate the full official entity."
+      },
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "Deposit",
+      "label": "Deposit",
+      "family": "holdings",
+      "description": "One fixed or recurring deposit, including explicitly historical closed deposits without double-counting principal.",
+      "attributes": [
+        {
+          "name": "depositId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Deposit business identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "productId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact catalogue product reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "linkedAccountId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Owned funding or payout account reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Currency of the actually recorded principal.",
+          "cdmType": "string"
+        },
+        {
+          "name": "principalMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Actually funded principal; future recurring instalments are excluded.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "monthlyInstalmentMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Future recurring contribution amount, not additional posted principal.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "depositType",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded fixed/recurring type, or a verified catalogue-family derivation.",
+          "cdmType": "string"
+        },
+        {
+          "name": "openedOn",
+          "type": "date",
+          "nullable": true,
+          "unit": "calendar date (YYYY-MM-DD), no implicit midnight/timezone",
+          "description": "Actual opening date.",
+          "cdmType": "date"
+        },
+        {
+          "name": "maturesOn",
+          "type": "date",
+          "nullable": true,
+          "unit": "calendar date (YYYY-MM-DD), no implicit midnight/timezone",
+          "description": "Contract maturity date, not evidence that settlement has posted.",
+          "cdmType": "date"
+        },
+        {
+          "name": "ratePct",
+          "type": "decimal",
+          "nullable": true,
+          "unit": "percentage points",
+          "description": "Rate stored on the holding; absent seed rates remain unknown.",
+          "cdmType": "contosoBanking.exactDecimal"
+        },
+        {
+          "name": "payoutMode",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded maturity, monthly or quarterly payout choice.",
+          "cdmType": "string"
+        },
+        {
+          "name": "version",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Persisted deposit revision.",
+          "cdmType": "integer"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/Deposit",
+      "cdmReference": {
+        "entityName": "FHSaving",
+        "url": "https://raw.githubusercontent.com/microsoft/CDM/dd21d715e05ebf740a11356c80b5c3b4c38a89c2/schemaDocuments/FinancialServices/RetailBankingCoreDataModel/Fh_saving.cdm.json",
+        "commit": "dd21d715e05ebf740a11356c80b5c3b4c38a89c2",
+        "sha256": "09121bcaaa338582e3427ca9befe11afce08d0527f28d766663c716132957be2",
+        "artifact": "vendor/cdm/references/Fh_saving.cdm.json",
+        "referenceStatus": "verified-reference",
+        "mappingStatus": "custom",
+        "limitation": "Semantic reference only. This thin contosoBanking entity does not extend or instantiate the full official entity."
+      },
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "Loan",
+      "label": "Loan liability",
+      "family": "holdings",
+      "description": "One actual loan liability; disbursement, repayment schedules and purchase escrow are not free cash.",
+      "attributes": [
+        {
+          "name": "liabilityId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Loan liability business identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "productId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact product reference used to distinguish personal and home loans.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "linkedAccountId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Owned servicing account reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Currency of the recorded loan principal.",
+          "cdmType": "string"
+        },
+        {
+          "name": "principalMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Original disbursed or escrow-funded principal.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "outstandingMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Outstanding loan liability, not an account balance.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "monthlyPaymentMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Recorded monthly repayment obligation, not a posted repayment.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "ratePct",
+          "type": "decimal",
+          "nullable": true,
+          "unit": "percentage points",
+          "description": "Persisted annual nominal percentage rate.",
+          "cdmType": "contosoBanking.exactDecimal"
+        },
+        {
+          "name": "termMonths",
+          "type": "integer",
+          "nullable": true,
+          "unit": "calendar months",
+          "description": "Recorded whole-month loan term.",
+          "cdmType": "integer"
+        },
+        {
+          "name": "openedOn",
+          "type": "date",
+          "nullable": true,
+          "unit": "calendar date (YYYY-MM-DD), no implicit midnight/timezone",
+          "description": "Loan origination date.",
+          "cdmType": "date"
+        },
+        {
+          "name": "maturesOn",
+          "type": "date",
+          "nullable": true,
+          "unit": "calendar date (YYYY-MM-DD), no implicit midnight/timezone",
+          "description": "Contractual maturity date.",
+          "cdmType": "date"
+        },
+        {
+          "name": "version",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Persisted liability revision.",
+          "cdmType": "integer"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/Loan",
+      "cdmReference": {
+        "entityName": "FHLoan",
+        "url": "https://raw.githubusercontent.com/microsoft/CDM/dd21d715e05ebf740a11356c80b5c3b4c38a89c2/schemaDocuments/FinancialServices/RetailBankingCoreDataModel/Fh_loan.cdm.json",
+        "commit": "dd21d715e05ebf740a11356c80b5c3b4c38a89c2",
+        "sha256": "fed7b363dc954385bf78a61ff9d0c51924110b51e5b8a12a426ffb40ee5678be",
+        "artifact": "vendor/cdm/references/Fh_loan.cdm.json",
+        "referenceStatus": "verified-reference",
+        "mappingStatus": "custom",
+        "limitation": "Semantic reference only. This thin contosoBanking entity does not extend or instantiate the full official entity."
+      },
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "ProtectionPolicy",
+      "label": "Protection policy",
+      "family": "holdings",
+      "description": "Synthetic future health/protection coverage; not automatically a P&C Policy or an approved reimbursement.",
+      "attributes": [
+        {
+          "name": "policyId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Policy business identifier, not the private full policy number.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "productId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact protection product reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "linkedAccountId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Owned premium account reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "coverType",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded coverage type, not inferred coverage of an incident.",
+          "cdmType": "string"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Currency of the recorded premium.",
+          "cdmType": "string"
+        },
+        {
+          "name": "premiumMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Premium per recorded premium frequency, not annualized by assumption.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "sumInsuredMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Coverage ceiling; not an approved claim amount.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "deductibleMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Recorded deductible where present.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "premiumFrequency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded premium payment frequency.",
+          "cdmType": "string"
+        },
+        {
+          "name": "startedOn",
+          "type": "date",
+          "nullable": true,
+          "unit": "calendar date (YYYY-MM-DD), no implicit midnight/timezone",
+          "description": "Recorded coverage start date; exclusions remain separate.",
+          "cdmType": "date"
+        },
+        {
+          "name": "renewsOn",
+          "type": "date",
+          "nullable": true,
+          "unit": "calendar date (YYYY-MM-DD), no implicit midnight/timezone",
+          "description": "Recorded policy renewal date.",
+          "cdmType": "date"
+        },
+        {
+          "name": "futureCoverOnly",
+          "type": "boolean",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit future-only indicator, null on sources that do not record one.",
+          "cdmType": "boolean"
+        },
+        {
+          "name": "claimsApproved",
+          "type": "boolean",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded claim-approval flag; absence is not a denial or approval.",
+          "cdmType": "boolean"
+        },
+        {
+          "name": "version",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Persisted policy revision.",
+          "cdmType": "integer"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/ProtectionPolicy",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "Transaction",
+      "label": "Transaction",
+      "family": "money",
+      "description": "Actual bank ledger entry with separate amount and debit/credit direction.",
+      "attributes": [
+        {
+          "name": "transactionId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded ledger entry identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "accountId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Owned account reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "cardId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit card reference if present.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "applicationId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact originating application reference if present.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded posting currency.",
+          "cdmType": "string"
+        },
+        {
+          "name": "amountMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Recorded amount; retain sign and separate direction without double-negating.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "direction",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded debit or credit direction.",
+          "cdmType": "string"
+        },
+        {
+          "name": "category",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Bank-record transaction category.",
+          "cdmType": "string"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Allowlisted plain-text transaction description.",
+          "cdmType": "string"
+        },
+        {
+          "name": "valueDate",
+          "type": "date",
+          "nullable": true,
+          "unit": "calendar date (YYYY-MM-DD), no implicit midnight/timezone",
+          "description": "Business value date, distinct from recording time.",
+          "cdmType": "date"
+        },
+        {
+          "name": "postedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Persisted timezone-qualified posting timestamp.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "recordedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Persisted recording instant when present; not fabricated from value date.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "transferId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit common reference for linked transfer postings.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/Transaction",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "Goal",
+      "label": "Customer goal",
+      "family": "goals",
+      "description": "Current customer goal or pocket, not a CDM LifeEvent and not an additional bank balance.",
+      "attributes": [
+        {
+          "name": "goalId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Persisted customer goal key.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded goal title.",
+          "cdmType": "string"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Currency from a recorded target or allocation component.",
+          "cdmType": "string"
+        },
+        {
+          "name": "targetAmountMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Stated target amount; not a commitment or available cash.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "allocatedAmountMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Existing held allocation; already included in account wealth.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "targetDate",
+          "type": "date",
+          "nullable": true,
+          "unit": "calendar date (YYYY-MM-DD), no implicit midnight/timezone",
+          "description": "Customer target date when explicitly recorded.",
+          "cdmType": "date"
+        },
+        {
+          "name": "priority",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded qualitative priority, not an invented ranking.",
+          "cdmType": "string"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/Goal",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "Preference",
+      "label": "Customer preference",
+      "family": "goals",
+      "description": "Current explicitly recorded customer preference; never restored from old seed values.",
+      "attributes": [
+        {
+          "name": "preferenceId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Persisted preference key.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "field",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Named preference field.",
+          "cdmType": "string"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Allowlisted stated preference value.",
+          "cdmType": "string"
+        },
+        {
+          "name": "recordedOn",
+          "type": "date",
+          "nullable": true,
+          "unit": "calendar date (YYYY-MM-DD), no implicit midnight/timezone",
+          "description": "Recorded preference date.",
+          "cdmType": "date"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/Preference",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "Document",
+      "label": "Document metadata",
+      "family": "evidence",
+      "description": "Available owner document descriptor only; availability does not authorize reading its contents.",
+      "attributes": [
+        {
+          "name": "documentId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Visible document identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Customer-visible document title.",
+          "cdmType": "string"
+        },
+        {
+          "name": "documentKind",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded document kind.",
+          "cdmType": "string"
+        },
+        {
+          "name": "contentType",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded MIME type; an asset MIME type may supply it without opening bytes.",
+          "cdmType": "string"
+        },
+        {
+          "name": "sourceVersion",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded source version represented as text, not an assumed version.",
+          "cdmType": "string"
+        },
+        {
+          "name": "sourceSha256",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Previously recorded content hash, null if unavailable; no inspection-time file read.",
+          "cdmType": "string"
+        },
+        {
+          "name": "pageCount",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Known page count with an explicit observed or metadata-declared basis.",
+          "cdmType": "integer"
+        },
+        {
+          "name": "pageCountBasis",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explains whether the page count was observed during a real read or merely declared metadata.",
+          "cdmType": "string"
+        },
+        {
+          "name": "issuedOn",
+          "type": "date",
+          "nullable": true,
+          "unit": "calendar date (YYYY-MM-DD), no implicit midnight/timezone",
+          "description": "Recorded document issue date; not an upload timestamp cast to a date.",
+          "cdmType": "date"
+        },
+        {
+          "name": "previewable",
+          "type": "boolean",
+          "nullable": true,
+          "unit": null,
+          "description": "Descriptor-based support for the authenticated viewer; not proof that file bytes were opened.",
+          "cdmType": "boolean"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/Document",
+      "cdmReference": {
+        "entityName": "CustomDocument",
+        "url": "https://raw.githubusercontent.com/microsoft/CDM/dd21d715e05ebf740a11356c80b5c3b4c38a89c2/schemaDocuments/FinancialServices/FinancialServicesCommonDataModel/Customdocument.cdm.json",
+        "commit": "dd21d715e05ebf740a11356c80b5c3b4c38a89c2",
+        "sha256": "32e372c004316ce4c3e35fa9c6216def275d327ad9be82f10cdbd00eec372db5",
+        "artifact": "vendor/cdm/references/Customdocument.cdm.json",
+        "referenceStatus": "verified-reference",
+        "mappingStatus": "custom",
+        "limitation": "Semantic reference only. This thin contosoBanking entity does not extend or instantiate the full official entity."
+      },
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "EvidenceSelection",
+      "label": "Evidence selection",
+      "family": "evidence",
+      "description": "Customer's actual source selection; distinct from assessment and exact execution consent.",
+      "attributes": [
+        {
+          "name": "selectionId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Scoped identity of the document selection within the recorded selection event.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "documentId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicitly selected document identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "purpose",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Purpose recorded by the evidence request or selection-history event.",
+          "cdmType": "string"
+        },
+        {
+          "name": "selectedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Selection event timestamp if retained; never the document read time.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "revision",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Recorded evidence revision, unavailable for history that did not retain one.",
+          "cdmType": "integer"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/EvidenceSelection",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "EvidenceReading",
+      "label": "Evidence reading",
+      "family": "evidence",
+      "description": "Persisted extraction identity and metadata; historical or unselected content is withheld.",
+      "attributes": [
+        {
+          "name": "readId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Actual persisted read identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "documentId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Document actually read.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "sourceVersion",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Version bound to this reading.",
+          "cdmType": "string"
+        },
+        {
+          "name": "sourceSha256",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Hash bound to this reading, not today's replacement source.",
+          "cdmType": "string"
+        },
+        {
+          "name": "pageCount",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Page count captured by the document-reading workflow.",
+          "cdmType": "integer"
+        },
+        {
+          "name": "extractionMethod",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded PDF/OCR/source-text method; no new extraction occurs.",
+          "cdmType": "string"
+        },
+        {
+          "name": "extractionVersion",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded extractor contract version.",
+          "cdmType": "string"
+        },
+        {
+          "name": "readAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Actual persisted read timestamp.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "reusedExtractionReadId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact earlier read from which identical-byte extraction was reused.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Public-safe reading error; raw provider errors and internal paths are not exported.",
+          "cdmType": "string"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/EvidenceReading",
+      "cdmReference": {
+        "entityName": "CustomDocument",
+        "url": "https://raw.githubusercontent.com/microsoft/CDM/dd21d715e05ebf740a11356c80b5c3b4c38a89c2/schemaDocuments/FinancialServices/FinancialServicesCommonDataModel/Customdocument.cdm.json",
+        "commit": "dd21d715e05ebf740a11356c80b5c3b4c38a89c2",
+        "sha256": "32e372c004316ce4c3e35fa9c6216def275d327ad9be82f10cdbd00eec372db5",
+        "artifact": "vendor/cdm/references/Customdocument.cdm.json",
+        "referenceStatus": "verified-reference",
+        "mappingStatus": "custom",
+        "limitation": "Semantic reference only. This thin contosoBanking entity does not extend or instantiate the full official entity."
+      },
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "Fact",
+      "label": "Evidence or stated fact",
+      "family": "evidence",
+      "description": "Allowlisted selected-read fact, explicit statement or retained correction, never a hidden answer key.",
+      "attributes": [
+        {
+          "name": "factId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Persisted fact key; a retained version remains distinct from the current logical fact.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Allowlisted fact label.",
+          "cdmType": "string"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Permitted scalar fact text; unselected/superseded or sensitive contents are redacted.",
+          "cdmType": "string"
+        },
+        {
+          "name": "unit",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded unit such as money_major, money_minor, percentage, months or text.",
+          "cdmType": "string"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit currency where recorded; money_major is not silently changed to paise.",
+          "cdmType": "string"
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded document_extracted, customer_corrected or user_stated origin.",
+          "cdmType": "string"
+        },
+        {
+          "name": "revision",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Actual fact revision.",
+          "cdmType": "integer"
+        },
+        {
+          "name": "requiresConfirmation",
+          "type": "boolean",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded uncertainty flag, not an independent bank verification.",
+          "cdmType": "boolean"
+        },
+        {
+          "name": "confidence",
+          "type": "decimal",
+          "nullable": true,
+          "unit": "confidence fraction, not a percentage",
+          "description": "Recorded extraction confidence when available; unknown remains null.",
+          "cdmType": "contosoBanking.exactDecimal"
+        },
+        {
+          "name": "readId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Read identifier proven by the fact's recorded composite key or exact reading linkage.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "documentId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded document source, absent for customer statements.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "page",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Actual recorded page reference; never inferred from a line or invented.",
+          "cdmType": "integer"
+        },
+        {
+          "name": "regionId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Actual recorded extraction region or source-text region identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "sourceSha256",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Hash retained with this fact's own provenance.",
+          "cdmType": "string"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/Fact",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "Calculation",
+      "label": "Persisted calculation",
+      "family": "planning",
+      "description": "Already stored calculation result and provenance, not a newly run analysis or quote.",
+      "attributes": [
+        {
+          "name": "calculationId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Stable identifier emitted by the calculation that actually ran.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Persisted worksheet title.",
+          "cdmType": "string"
+        },
+        {
+          "name": "resultCount",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Count of actually persisted typed results, not UI rows invented later.",
+          "cdmType": "integer"
+        },
+        {
+          "name": "inputCount",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Count of persisted input source references.",
+          "cdmType": "integer"
+        },
+        {
+          "name": "assumptions",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Allowlisted assumptions rendered as plain newline-separated text.",
+          "cdmType": "string"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/Calculation",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "CalculationValue",
+      "label": "Calculation result",
+      "family": "planning",
+      "description": "One explicitly typed persisted worksheet result, kept separate from a bank posting.",
+      "attributes": [
+        {
+          "name": "calculationId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Parent's stored calculationId, not a regenerated calculation.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "field",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact result member key used as this row's label.",
+          "cdmType": "string"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Persisted exact scalar result text with its original unit.",
+          "cdmType": "string"
+        },
+        {
+          "name": "unit",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Stored result unit; preserve money_minor versus percentage and counts.",
+          "cdmType": "string"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Stored result currency when applicable.",
+          "cdmType": "string"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/CalculationValue",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "RelationshipPlan",
+      "label": "Relationship plan",
+      "family": "planning",
+      "description": "Current or explicitly retained plan, not bank authority or an execution receipt.",
+      "attributes": [
+        {
+          "name": "planId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Actual relationship-plan identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "channel",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded customer channel.",
+          "cdmType": "string"
+        },
+        {
+          "name": "revision",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Persisted plan revision, null when an archive did not retain it.",
+          "cdmType": "integer"
+        },
+        {
+          "name": "goals",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded goal statements flattened as plain text, not inferred priorities.",
+          "cdmType": "string"
+        },
+        {
+          "name": "protectedCashMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Customer's stated protected-cash floor, not household expenditure.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "monthlyBudgetMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Recorded monthly budget where supplied, not a lump-sum reserve.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit INR contract of relationship money fields.",
+          "cdmType": "string"
+        },
+        {
+          "name": "riskContext",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Allowlisted ordinary/fraud/distress context, not raw health details.",
+          "cdmType": "string"
+        },
+        {
+          "name": "createdAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Persisted plan creation time.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "updatedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Persisted plan update time.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "catalogueFingerprint",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact catalogue identity bound to this plan.",
+          "cdmType": "string"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/RelationshipPlan",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "Application",
+      "label": "Application instruction",
+      "family": "planning",
+      "description": "Requested operation with distinct current, archived and compatibility lifecycles; a proposal is not execution.",
+      "attributes": [
+        {
+          "name": "applicationId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Persisted application identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "planId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact containing plan identifier when present.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "itemId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Persisted relationship-plan item identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "productId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact requested product reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "operation",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Requested operation, not an executed effect.",
+          "cdmType": "string"
+        },
+        {
+          "name": "sourceAccountId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit owned funding account reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "holdingId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit source holding or collateral reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "targetId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit target reference; do not join by label.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "amountMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Requested amount in paise, not an approval or posted debit.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit INR contract for relationship instruction amounts.",
+          "cdmType": "string"
+        },
+        {
+          "name": "termMonths",
+          "type": "integer",
+          "nullable": true,
+          "unit": "calendar months",
+          "description": "Requested whole-month term.",
+          "cdmType": "integer"
+        },
+        {
+          "name": "payout",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Requested payout option.",
+          "cdmType": "string"
+        },
+        {
+          "name": "benefit",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Allowlisted stated benefit, not a claimed outcome.",
+          "cdmType": "string"
+        },
+        {
+          "name": "reviewFingerprint",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact review binding retained on this item.",
+          "cdmType": "string"
+        },
+        {
+          "name": "legacy",
+          "type": "boolean",
+          "nullable": true,
+          "unit": null,
+          "description": "True only for the explicitly identified compatibility-application adapter.",
+          "cdmType": "boolean"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/Application",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "ApplicationReview",
+      "label": "Application review",
+      "family": "planning",
+      "description": "Saved filled-review projection; no refresh, requote or independent eligibility decision.",
+      "attributes": [
+        {
+          "name": "reviewId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Scoped identity bound to the actual application form/review version.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "applicationId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Containing persisted application identity.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "quoteId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Containing item's persisted quoteId when present.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "missingCount",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Number of actually retained missing field keys.",
+          "cdmType": "integer"
+        },
+        {
+          "name": "requirements",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Allowlisted persisted review requirements as plain text.",
+          "cdmType": "string"
+        },
+        {
+          "name": "expiresAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Expiry of the bound saved quote, never recalculated on inspection.",
+          "cdmType": "dateTimeOffset"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/ApplicationReview",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "ReviewField",
+      "label": "Review field",
+      "family": "planning",
+      "description": "One allowlisted scalar review field; nested provider, health and source payloads are excluded.",
+      "attributes": [
+        {
+          "name": "reviewId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Identifier of the actual containing saved review.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "key",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Allowlisted review field key.",
+          "cdmType": "string"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Persisted safe field label.",
+          "cdmType": "string"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Scalar allowlisted value rendered exactly; no arbitrary object serialization.",
+          "cdmType": "string"
+        },
+        {
+          "name": "unit",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Original unit, including legacy inr (rupees) or relationship money_minor.",
+          "cdmType": "string"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "INR only for a recorded money unit; other units have no inferred currency.",
+          "cdmType": "string"
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Persisted value origin, including explicit unanswered.",
+          "cdmType": "string"
+        },
+        {
+          "name": "editable",
+          "type": "boolean",
+          "nullable": true,
+          "unit": null,
+          "description": "Persisted review editability; not authority for X-Ray writes.",
+          "cdmType": "boolean"
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "nullable": true,
+          "unit": null,
+          "description": "Persisted required-field flag.",
+          "cdmType": "boolean"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/ReviewField",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "Quote",
+      "label": "Saved quote",
+      "family": "planning",
+      "description": "Persisted quote under its original policy/evidence identities; inspection never renews it.",
+      "attributes": [
+        {
+          "name": "quoteId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Persisted quote identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "applicationId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact containing application identity.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit INR quote contract.",
+          "cdmType": "string"
+        },
+        {
+          "name": "debitMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Proposed immediate debit, not a posted transaction.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "monthlyCommitmentMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Proposed monthly obligation, not a settled payment.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "maximumAmountMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Policy/resource upper bound, not a credit approval.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "requiresDecision",
+          "type": "boolean",
+          "nullable": true,
+          "unit": null,
+          "description": "Whether this quote requires a separate bank assessment.",
+          "cdmType": "boolean"
+        },
+        {
+          "name": "policyVersion",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact stored policy version.",
+          "cdmType": "string"
+        },
+        {
+          "name": "catalogueFingerprint",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Catalogue identity used by this quote.",
+          "cdmType": "string"
+        },
+        {
+          "name": "evidenceFingerprint",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Evidence identity used by this quote; never replaced with current evidence.",
+          "cdmType": "string"
+        },
+        {
+          "name": "expiresAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Stored quote expiry; expired state is an annotation, not refreshed authority.",
+          "cdmType": "dateTimeOffset"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/Quote",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "BankDecision",
+      "label": "Bank decision",
+      "family": "authority",
+      "description": "Independent persisted approve/decline/refer assessment, not a quote or an eligibility finding.",
+      "attributes": [
+        {
+          "name": "decisionId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Actual independent-decision identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "applicationId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact assessed application reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "operation",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Operation of the matched assessed item, only by exact application identity.",
+          "cdmType": "string"
+        },
+        {
+          "name": "outcome",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Actual approve, decline or refer outcome; counteroffers remain distinct from acceptance.",
+          "cdmType": "string"
+        },
+        {
+          "name": "approvedAmountMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Amount actually stated by the decision; not a credit limit until execution.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit INR assessment amount contract.",
+          "cdmType": "string"
+        },
+        {
+          "name": "policyVersion",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Persisted bank policy version.",
+          "cdmType": "string"
+        },
+        {
+          "name": "decidedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Actual decision timestamp.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "expiresAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Persisted decision expiry, never extended by reading.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "reasons",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Allowlisted recorded reasons; omit sensitive declarations and hidden provider reasoning.",
+          "cdmType": "string"
+        },
+        {
+          "name": "conditions",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Allowlisted recorded conditions; conditions are not silently treated as met.",
+          "cdmType": "string"
+        },
+        {
+          "name": "providerMode",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicitly recorded provider mode only; missing legacy mode does not prove live execution.",
+          "cdmType": "string"
+        },
+        {
+          "name": "responseId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded public response identity only; no model payload, deployment URL or credential.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/BankDecision",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "Consent",
+      "label": "Consent",
+      "family": "authority",
+      "description": "A specific evidence, assessment or execution consent; these purposes are not interchangeable.",
+      "attributes": [
+        {
+          "name": "consentId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Actual consent identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "applicationId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact application reference where recorded.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "planId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact plan reference where recorded.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "itemId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact item reference where recorded.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "purpose",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded consent purpose, not inferred blanket permission.",
+          "cdmType": "string"
+        },
+        {
+          "name": "consentType",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit recorded consent type when available.",
+          "cdmType": "string"
+        },
+        {
+          "name": "reviewFingerprint",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact reviewed terms bound to this consent.",
+          "cdmType": "string"
+        },
+        {
+          "name": "receiptId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Matching recorded receipt, absent before execution.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "at",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Actual consent recording time; seed evidence consents use grantedAt.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "expiresAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Recorded expiry, null when no expiry is stored.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "revokedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Recorded revocation time, not inferred from missing selection.",
+          "cdmType": "dateTimeOffset"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/Consent",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "ExecutionReceipt",
+      "label": "Recorded execution receipt",
+      "family": "authority",
+      "description": "Retained relationship-bank effect receipt; submitted compatibility instructions and saved reviews are LifecycleEvent records, not execution receipts.",
+      "attributes": [
+        {
+          "name": "receiptId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Persisted receipt identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "applicationId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact originating application, if the source records one.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "operation",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded operation; never inferred as executed from a proposal.",
+          "cdmType": "string"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Currency of the retained banking effect receipt's declared monetary contract; compatibility saved reviews are excluded.",
+          "cdmType": "string"
+        },
+        {
+          "name": "amountMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Receipt's own recorded amount, not a sum of effects or manufactured zero.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "recordedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Actual receipt recording timestamp.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "attribution",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded demo attribution, never production revenue.",
+          "cdmType": "string"
+        },
+        {
+          "name": "summary",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Allowlisted recorded result summary.",
+          "cdmType": "string"
+        },
+        {
+          "name": "demoOnly",
+          "type": "boolean",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit synthetic banking-effect indicator, not evidence that a compatibility instruction was executed.",
+          "cdmType": "boolean"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/ExecutionReceipt",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "ServiceCase",
+      "label": "Service case",
+      "family": "servicing",
+      "description": "Tracked servicing request, including pending investigation; no inferred resolution or reimbursement.",
+      "attributes": [
+        {
+          "name": "serviceRequestId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Actual service-request identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "caseId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded case reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "applicationId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact originating application reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "serviceRequestType",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded request type.",
+          "cdmType": "string"
+        },
+        {
+          "name": "subjectId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit affected record reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "resolutionStatus",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Actual recorded resolution state; pending remains pending.",
+          "cdmType": "string"
+        },
+        {
+          "name": "createdAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Recorded service request creation time.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "updatedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Recorded service request update time.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "summary",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Allowlisted service summary, not confidential investigative notes.",
+          "cdmType": "string"
+        },
+        {
+          "name": "legacy",
+          "type": "boolean",
+          "nullable": true,
+          "unit": null,
+          "description": "Distinguishes compatibility service instructions from actual bank service records.",
+          "cdmType": "boolean"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/ServiceCase",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "Commitment",
+      "label": "Scheduled commitment",
+      "family": "money",
+      "description": "Actual mandate or repayment-schedule row, not a posted payment or duplicate liability.",
+      "attributes": [
+        {
+          "name": "commitmentId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Persisted mandate identifier, or a scoped key of a recorded repayment instalment.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "applicationId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact originating application.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "sourceAccountId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Owned funding account reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "targetId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit repayment/deposit target.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "kind",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded mandate kind or labelled loan-schedule subtype.",
+          "cdmType": "string"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded commitment currency.",
+          "cdmType": "string"
+        },
+        {
+          "name": "amountMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Actual scheduled obligation in paise, not a settled debit.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "nextDueOn",
+          "type": "date",
+          "nullable": true,
+          "unit": "calendar date (YYYY-MM-DD), no implicit midnight/timezone",
+          "description": "Recorded next due date; schedule dates alone do not post money.",
+          "cdmType": "date"
+        },
+        {
+          "name": "remainingPayments",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Recorded remaining payments where supplied.",
+          "cdmType": "integer"
+        },
+        {
+          "name": "version",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Persisted mandate revision, null for unversioned schedule entries.",
+          "cdmType": "integer"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/Commitment",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "SweepRule",
+      "label": "Sweep rule",
+      "family": "money",
+      "description": "Persisted protected-cash configuration; rule activation does not imply that a deposit was opened.",
+      "attributes": [
+        {
+          "name": "sweepRuleId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Persisted sweep-rule identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "applicationId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact originating application reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "productId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact sweep product reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "sourceAccountId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Owned sweep source account reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Currency from the linked owned account or explicit INR bank contract.",
+          "cdmType": "string"
+        },
+        {
+          "name": "thresholdMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Balance threshold in paise.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "multipleMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Sweep lot multiple in paise.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "ceilingMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Configured sweep ceiling in paise.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "protectedCashMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Protected-cash floor retained by the rule.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "monthlyFeeMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Recorded rule fee per month, not a newly charged debit.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "version",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Persisted rule revision.",
+          "cdmType": "integer"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/SweepRule",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "CollateralPledge",
+      "label": "Collateral pledge",
+      "family": "money",
+      "description": "Actual nested deposit pledge; pledged principal is not counted again as owned wealth.",
+      "attributes": [
+        {
+          "name": "pledgeId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Scoped identity from the containing deposit and actual pledge reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "depositId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Containing deposit's recorded depositId.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "facilityId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit secured card or loan liability reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "applicationId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact application that recorded the pledge.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Containing principal's recorded currency.",
+          "cdmType": "string"
+        },
+        {
+          "name": "amountMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Actually pledged amount, not the credit facility limit.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "recordedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Actual pledge recording timestamp.",
+          "cdmType": "dateTimeOffset"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/CollateralPledge",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "Allocation",
+      "label": "Goal allocation",
+      "family": "money",
+      "description": "Actual account hold allocated to a goal; a junction record, not an extra deposit.",
+      "attributes": [
+        {
+          "name": "allocationId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Persisted allocation identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "goalId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Containing goal's recorded identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "sourceAccountId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Owned account from which funds are held.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "applicationId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact originating application.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Currency of the goal allocation or linked owned account.",
+          "cdmType": "string"
+        },
+        {
+          "name": "amountMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Actually held amount already included in posted balance.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "recordedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Actual hold-allocation recording time.",
+          "cdmType": "dateTimeOffset"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/Allocation",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "Settlement",
+      "label": "Demo settlement",
+      "family": "money",
+      "description": "Recorded shared payment or purchase escrow; neither proves external rail execution nor completed conveyance.",
+      "attributes": [
+        {
+          "name": "settlementId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Actual recorded settlement identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "applicationId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact originating application.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "kind",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit adapter subtype: shared or purchase, not guessed from names.",
+          "cdmType": "string"
+        },
+        {
+          "name": "sourceAccountId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Owned funding account reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "recipientId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Registered recipient reference where present.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "liabilityId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact purchase-loan liability reference where present.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded settlement currency.",
+          "cdmType": "string"
+        },
+        {
+          "name": "amountMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Actually recorded shared settlement amount; purchase escrow is separately typed.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "recipientCreditMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Demo recipient ledger credit; no access to another customer's bank account.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "escrowBalanceMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Recorded controlled purchase escrow, not available account cash.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "loanPrincipalMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Borrowed portion funding escrow; equal liability remains separate.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "ownContributionMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Customer's own recorded contribution.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "closingCostsMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Recorded purchase closing costs, not added to free cash.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "titleStatus",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Actual recorded conveyance/title state.",
+          "cdmType": "string"
+        },
+        {
+          "name": "recordedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Actual settlement recording timestamp.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "externalRailExecuted",
+          "type": "boolean",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit external rail flag; synthetic posting does not imply real transfer.",
+          "cdmType": "boolean"
+        },
+        {
+          "name": "externalConveyanceExecuted",
+          "type": "boolean",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit external conveyance flag; funded escrow does not prove completion.",
+          "cdmType": "boolean"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/Settlement",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "LifecycleEvent",
+      "label": "Recorded lifecycle event",
+      "family": "authority",
+      "description": "Actually persisted relationship/effect event or explicitly instruction-only compatibility receipt, never an unapplied readiness fixture or inferred banking effect.",
+      "attributes": [
+        {
+          "name": "eventId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Actual retained eventId, compatibility application's receiptId or owner.receipts member key; never a manufactured event identity.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "eventType",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded event kind, or explicit legacy_instruction_ preparation/submission/saved-review status; an instruction is not execution.",
+          "cdmType": "string"
+        },
+        {
+          "name": "planId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact plan reference if stored.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "itemId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact item reference if stored.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "applicationId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact application reference if stored.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "decisionId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact decision reference if stored.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "at",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Actual retained event timestamp, compatibility submittedAt or receipt recordedAt; absent timestamps remain null, not inspection time.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "revision",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Recorded lifecycle revision where available.",
+          "cdmType": "integer"
+        },
+        {
+          "name": "note",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Public retained event note or recordedInstruction from the persisted application/result/review; never private model or transcript content.",
+          "cdmType": "string"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/LifecycleEvent",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "CRMContinuity",
+      "label": "CRM continuity",
+      "family": "servicing",
+      "description": "Pure continuity view derived from the same authorized snapshot, never a global CRM cache read or synchronization.",
+      "attributes": [
+        {
+          "name": "caseId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded compatibility caseId or deterministic relationship CASE-applicationId convention.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "applicationId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact linked application identity.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "planId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Exact containing relationship plan identity, absent for compatibility records.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "nextAction",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded allowlisted item note or compatibility status meaning.",
+          "cdmType": "string"
+        },
+        {
+          "name": "recordedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Source plan/application update timestamp, not the inspection time.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "basis",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit derivation basis: session_snapshot, not a live CRM lookup.",
+          "cdmType": "string"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/CRMContinuity",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "FrontierJourney",
+      "label": "Frontier journey",
+      "family": "frontier",
+      "description": "Owner-scoped Frontier journey state, separate from its calculations, actions and outcomes.",
+      "attributes": [
+        {
+          "name": "journeyInstanceId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Stable journey instance identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "journeyId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Reviewed Frontier journey definition identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "revision",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Current persisted journey revision.",
+          "cdmType": "integer"
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded journey lifecycle state.",
+          "cdmType": "string"
+        },
+        {
+          "name": "goals",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Allowlisted journey goals flattened as plain text.",
+          "cdmType": "string"
+        },
+        {
+          "name": "calculationRefs",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit deterministic calculation references.",
+          "cdmType": "string"
+        },
+        {
+          "name": "preparedActionRefs",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit prepared-action references.",
+          "cdmType": "string"
+        },
+        {
+          "name": "handoffId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Current human-handoff reference when present.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "createdAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Persisted creation timestamp.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "updatedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Persisted update timestamp.",
+          "cdmType": "dateTimeOffset"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/FrontierJourney",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "ProactiveCandidate",
+      "label": "Proactive candidate",
+      "family": "frontier",
+      "description": "Deterministically detected candidate, not an outcome or executed action.",
+      "attributes": [
+        {
+          "name": "candidateId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Stable candidate identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "journeyId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Reviewed Frontier journey identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "kind",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Deterministic candidate kind.",
+          "cdmType": "string"
+        },
+        {
+          "name": "riskLevel",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded risk band.",
+          "cdmType": "string"
+        },
+        {
+          "name": "priorityScore",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Deterministic bounded priority score.",
+          "cdmType": "integer"
+        },
+        {
+          "name": "sourceRefs",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit source references.",
+          "cdmType": "string"
+        },
+        {
+          "name": "calculationRefs",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit calculation references.",
+          "cdmType": "string"
+        },
+        {
+          "name": "detectedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Detection timestamp.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "expiresAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Candidate expiry timestamp.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded candidate lifecycle.",
+          "cdmType": "string"
+        },
+        {
+          "name": "suppressionReason",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Public-safe suppression reason when present.",
+          "cdmType": "string"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/ProactiveCandidate",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "HouseholdAccessGrant",
+      "label": "Household access grant",
+      "family": "frontier",
+      "description": "Recorded owner-scoped delegation; it is authority metadata, not another customer's record.",
+      "attributes": [
+        {
+          "name": "grantId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Stable grant identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "subjectId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Authorized subject identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "subjectKind",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded delegated subject kind.",
+          "cdmType": "string"
+        },
+        {
+          "name": "resourceScopes",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit resource scopes.",
+          "cdmType": "string"
+        },
+        {
+          "name": "permissions",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit granted permissions.",
+          "cdmType": "string"
+        },
+        {
+          "name": "validFrom",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Authority start timestamp.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "expiresAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Authority expiry timestamp.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "revokedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Revocation timestamp when present.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "createdAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Persisted creation timestamp.",
+          "cdmType": "dateTimeOffset"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/HouseholdAccessGrant",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "FrontierConsent",
+      "label": "Frontier consent",
+      "family": "frontier",
+      "description": "Consent for Frontier data or action access, kept distinct from legacy application consent.",
+      "attributes": [
+        {
+          "name": "consentId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Stable consent identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "subjectKind",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded subject kind.",
+          "cdmType": "string"
+        },
+        {
+          "name": "subjectId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Authorized subject identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "purpose",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded public-safe purpose.",
+          "cdmType": "string"
+        },
+        {
+          "name": "resourceRefs",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit consented resource references.",
+          "cdmType": "string"
+        },
+        {
+          "name": "permissions",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit permissions.",
+          "cdmType": "string"
+        },
+        {
+          "name": "recordedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Consent recording timestamp.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "expiresAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Consent expiry timestamp.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "revokedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Revocation timestamp when present.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "evidenceRefs",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit evidence references.",
+          "cdmType": "string"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/FrontierConsent",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "RegisteredAgent",
+      "label": "Registered agent",
+      "family": "frontier",
+      "description": "Know-your-agent registration and bounded permissions; no bearer scopes or credentials.",
+      "attributes": [
+        {
+          "name": "agentId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Stable registered-agent identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "displayName",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Reviewed agent display name.",
+          "cdmType": "string"
+        },
+        {
+          "name": "identityRef",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Server-authenticated identity reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "permittedData",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit permitted data references.",
+          "cdmType": "string"
+        },
+        {
+          "name": "permittedActions",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit permitted action names.",
+          "cdmType": "string"
+        },
+        {
+          "name": "transactionLimitMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Maximum authorized amount in INR paise.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit INR contract for the registered transaction limit.",
+          "cdmType": "string"
+        },
+        {
+          "name": "validFrom",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Registration start timestamp.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "expiresAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Registration expiry timestamp.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded registration status.",
+          "cdmType": "string"
+        },
+        {
+          "name": "humanAccountability",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded accountable human role or statement.",
+          "cdmType": "string"
+        },
+        {
+          "name": "registeredAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Registration timestamp.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "revokedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Revocation timestamp when present.",
+          "cdmType": "dateTimeOffset"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/RegisteredAgent",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "FrontierMandate",
+      "label": "Frontier mandate",
+      "family": "frontier",
+      "description": "Bounded surplus-to-goal mandate with explicit agent, consent and money limits.",
+      "attributes": [
+        {
+          "name": "mandateId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Stable mandate identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "agentId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Registered agent reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "journeyId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Reviewed journey identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "consentId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Binding consent reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "sourceAccountId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Owned source account reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "targetGoalId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Owned target goal reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "protectedCashMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Protected cash floor in INR paise.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "perExecutionLimitMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Per-execution limit in INR paise.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "monthlyLimitMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Monthly limit in INR paise.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit INR contract for mandate money fields.",
+          "cdmType": "string"
+        },
+        {
+          "name": "effectiveFrom",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Mandate effective timestamp.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "expiresAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Mandate expiry timestamp.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded mandate status.",
+          "cdmType": "string"
+        },
+        {
+          "name": "revision",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Persisted mandate revision.",
+          "cdmType": "integer"
+        },
+        {
+          "name": "createdAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Creation timestamp.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "updatedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Update timestamp.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "revokedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Revocation timestamp when present.",
+          "cdmType": "dateTimeOffset"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/FrontierMandate",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "PreparedAction",
+      "label": "Prepared action",
+      "family": "frontier",
+      "description": "A prepared but not necessarily approved or executed Frontier action.",
+      "attributes": [
+        {
+          "name": "actionId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Stable prepared-action identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "journeyInstanceId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Binding journey instance reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "journeyId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Reviewed journey identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "operation",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Registered operation name.",
+          "cdmType": "string"
+        },
+        {
+          "name": "authorityRequired",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Required authority class.",
+          "cdmType": "string"
+        },
+        {
+          "name": "amountMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Prepared amount in INR paise.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded currency.",
+          "cdmType": "string"
+        },
+        {
+          "name": "sourceRefs",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit source references.",
+          "cdmType": "string"
+        },
+        {
+          "name": "calculationRefs",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit calculation references.",
+          "cdmType": "string"
+        },
+        {
+          "name": "journeyRevision",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Journey revision bound to preparation.",
+          "cdmType": "integer"
+        },
+        {
+          "name": "policyVersion",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Applied policy version.",
+          "cdmType": "string"
+        },
+        {
+          "name": "preparedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Preparation timestamp.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "expiresAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Prepared-action expiry.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded action lifecycle.",
+          "cdmType": "string"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/PreparedAction",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "MandateAction",
+      "label": "Mandate action",
+      "family": "frontier",
+      "description": "Revalidated mandate execution, refusal or referral with before/after authority values.",
+      "attributes": [
+        {
+          "name": "actionRecordId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Stable mandate-action record identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "mandateId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Assessed mandate reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "candidateId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Source candidate reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "preparedActionId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Prepared action reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "amountMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Executed amount in INR paise; zero on refusal.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "protectedCashBeforeMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Observed cash before action in INR paise.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "protectedCashAfterMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Observed cash after action in INR paise.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "monthlyUsedBeforeMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Monthly authority used before action.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "monthlyUsedAfterMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Monthly authority used after action.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit INR contract for mandate-action money fields.",
+          "cdmType": "string"
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Executed, refused or referred.",
+          "cdmType": "string"
+        },
+        {
+          "name": "reasons",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Public-safe assessment reasons.",
+          "cdmType": "string"
+        },
+        {
+          "name": "receiptId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Execution receipt reference when executed.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "recordedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Assessment/execution timestamp.",
+          "cdmType": "dateTimeOffset"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/MandateAction",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "HumanHandoff",
+      "label": "Human handoff",
+      "family": "frontier",
+      "description": "Consent-bound transfer to a human specialist without private context payloads.",
+      "attributes": [
+        {
+          "name": "handoffId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Stable handoff identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "caseId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Linked case identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "journeyInstanceId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Binding journey instance.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "journeyId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Reviewed journey identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "specialistRole",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Assigned specialist role.",
+          "cdmType": "string"
+        },
+        {
+          "name": "revision",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Persisted handoff revision.",
+          "cdmType": "integer"
+        },
+        {
+          "name": "createdBy",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Attributable creating bank-agent identifier.",
+          "cdmType": "string"
+        },
+        {
+          "name": "consentRefs",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit consent references.",
+          "cdmType": "string"
+        },
+        {
+          "name": "contextRefs",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "References to shared context, not the private context itself.",
+          "cdmType": "string"
+        },
+        {
+          "name": "calculationRefs",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit calculation references.",
+          "cdmType": "string"
+        },
+        {
+          "name": "latestHumanDecisionId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Latest attributable human-decision reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded handoff lifecycle.",
+          "cdmType": "string"
+        },
+        {
+          "name": "createdAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Creation timestamp.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "updatedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Update timestamp.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "returnedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Return-to-customer timestamp when present.",
+          "cdmType": "dateTimeOffset"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/HumanHandoff",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "HumanDecision",
+      "label": "Human decision",
+      "family": "frontier",
+      "description": "Attributable specialist disposition; explanation and private modifications are withheld.",
+      "attributes": [
+        {
+          "name": "humanDecisionId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Stable human-decision identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "handoffId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Binding handoff reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "journeyInstanceId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Binding journey instance.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "reviewerId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Server-authenticated reviewer identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "specialistRole",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Reviewer specialist role.",
+          "cdmType": "string"
+        },
+        {
+          "name": "handoffRevision",
+          "type": "integer",
+          "nullable": true,
+          "unit": "whole number",
+          "description": "Reviewed handoff revision.",
+          "cdmType": "integer"
+        },
+        {
+          "name": "commandId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Idempotent command identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "action",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded disposition.",
+          "cdmType": "string"
+        },
+        {
+          "name": "evidenceRefs",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit evidence references.",
+          "cdmType": "string"
+        },
+        {
+          "name": "relatedDecisionId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Decision returned to the customer when applicable.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "recordedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Decision timestamp.",
+          "cdmType": "dateTimeOffset"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/HumanDecision",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "FrontierOutcome",
+      "label": "Frontier outcome",
+      "family": "frontier",
+      "description": "Evidence-bound Frontier outcome; proactive fixtures cannot create it.",
+      "attributes": [
+        {
+          "name": "outcomeId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Stable outcome identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "journeyInstanceId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Binding journey instance.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "journeyId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Reviewed journey identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "outcomeType",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded outcome class.",
+          "cdmType": "string"
+        },
+        {
+          "name": "amountImpactMinor",
+          "type": "minor",
+          "nullable": true,
+          "unit": "currency minor units; INR paise, exponent 2",
+          "description": "Signed impact in INR paise.",
+          "cdmType": "contosoBanking.minorAmount"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit INR contract for the outcome impact.",
+          "cdmType": "string"
+        },
+        {
+          "name": "sourceRefs",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Current executed or service evidence references.",
+          "cdmType": "string"
+        },
+        {
+          "name": "recordedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Outcome timestamp.",
+          "cdmType": "dateTimeOffset"
+        },
+        {
+          "name": "demoOnly",
+          "type": "boolean",
+          "nullable": true,
+          "unit": null,
+          "description": "Explicit synthetic-demo boundary.",
+          "cdmType": "boolean"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/FrontierOutcome",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    },
+    {
+      "name": "AgentAction",
+      "label": "Agent action record",
+      "family": "frontier",
+      "description": "Sanitized attributable Frontier agent command or gateway-tool record.",
+      "attributes": [
+        {
+          "name": "agentActionId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Stable record identifier or deterministic fallback.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "recordType",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded action schema/type.",
+          "cdmType": "string"
+        },
+        {
+          "name": "agentId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Attributable registered agent identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "identityRef",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Server-authenticated identity reference.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "traceRef",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "External agent trace reference, not a session credential.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "toolName",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Registered gateway tool name.",
+          "cdmType": "string"
+        },
+        {
+          "name": "commandId",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Idempotent domain command identifier.",
+          "cdmType": "contosoBanking.stringIdentifier"
+        },
+        {
+          "name": "authority",
+          "type": "string",
+          "nullable": true,
+          "unit": null,
+          "description": "Recorded authority source when present.",
+          "cdmType": "string"
+        },
+        {
+          "name": "recordedAt",
+          "type": "datetime",
+          "nullable": true,
+          "unit": "RFC 3339 instant with explicit timezone",
+          "description": "Persisted action timestamp when present.",
+          "cdmType": "dateTimeOffset"
+        }
+      ],
+      "definitionRef": "banking.cdm.json/AgentAction",
+      "cdmReference": null,
+      "mappingStatus": "custom"
+    }
+  ],
+  "bookkeeping": [
+    {
+      "name": "RecordIndex",
+      "description": "Export identity/type index only, not an additional bank product.",
+      "attributes": [
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "entityType",
+          "type": "string",
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "RecordLink",
+      "description": "Export edge junction only; endpoints must be real selected RecordIndex rows.",
+      "attributes": [
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "sourceRecordId",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "targetRecordId",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "relation",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "reason",
+          "type": "string",
+          "nullable": false
+        }
+      ]
+    }
+  ],
+  "commonEntityColumns": [
+    "id",
+    "label",
+    "state",
+    "sourceKind",
+    "historical",
+    "sourceRecordId",
+    "sourceVersion"
+  ],
+  "sharedEntityColumns": {
+    "sourceVersion": {
+      "entities": [
+        "Document",
+        "EvidenceReading"
+      ],
+      "rule": "Emit one common-first column. Non-null locator/attribute versions must agree; use the known one when the other is null."
+    },
+    "label": {
+      "entities": [
+        "Fact",
+        "ReviewField"
+      ],
+      "rule": "Emit one common-first column. Non-null scalar attribute and display labels must agree; the common display label remains required."
+    }
+  },
+  "businessAreas": [
+    {
+      "id": "customers",
+      "label": "Customers and parties"
+    },
+    {
+      "id": "products",
+      "label": "Product catalogue"
+    },
+    {
+      "id": "holdings",
+      "label": "Owned banking products"
+    },
+    {
+      "id": "money",
+      "label": "Money and obligations"
+    },
+    {
+      "id": "goals",
+      "label": "Goals and preferences"
+    },
+    {
+      "id": "evidence",
+      "label": "Documents and evidence"
+    },
+    {
+      "id": "planning",
+      "label": "Planning and applications"
+    },
+    {
+      "id": "authority",
+      "label": "Authority and execution"
+    },
+    {
+      "id": "servicing",
+      "label": "Servicing and continuity"
+    },
+    {
+      "id": "frontier",
+      "label": "Frontier agent lineage"
+    }
+  ],
+  "relationships": [
+    {
+      "id": "PartyRelationship.customerId-Customer.ownerId",
+      "relation": "party-customer",
+      "label": "Party customer",
+      "fromEntity": "PartyRelationship",
+      "fromAttribute": "customerId",
+      "toEntity": "Customer",
+      "toAttribute": "ownerId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "EvidenceSelection.documentId-Document.documentId",
+      "relation": "selected-document",
+      "label": "Selected document",
+      "fromEntity": "EvidenceSelection",
+      "fromAttribute": "documentId",
+      "toEntity": "Document",
+      "toAttribute": "documentId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "EvidenceReading.documentId-Document.documentId",
+      "relation": "read-document",
+      "label": "Read document",
+      "fromEntity": "EvidenceReading",
+      "fromAttribute": "documentId",
+      "toEntity": "Document",
+      "toAttribute": "documentId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "EvidenceReading.reusedExtractionReadId-EvidenceReading.readId",
+      "relation": "reuses-reading",
+      "label": "Reuses reading",
+      "fromEntity": "EvidenceReading",
+      "fromAttribute": "reusedExtractionReadId",
+      "toEntity": "EvidenceReading",
+      "toAttribute": "readId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Fact.readId-EvidenceReading.readId",
+      "relation": "fact-reading",
+      "label": "Fact reading",
+      "fromEntity": "Fact",
+      "fromAttribute": "readId",
+      "toEntity": "EvidenceReading",
+      "toAttribute": "readId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Fact.documentId-Document.documentId",
+      "relation": "fact-document",
+      "label": "Fact document",
+      "fromEntity": "Fact",
+      "fromAttribute": "documentId",
+      "toEntity": "Document",
+      "toAttribute": "documentId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "CalculationValue.calculationId-Calculation.calculationId",
+      "relation": "calculation-result",
+      "label": "Calculation result",
+      "fromEntity": "CalculationValue",
+      "fromAttribute": "calculationId",
+      "toEntity": "Calculation",
+      "toAttribute": "calculationId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Application.planId-RelationshipPlan.planId",
+      "relation": "plan-application",
+      "label": "Plan application",
+      "fromEntity": "Application",
+      "fromAttribute": "planId",
+      "toEntity": "RelationshipPlan",
+      "toAttribute": "planId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "ApplicationReview.applicationId-Application.applicationId",
+      "relation": "application-review",
+      "label": "Application review",
+      "fromEntity": "ApplicationReview",
+      "fromAttribute": "applicationId",
+      "toEntity": "Application",
+      "toAttribute": "applicationId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "ReviewField.reviewId-ApplicationReview.reviewId",
+      "relation": "review-field",
+      "label": "Review field",
+      "fromEntity": "ReviewField",
+      "fromAttribute": "reviewId",
+      "toEntity": "ApplicationReview",
+      "toAttribute": "reviewId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Quote.applicationId-Application.applicationId",
+      "relation": "application-quote",
+      "label": "Application quote",
+      "fromEntity": "Quote",
+      "fromAttribute": "applicationId",
+      "toEntity": "Application",
+      "toAttribute": "applicationId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "ApplicationReview.quoteId-Quote.quoteId",
+      "relation": "review-quote",
+      "label": "Review quote",
+      "fromEntity": "ApplicationReview",
+      "fromAttribute": "quoteId",
+      "toEntity": "Quote",
+      "toAttribute": "quoteId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Consent.planId-RelationshipPlan.planId",
+      "relation": "consent-plan",
+      "label": "Consent plan",
+      "fromEntity": "Consent",
+      "fromAttribute": "planId",
+      "toEntity": "RelationshipPlan",
+      "toAttribute": "planId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Consent.receiptId-ExecutionReceipt.receiptId",
+      "relation": "consent-receipt",
+      "label": "Consent receipt",
+      "fromEntity": "Consent",
+      "fromAttribute": "receiptId",
+      "toEntity": "ExecutionReceipt",
+      "toAttribute": "receiptId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "CollateralPledge.depositId-Deposit.depositId",
+      "relation": "pledged-deposit",
+      "label": "Pledged deposit",
+      "fromEntity": "CollateralPledge",
+      "fromAttribute": "depositId",
+      "toEntity": "Deposit",
+      "toAttribute": "depositId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Allocation.goalId-Goal.goalId",
+      "relation": "goal-allocation",
+      "label": "Goal allocation",
+      "fromEntity": "Allocation",
+      "fromAttribute": "goalId",
+      "toEntity": "Goal",
+      "toAttribute": "goalId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Settlement.liabilityId-Loan.liabilityId",
+      "relation": "settlement-loan",
+      "label": "Settlement loan",
+      "fromEntity": "Settlement",
+      "fromAttribute": "liabilityId",
+      "toEntity": "Loan",
+      "toAttribute": "liabilityId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "LifecycleEvent.planId-RelationshipPlan.planId",
+      "relation": "event-plan",
+      "label": "Event plan",
+      "fromEntity": "LifecycleEvent",
+      "fromAttribute": "planId",
+      "toEntity": "RelationshipPlan",
+      "toAttribute": "planId",
+      "reason": "The retained plan identifier AND event revision must match the same projected plan version. A missing revision/version remains unresolved; never substitute today's terms.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "LifecycleEvent.decisionId-BankDecision.decisionId",
+      "relation": "event-decision",
+      "label": "Event decision",
+      "fromEntity": "LifecycleEvent",
+      "fromAttribute": "decisionId",
+      "toEntity": "BankDecision",
+      "toAttribute": "decisionId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "CRMContinuity.planId-RelationshipPlan.planId",
+      "relation": "continuity-plan",
+      "label": "Continuity plan",
+      "fromEntity": "CRMContinuity",
+      "fromAttribute": "planId",
+      "toEntity": "RelationshipPlan",
+      "toAttribute": "planId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Transaction.cardId-Card.cardId",
+      "relation": "card-transaction",
+      "label": "Card transaction",
+      "fromEntity": "Transaction",
+      "fromAttribute": "cardId",
+      "toEntity": "Card",
+      "toAttribute": "cardId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "FrontierJourney.handoffId-HumanHandoff.handoffId",
+      "relation": "journey-handoff",
+      "label": "Journey handoff",
+      "fromEntity": "FrontierJourney",
+      "fromAttribute": "handoffId",
+      "toEntity": "HumanHandoff",
+      "toAttribute": "handoffId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "FrontierMandate.agentId-RegisteredAgent.agentId",
+      "relation": "mandate-agent",
+      "label": "Mandate agent",
+      "fromEntity": "FrontierMandate",
+      "fromAttribute": "agentId",
+      "toEntity": "RegisteredAgent",
+      "toAttribute": "agentId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "FrontierMandate.consentId-FrontierConsent.consentId",
+      "relation": "mandate-consent",
+      "label": "Mandate consent",
+      "fromEntity": "FrontierMandate",
+      "fromAttribute": "consentId",
+      "toEntity": "FrontierConsent",
+      "toAttribute": "consentId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "FrontierMandate.sourceAccountId-Account.accountId",
+      "relation": "mandate-source-account",
+      "label": "Mandate source account",
+      "fromEntity": "FrontierMandate",
+      "fromAttribute": "sourceAccountId",
+      "toEntity": "Account",
+      "toAttribute": "accountId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "FrontierMandate.targetGoalId-Goal.goalId",
+      "relation": "mandate-target-goal",
+      "label": "Mandate target goal",
+      "fromEntity": "FrontierMandate",
+      "fromAttribute": "targetGoalId",
+      "toEntity": "Goal",
+      "toAttribute": "goalId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "PreparedAction.journeyInstanceId-FrontierJourney.journeyInstanceId",
+      "relation": "prepared-for-journey",
+      "label": "Prepared for journey",
+      "fromEntity": "PreparedAction",
+      "fromAttribute": "journeyInstanceId",
+      "toEntity": "FrontierJourney",
+      "toAttribute": "journeyInstanceId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "MandateAction.mandateId-FrontierMandate.mandateId",
+      "relation": "assessed-mandate",
+      "label": "Assessed mandate",
+      "fromEntity": "MandateAction",
+      "fromAttribute": "mandateId",
+      "toEntity": "FrontierMandate",
+      "toAttribute": "mandateId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "MandateAction.candidateId-ProactiveCandidate.candidateId",
+      "relation": "candidate-action",
+      "label": "Candidate action",
+      "fromEntity": "MandateAction",
+      "fromAttribute": "candidateId",
+      "toEntity": "ProactiveCandidate",
+      "toAttribute": "candidateId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "MandateAction.preparedActionId-PreparedAction.actionId",
+      "relation": "executes-prepared-action",
+      "label": "Executes prepared action",
+      "fromEntity": "MandateAction",
+      "fromAttribute": "preparedActionId",
+      "toEntity": "PreparedAction",
+      "toAttribute": "actionId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "HumanHandoff.journeyInstanceId-FrontierJourney.journeyInstanceId",
+      "relation": "handoff-journey",
+      "label": "Handoff journey",
+      "fromEntity": "HumanHandoff",
+      "fromAttribute": "journeyInstanceId",
+      "toEntity": "FrontierJourney",
+      "toAttribute": "journeyInstanceId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "HumanHandoff.latestHumanDecisionId-HumanDecision.humanDecisionId",
+      "relation": "latest-human-decision",
+      "label": "Latest human decision",
+      "fromEntity": "HumanHandoff",
+      "fromAttribute": "latestHumanDecisionId",
+      "toEntity": "HumanDecision",
+      "toAttribute": "humanDecisionId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "HumanDecision.handoffId-HumanHandoff.handoffId",
+      "relation": "decision-handoff",
+      "label": "Decision handoff",
+      "fromEntity": "HumanDecision",
+      "fromAttribute": "handoffId",
+      "toEntity": "HumanHandoff",
+      "toAttribute": "handoffId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "HumanDecision.journeyInstanceId-FrontierJourney.journeyInstanceId",
+      "relation": "decision-journey",
+      "label": "Decision journey",
+      "fromEntity": "HumanDecision",
+      "fromAttribute": "journeyInstanceId",
+      "toEntity": "FrontierJourney",
+      "toAttribute": "journeyInstanceId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "HumanDecision.relatedDecisionId-HumanDecision.humanDecisionId",
+      "relation": "returns-decision",
+      "label": "Returns decision",
+      "fromEntity": "HumanDecision",
+      "fromAttribute": "relatedDecisionId",
+      "toEntity": "HumanDecision",
+      "toAttribute": "humanDecisionId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "FrontierOutcome.journeyInstanceId-FrontierJourney.journeyInstanceId",
+      "relation": "outcome-journey",
+      "label": "Outcome journey",
+      "fromEntity": "FrontierOutcome",
+      "fromAttribute": "journeyInstanceId",
+      "toEntity": "FrontierJourney",
+      "toAttribute": "journeyInstanceId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Account.productId-Product.productId",
+      "relation": "catalogue-product",
+      "label": "Catalogue product",
+      "fromEntity": "Account",
+      "fromAttribute": "productId",
+      "toEntity": "Product",
+      "toAttribute": "productId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Card.productId-Product.productId",
+      "relation": "catalogue-product",
+      "label": "Catalogue product",
+      "fromEntity": "Card",
+      "fromAttribute": "productId",
+      "toEntity": "Product",
+      "toAttribute": "productId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Deposit.productId-Product.productId",
+      "relation": "catalogue-product",
+      "label": "Catalogue product",
+      "fromEntity": "Deposit",
+      "fromAttribute": "productId",
+      "toEntity": "Product",
+      "toAttribute": "productId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Loan.productId-Product.productId",
+      "relation": "catalogue-product",
+      "label": "Catalogue product",
+      "fromEntity": "Loan",
+      "fromAttribute": "productId",
+      "toEntity": "Product",
+      "toAttribute": "productId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "ProtectionPolicy.productId-Product.productId",
+      "relation": "catalogue-product",
+      "label": "Catalogue product",
+      "fromEntity": "ProtectionPolicy",
+      "fromAttribute": "productId",
+      "toEntity": "Product",
+      "toAttribute": "productId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Application.productId-Product.productId",
+      "relation": "catalogue-product",
+      "label": "Catalogue product",
+      "fromEntity": "Application",
+      "fromAttribute": "productId",
+      "toEntity": "Product",
+      "toAttribute": "productId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "SweepRule.productId-Product.productId",
+      "relation": "catalogue-product",
+      "label": "Catalogue product",
+      "fromEntity": "SweepRule",
+      "fromAttribute": "productId",
+      "toEntity": "Product",
+      "toAttribute": "productId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Card.linkedAccountId-Account.accountId",
+      "relation": "linked-account",
+      "label": "Linked account",
+      "fromEntity": "Card",
+      "fromAttribute": "linkedAccountId",
+      "toEntity": "Account",
+      "toAttribute": "accountId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Deposit.linkedAccountId-Account.accountId",
+      "relation": "linked-account",
+      "label": "Linked account",
+      "fromEntity": "Deposit",
+      "fromAttribute": "linkedAccountId",
+      "toEntity": "Account",
+      "toAttribute": "accountId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Loan.linkedAccountId-Account.accountId",
+      "relation": "linked-account",
+      "label": "Linked account",
+      "fromEntity": "Loan",
+      "fromAttribute": "linkedAccountId",
+      "toEntity": "Account",
+      "toAttribute": "accountId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "ProtectionPolicy.linkedAccountId-Account.accountId",
+      "relation": "linked-account",
+      "label": "Linked account",
+      "fromEntity": "ProtectionPolicy",
+      "fromAttribute": "linkedAccountId",
+      "toEntity": "Account",
+      "toAttribute": "accountId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Application.sourceAccountId-Account.accountId",
+      "relation": "source-account",
+      "label": "Source account",
+      "fromEntity": "Application",
+      "fromAttribute": "sourceAccountId",
+      "toEntity": "Account",
+      "toAttribute": "accountId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Commitment.sourceAccountId-Account.accountId",
+      "relation": "source-account",
+      "label": "Source account",
+      "fromEntity": "Commitment",
+      "fromAttribute": "sourceAccountId",
+      "toEntity": "Account",
+      "toAttribute": "accountId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "SweepRule.sourceAccountId-Account.accountId",
+      "relation": "source-account",
+      "label": "Source account",
+      "fromEntity": "SweepRule",
+      "fromAttribute": "sourceAccountId",
+      "toEntity": "Account",
+      "toAttribute": "accountId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Allocation.sourceAccountId-Account.accountId",
+      "relation": "source-account",
+      "label": "Source account",
+      "fromEntity": "Allocation",
+      "fromAttribute": "sourceAccountId",
+      "toEntity": "Account",
+      "toAttribute": "accountId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Settlement.sourceAccountId-Account.accountId",
+      "relation": "source-account",
+      "label": "Source account",
+      "fromEntity": "Settlement",
+      "fromAttribute": "sourceAccountId",
+      "toEntity": "Account",
+      "toAttribute": "accountId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Transaction.accountId-Account.accountId",
+      "relation": "account-transaction",
+      "label": "Account transaction",
+      "fromEntity": "Transaction",
+      "fromAttribute": "accountId",
+      "toEntity": "Account",
+      "toAttribute": "accountId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Transaction.applicationId-Application.applicationId",
+      "relation": "application-reference",
+      "label": "Application reference",
+      "fromEntity": "Transaction",
+      "fromAttribute": "applicationId",
+      "toEntity": "Application",
+      "toAttribute": "applicationId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "BankDecision.applicationId-Application.applicationId",
+      "relation": "application-reference",
+      "label": "Application reference",
+      "fromEntity": "BankDecision",
+      "fromAttribute": "applicationId",
+      "toEntity": "Application",
+      "toAttribute": "applicationId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Consent.applicationId-Application.applicationId",
+      "relation": "application-reference",
+      "label": "Application reference",
+      "fromEntity": "Consent",
+      "fromAttribute": "applicationId",
+      "toEntity": "Application",
+      "toAttribute": "applicationId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "ExecutionReceipt.applicationId-Application.applicationId",
+      "relation": "application-reference",
+      "label": "Application reference",
+      "fromEntity": "ExecutionReceipt",
+      "fromAttribute": "applicationId",
+      "toEntity": "Application",
+      "toAttribute": "applicationId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "ServiceCase.applicationId-Application.applicationId",
+      "relation": "application-reference",
+      "label": "Application reference",
+      "fromEntity": "ServiceCase",
+      "fromAttribute": "applicationId",
+      "toEntity": "Application",
+      "toAttribute": "applicationId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Commitment.applicationId-Application.applicationId",
+      "relation": "application-reference",
+      "label": "Application reference",
+      "fromEntity": "Commitment",
+      "fromAttribute": "applicationId",
+      "toEntity": "Application",
+      "toAttribute": "applicationId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "SweepRule.applicationId-Application.applicationId",
+      "relation": "application-reference",
+      "label": "Application reference",
+      "fromEntity": "SweepRule",
+      "fromAttribute": "applicationId",
+      "toEntity": "Application",
+      "toAttribute": "applicationId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "CollateralPledge.applicationId-Application.applicationId",
+      "relation": "application-reference",
+      "label": "Application reference",
+      "fromEntity": "CollateralPledge",
+      "fromAttribute": "applicationId",
+      "toEntity": "Application",
+      "toAttribute": "applicationId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Allocation.applicationId-Application.applicationId",
+      "relation": "application-reference",
+      "label": "Application reference",
+      "fromEntity": "Allocation",
+      "fromAttribute": "applicationId",
+      "toEntity": "Application",
+      "toAttribute": "applicationId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "Settlement.applicationId-Application.applicationId",
+      "relation": "application-reference",
+      "label": "Application reference",
+      "fromEntity": "Settlement",
+      "fromAttribute": "applicationId",
+      "toEntity": "Application",
+      "toAttribute": "applicationId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "LifecycleEvent.applicationId-Application.applicationId",
+      "relation": "application-reference",
+      "label": "Application reference",
+      "fromEntity": "LifecycleEvent",
+      "fromAttribute": "applicationId",
+      "toEntity": "Application",
+      "toAttribute": "applicationId",
+      "reason": "The retained event or compatibility receipt explicitly names this logical application. A preparation, submission or saved-review receipt does not approve or execute its current terms. Retain the real receipt identity and leave missing/redacted endpoints unresolved.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    },
+    {
+      "id": "CRMContinuity.applicationId-Application.applicationId",
+      "relation": "application-reference",
+      "label": "Application reference",
+      "fromEntity": "CRMContinuity",
+      "fromAttribute": "applicationId",
+      "toEntity": "Application",
+      "toAttribute": "applicationId",
+      "reason": "Only the actual captured source reference, within the authorized owner/scope, permits this link. Missing/redacted endpoints are not invented.",
+      "cardinality": "many-to-one",
+      "mappingStatus": "custom"
+    }
+  ],
+  "money": {
+    "currency": "INR",
+    "exponent": 2,
+    "minimum": "-9223372036854775808",
+    "maximum": "9223372036854775807",
+    "cdmBaseType": "bigInteger",
+    "transport": "canonical signed integer string"
+  },
+  "csv": {
+    "encoding": "UTF-8",
+    "delimiter": ",",
+    "header": true,
+    "nullToken": "\\N",
+    "textEncodingVersion": "contoso-csv-text-v1",
+    "stringEscape": "Prefix a literal leading backslash or apostrophe with backslash; decode once, in text cells only.",
+    "formulaPolicy": "Prefix formula-leading text (=,+,-,@ after Unicode whitespace or Cc/Cf control/format characters) and text beginning with tab/CR/LF with apostrophe. Preserve typed numeric cells; inverse decoding restores original text. snapshot.json is lossless authority.",
+    "typedValueColumns": "Fact/CalculationValue/ReviewField.value with unit=money_minor is canonical signed64 minor text. Canonical values with unit=number/percentage/months/years use exact decimal text; other values remain protected text."
+  },
+  "notice": "Custom contosoBanking demo application profile with verified Microsoft CDM semantic references and BIAN 13.0 mappings. Not official Microsoft/BIAN entities, certification, compliance, SDK conformance, production suitability or evidence of executed banking.",
+  "limitations": [
+    "Only this flat typed profile is checked; no general CDM SDK load/resolve/round-trip, projections, attribute groups, inheritance or remote corpus resolution.",
+    "Official business-entity files are unmodified semantic evidence only; their large import graphs are not loaded by this thin profile.",
+    "Primitive import cycles are traversed once with a visited set, not treated as invalid merely because they cycle.",
+    "All displayed counts come from validated metadata or the authorized snapshot. RecordIndex/RecordLink are bookkeeping, not extra owned products.",
+    "Missing evidence, null values, unversioned history and unsupported semantic mappings remain explicit; no document opening, OCR, live model, execution or CRM write occurs.",
+    "Field maps describe named typed adapters; they are not an executable arbitrary-field query language."
+  ]
+}

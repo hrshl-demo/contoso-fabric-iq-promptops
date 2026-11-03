@@ -1,0 +1,61 @@
+[
+  {
+    "actions": [
+      "beneficiary_freeze_requested",
+      "recovery_case_opened"
+    ],
+    "caseRef": "case-scam-001",
+    "channel": "phone",
+    "humanHandoff": {
+      "occurredAt": "2026-08-27T16:40:00+05:30",
+      "reason": "authorised_payment_scam",
+      "team": "fraud_operations"
+    },
+    "openedAt": "2026-08-27T16:35:00+05:30",
+    "ownerId": "rhea",
+    "releaseId": "retail-frontier-v1",
+    "runtimeOutcome": null,
+    "schemaVersion": "retail-frontier-seed-v1",
+    "serviceRecordId": "svc-scam-001",
+    "synthetic": true
+  },
+  {
+    "actions": [
+      "card_temporarily_locked",
+      "provisional_credit_posted"
+    ],
+    "caseRef": "case-card-dispute-001",
+    "channel": "mobile_app",
+    "humanHandoff": {
+      "occurredAt": "2026-09-18T09:05:00+05:30",
+      "reason": "duplicate_charge_evidence_review",
+      "team": "card_disputes"
+    },
+    "openedAt": "2026-09-18T08:50:00+05:30",
+    "ownerId": "rhea",
+    "releaseId": "retail-frontier-v1",
+    "runtimeOutcome": null,
+    "schemaVersion": "retail-frontier-seed-v1",
+    "serviceRecordId": "svc-dispute-001",
+    "synthetic": true
+  },
+  {
+    "actions": [
+      "identity_checks_recorded",
+      "view_only_grant_created"
+    ],
+    "channel": "branch_assisted",
+    "humanHandoff": {
+      "occurredAt": "2026-04-01T10:15:00+05:30",
+      "reason": "household_permissions",
+      "team": "customer_service"
+    },
+    "openedAt": "2026-04-01T10:00:00+05:30",
+    "ownerId": "rhea",
+    "releaseId": "retail-frontier-v1",
+    "runtimeOutcome": null,
+    "schemaVersion": "retail-frontier-seed-v1",
+    "serviceRecordId": "svc-household-001",
+    "synthetic": true
+  }
+]

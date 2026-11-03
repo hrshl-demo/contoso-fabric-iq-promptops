@@ -1,0 +1,160 @@
+tables:
+  - table: transaction
+    entity: Transaction
+    tier: core
+    domain: Money
+    kind: fact
+    grain: "One ledger posting."
+    physical: fact_transaction
+    silver: [silver_transaction]
+    description: "A posted account or card transaction. Amount is always positive; Direction says debit or credit and SignedAmountInr carries the sign. Frontier covers Apr-Sep 2026 for Rhea; legacy covers three personas. Do not add transactions across ReleaseId."
+    synonyms: [payment, transfer, txn, debit, credit, spend, statement line]
+    sources:
+      - {silver: silver_transaction}
+    post: [txn_signed]
+    columns:
+      - {col: transaction_id, type: string, key: true, from: transactionId, desc: "Transaction identifier such as txn-frontier-0001."}
+      - {col: customer_id, type: string, from: _owner_id, t: owner, desc: "Customer the transaction belongs to."}
+      - {col: account_id, type: string, from: accountId, desc: "Account the transaction posted to."}
+      - {col: card_id, type: string, from: cardId, desc: "Card used, when the instrument is a card."}
+      - {col: description, type: string, default_label: true, from: description, desc: "Bank statement narration, for example SALARY CREDIT - NORTHWIND TECHNOLOGY INDIA."}
+      - {col: direction, type: string, from: direction, desc: "debit (money out) or credit (money in)."}
+      - {col: category, type: string, from: category, desc: "Spend or income category such as groceries, salary, loan_repayment, dining. 'unclear' means the narration is ambiguous."}
+      - {col: instrument, type: string, from: xInstrument, desc: "How it was paid: account, card or credit_card."}
+      - {col: status, type: string, from: xStatus, desc: "posted or reversed."}
+      - {money: amount, label: Amount, from: amountMinor, desc: "Transaction amount, always positive."}
+      - {col: signed_amount_inr, type: double, const: null, desc: "Amount in INR with sign: credits positive, debits negative. Sum it for net cash flow."}
+      - {instant: posted_at, date_col: posted_date_ist, label: Posted At, from: postedAt, desc: "When the transaction posted."}
+      - {col: value_date, type: date, from: valueDate, desc: "Value date of the transaction."}
+      - {col: counterparty_ref, type: string, from: xCounterpartyRef, desc: "Reference of the other party: employer, household member, own account, card, case or external party (Frontier only)."}
+      - {col: counterparty_type, type: string, from: xCounterpartyRef, t: ref_type, desc: "Kind of counterparty: employer, household_member, account, card, incident, external_party or customer."}
+      - {col: dispute_incident_id, type: string, from: xDisputeRef, desc: "Incident id when the transaction is under dispute or part of a scam case (Frontier only)."}
+      - {col: purchase_reference, type: string, from: xPurchaseReference, desc: "Purchase document reference (legacy only)."}
+      - {col: settlement_reference, type: string, from: xSettlementReference, desc: "Shared-expense settlement reference (legacy only)."}
+      - {col: evidence_refs, type: string, from: xSourceRefs, desc: "Documents or cases that evidence the transaction (semicolon separated)."}
+      - {col: evidence_count, type: int, from: xSourceRefsCount, desc: "Number of evidence references."}
+      - {col: release_id, type: string, from: _release_id, desc: "Seed release the row comes from."}
+
+  - table: transaction_evidence
+    entity: TransactionEvidence
+    tier: extended
+    domain: Money
+    kind: bridge
+    grain: "One link between a transaction and a document or case that evidences it."
+    grain_key: [transaction_id, source_ref]
+    physical: bridge_transaction_evidence
+    silver: [silver_transaction_evidence]
+    description: "Link between a transaction and a document or case that evidences it. Use it to answer 'which document supports this payment?'. Evidence before confidence: a figure without evidence stays unverified."
+    synonyms: [supporting document, receipt link, evidence link]
+    sources:
+      - {silver: silver_transaction_evidence}
+    columns:
+      - {col: evidence_id, type: string, key: true, tpl: "{transactionId}>{sourceRef}", desc: "Link identifier: transaction id > source reference."}
+      - {col: transaction_id, type: string, from: transactionId, desc: "Transaction being evidenced."}
+      - {col: source_ref, type: string, default_label: true, from: sourceRef, desc: "Reference of the evidencing document or case."}
+      - {col: source_type, type: string, from: sourceRef, t: ref_type, desc: "document or incident."}
+      - {col: document_id, type: string, from: sourceRef, t: "prefix:doc-,DOC-", desc: "Document id when the evidence is a document."}
+      - {col: incident_id, type: string, from: sourceRef, t: "prefix:case-", desc: "Incident id when the evidence is a case."}
+
+  - table: scheduled_obligation
+    entity: ScheduledObligation
+    tier: core
+    domain: Money
+    kind: fact
+    grain: "One scheduled obligation."
+    physical: fact_scheduled_obligation
+    silver: [silver_scheduled_obligation]
+    description: "A recurring commitment that leaves an account on a fixed day: loan EMI, school fee, card payment, SIP, premium. Obligations are committed cash: they reduce what can safely be moved or invested."
+    synonyms: [standing instruction, recurring payment, commitment, bill, EMI due]
+    sources:
+      - {silver: silver_scheduled_obligation}
+    columns:
+      - {col: obligation_id, type: string, key: true, from: obligationId, desc: "Obligation identifier such as obl-home-emi."}
+      - {col: customer_id, type: string, from: _owner_id, t: owner, desc: "Customer who owes the obligation."}
+      - {col: name, type: string, default_label: true, from: name, desc: "Obligation name such as Home loan EMI."}
+      - {col: source_account_id, type: string, from: sourceAccountId, desc: "Account the payment leaves."}
+      - {col: payee_ref, type: string, from: payeeRef, desc: "What is being paid: loan, card, document or account reference."}
+      - {col: payee_type, type: string, from: payeeRef, t: ref_type, desc: "Kind of payee: loan, card, document, account."}
+      - {col: cadence, type: string, from: cadence, desc: "monthly, quarterly or annual."}
+      - {col: day_of_month, type: int, from: dayOfMonth, desc: "Day of the month the payment is due."}
+      - {col: status, type: string, from: status, desc: "Obligation status such as active."}
+      - {money: amount, label: Amount, from: amountMinor, desc: "Amount per payment."}
+      - {col: release_id, type: string, from: _release_id, desc: "Seed release the row comes from."}
+
+  - table: income_record
+    entity: IncomeRecord
+    tier: core
+    domain: Money
+    kind: fact
+    grain: "One income record."
+    physical: fact_income_record
+    renamed_from: {physical: fact_income}
+    silver: [silver_income_record]
+    description: "Monthly income evidence for a customer: gross and net, linked to the evidencing salary slip. Only posted, evidenced income counts; offers, refunds and variable targets are not income."
+    synonyms: [salary, pay, earnings, income evidence]
+    sources:
+      - {silver: silver_income_record}
+    columns:
+      - {col: income_id, type: string, key: true, from: incomeId, desc: "Income record identifier such as income-salary-2026-04."}
+      - {col: customer_id, type: string, from: _owner_id, t: owner, desc: "Customer the income belongs to."}
+      - {col: income_type, type: string, default_label: true, from: incomeType, desc: "salary or household_contribution."}
+      - {col: period, type: string, from: period, desc: "Month the income is for, as YYYY-MM."}
+      - {money: gross, label: Gross Income, from: grossMinor, desc: "Gross amount before deductions."}
+      - {money: net, label: Net Income, from: netMinor, desc: "Net amount credited."}
+      - {col: is_recurring, type: bool, from: recurring, desc: "True when the income repeats every month."}
+      - {col: evidence_document_id, type: string, from: evidenceRef, desc: "Document that evidences the income."}
+      - {col: contributor_member_id, type: string, from: contributorRef, desc: "Household member who contributed, for household contributions."}
+      - {col: narration, type: string, from: transactionDescription, desc: "Bank narration of the credit."}
+      - {col: release_id, type: string, from: _release_id, desc: "Seed release the row comes from."}
+
+  - table: goal
+    entity: Goal
+    tier: core
+    domain: Goals
+    kind: dimension
+    grain: "One goal."
+    physical: dim_goal
+    silver: [silver_goal]
+    description: "A financial goal (emergency reserve, school fee, home down payment, retirement income). Frontier goals carry target, current amount and a priority rank; legacy goals carry stated intent and priority. Goals compete for the same cash: never count one rupee twice."
+    synonyms: [savings goal, objective, target, plan]
+    sources:
+      - {silver: silver_goal}
+    post: [goal_progress]
+    columns:
+      - {col: goal_id, type: string, key: true, from: goalId, desc: "Goal identifier such as goal-emergency."}
+      - {col: customer_id, type: string, from: _owner_id, t: owner, desc: "Customer who owns the goal."}
+      - {col: name, type: string, default_label: true, from: title, desc: "Goal name such as Six-month emergency reserve."}
+      - {col: priority_rank, type: int, from: xPriorityRank, desc: "Priority rank, 1 = highest (Frontier only)."}
+      - {col: stated_priority, type: string, from: priority, desc: "Priority the customer stated: high, medium or low (legacy only)."}
+      - {col: status, type: string, from: xStatus, desc: "Goal status such as active (legacy only)."}
+      - {money: target, label: Target Amount, from: targetAmountMinor, desc: "Target amount. When TargetFrequency is monthly it is a monthly amount, not a lump sum."}
+      - {money: current, label: Current Amount, from: allocatedAmountMinor, desc: "Amount set aside so far (Frontier only). It is an earmark on money already held in an account or investment, not additional money."}
+      - {col: progress_pct, type: double, const: null, desc: "Current amount as a percentage of the target (Frontier lump-sum goals)."}
+      - {col: target_date, type: date, from: targetDate, desc: "Date the goal should be met."}
+      - {col: target_frequency, type: string, from: xTargetFrequency, desc: "monthly when the target is a recurring amount (legacy only)."}
+      - {col: intent_summary, type: string, from: xCustomerIntent, desc: "What the customer said they want (legacy only)."}
+      - {col: funding_product_ids, type: string, from: xFundingProductIds, desc: "Products that could fund the goal (semicolon separated, legacy only)."}
+      - {col: release_id, type: string, from: _release_id, desc: "Seed release the row comes from."}
+
+  - table: preference
+    entity: Preference
+    tier: core
+    domain: Goals
+    kind: dimension
+    grain: "One preference key per customer."
+    grain_key: [customer_id, field]
+    physical: dim_preference
+    silver: [silver_preference]
+    description: "A stated customer preference as a field/value pair: contact channel, debt preference, emergency reserve months, which decisions need a human, communication style. Honour them before suggesting anything."
+    synonyms: [setting, customer preference, stated preference]
+    sources:
+      - {silver: silver_preference}
+    columns:
+      - {col: preference_id, type: string, key: true, from: preferenceId, desc: "Preference identifier."}
+      - {col: customer_id, type: string, from: _owner_id, t: owner, desc: "Customer who stated the preference."}
+      - {col: field, type: string, default_label: true, from: field, desc: "Preference name such as contactChannel, debtPreference, communicationStyle."}
+      - {col: preference_value, type: string, from: value, desc: "Preference value; lists are semicolon separated."}
+      - {col: recorded_on, type: date, from: recordedOn, desc: "Date the preference was recorded (legacy only)."}
+      - {col: stated_in, type: string, from: xStatedIn, desc: "Document in which the customer stated it (legacy only)."}
+      - {col: note, type: string, from: xNote, desc: "Free-text note (legacy only)."}
+      - {col: release_id, type: string, from: _release_id, desc: "Seed release the row comes from."}

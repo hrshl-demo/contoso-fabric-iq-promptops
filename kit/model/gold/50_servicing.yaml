@@ -1,0 +1,158 @@
+tables:
+  - table: incident
+    entity: Incident
+    tier: core
+    domain: Servicing
+    kind: fact
+    grain: "One incident."
+    physical: fact_incident
+    silver: [silver_incident]
+    description: "A fraud, scam or dispute case on a customer's money, for example an authorised-payment scam and its recovery. Service first: while an incident is unresolved, no product is sold to the customer. Recovery amount is what was credited back."
+    synonyms: [scam case, fraud case, dispute, complaint, loss event]
+    sources:
+      - {silver: silver_incident}
+    columns:
+      - {col: incident_id, type: string, key: true, from: incidentId, desc: "Incident identifier such as case-scam-001."}
+      - {col: customer_id, type: string, from: _owner_id, t: owner, desc: "Customer affected."}
+      - {col: incident_type, type: string, default_label: true, from: incidentType, desc: "Type such as authorised_payment_scam or card_duplicate_charge."}
+      - {col: status, type: string, from: status, desc: "Case state such as recovery_credit_posted."}
+      - {instant: detected_at, date_col: detected_date_ist, label: Detected At, from: detectedAt, desc: "When the incident was detected."}
+      - {money: amount, label: Amount, from: amountMinor, desc: "Amount involved in the incident."}
+      - {money: recovery_amount, label: Recovery Amount, from: recoveryAmountMinor, desc: "Amount recovered and credited back."}
+      - {col: recovery_evidence_document_id, type: string, from: recoveryEvidenceRef, desc: "Document that evidences the recovery credit."}
+      - {col: evidence_document_ids, type: string, from: evidenceRefs, desc: "Documents that evidence the incident (semicolon separated)."}
+      - {col: narration, type: string, from: transactionDescriptions, desc: "Bank narrations of the affected transactions."}
+      - {col: release_id, type: string, from: _release_id, desc: "Seed release the row comes from."}
+
+  - table: service_record
+    entity: ServiceCase
+    tier: core
+    domain: Servicing
+    kind: fact
+    grain: "One service case."
+    physical: fact_service_case
+    renamed_from: {entity: ServiceRecord, physical: fact_service_record}
+    silver: [silver_service_case]
+    description: "A service case (service record): a servicing contact on a customer's behalf: channel, actions taken and, when applicable, the consented handoff to a human team. A recorded action is not a completed effect: never claim a card is blocked or money returned unless the case says so."
+    synonyms: [service record, service request, servicing contact, case record, handoff, support contact]
+    sources:
+      - {silver: silver_service_case}
+    columns:
+      - {col: service_record_id, type: string, key: true, from: serviceRequestId, desc: "Service record identifier such as svc-scam-001."}
+      - {col: customer_id, type: string, from: _owner_id, t: owner, desc: "Customer served."}
+      - {col: incident_id, type: string, from: caseId, desc: "Incident the contact relates to."}
+      - {col: channel, type: string, default_label: true, from: xChannel, desc: "Channel used: phone, chat, app."}
+      - {instant: opened_at, date_col: opened_date_ist, label: Opened At, from: createdAt, desc: "When the contact was opened."}
+      - {col: actions, type: string, from: xActions, desc: "Actions recorded, such as beneficiary_freeze_requested (semicolon separated)."}
+      - {col: handoff_team, type: string, from: xHumanHandoffTeam, desc: "Human team the case was handed to, such as fraud_operations."}
+      - {col: handoff_reason, type: string, from: xHumanHandoffReason, desc: "Why the case was handed to a human."}
+      - {instant: handoff_at, label: Handoff At, from: xHumanHandoffOccurredAt, desc: "When the handoff happened."}
+      - {col: release_id, type: string, from: _release_id, desc: "Seed release the row comes from."}
+
+  - table: proactive_event
+    entity: ProactiveCandidate
+    tier: extended
+    domain: Servicing
+    kind: fact
+    grain: "One proactive candidate."
+    physical: fact_proactive_candidate
+    renamed_from: {entity: ProactiveEvent, physical: fact_proactive_event}
+    silver: [silver_proactive_candidate]
+    description: "A proactive candidate (proactive event): a fixture for a proactive attention item (monthly health check, school-fee date change, liquidity drop, scam follow-up, mandate state change). It holds evidence references only; a runtime outcome is never recorded in the seed."
+    synonyms: [proactive event, proactive nudge, attention item, nudge, alert trigger]
+    sources:
+      - {silver: silver_proactive_candidate}
+    columns:
+      - {col: event_id, type: string, key: true, from: candidateId, desc: "Event variant identifier such as proactive-liquidity-drop."}
+      - {col: event_type, type: string, default_label: true, from: kind, desc: "Type such as projected_liquidity_threshold or case_followup_due."}
+      - {col: as_of_date, type: date, from: xAsOf, desc: "Business date the fixture is evaluated as of."}
+      - {col: evidence_refs, type: string, from: sourceRefs, desc: "Accounts, goals, documents or cases the event is based on (semicolon separated)."}
+      - {col: disclosure, type: string, from: xDisclosure, desc: "Disclosure that the fixture asserts no recommendation or runtime action."}
+      - {col: release_id, type: string, from: _release_id, desc: "Seed release the row comes from."}
+
+  - table: service_request_type
+    entity: ServiceRequestType
+    tier: core
+    domain: Servicing
+    kind: dimension
+    grain: "One service request type (curated reference source)."
+    physical: dim_service_request_type
+    reference: true
+    description: "A kind of service request the bank can record (card freeze, dispute, ...), with the honest outcome wording and the things that must never be claimed (card actually blocked, reversal done, issuer contacted). Recording an instruction is not executing it."
+    synonyms: [service type, request type, service request]
+    sources:
+      - {data: service-requests.json, list: serviceRequests}
+    columns:
+      - {col: service_type_id, type: string, key: true, from: serviceTypeId, desc: "Service request type identifier such as SR-CARD-FREEZE."}
+      - {col: title, type: string, default_label: true, from: title, desc: "Request title such as Freeze a card."}
+      - {col: summary, type: string, from: summary, desc: "What the request does."}
+      - {col: bu_id, type: string, from: buId, desc: "Business unit that owns the request type."}
+      - {col: journey_ids, type: string, from: journeyIds, t: join, desc: "Journeys that use the request type (semicolon separated)."}
+      - {col: priority, type: string, from: priority, desc: "Default case priority."}
+      - {col: case_title, type: string, from: caseTitle, desc: "Title given to the CRM case."}
+      - {col: stage_ladder, type: string, from: stageLadder, t: join, desc: "Case stages in order (semicolon separated)."}
+      - {col: activation_mode, type: string, from: activationMode, desc: "recorded_synthetic_instruction: the instruction is recorded, not executed."}
+      - {col: recorded_outcome, type: string, from: recordedOutcome, desc: "Honest wording for what was recorded."}
+      - {col: never_claim, type: string, from: neverClaim, t: join, desc: "Statements the assistant must never make about this request (semicolon separated)."}
+
+  - table: document
+    entity: Document
+    tier: core
+    domain: Servicing
+    kind: dimension
+    grain: "One document."
+    physical: dim_document
+    silver: [silver_document]
+    description: "A customer document: salary slip, school fee circular, scam message, card statement, FD renewal notice, loan offer. Documents are evidence only when the customer selected them and consented; FactsText holds the key facts in readable form. Content itself is in Foundry IQ, not here."
+    synonyms: [evidence, statement, letter, notice, receipt, payslip, file]
+    sources:
+      - {silver: silver_document}
+    columns:
+      - {col: document_id, type: string, key: true, from: documentId, desc: "Document identifier such as doc-school-fee or DOC-N-PENSION."}
+      - {col: customer_id, type: string, from: _owner_id, t: owner, desc: "Customer who owns the document."}
+      - {col: title, type: string, default_label: true, from: title, desc: "Document title (legacy only)."}
+      - {col: document_type, type: string, from: documentKind, desc: "Kind of document such as salary_slip, school_fee_evidence, pension_advice, invoice."}
+      - {col: issuer, type: string, from: [xIssuer, xSource], desc: "Who issued the document."}
+      - {col: issued_on, type: date, from: issuedOn, desc: "Issue date (Frontier only)."}
+      - {col: page_count, type: int, from: pageCount, desc: "Number of pages (legacy only)."}
+      - {col: purpose, type: string, from: xPurpose, desc: "Why the document exists in the seed, for example evidence_analysis."}
+      - {col: visibility, type: string, from: xVisibility, desc: "Who may see it, for example owner_seed (legacy only)."}
+      - {col: source_version, type: int, from: sourceVersion, desc: "Document version number (legacy only)."}
+      - {col: superseded_by_document_id, type: string, from: xSupersededByDocumentId, desc: "Newer document that supersedes this one."}
+      - {col: supersedes_document_id, type: string, from: xSupersedesDocumentId, desc: "Older document this one supersedes."}
+      - {col: facts_text, type: string, from: xFactsText, desc: "Key facts stated in the document as readable text: amounts in INR, lists comma separated."}
+      - {col: release_id, type: string, from: _release_id, desc: "Seed release the row comes from."}
+
+  - table: crm_case
+    entity: CrmCase
+    tier: core
+    domain: Servicing
+    kind: fact
+    grain: "One CRM case."
+    physical: fact_crm_case
+    silver: [silver_crm_case]
+    description: "A CRM case that continues a conversation with a human relationship manager: stage, priority, sentiment, SLA, owning RM, journey and products discussed. Legacy release only. Cases belong to ReleaseId retail4-v1."
+    synonyms: [case, ticket, service request, lead, follow-up]
+    sources:
+      - {silver: silver_crm_case}
+    columns:
+      - {col: case_id, type: string, key: true, from: caseId, desc: "Case identifier such as CASE-2026-0001."}
+      - {col: customer_id, type: string, from: _owner_id, t: owner, desc: "Customer the case is about."}
+      - {col: title, type: string, default_label: true, from: title, desc: "Case title."}
+      - {col: summary, type: string, from: summary, desc: "One-sentence case summary."}
+      - {col: stage, type: string, from: stage, desc: "new, in_progress, awaiting_customer, resolved or declined."}
+      - {col: priority, type: string, from: priority, desc: "low, medium or high."}
+      - {col: sentiment, type: string, from: sentiment, desc: "Customer sentiment: positive, neutral or negative."}
+      - {col: channel, type: string, from: channel, desc: "Channel: mobileapp, website, whatsappchatbot, branch, email, phonebanking, inbound_call."}
+      - {col: origin, type: string, from: origin, desc: "How the case started, for example ai_assistant."}
+      - {col: bu_id, type: string, from: buId, desc: "Business unit handling the case."}
+      - {col: journey_id, type: string, from: journeyId, desc: "Conversation journey that led to the case, for example J01."}
+      - {col: owner_rm_id, type: string, from: ownerRmId, desc: "Relationship manager who owns the case."}
+      - {col: product_ids, type: string, from: productIds, desc: "Products discussed (semicolon separated)."}
+      - {col: interactions, type: int, from: interactions, desc: "Number of interactions on the case."}
+      - {col: objection_reason, type: string, from: objectionReason, desc: "Customer objection, when one was raised."}
+      - {col: objection_product_id, type: string, from: objectionProductId, desc: "Product the objection is about."}
+      - {instant: opened_at, date_col: opened_date_ist, label: Opened At, from: openedAt, desc: "When the case was opened."}
+      - {instant: updated_at, label: Updated At, from: updatedAt, desc: "When the case was last updated."}
+      - {instant: sla_due_at, label: SLA Due At, from: slaDueAt, desc: "When the case SLA falls due."}
+      - {col: release_id, type: string, from: _release_id, desc: "Seed release the row comes from."}

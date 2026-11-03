@@ -1,0 +1,145 @@
+{
+  "journeyId": "J10",
+  "title": "Group expenses and settling up",
+  "oneLiner": "Turn a messy group chat into a fair split everyone can see.",
+  "buId": "BU-DIGITAL-PAYMENTS",
+  "icon": "users",
+  "accentHue": 308,
+  "goal": "Produce a clear, evidenced split of shared expenses that the customer can put in front of the group, with the arithmetic visible and any unresolved item flagged.",
+  "triggers": [
+    "split the bill",
+    "who owes what",
+    "shared expenses",
+    "settle up",
+    "split the cost",
+    "share the cost",
+    "who pays what",
+    "owes me money",
+    "split it between us",
+    "work out who owes what",
+    "paid for everyone",
+    "pay me back",
+    "divide the bill",
+    "settle the group",
+    "splitting a trip",
+    "split four ways",
+    "refund on a shared expense",
+    "got a refund on",
+    "one of the things got refunded",
+    "how much does everyone owe",
+    "share the settlement",
+    "wrong person paid"
+  ],
+  "antiTriggers": [
+    "refund not received",
+    "book a flight",
+    "planning a trip",
+    "travel money"
+  ],
+  "sopIds": [
+    "SOP-UC10-GROUP-EXPENSES",
+    "SOP-SHARED-DOCUMENT-REVIEW",
+    "SOP-SHARED-PRODUCT-SUITABILITY"
+  ],
+  "productIds": [
+    "CB-CARD-DEBIT",
+    "CB-SWEEP-MICRO",
+    "CB-SWEEP-FLEX",
+    "CB-RD-STARTER"
+  ],
+  "evidenceHints": [
+    "DOC-V-GROUP-CHAT",
+    "DOC-V-TRIP-RECEIPTS",
+    "DOC-V-REFUNDED-TICKET"
+  ],
+  "documentChoiceStages": [
+    "evidence"
+  ],
+  "toolHints": [
+    "document_analyze",
+    "transactions_query",
+    "catalogue_lookup",
+    "projection"
+  ],
+  "stages": [
+    {
+      "id": "scope",
+      "goal": "Establish who was in the group and which currency they were spending in. Make a chip per participant that can be renamed or merged, and say plainly that a name here is a label in this ledger and not a contact. Two people with the same name have to be told apart before anything is settled. Hand back with `quick_replies`: `That is everyone`, `Two of them share a name`, `Leave it there`.",
+      "exitWhen": "The participants and the currency are established and no two names are ambiguous."
+    },
+    {
+      "id": "evidence",
+      "goal": "Show a draft ledger with one row per expense - who paid, how much, and who it was for - and highlight anything ambiguous. Two receipts from the same source at the same amount are put forward as a possible duplicate and never merged or dropped silently. Hand back with `quick_replies`: `That is everything`, `Those two are the same receipt`, `A receipt is missing`.",
+      "exitWhen": "Every expense is read, and any duplicate has been merged or kept on purpose."
+    },
+    {
+      "id": "split",
+      "goal": "Confirm how each item is divided - equally, by exact amounts, by percentages or by shares - and show what each person's share of it comes to. Being in the group does not mean owing every item. Take each one with `quick_replies`: `Split it equally`, `Not everyone shared this`, `Leave it there`.",
+      "exitWhen": "Each expense has a split rule that reconciles and the right people on it."
+    },
+    {
+      "id": "refunds",
+      "goal": "Handle money coming back. Attach each refund to the expense it belongs to and keep what has actually arrived separate from what is only promised, because a promised refund is not cash and reduces nobody's share. A refund inside this ledger is an adjustment to it, not a servicing case somewhere else. Hand back with `quick_replies`: `It has arrived`, `Still waiting on it`, `Leave it there`.",
+      "exitWhen": "Every refund is attached to its expense and marked received or still expected."
+    },
+    {
+      "id": "reconcile",
+      "goal": "Show the net total, each person's fair share, what they actually paid, and whether they owe or are owed, then the compact set of transfers that clears it. Every figure expands to the rows behind it, the balances have to come to zero before any settlement is shown, and the transfers are suggested with no fee in any of them. Hand back with `quick_replies`: `That adds up`, `One row is wrong`, `Leave it there`.",
+      "exitWhen": "The balances come to zero, each figure traces to its rows, and a suggested settlement is shown that nothing has acted on."
+    },
+    {
+      "id": "correct",
+      "goal": "Put right anything that is wrong - the payer, who shared it, or the amount - and work the balances and transfers out again in place, showing what moved. Changing only the payer or allocation keeps the trip total unchanged; changing an expense amount changes the trip total and dependent balances and transfers. Invalidate earlier settlement drafts. Hand back with `quick_replies`: `Change who paid`, `Change who shared it`, `Change an amount`, `Leave it there`.",
+      "exitWhen": "The correction is committed, the ledger version has moved on, and any earlier draft is void."
+    },
+    {
+      "id": "review",
+      "goal": "Sharing the sheet and paying somebody are two different things and each needs its own confirmation. For sharing, show the exact recipients and the exact words. For paying, show the destination, the amount and which version of the ledger it rests on. A recipient is whoever they pick from their own contacts, never a name matched out of this ledger. Hand back with `quick_replies`: `Show me the message first`, `I will pay this one myself`, `Not now`.",
+      "exitWhen": "A share or a payment has been shown for review and separately confirmed, or set aside."
+    },
+    {
+      "id": "track",
+      "goal": "Keep four things apart: suggested, shared with the group, reported paid by somebody, and actually paid here. Somebody saying they have paid is a report and not something the bank has seen. Say what is still outstanding when only part of it has been settled. Hand back with `quick_replies`: `Someone says they have paid`, `Nothing yet`, `Leave it there`.",
+      "exitWhen": "The ledger is saved, its version recorded, and the settlement status stated as what it truthfully is."
+    }
+  ],
+  "mustEstablish": [
+    "Who is actually in the group.",
+    "Which items are genuinely shared versus individual.",
+    "Whether anything has been refunded - a refunded ticket must not stay in the split.",
+    "How much of their own money is currently out, waiting to come back.",
+    "Whether any two people in the group answer to the same name. Nothing settles until they are told apart."
+  ],
+  "neverDo": [
+    "A group chat is evidence of a conversation, never consent from the other people in it. Do not treat their messages as agreement, and do not contact them.",
+    "Never present a split as settled. It is a proposal the customer takes to the group.",
+    "A split is not a payment. Producing the numbers moves no money.",
+    "Do not turn a disagreement between friends into a dispute case. Nobody here is a merchant.",
+    "This journey does not plan trips. If they are asking about a trip that has not happened yet, that is a different conversation - say so and go there.",
+    "A refund on something the group paid for is an adjustment to this ledger. It is not a refund dispute and it does not belong in another journey - handle it here.",
+    "Names in this ledger are labels the customer typed. Never match one to a contact, an account or a person yourself; a recipient is whoever they pick from their own contacts."
+  ],
+  "objectionPaths": [
+    {
+      "signal": "one person disputes an item",
+      "respondBy": "Leave it out and mark it unresolved. A split with one honest gap is more useful than one with a guess in it."
+    },
+    {
+      "signal": "does not want to chase anyone",
+      "respondBy": "Then finish on the split and leave it with them. Do not propose a product to solve a social problem."
+    }
+  ],
+  "completion": {
+    "default": "The next action is the shareable split: arithmetic visible, the amount they are owed stated, and any unresolved item flagged for the group.",
+    "nivedita": "Unusual. Likely a family contribution rather than a trip - the next action is a simple short split, and no product proposal.",
+    "rhea": "Likely a family holiday already taken. The next action is the household-vs-shared split, with the refunded item handled before anyone is asked to settle.",
+    "ravi": "His core journey. The refunded ticket is the trap - find it before splitting. The next action is the amount each friend owes him, kept light and clear."
+  },
+  "turnCap": 14,
+  "salesPosture": "advise",
+  "openers": [
+    "We all paid for different things on a trip and it has become a mess",
+    "I paid for the whole group and I want to work out who owes me what",
+    "How do I split these costs fairly when one thing got refunded?"
+  ]
+}

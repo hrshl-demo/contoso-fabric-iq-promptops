@@ -1,0 +1,33 @@
+{
+  "resourceGroup": "rg-contoso-fabric-ontology",
+  "location": "eastus2",
+  "capacity": {
+    "name": "contosofabricf4",
+    "sku": "F4",
+    "admins": []
+  },
+  "workspace": {
+    "name": "Contoso-Bank-Ontology-Demo",
+    "description": "Contoso bank ontology demo (synthetic data).",
+    "members": []
+  },
+  "lakehouse": {
+    "name": "ContosoBankLH"
+  },
+  "tags": {
+    "project": "contoso-bank-ontology",
+    "purpose": "demo",
+    "autoPause": "true"
+  },
+  "ontology": {
+    "tier": "core"
+  },
+  "onelake": {
+    "stagingFolder": "Files/staging"
+  },
+  "foundryIq": {
+    "searchEndpointEnv": "AZURE_AI_SEARCH_ENDPOINT",
+    "knowledgeBase": "contoso-bank-ontology-kb",
+    "knowledgeSource": "contoso-bank-ontology-ks"
+  }
+}

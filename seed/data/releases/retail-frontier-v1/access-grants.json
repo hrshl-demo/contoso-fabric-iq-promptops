@@ -1,0 +1,84 @@
+[
+  {
+    "consentRef": "consent-household-view",
+    "deniedPermissions": [
+      "view:private_messages",
+      "transact",
+      "change_mandates",
+      "change_access"
+    ],
+    "grantId": "grant-vivek-view",
+    "householdId": "household-bansal",
+    "ownerId": "rhea",
+    "permissions": [
+      "view:goals",
+      "view:scheduled_obligations",
+      "view:household_budget"
+    ],
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "status": "active",
+    "subjectRef": "member-vivek",
+    "synthetic": true
+  },
+  {
+    "consentRef": "consent-dependent-care",
+    "deniedPermissions": [
+      "view:accounts",
+      "view:transactions",
+      "transact",
+      "change_access"
+    ],
+    "grantId": "grant-savitri-care",
+    "householdId": "household-bansal",
+    "ownerId": "rhea",
+    "permissions": [
+      "view:care_schedule"
+    ],
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "status": "active",
+    "subjectRef": "member-savitri",
+    "synthetic": true
+  },
+  {
+    "deniedPermissions": [
+      "view:accounts",
+      "view:transactions",
+      "transact",
+      "change_access"
+    ],
+    "grantId": "grant-anika-none",
+    "householdId": "household-bansal",
+    "ownerId": "rhea",
+    "permissions": [],
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "status": "inactive_minor_no_access",
+    "subjectRef": "member-anika",
+    "synthetic": true
+  },
+  {
+    "consentRef": "consent-agent-read",
+    "deniedPermissions": [
+      "execute:unmandated_transfer",
+      "change:household_access",
+      "open:credit",
+      "purchase:insurance"
+    ],
+    "grantId": "grant-agent-household",
+    "householdId": "household-bansal",
+    "ownerId": "rhea",
+    "permissions": [
+      "view:goals",
+      "view:scheduled_obligations",
+      "propose:goal_transfer",
+      "notify:obligations"
+    ],
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "status": "active",
+    "subjectRef": "agent-rhea-001",
+    "synthetic": true
+  }
+]

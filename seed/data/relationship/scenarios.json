@@ -1,0 +1,218 @@
+[
+  {
+    "scenarioId": "J01", "ownerId": "nivedita", "cohort": "retirement", "title": "Retirement income and deposits",
+    "startingGoal": "Help me organise pension income and savings while keeping hospital money accessible. Check the existing deposit's actual maturity status before treating it as cash.",
+    "readiness": {"eventIds": ["nivedita-cashflow-recorded", "nivedita-fd-maturity-posted"], "sourceRefs": ["acc-niv-sav-01", "dep-niv-fd-01", "dep-niv-fd-02", "DOC-N-PENSION", "DOC-N-RETIREMENT-NOTE"], "customerInputs": ["Income versus access preference", "Exact amount and term for a separately confirmed renewal; interest not yet evidenced remains excluded"]},
+    "capabilities": ["convert_account", "open_deposit", "open_recurring_deposit", "configure_sweep", "create_goal"], "productFamilies": ["savings", "fixed_deposit", "recurring_deposit", "sweep", "goal_pocket"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J01", "ownerId": "rhea", "cohort": "millennial", "title": "Retirement income and deposits",
+    "startingGoal": "Start a retirement-saving plan without spending the same money on school costs, a home down payment and my current card bill.",
+    "readiness": {"eventIds": ["rhea-cashflow-recorded"], "sourceRefs": ["acc-rhe-sal-01", "card-rhe-cc-01", "DOC-R-FAMILY-NOTE"], "customerInputs": ["Saving horizon", "Affordable contribution and accessible reserve"]},
+    "capabilities": ["convert_account", "open_deposit", "open_recurring_deposit", "create_goal"], "productFamilies": ["savings", "fixed_deposit", "recurring_deposit", "goal_pocket"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J01", "ownerId": "ravi", "cohort": "gen-z", "title": "Retirement income and deposits",
+    "startingGoal": "Help me begin long-term saving from money that has actually arrived, while keeping an emergency buffer and next month's costs available.",
+    "readiness": {"eventIds": ["ravi-payday-posted", "ravi-cashflow-recorded"], "sourceRefs": ["acc-rav-sav-01", "DOC-V-OFFER-LETTER", "DOC-V-BNPL-OFFER"], "customerInputs": ["Saving horizon", "Contribution that can be sustained on observed net pay"]},
+    "capabilities": ["convert_account", "open_deposit", "open_recurring_deposit", "create_goal"], "productFamilies": ["savings", "fixed_deposit", "recurring_deposit", "goal_pocket"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J02", "ownerId": "nivedita", "cohort": "retirement", "title": "Medical estimate and cover",
+    "startingGoal": "Check my procedure estimate against the policy I already hold and help me arrange the uncovered costs without tying up emergency money.",
+    "readiness": {"eventIds": ["nivedita-cashflow-recorded", "nivedita-health-declaration-recorded"], "sourceRefs": ["DOC-N-MEDICAL-ESTIMATE", "DOC-N-HEALTH-POLICY", "DOC-N-INSURER-CLARIFICATION", "pol-niv-health-01"], "customerInputs": ["Insurer's actual current-claim response", "Whether additional future protection is wanted; separate underwriting evidence consent and exact policy confirmation"]},
+    "capabilities": ["create_service_case", "create_goal", "activate_protection"], "productFamilies": ["health_cover", "goal_pocket"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J02", "ownerId": "rhea", "cohort": "millennial", "title": "Medical estimate and cover",
+    "startingGoal": "Understand what my diagnostic estimate might leave me to pay and organise that money. Do not assume I have cover or that a new policy pays an already-known expense.",
+    "readiness": {"eventIds": ["rhea-cashflow-recorded", "rhea-medical-estimate-recorded", "rhea-health-declaration-recorded"], "sourceRefs": ["acc-rhe-sal-01"], "customerInputs": ["Any additional external cover not declared", "Consent to independent future-cover assessment and separate exact policy confirmation"]},
+    "capabilities": ["create_service_case", "create_goal", "activate_protection"], "productFamilies": ["health_cover", "goal_pocket"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J02", "ownerId": "ravi", "cohort": "gen-z", "title": "Medical estimate and cover",
+    "startingGoal": "Set aside an affordable amount for a known medical visit and check whether any employer cover exists before considering protection for the future.",
+    "readiness": {"eventIds": ["ravi-payday-posted", "ravi-cashflow-recorded", "ravi-medical-estimate-recorded", "ravi-health-declaration-recorded"], "sourceRefs": ["acc-rav-sav-01", "DOC-V-OFFER-LETTER"], "customerInputs": ["Any additional employer cover not evidenced", "Consent to future-cover assessment and separate exact policy confirmation"]},
+    "capabilities": ["create_service_case", "create_goal", "activate_protection"], "productFamilies": ["health_cover", "goal_pocket"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J03", "ownerId": "nivedita", "cohort": "retirement", "title": "Suspicious contact and scam check",
+    "startingGoal": "Check the suspicious request against genuine bank contact and help me stop any exposure. I do not want product offers during this incident.",
+    "readiness": {"eventIds": [], "sourceRefs": ["DOC-N-SCAM-CHAT", "DOC-N-LEGITIMATE-NOTICE", "card-niv-dbt-01"], "customerInputs": ["What information was disclosed", "Whether a payment or active session is at risk"]},
+    "capabilities": ["set_card_control", "create_service_case"], "productFamilies": [], "serviceFirst": true, "riskContext": "fraud"
+  },
+  {
+    "scenarioId": "J03", "ownerId": "rhea", "cohort": "millennial", "title": "Suspicious contact and scam check",
+    "startingGoal": "Someone claiming to be the bank requested a code. Help me verify the contact and protect my card without trying to sell me anything.",
+    "readiness": {"eventIds": [], "sourceRefs": ["card-rhe-cc-01"], "customerInputs": ["The actual message or caller details", "Any disclosure, payment or device compromise"]},
+    "capabilities": ["set_card_control", "create_service_case"], "productFamilies": [], "serviceFirst": true, "riskContext": "fraud"
+  },
+  {
+    "scenarioId": "J03", "ownerId": "ravi", "cohort": "gen-z", "title": "Suspicious contact and scam check",
+    "startingGoal": "I have a suspicious account-blocking message. Help me verify it safely and protect access to my money; no sales while the concern is unresolved.",
+    "readiness": {"eventIds": [], "sourceRefs": ["card-rav-dbt-01", "acc-rav-sav-01"], "customerInputs": ["The actual message", "Whether any code or payment was shared"]},
+    "capabilities": ["set_card_control", "create_service_case"], "productFamilies": [], "serviceFirst": true, "riskContext": "fraud"
+  },
+  {
+    "scenarioId": "J04", "ownerId": "nivedita", "cohort": "retirement", "title": "Competing family commitments",
+    "startingGoal": "I need a household appliance and must preserve medical reserves. Compare using surplus, waiting and any affordable borrowing rather than assuming one route is best.",
+    "readiness": {"eventIds": ["nivedita-cashflow-recorded", "nivedita-household-ready"], "sourceRefs": ["acc-niv-sav-01", "dep-niv-fd-02", "DOC-N-RETIREMENT-NOTE"], "customerInputs": ["Purchase timing", "Maximum comfortable repayment and whether any non-emergency collateral may be used"]},
+    "capabilities": ["create_goal", "open_recurring_deposit", "originate_loan", "transfer_funds"], "productFamilies": ["goal_pocket", "recurring_deposit", "personal_loan"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J04", "ownerId": "rhea", "cohort": "millennial", "title": "Competing family commitments",
+    "startingGoal": "Sequence a household purchase, school costs and home savings without using the same surplus more than once or ignoring my current card debt.",
+    "readiness": {"eventIds": ["rhea-cashflow-recorded", "rhea-household-ready"], "sourceRefs": ["DOC-R-SCHOOL-CIRCULAR", "DOC-R-FAMILY-NOTE", "card-rhe-cc-01"], "customerInputs": ["Priority and deadlines", "Chosen affordable amount", "Verified payee for any payment"]},
+    "capabilities": ["create_goal", "open_recurring_deposit", "originate_loan", "transfer_funds"], "productFamilies": ["goal_pocket", "recurring_deposit", "personal_loan"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J04", "ownerId": "ravi", "cohort": "gen-z", "title": "Competing family commitments",
+    "startingGoal": "Compare paying for work equipment, saving for it and any affordable small credit after net pay actually arrives. Keep emergency cash and my remaining BNPL payment protected.",
+    "readiness": {"eventIds": ["ravi-payday-posted", "ravi-cashflow-recorded", "ravi-household-ready"], "sourceRefs": ["DOC-V-BNPL-OFFER", "acc-rav-sav-01"], "customerInputs": ["Urgency and repayment preference", "Verified payee for any payment"]},
+    "capabilities": ["create_goal", "open_recurring_deposit", "originate_loan", "transfer_funds"], "productFamilies": ["goal_pocket", "recurring_deposit", "personal_loan"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J05", "ownerId": "nivedita", "cohort": "retirement", "title": "Home-loan offer and fine print",
+    "startingGoal": "Compare a priced home-related major purchase with paying cash, saving and a short affordable deposit-backed loan. Do not relabel that small purchase as a mortgage or ignore my pension and collateral maturity.",
+    "readiness": {"eventIds": ["nivedita-cashflow-recorded", "nivedita-household-ready"], "sourceRefs": ["DOC-N-PENSION", "dep-niv-fd-02"], "customerInputs": ["Own-cash contribution and any requested borrowing amount", "Comfortable term and explicit permission before pledging non-emergency collateral"]},
+    "capabilities": ["originate_loan", "create_goal", "create_service_case"], "productFamilies": ["home_loan", "personal_loan", "goal_pocket"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J05", "ownerId": "rhea", "cohort": "millennial", "title": "Home-loan offer and fine print",
+    "startingGoal": "Compare my home-loan offers using the fees, prepayment rules and actual budget. If the purchase is not ready, help me fund a realistic next step instead of implying the mortgage is approved.",
+    "readiness": {"eventIds": ["rhea-cashflow-recorded", "rhea-property-ready"], "sourceRefs": ["DOC-R-HOME-OFFER-A", "DOC-R-HOME-OFFER-B", "DOC-R-BONUS-LETTER", "DOC-R-FAMILY-NOTE"], "customerInputs": ["Requested tenor and comfort with actual quoted fees", "Separate credit-assessment consent, exact purchase/loan acceptance and completion authority"]},
+    "capabilities": ["originate_loan", "create_goal", "open_recurring_deposit", "create_service_case"], "productFamilies": ["home_loan", "goal_pocket", "recurring_deposit"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J05", "ownerId": "ravi", "cohort": "gen-z", "title": "Home-loan offer and fine print",
+    "startingGoal": "Compare funding the priced work-equipment purchase from cash, saving or small affordable credit after actual net pay arrives. Keep a future home goal distinct from this small loan; an offer letter is not mortgage approval.",
+    "readiness": {"eventIds": ["ravi-payday-posted", "ravi-cashflow-recorded", "ravi-household-ready"], "sourceRefs": ["DOC-V-OFFER-LETTER", "DOC-V-BNPL-OFFER"], "customerInputs": ["Amount, own contribution and comfortable term", "Separate credit-assessment consent and exact accepted terms if borrowing is chosen"]},
+    "capabilities": ["originate_loan", "create_goal", "open_recurring_deposit", "create_service_case"], "productFamilies": ["personal_loan", "home_loan", "goal_pocket", "recurring_deposit"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J06", "ownerId": "nivedita", "cohort": "retirement", "title": "Spending and card benefits",
+    "startingGoal": "Explain spending from my real transactions and whether my existing account and payment card fit, with a clear comparison of fees and any money that would be locked away.",
+    "readiness": {"eventIds": ["nivedita-cashflow-recorded"], "sourceRefs": ["card-niv-dbt-01", "acc-niv-sav-01"], "customerInputs": ["Whether credit is wanted at all", "Fee tolerance and preferred spending controls"]},
+    "capabilities": ["convert_account", "issue_card", "set_card_control", "open_deposit"], "productFamilies": ["savings", "debit_card", "credit_card", "fixed_deposit"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J06", "ownerId": "rhea", "cohort": "millennial", "title": "Spending and card benefits",
+    "startingGoal": "Show my actual spending and whether the current card remains suitable after fees and existing debt. Keeping it is an option, not a new sale.",
+    "readiness": {"eventIds": ["rhea-cashflow-recorded"], "sourceRefs": ["DOC-R-CARD-STATEMENT", "card-rhe-cc-01", "acc-rhe-sal-01"], "customerInputs": ["Repayment intention", "Fee tolerance and whether a replacement or extra limit is desired"]},
+    "capabilities": ["convert_account", "issue_card", "set_card_control"], "productFamilies": ["savings", "credit_card", "debit_card"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J06", "ownerId": "ravi", "cohort": "gen-z", "title": "Spending and card benefits",
+    "startingGoal": "Use my posted spending and income to explain payment-card choices, including the liquidity cost of secured credit, before I decide whether I need credit.",
+    "readiness": {"eventIds": ["ravi-payday-posted", "ravi-cashflow-recorded"], "sourceRefs": ["card-rav-dbt-01", "DOC-V-CARD-TERMS", "DOC-V-CREDIT-QUESTION"], "customerInputs": ["Express request for credit after explanation", "Affordable limit, deposit term and cash reserve"]},
+    "capabilities": ["convert_account", "issue_card", "set_card_control", "open_deposit"], "productFamilies": ["savings", "debit_card", "credit_card", "fixed_deposit"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J07", "ownerId": "nivedita", "cohort": "retirement", "title": "Purchase and refund resolution",
+    "startingGoal": "Help me document a returned purchase and get a bank service case registered without pretending a promised refund is already in my account.",
+    "readiness": {"eventIds": ["nivedita-purchase-posted"], "sourceRefs": ["acc-niv-sav-01"], "customerInputs": ["Any later merchant reply or settlement reference", "Consent to register the bank service case"]},
+    "capabilities": ["create_service_case", "set_card_control"], "productFamilies": [], "serviceFirst": true
+  },
+  {
+    "scenarioId": "J07", "ownerId": "rhea", "cohort": "millennial", "title": "Purchase and refund resolution",
+    "startingGoal": "Build the purchase and refund timeline from my receipts and bank postings and register the appropriate case. Do not count the merchant's promise as a credit.",
+    "readiness": {"eventIds": [], "sourceRefs": ["DOC-R-REFUND-RECEIPT", "DOC-R-MERCHANT-CHAT", "DOC-R-REFUND-TERMS", "card-rhe-cc-01"], "customerInputs": ["Any later merchant or bank response", "Consent to submit the case"]},
+    "capabilities": ["create_service_case", "set_card_control"], "productFamilies": [], "serviceFirst": true
+  },
+  {
+    "scenarioId": "J07", "ownerId": "ravi", "cohort": "gen-z", "title": "Purchase and refund resolution",
+    "startingGoal": "Document a returned accessory and register the bank support case while distinguishing the purchase debit from a refund that has not posted.",
+    "readiness": {"eventIds": ["ravi-purchase-posted"], "sourceRefs": ["acc-rav-sav-01"], "customerInputs": ["Any later merchant response", "Consent to submit the case"]},
+    "capabilities": ["create_service_case", "set_card_control"], "productFamilies": [], "serviceFirst": true
+  },
+  {
+    "scenarioId": "J08", "ownerId": "nivedita", "cohort": "retirement", "title": "First salary and account setup",
+    "startingGoal": "Organise my regular pension into sensible spending and saving arrangements without relabelling it as salary or locking my hospital reserve.",
+    "readiness": {"eventIds": ["nivedita-cashflow-recorded"], "sourceRefs": ["DOC-N-PENSION", "acc-niv-sav-01"], "customerInputs": ["Monthly saving amount and liquidity preference"]},
+    "capabilities": ["convert_account", "create_goal", "open_recurring_deposit", "open_deposit", "configure_sweep"], "productFamilies": ["savings", "goal_pocket", "recurring_deposit", "fixed_deposit", "sweep"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J08", "ownerId": "rhea", "cohort": "millennial", "title": "First salary and account setup",
+    "startingGoal": "Review where my established salary lands and separate spending, current card repayment and savings without duplicating any allocation.",
+    "readiness": {"eventIds": ["rhea-cashflow-recorded"], "sourceRefs": ["acc-rhe-sal-01", "card-rhe-cc-01", "DOC-R-FAMILY-NOTE"], "customerInputs": ["Accessible reserve, contribution and account preference"]},
+    "capabilities": ["convert_account", "create_goal", "open_recurring_deposit", "configure_sweep"], "productFamilies": ["savings", "goal_pocket", "recurring_deposit", "sweep"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J08", "ownerId": "ravi", "cohort": "gen-z", "title": "First salary and account setup",
+    "startingGoal": "Once my first actual net pay is posted, set up spending and saving sensibly. Before that, distinguish the gross offer and unpaid invoice from available money.",
+    "readiness": {"eventIds": ["ravi-payday-posted", "ravi-cashflow-recorded"], "sourceRefs": ["DOC-V-OFFER-LETTER", "DOC-V-SALARY-ADDENDUM", "DOC-V-BNPL-OFFER", "acc-rav-sav-01"], "customerInputs": ["Saving contribution, liquidity needs and separate consent for each action"]},
+    "capabilities": ["convert_account", "create_goal", "open_deposit", "open_recurring_deposit", "issue_card"], "productFamilies": ["savings", "goal_pocket", "fixed_deposit", "recurring_deposit", "credit_card"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J09", "ownerId": "nivedita", "cohort": "retirement", "title": "Credit and BNPL, explained",
+    "startingGoal": "Explain interest, minimum payments and borrowing against a deposit using my budget. Discuss any application only if I ask after understanding the costs.",
+    "readiness": {"eventIds": ["nivedita-cashflow-recorded"], "sourceRefs": ["DOC-N-PENSION", "dep-niv-fd-02"], "customerInputs": ["Customer's understanding of repayment and collateral", "Explicit borrowing request, purpose, amount and term if any"]},
+    "capabilities": ["create_service_case", "issue_card", "originate_loan", "open_deposit"], "productFamilies": ["credit_card", "personal_loan", "fixed_deposit"], "serviceFirst": false, "educationFirst": true
+  },
+  {
+    "scenarioId": "J09", "ownerId": "rhea", "cohort": "millennial", "title": "Credit and BNPL, explained",
+    "startingGoal": "Explain what paying only the minimum on my existing card means, and compare realistic repayment choices before considering any further credit.",
+    "readiness": {"eventIds": ["rhea-cashflow-recorded"], "sourceRefs": ["DOC-R-CARD-STATEMENT", "card-rhe-cc-01"], "customerInputs": ["Repayment priority", "Explicit request before assessing any additional facility"]},
+    "capabilities": ["create_service_case", "set_card_control", "issue_card", "originate_loan"], "productFamilies": ["credit_card", "personal_loan"], "serviceFirst": false, "educationFirst": true
+  },
+  {
+    "scenarioId": "J09", "ownerId": "ravi", "cohort": "gen-z", "title": "Credit and BNPL, explained",
+    "startingGoal": "Explain my remaining BNPL obligation and the full cost and cash-locking consequences of credit. Only assess a product if I ask after understanding it.",
+    "readiness": {"eventIds": ["ravi-payday-posted", "ravi-cashflow-recorded"], "sourceRefs": ["DOC-V-BNPL-OFFER", "DOC-V-CARD-TERMS", "DOC-V-CREDIT-QUESTION"], "customerInputs": ["Demonstrated repayment understanding", "Separate credit request, affordable limit and unpledged emergency reserve"]},
+    "capabilities": ["create_service_case", "issue_card", "originate_loan", "open_deposit"], "productFamilies": ["credit_card", "personal_loan", "fixed_deposit"], "serviceFirst": false, "educationFirst": true
+  },
+  {
+    "scenarioId": "J10", "ownerId": "nivedita", "cohort": "retirement", "title": "Group expenses and settling up",
+    "startingGoal": "Reconcile the verified second outing separately from older group receipts, and help me settle only what I owe the registered recipient after I review the amount.",
+    "readiness": {"eventIds": ["nivedita-cashflow-recorded", "nivedita-shared-money-ready"], "sourceRefs": ["acc-niv-sav-01"], "customerInputs": ["Confirm this is the outing to settle", "Exact customer authorisation of recipient and amount before any transfer"]},
+    "capabilities": ["transfer_funds", "payment_mandate", "create_goal", "create_service_case"], "productFamilies": ["goal_pocket"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J10", "ownerId": "rhea", "cohort": "millennial", "title": "Group expenses and settling up",
+    "startingGoal": "Reconcile the separate verified shared outing and settle what I owe, without mixing it with earlier receipts or counting money someone owes me as received.",
+    "readiness": {"eventIds": ["rhea-cashflow-recorded", "rhea-shared-money-ready"], "sourceRefs": ["acc-rhe-sal-01"], "customerInputs": ["Confirm which shared ledger to settle", "Exact recipient and amount authorisation"]},
+    "capabilities": ["transfer_funds", "payment_mandate", "create_goal", "create_service_case"], "productFamilies": ["goal_pocket"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J10", "ownerId": "ravi", "cohort": "gen-z", "title": "Group expenses and settling up",
+    "startingGoal": "Keep the original trip's disputed/refunded items separate from the new verified post-joining outing. Help me settle the latter from actual money without spending an unreceived reimbursement.",
+    "readiness": {"eventIds": ["ravi-payday-posted", "ravi-cashflow-recorded", "ravi-shared-money-ready"], "sourceRefs": ["DOC-V-GROUP-CHAT", "DOC-V-TRIP-RECEIPTS", "DOC-V-REFUNDED-TICKET", "acc-rav-sav-01"], "customerInputs": ["Confirm the new shared ledger is the one to settle", "Exact recipient and payment authorisation"]},
+    "capabilities": ["transfer_funds", "payment_mandate", "create_goal", "create_service_case"], "productFamilies": ["goal_pocket"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J11", "ownerId": "nivedita", "cohort": "retirement", "title": "Side-hustle income and savings",
+    "startingGoal": "Keep a one-off tutoring receipt separate from my recurring pension and allocate an affordable reserve without assuming another workshop will be paid.",
+    "readiness": {"eventIds": ["nivedita-cashflow-recorded", "nivedita-irregular-receipt-posted"], "sourceRefs": ["DOC-N-PENSION", "acc-niv-sav-01"], "customerInputs": ["Customer-chosen tax provision or professional advice", "Accessible reserve and saving horizon"]},
+    "capabilities": ["create_goal", "open_deposit", "open_recurring_deposit", "configure_sweep"], "productFamilies": ["goal_pocket", "fixed_deposit", "recurring_deposit", "sweep"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J11", "ownerId": "rhea", "cohort": "millennial", "title": "Side-hustle income and savings",
+    "startingGoal": "Organise an actual freelance receipt separately from salary, a possible bonus and the disputed refund, leaving household commitments covered.",
+    "readiness": {"eventIds": ["rhea-cashflow-recorded", "rhea-irregular-receipt-posted"], "sourceRefs": ["DOC-R-FAMILY-NOTE", "DOC-R-BONUS-LETTER", "acc-rhe-sal-01"], "customerInputs": ["Customer-chosen tax reserve", "Saving target and sustainable contribution"]},
+    "capabilities": ["create_goal", "open_deposit", "open_recurring_deposit", "configure_sweep"], "productFamilies": ["goal_pocket", "fixed_deposit", "recurring_deposit", "sweep"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J11", "ownerId": "ravi", "cohort": "gen-z", "title": "Side-hustle income and savings",
+    "startingGoal": "Separate invoices and client promises from receipts that have actually posted, then organise accessible freelance reserves without pretending irregular income is guaranteed.",
+    "readiness": {"eventIds": ["ravi-budget-recorded", "ravi-invoice-paid"], "sourceRefs": ["DOC-V-CLIENT-BRIEF", "DOC-V-CLIENT-CHAT", "DOC-V-INVOICE-DRAFT", "acc-rav-sav-01"], "customerInputs": ["Invoice scope disputes, if still unresolved", "Chosen tax provision and minimum accessible reserve"]},
+    "capabilities": ["create_goal", "open_deposit", "open_recurring_deposit", "configure_sweep"], "productFamilies": ["goal_pocket", "fixed_deposit", "recurring_deposit", "sweep"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J12", "ownerId": "nivedita", "cohort": "retirement", "title": "Trip planning and travel money", "extraScenario": true,
+    "startingGoal": "Plan an affordable trip and compare payment costs without using my hospital reserve or treating a travel quote as a booking.",
+    "readiness": {"eventIds": ["nivedita-cashflow-recorded"], "sourceRefs": ["card-niv-dbt-01", "acc-niv-sav-01"], "customerInputs": ["Destination, dates, travellers and priced itinerary", "Travel budget and acceptance of payment fees"]},
+    "capabilities": ["create_goal", "issue_card", "set_card_control"], "productFamilies": ["goal_pocket", "debit_card", "prepaid_card", "credit_card"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J12", "ownerId": "rhea", "cohort": "millennial", "title": "Trip planning and travel money", "extraScenario": true,
+    "startingGoal": "Price a trip within my real household budget and compare travel-payment terms after existing card debt and fees are considered.",
+    "readiness": {"eventIds": ["rhea-cashflow-recorded"], "sourceRefs": ["DOC-R-TRAVEL-RECEIPT", "card-rhe-cc-01", "acc-rhe-sal-01"], "customerInputs": ["New trip dates, destination and live quotes", "Total budget and payment preferences"]},
+    "capabilities": ["create_goal", "issue_card", "set_card_control"], "productFamilies": ["goal_pocket", "debit_card", "prepaid_card", "credit_card"], "serviceFirst": false
+  },
+  {
+    "scenarioId": "J12", "ownerId": "ravi", "cohort": "gen-z", "title": "Trip planning and travel money", "extraScenario": true,
+    "startingGoal": "Work out a trip budget from posted money and understandable payment fees, keeping emergency cash safe and without assuming I qualify for credit.",
+    "readiness": {"eventIds": ["ravi-payday-posted", "ravi-cashflow-recorded"], "sourceRefs": ["card-rav-dbt-01", "acc-rav-sav-01"], "customerInputs": ["Destination, dates, travellers and priced itinerary", "Travel budget and funding choice"]},
+    "capabilities": ["create_goal", "issue_card", "set_card_control"], "productFamilies": ["goal_pocket", "debit_card", "prepaid_card", "credit_card"], "serviceFirst": false
+  }
+]

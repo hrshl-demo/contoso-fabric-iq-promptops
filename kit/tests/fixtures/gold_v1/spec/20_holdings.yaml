@@ -1,0 +1,212 @@
+tables:
+  - table: account
+    entity: Account
+    tier: core
+    domain: Holdings
+    description: "A deposit account (salary, reserve, savings). Frontier Rhea has acc-rhea-primary and acc-rhea-reserve. Balances are INR; the *_paise twins are exact integer paise. Posted balance is what the customer owns; available balance is net of holds."
+    synonyms: [bank account, savings account, salary account, current account, a/c, balance]
+    sources:
+      - {release: retail-frontier-v1, file: accounts.json}
+      - {release: retail4-v1, file: accounts.json}
+    columns:
+      - {col: account_id, type: string, key: true, from: accountId, desc: "Account identifier such as acc-rhea-primary."}
+      - {col: customer_id, type: string, from: ownerId, t: owner, desc: "Owning customer."}
+      - {col: product_id, type: string, from: productId, desc: "Catalogue product the account was opened under, for example CB-SAV-SALARY."}
+      - {col: account_type, type: string, default_label: true, from: accountType, desc: "Account type such as salary or reserve (Frontier only)."}
+      - {col: status, type: string, from: status, desc: "Account status such as active."}
+      - {col: currency, type: string, from: currency, desc: "ISO currency code; always INR in this data."}
+      - {col: opened_on, type: date, from: openedOn, desc: "Date the account was opened (legacy only)."}
+      - {col: history_start_on, type: date, from: historyStart, desc: "First date covered by the seeded transaction history (Frontier only)."}
+      - {col: balance_as_on, type: date, from: [balanceAsOf, "$business_date"], desc: "Date the balances are valid for (the release business date)."}
+      - {money: opening_balance, label: Opening Balance, from: openingBalance, desc: "Balance at the start of the seeded history."}
+      - {money: posted_balance, label: Posted Balance, from: postedBalance, desc: "Ledger balance of posted transactions."}
+      - {money: available_balance, label: Available Balance, from: availableBalance, desc: "Balance the customer can use after holds."}
+      - {money: holds_amount, label: Holds, from: holds, desc: "Amount on hold (legacy only)."}
+      - {col: release_id, type: string, from: "$release", desc: "Seed release the row comes from."}
+
+  - table: card
+    entity: Card
+    tier: core
+    domain: Holdings
+    description: "A debit or credit card linked to an account. Frontier Rhea's credit card card-rhea-frontier is temporarily locked after a dispute. Only masked numbers exist. Credit limit is not cash."
+    synonyms: [credit card, debit card, plastic]
+    sources:
+      - {release: retail-frontier-v1, file: cards.json}
+      - {release: retail4-v1, file: cards.json}
+    columns:
+      - {col: card_id, type: string, key: true, from: cardId, desc: "Card identifier such as card-rhea-frontier."}
+      - {col: customer_id, type: string, from: ownerId, t: owner, desc: "Card holder."}
+      - {col: account_id, type: string, from: [accountId, linkedAccountId], desc: "Account the card is linked to."}
+      - {col: product_id, type: string, from: productId, desc: "Catalogue product of the card."}
+      - {col: card_type, type: string, default_label: true, from: cardType, desc: "debit or credit."}
+      - {col: status, type: string, from: status, desc: "Card status such as active or temporarily_locked_after_dispute."}
+      - {col: masked_number, type: string, pii: true, from: maskedNumber, desc: "Masked card number showing only the last four digits (legacy only). Never read it aloud in full."}
+      - {col: expiry_mm_yy, type: string, from: expiry, desc: "Card expiry as MM/YY (legacy only)."}
+      - {money: credit_limit, label: Credit Limit, from: creditLimit, desc: "Approved credit limit. A limit is not available cash."}
+      - {money: available_credit, label: Available Credit, from: availableCredit, desc: "Credit still available to spend."}
+      - {money: outstanding_balance, label: Outstanding Balance, from: [currentBalance, currentOutstanding], desc: "Amount currently owed on the card."}
+      - {money: minimum_due, label: Minimum Due, from: minimumDue, desc: "Minimum payment due on the latest statement (legacy only)."}
+      - {rate_bps: annual_rate, from: annualRateBps, desc: "Annual interest rate on card balances (Frontier only)."}
+      - {col: statement_day, type: int, from: statementDay, desc: "Day of month the statement is generated (Frontier only)."}
+      - {col: payment_due_day, type: int, from: paymentDueDay, desc: "Day of month payment is due (Frontier only)."}
+      - {col: payment_due_on, type: date, from: paymentDueDate, desc: "Next payment due date (legacy only)."}
+      - {col: statement_from, type: date, from: statementPeriod.from, desc: "Start of the current statement period (legacy only)."}
+      - {col: statement_to, type: date, from: statementPeriod.to, desc: "End of the current statement period (legacy only)."}
+      - {col: international_enabled, type: bool, from: controls.internationalTransactions, desc: "True when international use is switched on (legacy only)."}
+      - {col: online_enabled, type: bool, from: controls.onlineTransactions, desc: "True when online use is switched on (legacy only)."}
+      - {col: contactless_enabled, type: bool, from: controls.contactless, desc: "True when contactless use is switched on (legacy only)."}
+      - {col: release_id, type: string, from: "$release", desc: "Seed release the row comes from."}
+
+  - table: deposit
+    entity: Deposit
+    tier: core
+    domain: Holdings
+    description: "A fixed deposit. Frontier Rhea holds dep-rhea-liquid-001 (liquid, withdrawable with a penalty). Maturity proceeds are not spendable cash until a maturity posting exists. The same money can also be an Investment: for net position or total assets count it once, through Investment (Law L5)."
+    synonyms: [fixed deposit, FD, term deposit, time deposit]
+    sources:
+      - {release: retail-frontier-v1, file: deposits.json}
+      - {release: retail4-v1, file: deposits.json}
+    columns:
+      - {col: deposit_id, type: string, key: true, from: depositId, desc: "Deposit identifier such as dep-rhea-liquid-001."}
+      - {col: customer_id, type: string, from: ownerId, t: owner, desc: "Depositor."}
+      - {col: product_id, type: string, from: productId, desc: "Catalogue product of the deposit."}
+      - {col: linked_account_id, type: string, from: linkedAccountId, desc: "Account the deposit is linked to (legacy only)."}
+      - {col: status, type: string, default_label: true, from: status, desc: "Deposit status such as active (legacy only)."}
+      - {money: principal, label: Principal, from: principal, desc: "Amount placed in the deposit."}
+      - {rate_bps: annual_rate, from: annualRateBps, desc: "Annual interest rate (Frontier only)."}
+      - {col: opened_on, type: date, from: openedOn, desc: "Date the deposit was opened."}
+      - {col: matures_on, type: date, from: maturesOn, desc: "Maturity date. A date alone creates no interest or cash."}
+      - {col: liquidity_class, type: string, from: liquidityClass, desc: "How quickly the money can be reached, for example available_with_penalty (Frontier only)."}
+      - {col: maturity_instruction, type: string, from: maturityInstruction, desc: "What happens at maturity, for example renew_principal_and_interest (legacy only)."}
+      - {rate_bps: premature_penalty, from: prematureWithdrawalPenaltyBps, desc: "Penalty for withdrawing before maturity (Frontier only)."}
+      - {col: release_id, type: string, from: "$release", desc: "Seed release the row comes from."}
+
+  - table: loan
+    entity: Loan
+    tier: core
+    domain: Holdings
+    description: "A loan facility. Frontier Rhea has a floating-rate home loan (loan-home-001) and an education loan. Current principal is what is still owed; EMI is the monthly instalment. A disbursed loan is a liability, not income."
+    synonyms: [home loan, mortgage, EMI, credit facility, borrowing]
+    sources:
+      - {release: retail-frontier-v1, file: loans.json}
+    columns:
+      - {col: loan_id, type: string, key: true, from: loanId, desc: "Loan identifier such as loan-home-001."}
+      - {col: customer_id, type: string, from: ownerId, t: owner, desc: "Borrower."}
+      - {col: product_id, type: string, from: productId, desc: "Catalogue product of the loan, for example CB-HL-FLOATING."}
+      - {col: purpose, type: string, default_label: true, from: purpose, desc: "Loan purpose such as owner_occupied_home."}
+      - {col: rate_type, type: string, from: rateType, desc: "floating or fixed."}
+      - {rate_bps: annual_rate, from: annualRateBps, desc: "Annual interest rate of the loan."}
+      - {money: opening_principal, label: Opening Principal, from: openingPrincipal, desc: "Principal at the start of the seeded history."}
+      - {money: current_principal, label: Current Principal, from: currentPrincipal, desc: "Principal still owed."}
+      - {money: emi, label: EMI, from: emi, desc: "Monthly instalment."}
+      - {money: origination_fee, label: Origination Fee, from: originationFee, desc: "One-time fee charged at origination."}
+      - {col: prepayment_applies_to, type: string, from: prepaymentTerms.appliesTo, desc: "Borrower type the prepayment terms apply to."}
+      - {rate_bps: prepayment_charge, from: prepaymentTerms.chargeBps, desc: "Charge on prepayment."}
+      - {money: prepayment_minimum, label: Prepayment Minimum, from: prepaymentTerms.minimumAmount, desc: "Smallest allowed prepayment."}
+      - {col: prepayment_notice_days, type: int, from: prepaymentTerms.noticeDays, desc: "Days of notice needed before a prepayment."}
+      - {col: scheduled_installments, type: int, from: repaymentSchedule, t: len, desc: "Number of instalments in the seeded repayment schedule."}
+      - {col: release_id, type: string, from: "$release", desc: "Seed release the row comes from."}
+
+  - table: loan_installment
+    entity: LoanInstallment
+    tier: core
+    domain: Holdings
+    description: "One scheduled or paid EMI of a loan, split into principal, interest and fees. Use it for questions about interest paid so far or the next instalment."
+    synonyms: [EMI payment, instalment, repayment]
+    sources:
+      - {release: retail-frontier-v1, file: loans.json, explode: repaymentSchedule}
+    columns:
+      - {col: installment_id, type: string, key: true, tpl: "{^.loanId}#{$index:02d}", desc: "Instalment identifier: loan id plus instalment number."}
+      - {col: loan_id, type: string, from: ^.loanId, desc: "Loan the instalment belongs to."}
+      - {col: installment_number, type: int, from: installmentNumber, desc: "Sequence number of the instalment (1 = first)."}
+      - {col: due_on, type: date, from: dueDate, desc: "Due date of the instalment."}
+      - {col: status, type: string, default_label: true, from: status, desc: "paid or scheduled."}
+      - {money: opening_principal, label: Opening Principal, from: openingPrincipal, desc: "Principal at the start of the instalment."}
+      - {money: principal_paid, label: Principal Paid, from: principalPaid, desc: "Principal repaid by this instalment."}
+      - {money: interest_paid, label: Interest Paid, from: interestPaid, desc: "Interest paid in this instalment."}
+      - {money: fees_paid, label: Fees Paid, from: feesPaid, desc: "Fees paid in this instalment."}
+      - {money: total_paid, label: Total Paid, from: totalPaid, desc: "Total paid: principal + interest + fees."}
+      - {money: closing_principal, label: Closing Principal, from: closingPrincipal, desc: "Principal remaining after this instalment."}
+      - {col: payment_description, type: string, from: paymentTransactionDescription, desc: "Bank statement narration of the payment, for example HOME LOAN EMI."}
+
+  - table: insurance_policy
+    entity: InsurancePolicy
+    tier: core
+    domain: Holdings
+    description: "An insurance policy held by a customer (term life, family health, individual health). Sum insured is cover, not cash. New cover is never retroactive and never guaranteed reimbursement."
+    synonyms: [policy, health cover, term cover, life insurance, health insurance]
+    sources:
+      - {release: retail-frontier-v1, file: insurance.json, require: policyId}
+      - {release: retail4-v1, file: policies.json}
+    columns:
+      - {col: policy_id, type: string, key: true, from: policyId, desc: "Policy identifier such as policy-term-001."}
+      - {col: customer_id, type: string, from: ownerId, t: owner, desc: "Policy holder."}
+      - {col: product_id, type: string, from: productId, desc: "Catalogue product the policy was bought under."}
+      - {col: policy_type, type: string, default_label: true, from: [policyType, coverType], desc: "Cover type such as term_life, family_health or individual_health_indemnity."}
+      - {col: status, type: string, from: status, desc: "Policy status such as active."}
+      - {col: insurer, type: string, from: insurer, desc: "Insurer name (legacy only; fictional)."}
+      - {money: premium, label: Premium, from: premium, desc: "Premium per payment period."}
+      - {col: premium_cadence, type: string, from: [premiumCadence, premiumFrequency], desc: "How often the premium is paid, for example monthly."}
+      - {money: sum_insured, label: Sum Insured, from: sumInsured, desc: "Cover amount. Not cash and not guaranteed reimbursement."}
+      - {col: beneficiary_member_ids, type: string, from: beneficiaries, t: join, desc: "Household members named as beneficiaries (semicolon separated)."}
+      - {col: covered_member_ids, type: string, from: coveredMembers, t: join, desc: "People covered by the policy (semicolon separated)."}
+      - {col: started_on, type: date, from: startedOn, desc: "Policy start date (legacy only)."}
+      - {col: renews_on, type: date, from: renewsOn, desc: "Next renewal date (legacy only)."}
+      - {col: linked_account_id, type: string, from: linkedAccountId, desc: "Account the premium is paid from (legacy only)."}
+      - {col: co_pay_pct, type: double, from: coPayPct, t: float, desc: "Co-payment percentage (legacy only)."}
+      - {col: initial_waiting_days, type: int, from: waitingPeriods.initialDays, desc: "Initial waiting period in days (legacy only)."}
+      - {col: pre_existing_waiting_months, type: int, from: waitingPeriods.preExistingMonths, desc: "Waiting period for pre-existing conditions in months (legacy only)."}
+      - {col: policy_number, type: string, pii: true, ontology: false, from: policyNumber, desc: "Insurer policy number. Restricted."}
+      - {col: release_id, type: string, from: "$release", desc: "Seed release the row comes from."}
+
+  - table: protection_gap
+    entity: ProtectionGap
+    tier: core
+    domain: Holdings
+    description: "A planning gap between existing and target protection (for example life cover). It is a synthetic planning figure, not a recommendation, quote or underwriting outcome."
+    synonyms: [insurance gap, cover gap, protection shortfall]
+    sources:
+      - {release: retail-frontier-v1, file: insurance.json, require: protectionGapId}
+    columns:
+      - {col: protection_gap_id, type: string, key: true, from: protectionGapId, desc: "Gap identifier such as gap-life-001."}
+      - {col: customer_id, type: string, from: ownerId, t: owner, desc: "Customer the gap was computed for."}
+      - {col: gap_type, type: string, default_label: true, from: gapType, desc: "Type of cover, for example life_cover."}
+      - {money: existing_protection, label: Existing Protection, from: existingProtection, desc: "Cover already in force."}
+      - {money: target_protection, label: Target Protection, from: targetProtection, desc: "Cover the household would need."}
+      - {money: gap, label: Protection Gap, from: gap, desc: "Target minus existing protection."}
+      - {money: income_replacement, label: Income Replacement, from: basis.incomeReplacement, desc: "Part of the target that replaces income."}
+      - {money: loan_and_education_needs, label: Loan And Education Needs, from: basis.loanAndEducationNeeds, desc: "Part of the target that covers loans and education."}
+      - {money: offset_liquid_assets, label: Offset Liquid Assets, from: basis.offsetLiquidAssets, desc: "Liquid assets deducted from the target."}
+      - {col: disclosure, type: string, from: disclosure, desc: "Mandatory disclosure that this is a planning figure only."}
+      - {col: release_id, type: string, from: "$release", desc: "Seed release the row comes from."}
+
+  - table: investment
+    entity: Investment
+    tier: core
+    domain: Holdings
+    description: "An investment holding (fixed deposit, index fund, reserve). Current value is a market-style figure from the seed, not a guaranteed return. Linked to the goals it funds. For net position or total assets use Investment value: a fixed deposit that is also an Investment is one asset, so never add Deposit principal on top of it (Law L5)."
+    synonyms: [holding, mutual fund, SIP, portfolio item]
+    sources:
+      - {release: retail-frontier-v1, file: investments.json}
+    columns:
+      - {col: investment_id, type: string, key: true, from: investmentId, desc: "Investment identifier such as inv-liquid-fd."}
+      - {col: customer_id, type: string, from: ownerId, t: owner, desc: "Investor."}
+      - {col: product_id, type: string, from: productId, desc: "Catalogue product of the investment."}
+      - {col: investment_type, type: string, default_label: true, from: investmentType, desc: "Type such as fixed_deposit or index_fund."}
+      - {col: liquidity, type: string, from: liquidity, desc: "How quickly the money can be reached."}
+      - {money: current_value, label: Current Value, from: currentValue, desc: "Current value of the holding."}
+      - {col: goal_ids, type: string, from: goalRefs, t: join, desc: "Goals the investment funds (semicolon separated)."}
+      - {col: release_id, type: string, from: "$release", desc: "Seed release the row comes from."}
+
+  - table: investment_goal
+    entity: InvestmentGoal
+    tier: extended
+    domain: Holdings
+    description: "Link between an investment and a goal it funds. Use it to traverse from a goal to the investments behind it."
+    synonyms: [goal funding link]
+    sources:
+      - {release: retail-frontier-v1, file: investments.json, explode: goalRefs}
+    columns:
+      - {col: link_id, type: string, key: true, tpl: "{^.investmentId}>{@}", desc: "Link identifier: investment id > goal id."}
+      - {col: investment_id, type: string, from: ^.investmentId, desc: "Investment."}
+      - {col: goal_id, type: string, default_label: true, from: "@", desc: "Goal the investment funds."}

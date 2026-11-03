@@ -1,0 +1,3006 @@
+[
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This card suits salaried or regular-income customers who want a simple credit card for everyday spending, including use abroad, without tracking spending categories. It can also suit someone looking for a lower annual fee card and a straightforward cashback structure.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:15:30Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-CARD-CLASSIC",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "a025c3b0b966bba739c1d0b118d014e3ebefe9c95e29653898b57553cd2ef829",
+      "responseId": "resp_0f4b3747c4fba4f2006aaab28d6a7c8195862bbaaa9a5bddfd",
+      "specSha256": "dcd0e32a934ff62c414bd042b8a7e1733ba3e30adaaa624055990dc5b470c718"
+    },
+    "benefits": [
+      "You earn 1.0% cashback on spends, so the rewards are simple to understand across purchases.",
+      "Cashback is capped at INR 750.00 per month, which gives clarity on the maximum monthly cashback.",
+      "The annual fee is INR 499.00, which keeps the ongoing card cost relatively modest.",
+      "The annual fee is waived if annual spend reaches INR 1,50,000.00, which can help regular users avoid the fee.",
+      "International use is available, so the card can be used for spends outside India where the network is accepted."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Synthetic Contoso demo product - not a real bank offer.",
+    "displayName": "Contoso Classic Credit Card",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "minimumAge": 21,
+      "minimumMonthlyIncome": 30000,
+      "requiresIncomeEvidence": true
+    },
+    "family": "credit_card",
+    "fees": [
+      "Annual fee of INR 499.00.",
+      "Annual fee is waived on annual spend of INR 1,50,000.00."
+    ],
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "The main trade-off is flat cashback on everything with a low fee, but never the best rate in any single category.",
+      "Cashback is limited to INR 750.00 per month, so higher spend will not keep earning beyond that cap for the month.",
+      "There is an annual fee of INR 499.00 if the annual spend waiver condition is not met.",
+      "You need to be at least 21 years old to apply.",
+      "Minimum monthly income is INR 30,000.00, and income proof is required."
+    ],
+    "liquidityTerms": "This is a credit card, so it is meant for spending up to the card's approved credit limit rather than for depositing money that can be withdrawn on demand.",
+    "mainTradeoff": "Flat cashback on everything with a low fee, but never the best rate in any single category.",
+    "parameters": {
+      "annualFee": 499,
+      "annualFeeWaiverSpend": 150000,
+      "cashbackMonthlyCap": 750,
+      "cashbackPct": 1.0,
+      "displayName": "Contoso Classic Credit Card",
+      "eligibility": {
+        "minimumAge": 21,
+        "minimumMonthlyIncome": 30000,
+        "requiresIncomeEvidence": true
+      },
+      "family": "credit_card",
+      "internationalUse": true
+    },
+    "productId": "CB-CARD-CLASSIC",
+    "productVersion": "v1",
+    "rateTerms": "You earn 1.0% cashback on eligible spends, subject to a maximum cashback of INR 750.00 per month.",
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Proof of income",
+      "Documents showing monthly income of at least INR 30,000.00",
+      "Proof of age showing the applicant is at least 21"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-CARD-CLASSIC"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "prepare_application",
+      "keep_current",
+      "request_information"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": false,
+    "unitRepair": {
+      "appliedAt": "2026-09-16T15:19:11Z",
+      "fields": [
+        "benefits",
+        "fees",
+        "limitations",
+        "rateTerms",
+        "requiredEvidence",
+        "whyNotSuitable"
+      ],
+      "function": "tools/build_release.py::_repair_units",
+      "note": "Percent signs and currency restored to prose that dropped them. authoringProvenance is unchanged and still describes the model's own output, which these strings no longer match; `replacements` carries that output so the hash stays checkable.",
+      "replacements": [
+        {
+          "before": "Cashback is capped at 750 per month, which gives clarity on the maximum monthly cashback.",
+          "field": "benefits",
+          "index": 1
+        },
+        {
+          "before": "The annual fee is 499, which keeps the ongoing card cost relatively modest.",
+          "field": "benefits",
+          "index": 2
+        },
+        {
+          "before": "The annual fee is waived if annual spend reaches 150000, which can help regular users avoid the fee.",
+          "field": "benefits",
+          "index": 3
+        },
+        {
+          "before": "Cashback is limited to 750 per month, so higher spend will not keep earning beyond that cap for the month.",
+          "field": "limitations",
+          "index": 1
+        },
+        {
+          "before": "There is an annual fee of 499 if the annual spend waiver condition is not met.",
+          "field": "limitations",
+          "index": 2
+        },
+        {
+          "before": "Minimum monthly income is 30000, and income proof is required.",
+          "field": "limitations",
+          "index": 4
+        },
+        {
+          "before": "Annual fee of 499.",
+          "field": "fees",
+          "index": 0
+        },
+        {
+          "before": "Annual fee is waived on annual spend of 150000.",
+          "field": "fees",
+          "index": 1
+        },
+        {
+          "before": "You earn 1.0% cashback on eligible spends, subject to a maximum cashback of 750 per month.",
+          "field": "rateTerms",
+          "index": null
+        },
+        {
+          "before": "Documents showing monthly income of at least 30000",
+          "field": "requiredEvidence",
+          "index": 1
+        },
+        {
+          "before": "This card may be a poor fit for customers who want the highest rewards in specific spending categories, because the cashback is flat rather than category-led. It may also not suit someone below 21, earning less than 30000 a month, or unable to provide income evidence.",
+          "field": "whyNotSuitable",
+          "index": null
+        }
+      ],
+      "stringsChanged": 11,
+      "tool": "tools/repair_release_units.py"
+    },
+    "whyNotSuitable": "This card may be a poor fit for customers who want the highest rewards in specific spending categories, because the cashback is flat rather than category-led. It may also not suit someone below 21, earning less than INR 30,000.00 a month, or unable to provide income evidence."
+  },
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This may suit adults who want a simple day-to-day debit card linked to their Contoso savings account. It fits customers who mainly spend domestically and do not need reward features.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:15:36Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-CARD-DEBIT",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "e59278eba15209ec36fc7e46f8349f729106b01805c8d85d1d92bd79dfb7cf21",
+      "responseId": "resp_0e0040ff36b5f38f006aaab29459648194a3e08af71bd758c5",
+      "specSha256": "fd8fab3c75b59d7759bf94c4fde9cef4ff142a29b54b7398a89b3318e3df7ced"
+    },
+    "benefits": [
+      "There is no annual fee.",
+      "It is designed for everyday spending as a debit card.",
+      "Eligibility starts from age 18.",
+      "It works with a linked Contoso savings account, which can suit customers who already bank this way."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Synthetic Contoso demo product - not a real bank offer.",
+    "displayName": "Contoso Everyday Debit Card",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "minimumAge": 18,
+      "requiresLinkedSavingsAccount": true
+    },
+    "family": "debit_card",
+    "fees": [
+      "Annual fee: 0"
+    ],
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "There is no cashback on spending.",
+      "It cannot be used for international use.",
+      "You must have a linked Contoso savings account to hold this card.",
+      "It is only available to customers aged 18 or above.",
+      "The main trade-off is that it is free and simple, with no rewards and no international use."
+    ],
+    "liquidityTerms": "As a debit card, spending is made from your linked savings account. International use is not available.",
+    "mainTradeoff": "Free and simple, with no rewards and no international use.",
+    "parameters": {
+      "annualFee": 0,
+      "cashbackPct": 0.0,
+      "displayName": "Contoso Everyday Debit Card",
+      "eligibility": {
+        "minimumAge": 18,
+        "requiresLinkedSavingsAccount": true
+      },
+      "family": "debit_card",
+      "internationalUse": false
+    },
+    "productId": "CB-CARD-DEBIT",
+    "productVersion": "v1",
+    "rateTerms": null,
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Proof of age showing you are at least 18",
+      "Details needed to link an eligible Contoso savings account",
+      "Standard identity and address documents requested for account servicing"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-CARD-DEBIT"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "keep_current",
+      "request_information"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": false,
+    "whyNotSuitable": "This product is a poor fit for someone who wants cashback, reward benefits, or the ability to use the card internationally. It may also not suit anyone who does not have a linked Contoso savings account."
+  },
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This card suits customers aged 21 or above with a monthly income of at least INR 50,000.00 who spend a meaningful share of their monthly budget on groceries, education and utilities. It can also suit those who want a card that can be used internationally.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:15:42Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-CARD-FAMILY-CASHBACK",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "f7535b824d93b105668bc567b0b0c9ea4f49f182c51d5621288d822016508be2",
+      "responseId": "resp_0ff58ebc97d6cab5006aaab29a2a6c819598b829aa702e9117",
+      "specSha256": "33af418bb97375d9387345b9ceeb30d893e9be375a907e12eda43ad76fa5bc46"
+    },
+    "benefits": [
+      "Earn 5.0% cashback on groceries, education and utilities.",
+      "Cashback on the higher-rate categories is available up to a monthly cap of INR 500.00.",
+      "Spends outside groceries, education and utilities still earn 0.5% cashback.",
+      "The card can be used for international transactions.",
+      "The annual fee is waived when yearly spending reaches INR 2,50,000.00."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Synthetic Contoso demo product - not a real bank offer.",
+    "displayName": "Contoso Family Cashback Card",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "minimumAge": 21,
+      "minimumMonthlyIncome": 50000,
+      "requiresIncomeEvidence": true
+    },
+    "family": "credit_card",
+    "fees": [
+      "Annual fee of INR 999.00.",
+      "Annual fee waiver on yearly spend of INR 2,50,000.00."
+    ],
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "There is an annual fee of INR 999.00 if the spend waiver condition is not met.",
+      "The 5.0% cashback is capped at INR 500.00 per month, so heavy spending in the bonus categories will stop earning at that higher rate beyond the cap.",
+      "All spending outside groceries, education and utilities earns only 0.5% cashback.",
+      "You need to be at least 21 years old to apply.",
+      "Income evidence is required, and the minimum monthly income is INR 50,000.00."
+    ],
+    "liquidityTerms": "This is a credit card, so it is meant for spending rather than parking money for withdrawal. It can be used for domestic and international transactions.",
+    "mainTradeoff": "Strong on household categories, but the 5% is capped monthly and everything outside those categories earns only 0.5% - so the higher fee is only recovered by a genuinely household-weighted spend pattern.",
+    "parameters": {
+      "annualFee": 999,
+      "annualFeeWaiverSpend": 250000,
+      "baseCashbackPct": 0.5,
+      "cashbackCategories": [
+        "groceries",
+        "education",
+        "utilities"
+      ],
+      "cashbackMonthlyCap": 500,
+      "cashbackPct": 5.0,
+      "displayName": "Contoso Family Cashback Card",
+      "eligibility": {
+        "minimumAge": 21,
+        "minimumMonthlyIncome": 50000,
+        "requiresIncomeEvidence": true
+      },
+      "family": "credit_card",
+      "internationalUse": true
+    },
+    "productId": "CB-CARD-FAMILY-CASHBACK",
+    "productVersion": "v1",
+    "rateTerms": "You earn 5.0% cashback on groceries, education and utilities, subject to a monthly cap of INR 500.00. All other eligible spending earns 0.5% cashback.",
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Proof of age showing you are at least 21 years old.",
+      "Income evidence showing monthly income of at least INR 50,000.00."
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-CARD-FAMILY-CASHBACK"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "prepare_application",
+      "keep_current",
+      "request_information"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": false,
+    "unitRepair": {
+      "appliedAt": "2026-09-16T15:19:11Z",
+      "fields": [
+        "audienceDescription",
+        "benefits",
+        "fees",
+        "limitations",
+        "rateTerms",
+        "requiredEvidence",
+        "whyNotSuitable"
+      ],
+      "function": "tools/build_release.py::_repair_units",
+      "note": "Percent signs and currency restored to prose that dropped them. authoringProvenance is unchanged and still describes the model's own output, which these strings no longer match; `replacements` carries that output so the hash stays checkable.",
+      "replacements": [
+        {
+          "before": "This card suits customers aged 21 or above with a monthly income of at least 50000 who spend a meaningful share of their monthly budget on groceries, education and utilities. It can also suit those who want a card that can be used internationally.",
+          "field": "audienceDescription",
+          "index": null
+        },
+        {
+          "before": "Cashback on the higher-rate categories is available up to a monthly cap of 500.",
+          "field": "benefits",
+          "index": 1
+        },
+        {
+          "before": "The annual fee is waived when yearly spending reaches 250000.",
+          "field": "benefits",
+          "index": 4
+        },
+        {
+          "before": "There is an annual fee of 999 if the spend waiver condition is not met.",
+          "field": "limitations",
+          "index": 0
+        },
+        {
+          "before": "The 5.0% cashback is capped at 500 per month, so heavy spending in the bonus categories will stop earning at that higher rate beyond the cap.",
+          "field": "limitations",
+          "index": 1
+        },
+        {
+          "before": "Income evidence is required, and the minimum monthly income is 50000.",
+          "field": "limitations",
+          "index": 4
+        },
+        {
+          "before": "Annual fee of 999.",
+          "field": "fees",
+          "index": 0
+        },
+        {
+          "before": "Annual fee waiver on yearly spend of 250000.",
+          "field": "fees",
+          "index": 1
+        },
+        {
+          "before": "You earn 5.0% cashback on groceries, education and utilities, subject to a monthly cap of 500. All other eligible spending earns 0.5% cashback.",
+          "field": "rateTerms",
+          "index": null
+        },
+        {
+          "before": "Income evidence showing monthly income of at least 50000.",
+          "field": "requiredEvidence",
+          "index": 1
+        },
+        {
+          "before": "This may be a poor fit for customers whose spending is mostly outside groceries, education and utilities, because those transactions earn only 0.5% cashback. It may also not suit anyone unwilling to pay an annual fee of 999 unless they expect to reach yearly spending of 250000.",
+          "field": "whyNotSuitable",
+          "index": null
+        }
+      ],
+      "stringsChanged": 11,
+      "tool": "tools/repair_release_units.py"
+    },
+    "whyNotSuitable": "This may be a poor fit for customers whose spending is mostly outside groceries, education and utilities, because those transactions earn only 0.5% cashback. It may also not suit anyone unwilling to pay an annual fee of INR 999.00 unless they expect to reach yearly spending of INR 2,50,000.00."
+  },
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This can suit adults who need a prepaid card for international spending and already have a linked Contoso savings account. It may also suit someone who wants access without submitting income proof and prefers loading a set amount instead of borrowing.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:15:49Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-CARD-FOREX-PREPAID",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "db125e0c749d0bc3e3a1868a38e17c0031da2479146f2a49cecfe1304b3ce60e",
+      "responseId": "resp_0bddfe03bbd4df86006aaab2a0cf5881948e188c641a702ee3",
+      "specSha256": "3f37230b27c36fb05413841b7a7683e29ade1376dfaddd02c4215f45ac9c743a"
+    },
+    "benefits": [
+      "Foreign-currency transactions use a forex markup of 0.99%, which is the lowest in this range.",
+      "There is no annual fee, so there is no yearly holding charge for the card.",
+      "Income evidence is not required, which can make it reachable without a salary history.",
+      "It can be used internationally.",
+      "You can load up to INR 2,00,000.00 on the card."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Synthetic Contoso demo product - not a real bank offer.",
+    "displayName": "Contoso Prepaid Forex Card",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "minimumAge": 18,
+      "requiresIncomeEvidence": false,
+      "requiresLinkedSavingsAccount": true
+    },
+    "family": "prepaid_card",
+    "fees": [
+      "Issuance fee: INR 199.00.",
+      "Annual fee: 0.",
+      "Reload fee: INR 100.00 per load.",
+      "Refund fee: INR 250.00.",
+      "Free ATM withdrawals abroad: 0."
+    ],
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "You must be at least 18 to apply.",
+      "A linked Contoso savings account is required.",
+      "There is no borrowing on this card, so you can only spend what has been loaded.",
+      "There are no rewards or cashback on spending.",
+      "There are no free ATM withdrawals abroad, and any balance left on the card has to be refunded back rather than simply remaining in an account."
+    ],
+    "liquidityTerms": "This is a prepaid card for loaded funds, with international use. Money left on the card has to be refunded back, and the refund carries a fee of INR 250.00.",
+    "mainTradeoff": "The lowest foreign-exchange markup in the range, no borrowing and no income evidence, so it is reachable without a salary history - but every load and the final refund carry a flat fee, there are no rewards, no free ATM withdrawals abroad, and money left on the card has to be refunded back rather than simply staying in the account.",
+    "parameters": {
+      "annualFee": 0,
+      "atmWithdrawalsAbroadFree": 0,
+      "cashbackPct": 0.0,
+      "displayName": "Contoso Prepaid Forex Card",
+      "eligibility": {
+        "minimumAge": 18,
+        "requiresIncomeEvidence": false,
+        "requiresLinkedSavingsAccount": true
+      },
+      "family": "prepaid_card",
+      "forexMarkupPct": 0.99,
+      "internationalUse": true,
+      "issuanceFee": 199,
+      "maximumLoadAmount": 200000,
+      "refundFee": 250,
+      "reloadFee": 100
+    },
+    "productId": "CB-CARD-FOREX-PREPAID",
+    "productVersion": "v1",
+    "rateTerms": "Foreign-currency transactions carry a forex markup of 0.99%. There is no cashback or rewards rate on spending.",
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Proof of age showing the customer is at least 18.",
+      "Details of the linked Contoso savings account.",
+      "Standard identity and travel-related documents as requested for issuance."
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-CARD-FOREX-PREPAID"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "prepare_application",
+      "keep_current",
+      "request_information"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": false,
+    "unitRepair": {
+      "appliedAt": "2026-09-16T15:19:11Z",
+      "fields": [
+        "benefits",
+        "fees",
+        "liquidityTerms",
+        "rateTerms"
+      ],
+      "function": "tools/build_release.py::_repair_units",
+      "note": "Percent signs and currency restored to prose that dropped them. authoringProvenance is unchanged and still describes the model's own output, which these strings no longer match; `replacements` carries that output so the hash stays checkable.",
+      "replacements": [
+        {
+          "before": "Foreign-currency transactions use a forex markup of 0.99, which is the lowest in this range.",
+          "field": "benefits",
+          "index": 0
+        },
+        {
+          "before": "You can load up to 200000 on the card.",
+          "field": "benefits",
+          "index": 4
+        },
+        {
+          "before": "Issuance fee: 199.",
+          "field": "fees",
+          "index": 0
+        },
+        {
+          "before": "Reload fee: 100 per load.",
+          "field": "fees",
+          "index": 2
+        },
+        {
+          "before": "Refund fee: 250.",
+          "field": "fees",
+          "index": 3
+        },
+        {
+          "before": "Foreign-currency transactions carry a forex markup of 0.99. There is no cashback or rewards rate on spending.",
+          "field": "rateTerms",
+          "index": null
+        },
+        {
+          "before": "This is a prepaid card for loaded funds, with international use. Money left on the card has to be refunded back, and the refund carries a fee of 250.",
+          "field": "liquidityTerms",
+          "index": null
+        }
+      ],
+      "stringsChanged": 7,
+      "tool": "tools/repair_release_units.py"
+    },
+    "whyNotSuitable": "This is a poor fit for someone who wants credit, rewards, or free ATM cash withdrawals abroad. It may also not suit a customer who expects to reload often or keep leftover funds parked, because reloads and the final refund both carry flat fees."
+  },
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This card genuinely suits adults who want a card without an annual fee and without submitting income proof, and who are comfortable placing money in a linked fixed deposit first. It can also suit someone looking to start building a repayment record through regular card use and repayment.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:15:56Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-CARD-STARTER-SECURED",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "dcfcc08f8916322298cb10731094a0c472e883869dc25686748ace80487a67be",
+      "responseId": "resp_04def22fc8b4986e006aaab2a75cd08197a6551637e571c26b",
+      "specSha256": "69aa8298dca578238f201686a82895f3034286dc38e5c7880b4993027022193d"
+    },
+    "benefits": [
+      "There is no annual fee.",
+      "You do not need to provide income evidence.",
+      "The card is available from age 18 onwards.",
+      "The credit limit is set at 90% of the linked fixed deposit.",
+      "You can earn 0.5% cashback on eligible spends."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Synthetic Contoso demo product - not a real bank offer.",
+    "displayName": "Contoso Starter Secured Card",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "minimumAge": 18,
+      "requiresIncomeEvidence": false,
+      "requiresLinkedFixedDeposit": true
+    },
+    "family": "credit_card",
+    "fees": [
+      "Annual fee: 0"
+    ],
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "You must open and keep a linked fixed deposit to get this card.",
+      "The minimum deposit needed for the card is INR 25,000.00.",
+      "Your card limit is capped at 90% of the deposit, so the spending power depends on how much you lock in.",
+      "This card cannot be used internationally.",
+      "No fee and no income proof, and it builds a repayment record - but it requires locking money into a deposit first, so it is not free of cost in practice."
+    ],
+    "liquidityTerms": "Access to this card depends on keeping money in a linked fixed deposit, with a minimum deposit of INR 25,000.00.",
+    "mainTradeoff": "No fee and no income proof, and it builds a repayment record - but it requires locking money into a deposit first, so it is not free of cost in practice.",
+    "parameters": {
+      "annualFee": 0,
+      "cashbackPct": 0.5,
+      "displayName": "Contoso Starter Secured Card",
+      "eligibility": {
+        "minimumAge": 18,
+        "requiresIncomeEvidence": false,
+        "requiresLinkedFixedDeposit": true
+      },
+      "family": "credit_card",
+      "internationalUse": false,
+      "limitAsPctOfDeposit": 90,
+      "minimumDepositForCard": 25000,
+      "securedAgainst": "fixed_deposit"
+    },
+    "productId": "CB-CARD-STARTER-SECURED",
+    "productVersion": "v1",
+    "rateTerms": "You earn 0.5% cashback on eligible spends.",
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Proof of age showing you are at least 18",
+      "Documents needed to open and link the fixed deposit",
+      "Identity and address documents as required for account opening"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-CARD-STARTER-SECURED"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "prepare_application",
+      "keep_current",
+      "request_information"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": false,
+    "unitRepair": {
+      "appliedAt": "2026-09-16T15:19:11Z",
+      "fields": [
+        "limitations",
+        "liquidityTerms",
+        "whyNotSuitable"
+      ],
+      "function": "tools/build_release.py::_repair_units",
+      "note": "Percent signs and currency restored to prose that dropped them. authoringProvenance is unchanged and still describes the model's own output, which these strings no longer match; `replacements` carries that output so the hash stays checkable.",
+      "replacements": [
+        {
+          "before": "The minimum deposit needed for the card is 25000.",
+          "field": "limitations",
+          "index": 1
+        },
+        {
+          "before": "Access to this card depends on keeping money in a linked fixed deposit, with a minimum deposit of 25000.",
+          "field": "liquidityTerms",
+          "index": null
+        },
+        {
+          "before": "This may be a poor fit for someone who does not want to lock money into a fixed deposit or needs international card usage. It may also not suit a customer who wants a higher limit without first placing 25000 in a deposit.",
+          "field": "whyNotSuitable",
+          "index": null
+        }
+      ],
+      "stringsChanged": 3,
+      "tool": "tools/repair_release_units.py"
+    },
+    "whyNotSuitable": "This may be a poor fit for someone who does not want to lock money into a fixed deposit or needs international card usage. It may also not suit a customer who wants a higher limit without first placing INR 25,000.00 in a deposit."
+  },
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This card suits adults who already keep a savings account with Contoso and want to use their own money for international spending. It can fit travellers who want overseas card use with a lower foreign-exchange markup than the credit cards, while avoiding borrowing.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:16:02Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-CARD-TRAVEL-DEBIT",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "b9362342376d65cc03f4a9e66a081bd13df15e37f82b91273dfa5a29aa3245f1",
+      "responseId": "resp_0e0a4abdb9d61356006aaab2adf8a081948774041b84ad3a96",
+      "specSha256": "e1a878ee1511d4f77f196b89fb588aed1c82ef468cc1f83e5738831299eb484e"
+    },
+    "benefits": [
+      "It can be used internationally for spending outside India.",
+      "The foreign-exchange markup is 1.5%, which is lower than the credit cards mentioned in the trade-off.",
+      "You get 2 free ATM withdrawals abroad.",
+      "Because it is a debit card, spending is limited to money already held rather than borrowed.",
+      "It is available to customers aged 18 and above who have a linked savings account."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Synthetic Contoso demo product - not a real bank offer.",
+    "displayName": "Contoso Travel Debit Card",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "minimumAge": 18,
+      "requiresLinkedSavingsAccount": true
+    },
+    "family": "debit_card",
+    "fees": [
+      "Annual fee: INR 499.00",
+      "Foreign-exchange markup: 1.5%"
+    ],
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "There is an annual fee of INR 499.00.",
+      "You must already have a linked Contoso savings account to use this product.",
+      "It is only for customers aged 18 or above.",
+      "It spends only money already held, so it does not provide borrowing.",
+      "The main trade-off is: Lower foreign-exchange markup than the credit cards and no borrowing, but it carries a fee and spends only money already held."
+    ],
+    "liquidityTerms": "You can access funds by using the debit card for purchases internationally, and you get 2 free ATM withdrawals abroad. Spending is only from money already held in the linked savings account.",
+    "mainTradeoff": "Lower foreign-exchange markup than the credit cards and no borrowing, but it carries a fee and spends only money already held.",
+    "parameters": {
+      "annualFee": 499,
+      "atmWithdrawalsAbroadFree": 2,
+      "displayName": "Contoso Travel Debit Card",
+      "eligibility": {
+        "minimumAge": 18,
+        "requiresLinkedSavingsAccount": true
+      },
+      "family": "debit_card",
+      "forexMarkupPct": 1.5,
+      "internationalUse": true
+    },
+    "productId": "CB-CARD-TRAVEL-DEBIT",
+    "productVersion": "v1",
+    "rateTerms": null,
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Proof of age showing the customer is at least 18",
+      "Details of a linked Contoso savings account",
+      "Identity and address documents as required for opening or servicing a debit card"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-CARD-TRAVEL-DEBIT"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "prepare_application",
+      "keep_current",
+      "request_information"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": false,
+    "unitRepair": {
+      "appliedAt": "2026-09-16T15:19:11Z",
+      "fields": [
+        "fees",
+        "limitations"
+      ],
+      "function": "tools/build_release.py::_repair_units",
+      "note": "Percent signs and currency restored to prose that dropped them. authoringProvenance is unchanged and still describes the model's own output, which these strings no longer match; `replacements` carries that output so the hash stays checkable.",
+      "replacements": [
+        {
+          "before": "There is an annual fee of 499.",
+          "field": "limitations",
+          "index": 0
+        },
+        {
+          "before": "Annual fee: 499",
+          "field": "fees",
+          "index": 0
+        }
+      ],
+      "stringsChanged": 2,
+      "tool": "tools/repair_release_units.py"
+    },
+    "whyNotSuitable": "This may not suit someone who does not want to pay an annual fee or who needs access to borrowing for travel spending. It is also a poor fit for anyone without a linked Contoso savings account or below 18 years of age."
+  },
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This card may suit customers who travel internationally and spend regularly on travel bookings, and who can comfortably meet the stated income requirement. It is more relevant for people who expect to use the travel-linked features through the year rather than occasional travellers.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:16:12Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-CARD-TRAVEL-REWARDS",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "511e16a532bebe751c8791d03d829b35d9b59a136e1ba2b03453baa761544f32",
+      "responseId": "resp_0b9991104e07a213006aaab2b64f1881908a67cf83f867c53d",
+      "specSha256": "b61bef68427c5fa4bf9013af45abf3cc2c5a67617b99daa23555653acf1f7bb5"
+    },
+    "benefits": [
+      "Earn 3 reward points for every ₹100 spent on travel purchases.",
+      "Earn 0.5 reward points for every ₹100 spent on other eligible spends.",
+      "Get 2 lounge visits per quarter, which can be useful for regular air travellers.",
+      "The card can be used internationally.",
+      "The annual fee of ₹INR 2,999.00 is waived if yearly spending reaches ₹INR 4,00,000.00."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Synthetic Contoso demo product - not a real bank offer.",
+    "displayName": "Contoso Travel Rewards Card",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "minimumAge": 21,
+      "minimumMonthlyIncome": 75000,
+      "requiresIncomeEvidence": true
+    },
+    "family": "credit_card",
+    "fees": [
+      "Annual fee of ₹INR 2,999.00.",
+      "Annual fee is waived if yearly spending reaches ₹INR 4,00,000.00.",
+      "Forex markup of 1.99% on international transactions."
+    ],
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "The annual fee is ₹INR 2,999.00, which is the main cost to consider.",
+      "This product has the highest fee in the range and is weak on everyday spend.",
+      "A single holiday does not recover the fee.",
+      "International transactions carry a forex markup of 1.99%.",
+      "You must be at least 21 years old, have minimum monthly income of ₹INR 75,000.00, and provide income evidence."
+    ],
+    "liquidityTerms": null,
+    "mainTradeoff": "Genuinely rewarding for frequent travel, but the highest fee in the range and weak on everyday spend. A single holiday does not recover the fee.",
+    "parameters": {
+      "annualFee": 2999,
+      "annualFeeWaiverSpend": 400000,
+      "displayName": "Contoso Travel Rewards Card",
+      "eligibility": {
+        "minimumAge": 21,
+        "minimumMonthlyIncome": 75000,
+        "requiresIncomeEvidence": true
+      },
+      "family": "credit_card",
+      "forexMarkupPct": 1.99,
+      "internationalUse": true,
+      "loungeVisitsPerQuarter": 2,
+      "rewardPointsPerHundredOther": 0.5,
+      "rewardPointsPerHundredTravel": 3
+    },
+    "productId": "CB-CARD-TRAVEL-REWARDS",
+    "productVersion": "v1",
+    "rateTerms": "You earn 3 reward points for every ₹100 spent on travel and 0.5 reward points for every ₹100 spent on other spends.",
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Proof of age showing you are at least 21 years old.",
+      "Income proof showing minimum monthly income of ₹INR 75,000.00."
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-CARD-TRAVEL-REWARDS"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "prepare_application",
+      "keep_current",
+      "request_information"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": false,
+    "unitRepair": {
+      "appliedAt": "2026-09-16T15:19:11Z",
+      "fields": [
+        "benefits",
+        "fees",
+        "limitations",
+        "requiredEvidence",
+        "whyNotSuitable"
+      ],
+      "function": "tools/build_release.py::_repair_units",
+      "note": "Percent signs and currency restored to prose that dropped them. authoringProvenance is unchanged and still describes the model's own output, which these strings no longer match; `replacements` carries that output so the hash stays checkable.",
+      "replacements": [
+        {
+          "before": "The annual fee of ₹2999 is waived if yearly spending reaches ₹400000.",
+          "field": "benefits",
+          "index": 4
+        },
+        {
+          "before": "The annual fee is ₹2999, which is the main cost to consider.",
+          "field": "limitations",
+          "index": 0
+        },
+        {
+          "before": "You must be at least 21 years old, have minimum monthly income of ₹75000, and provide income evidence.",
+          "field": "limitations",
+          "index": 4
+        },
+        {
+          "before": "Annual fee of ₹2999.",
+          "field": "fees",
+          "index": 0
+        },
+        {
+          "before": "Annual fee is waived if yearly spending reaches ₹400000.",
+          "field": "fees",
+          "index": 1
+        },
+        {
+          "before": "Income proof showing minimum monthly income of ₹75000.",
+          "field": "requiredEvidence",
+          "index": 1
+        },
+        {
+          "before": "This card is a poor fit for customers whose spending is mostly everyday purchases or who travel only occasionally. It may also not suit anyone who does not want to pay ₹2999 upfront unless they expect to reach ₹400000 in yearly spending.",
+          "field": "whyNotSuitable",
+          "index": null
+        }
+      ],
+      "stringsChanged": 7,
+      "tool": "tools/repair_release_units.py"
+    },
+    "whyNotSuitable": "This card is a poor fit for customers whose spending is mostly everyday purchases or who travel only occasionally. It may also not suit anyone who does not want to pay ₹INR 2,999.00 upfront unless they expect to reach ₹INR 4,00,000.00 in yearly spending."
+  },
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This deposit is meant for customers aged 60 or above who want to place at least INR 50,000.00 for a fixed period and still keep some access to their money. It may suit someone looking for quarterly interest instead of waiting until the end of the term.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:16:19Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-FD-SENIOR-FLEX",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "3f617d97f0a4c93222f205469754fe4203879b6932bbb5df093f0866775e55b0",
+      "responseId": "resp_03422a92741f4457006aaab2bebfb881959069ec2bae9e5e5f",
+      "specSha256": "873564147ec55c3c1f5c9b2335dd8d5e929ba750d5dbb08f3ccfdb8f4d5923bd"
+    },
+    "benefits": [
+      "Available for senior customers from age 60.",
+      "You can start with a deposit of INR 50,000.00.",
+      "You can choose a term from 12 months up to 36 months.",
+      "Interest is 7.1% and is paid quarterly.",
+      "Partial withdrawal is allowed after 6 months with no partial withdrawal penalty."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Synthetic Contoso demo product - not a real bank offer.",
+    "displayName": "Contoso Senior Flexi Deposit",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "minimumAge": 60,
+      "minimumPrincipal": 50000
+    },
+    "family": "fixed_deposit",
+    "fees": [
+      "Premature withdrawal penalty: 0.5%.",
+      "Partial withdrawal penalty after 6 months: 0.0%."
+    ],
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "This product is only for customers aged 60 or above.",
+      "You need at least INR 50,000.00 to open it.",
+      "The deposit term cannot be shorter than 12 months or longer than 36 months.",
+      "If you close the deposit early, a premature withdrawal penalty of 0.5% applies.",
+      "The main trade-off is: Lower rate than the income deposit, but partial withdrawal after six months carries no penalty. Trades income for access."
+    ],
+    "liquidityTerms": "Partial withdrawal is allowed after 6 months with no partial withdrawal penalty. If the deposit is withdrawn prematurely, a penalty of 0.5% applies.",
+    "mainTradeoff": "Lower rate than the income deposit, but partial withdrawal after six months carries no penalty. Trades income for access.",
+    "parameters": {
+      "displayName": "Contoso Senior Flexi Deposit",
+      "eligibility": {
+        "minimumAge": 60,
+        "minimumPrincipal": 50000
+      },
+      "family": "fixed_deposit",
+      "interestRatePct": 7.1,
+      "maximumTermMonths": 36,
+      "minimumTermMonths": 12,
+      "partialWithdrawalAfterMonths": 6,
+      "partialWithdrawalPenaltyPct": 0.0,
+      "payoutMode": "quarterly",
+      "prematureWithdrawalPenaltyPct": 0.5
+    },
+    "productId": "CB-FD-SENIOR-FLEX",
+    "productVersion": "v1",
+    "rateTerms": "Interest is 7.1% and is paid quarterly.",
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Proof of age showing the customer is at least 60",
+      "Identity proof",
+      "Address proof",
+      "Deposit funding proof or source of funds as asked by the bank"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-FD-SENIOR-FLEX"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "prepare_application",
+      "keep_current",
+      "request_information"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": false,
+    "unitRepair": {
+      "appliedAt": "2026-09-16T15:19:11Z",
+      "fields": [
+        "audienceDescription",
+        "benefits",
+        "fees",
+        "limitations",
+        "liquidityTerms",
+        "rateTerms",
+        "whyNotSuitable"
+      ],
+      "function": "tools/build_release.py::_repair_units",
+      "note": "Percent signs and currency restored to prose that dropped them. authoringProvenance is unchanged and still describes the model's own output, which these strings no longer match; `replacements` carries that output so the hash stays checkable.",
+      "replacements": [
+        {
+          "before": "This deposit is meant for customers aged 60 or above who want to place at least 50000 for a fixed period and still keep some access to their money. It may suit someone looking for quarterly interest instead of waiting until the end of the term.",
+          "field": "audienceDescription",
+          "index": null
+        },
+        {
+          "before": "You can start with a deposit of 50000.",
+          "field": "benefits",
+          "index": 1
+        },
+        {
+          "before": "Interest is 7.1 and is paid quarterly.",
+          "field": "benefits",
+          "index": 3
+        },
+        {
+          "before": "You need at least 50000 to open it.",
+          "field": "limitations",
+          "index": 1
+        },
+        {
+          "before": "If you close the deposit early, a premature withdrawal penalty of 0.5 applies.",
+          "field": "limitations",
+          "index": 3
+        },
+        {
+          "before": "Premature withdrawal penalty: 0.5.",
+          "field": "fees",
+          "index": 0
+        },
+        {
+          "before": "Partial withdrawal penalty after 6 months: 0.0.",
+          "field": "fees",
+          "index": 1
+        },
+        {
+          "before": "Interest is 7.1 and is paid quarterly.",
+          "field": "rateTerms",
+          "index": null
+        },
+        {
+          "before": "Partial withdrawal is allowed after 6 months with no partial withdrawal penalty. If the deposit is withdrawn prematurely, a penalty of 0.5 applies.",
+          "field": "liquidityTerms",
+          "index": null
+        },
+        {
+          "before": "This product is a poor fit for anyone below 60 or anyone who cannot set aside at least 50000. It may also not suit customers who want the higher rate of the income deposit and do not need partial access after six months.",
+          "field": "whyNotSuitable",
+          "index": null
+        }
+      ],
+      "stringsChanged": 10,
+      "tool": "tools/repair_release_units.py"
+    },
+    "whyNotSuitable": "This product is a poor fit for anyone below 60 or anyone who cannot set aside at least INR 50,000.00. It may also not suit customers who want the higher rate of the income deposit and do not need partial access after six months."
+  },
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This suits customers aged 60 and above who can set aside at least INR 1,00,000.00 for a fixed period and want interest paid out monthly as income. It is better suited to those who do not expect to need the deposited money at short notice.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:16:26Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-FD-SENIOR-INCOME",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "c777f66cd6949f1d884cd25b35441cbbdca1be90b7761cc10b2dc312c597b210",
+      "responseId": "resp_0698aed291b54c80006aaab2c562f08196b547a3d4880171f1",
+      "specSha256": "010defbad38eb1addfd9d335f1c38517001a1a90352f04123779eab4b2577d0c"
+    },
+    "benefits": [
+      "Available to customers aged 60 and above.",
+      "You can start with a minimum deposit of INR 1,00,000.00.",
+      "Interest is paid at 7.75%.",
+      "Interest is paid out monthly, which can help if you want a regular income stream.",
+      "You can choose a term from 24 months up to 60 months."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Synthetic Contoso demo product - not a real bank offer.",
+    "displayName": "Contoso Senior Income Deposit",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "minimumAge": 60,
+      "minimumPrincipal": 100000
+    },
+    "family": "fixed_deposit",
+    "fees": [
+      "Premature withdrawal penalty: 1.5%."
+    ],
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "You must be at least 60 years old to be eligible.",
+      "A minimum deposit of INR 1,00,000.00 is required.",
+      "The deposit term cannot be shorter than 24 months.",
+      "If you withdraw before maturity, a penalty of 1.5% applies.",
+      "The main trade-off is a monthly income stream and 7.75% interest, but with a 24-month minimum term and the steepest premature-withdrawal penalty; it is a poor fit if money may be needed suddenly."
+    ],
+    "liquidityTerms": "This is a fixed deposit with a term between 24 months and 60 months. Money is meant to stay invested for the chosen term, and withdrawing early attracts a penalty of 1.5%.",
+    "mainTradeoff": "The highest payout rate and a monthly income stream, but a 24-month minimum term and the steepest premature-withdrawal penalty. Poor fit if money may be needed suddenly.",
+    "parameters": {
+      "displayName": "Contoso Senior Income Deposit",
+      "eligibility": {
+        "minimumAge": 60,
+        "minimumPrincipal": 100000
+      },
+      "family": "fixed_deposit",
+      "interestRatePct": 7.75,
+      "maximumTermMonths": 60,
+      "minimumTermMonths": 24,
+      "payoutMode": "monthly",
+      "prematureWithdrawalPenaltyPct": 1.5
+    },
+    "productId": "CB-FD-SENIOR-INCOME",
+    "productVersion": "v1",
+    "rateTerms": "Interest is 7.75% and is paid out monthly during the deposit term.",
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Proof of age showing the customer is at least 60 years old",
+      "Identity proof",
+      "Address proof",
+      "Recent photograph",
+      "PAN or Form 60, if applicable",
+      "Proof of funds for the deposit amount"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-FD-SENIOR-INCOME"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "prepare_application",
+      "keep_current",
+      "request_information"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": false,
+    "unitRepair": {
+      "appliedAt": "2026-09-16T15:19:11Z",
+      "fields": [
+        "audienceDescription",
+        "benefits",
+        "fees",
+        "limitations",
+        "liquidityTerms",
+        "rateTerms",
+        "whyNotSuitable"
+      ],
+      "function": "tools/build_release.py::_repair_units",
+      "note": "Percent signs and currency restored to prose that dropped them. authoringProvenance is unchanged and still describes the model's own output, which these strings no longer match; `replacements` carries that output so the hash stays checkable.",
+      "replacements": [
+        {
+          "before": "This suits customers aged 60 and above who can set aside at least 100000 for a fixed period and want interest paid out monthly as income. It is better suited to those who do not expect to need the deposited money at short notice.",
+          "field": "audienceDescription",
+          "index": null
+        },
+        {
+          "before": "You can start with a minimum deposit of 100000.",
+          "field": "benefits",
+          "index": 1
+        },
+        {
+          "before": "Interest is paid at 7.75.",
+          "field": "benefits",
+          "index": 2
+        },
+        {
+          "before": "A minimum deposit of 100000 is required.",
+          "field": "limitations",
+          "index": 1
+        },
+        {
+          "before": "If you withdraw before maturity, a penalty of 1.5 applies.",
+          "field": "limitations",
+          "index": 3
+        },
+        {
+          "before": "The main trade-off is a monthly income stream and 7.75 interest, but with a 24-month minimum term and the steepest premature-withdrawal penalty; it is a poor fit if money may be needed suddenly.",
+          "field": "limitations",
+          "index": 4
+        },
+        {
+          "before": "Premature withdrawal penalty: 1.5.",
+          "field": "fees",
+          "index": 0
+        },
+        {
+          "before": "Interest is 7.75 and is paid out monthly during the deposit term.",
+          "field": "rateTerms",
+          "index": null
+        },
+        {
+          "before": "This is a fixed deposit with a term between 24 months and 60 months. Money is meant to stay invested for the chosen term, and withdrawing early attracts a penalty of 1.5.",
+          "field": "liquidityTerms",
+          "index": null
+        },
+        {
+          "before": "This is not suitable for someone below 60 years of age or anyone who cannot commit at least 100000. It is also a poor fit for customers who may need access to their money before 24 months or want to avoid an early-withdrawal penalty.",
+          "field": "whyNotSuitable",
+          "index": null
+        }
+      ],
+      "stringsChanged": 10,
+      "tool": "tools/repair_release_units.py"
+    },
+    "whyNotSuitable": "This is not suitable for someone below 60 years of age or anyone who cannot commit at least INR 1,00,000.00. It is also a poor fit for customers who may need access to their money before 24 months or want to avoid an early-withdrawal penalty."
+  },
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This suits adults who want to place at least INR 10,000.00 for a short period without locking it away. It can fit someone keeping money aside for a need that may arise within 3 to 12 months.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:16:33Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-FD-SHORT-LIQUID",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "f5509cc58b7605c3aa61ef29122777131113974768c97d17153c804ee63ab9be",
+      "responseId": "resp_0e936f9eb00b1726006aaab2cca83c8190a175f313f5df22b8",
+      "specSha256": "c935f732f2a1f208c23b87d511b0a924c135fc9eb1a836bc636f1565dfde153c"
+    },
+    "benefits": [
+      "Minimum entry amount is INR 10,000.00, so the starting amount is relatively small for a fixed deposit.",
+      "You can choose a term from 3 months up to 12 months, which suits short-duration parking of funds.",
+      "Partial withdrawal is allowed from the start, with no waiting period.",
+      "There is no penalty for partial withdrawal, which gives flexibility if you need some of the money back.",
+      "The deposit can be broken before maturity with no penalty, so the full amount is not trapped if plans change."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Synthetic Contoso demo product - not a real bank offer. Issued by Contoso Bank (synthetic demo).",
+    "displayName": "Contoso Short-Term Liquid Deposit",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "minimumAge": 18,
+      "minimumPrincipal": 10000
+    },
+    "family": "fixed_deposit",
+    "fees": [],
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "Interest is 6.1%, and the main trade-off is that this is the lowest deposit rate in the range.",
+      "The deposit cannot run beyond 12 months, so it is not meant for longer-term parking.",
+      "Interest is paid on maturity, so there is no periodic payout during the term.",
+      "You must be at least 18 to open it.",
+      "You need a minimum principal of INR 10,000.00 to start."
+    ],
+    "liquidityTerms": "Money can be accessed from the start through partial withdrawal, with no penalty for partial withdrawal. The deposit can also be closed before maturity with no penalty.",
+    "mainTradeoff": "Can be broken at any time at no penalty and needs only a small principal, so money that may be needed in a few months is not trapped - but it pays the lowest deposit rate in the range and cannot run beyond twelve months. The rate is what the freedom costs.",
+    "parameters": {
+      "displayName": "Contoso Short-Term Liquid Deposit",
+      "eligibility": {
+        "minimumAge": 18,
+        "minimumPrincipal": 10000
+      },
+      "family": "fixed_deposit",
+      "interestRatePct": 6.1,
+      "maximumTermMonths": 12,
+      "minimumTermMonths": 3,
+      "partialWithdrawalAfterMonths": 0,
+      "partialWithdrawalPenaltyPct": 0.0,
+      "payoutMode": "on_maturity",
+      "prematureWithdrawalPenaltyPct": 0.0
+    },
+    "productId": "CB-FD-SHORT-LIQUID",
+    "productVersion": "v1",
+    "rateTerms": "Interest is 6.1%, and it is paid when the deposit matures.",
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Proof of age showing you are at least 18",
+      "Identity proof",
+      "Address proof"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-FD-SHORT-LIQUID"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "prepare_application",
+      "keep_current",
+      "request_information"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": false,
+    "unitRepair": {
+      "appliedAt": "2026-09-16T15:19:11Z",
+      "fields": [
+        "audienceDescription",
+        "benefits",
+        "limitations"
+      ],
+      "function": "tools/build_release.py::_repair_units",
+      "note": "Percent signs and currency restored to prose that dropped them. authoringProvenance is unchanged and still describes the model's own output, which these strings no longer match; `replacements` carries that output so the hash stays checkable.",
+      "replacements": [
+        {
+          "before": "This suits adults who want to place at least 10000 for a short period without locking it away. It can fit someone keeping money aside for a need that may arise within 3 to 12 months.",
+          "field": "audienceDescription",
+          "index": null
+        },
+        {
+          "before": "Minimum entry amount is 10000, so the starting amount is relatively small for a fixed deposit.",
+          "field": "benefits",
+          "index": 0
+        },
+        {
+          "before": "You need a minimum principal of 10000 to start.",
+          "field": "limitations",
+          "index": 4
+        }
+      ],
+      "stringsChanged": 3,
+      "tool": "tools/repair_release_units.py"
+    },
+    "whyNotSuitable": "This is a poor fit for someone who wants a higher deposit rate and is comfortable locking money in for longer. It is also not suitable for anyone who needs a term beyond 12 months or wants interest paid out before maturity."
+  },
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This may suit adults who can set aside at least INR 25,000.00 for a fixed period and are comfortable waiting until the deposit matures to receive interest. It is designed for customers who want a straightforward fixed deposit with a term between 12 months and 60 months.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:16:40Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-FD-STANDARD",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "c74e8444cbd1bcb2ec18e77c53e98435a913a8790d195141b6fc7e56001d1e23",
+      "responseId": "resp_056eb904e43a0247006aaab2d4678081958b13803c6566ec82",
+      "specSha256": "8edcb0da533043ff8e34c8132187bc2c616eb414cde503b44cbbf3b55d208fab"
+    },
+    "benefits": [
+      "Available to customers aged 18 and above.",
+      "You can start with a minimum deposit of INR 25,000.00.",
+      "Offers a fixed deposit term from 12 months up to 60 months.",
+      "Interest is 6.85%.",
+      "The structure is straightforward, with interest paid at maturity."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Contoso Standard Fixed Deposit is a Synthetic Contoso demo product - not a real bank offer.",
+    "displayName": "Contoso Standard Fixed Deposit",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "minimumAge": 18,
+      "minimumPrincipal": 25000
+    },
+    "family": "fixed_deposit",
+    "fees": [
+      "Premature withdrawal penalty: 1.0%."
+    ],
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "Interest is only received at maturity, not during the term.",
+      "If you withdraw before maturity, a penalty of 1.0% applies.",
+      "You need to keep funds locked in for at least 12 months.",
+      "This product requires a minimum deposit of INR 25,000.00, so it may not suit very small savings amounts."
+    ],
+    "liquidityTerms": "Money is placed for a fixed term of 12 months to 60 months. You may be able to withdraw before maturity, but a penalty of 1.0% applies.",
+    "mainTradeoff": "Straightforward and widely available, but interest is only received at maturity.",
+    "parameters": {
+      "displayName": "Contoso Standard Fixed Deposit",
+      "eligibility": {
+        "minimumAge": 18,
+        "minimumPrincipal": 25000
+      },
+      "family": "fixed_deposit",
+      "interestRatePct": 6.85,
+      "maximumTermMonths": 60,
+      "minimumTermMonths": 12,
+      "payoutMode": "on_maturity",
+      "prematureWithdrawalPenaltyPct": 1.0
+    },
+    "productId": "CB-FD-STANDARD",
+    "productVersion": "v1",
+    "rateTerms": "Interest is 6.85%, and it is paid when the deposit matures.",
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Proof of age showing you are at least 18",
+      "Identity proof",
+      "Address proof",
+      "Deposit amount details for at least INR 25,000.00"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-FD-STANDARD"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "prepare_application",
+      "keep_current",
+      "request_information"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": false,
+    "unitRepair": {
+      "appliedAt": "2026-09-16T15:19:11Z",
+      "fields": [
+        "audienceDescription",
+        "benefits",
+        "limitations",
+        "requiredEvidence",
+        "whyNotSuitable"
+      ],
+      "function": "tools/build_release.py::_repair_units",
+      "note": "Percent signs and currency restored to prose that dropped them. authoringProvenance is unchanged and still describes the model's own output, which these strings no longer match; `replacements` carries that output so the hash stays checkable.",
+      "replacements": [
+        {
+          "before": "This may suit adults who can set aside at least 25000 for a fixed period and are comfortable waiting until the deposit matures to receive interest. It is designed for customers who want a straightforward fixed deposit with a term between 12 months and 60 months.",
+          "field": "audienceDescription",
+          "index": null
+        },
+        {
+          "before": "You can start with a minimum deposit of 25000.",
+          "field": "benefits",
+          "index": 1
+        },
+        {
+          "before": "This product requires a minimum deposit of 25000, so it may not suit very small savings amounts.",
+          "field": "limitations",
+          "index": 3
+        },
+        {
+          "before": "Deposit amount details for at least 25000",
+          "field": "requiredEvidence",
+          "index": 3
+        },
+        {
+          "before": "This is a poor fit for customers who may need regular interest payouts before the end of the term or quick access to their money. It may also not suit anyone who cannot set aside at least 25000 for a fixed period.",
+          "field": "whyNotSuitable",
+          "index": null
+        }
+      ],
+      "stringsChanged": 5,
+      "tool": "tools/repair_release_units.py"
+    },
+    "whyNotSuitable": "This is a poor fit for customers who may need regular interest payouts before the end of the term or quick access to their money. It may also not suit anyone who cannot set aside at least INR 25,000.00 for a fixed period."
+  },
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This may suit adults aged 18 to 65 who want a basic health cover option with ₹INR 5,00,000.00 sum insured and are comfortable completing health declaration requirements. It can also fit someone looking for cover with no co-pay, while accepting waiting periods and room-rent limits.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:16:47Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-HEALTH-BASE",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "d526f94e69a37e43248d7b3d353806c228e15727a89bd6123c123a07f80514f7",
+      "responseId": "resp_00fc843016da40b7006aaab2dacb408195a7adf7089bb38e13",
+      "specSha256": "cf53798f37b1592459e59a11c14570a761561dceeda379f7f1340f3cf6608746"
+    },
+    "benefits": [
+      "₹INR 5,00,000.00 sum insured is available under the policy.",
+      "There is 0% co-pay, so the customer is not required to share a percentage of admissible claim costs through co-pay.",
+      "Pre-hospitalisation expenses are covered for 30 days, subject to the policy terms.",
+      "Post-hospitalisation expenses are covered for 60 days, subject to the policy terms.",
+      "Entry is available from age 18 up to 65."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Synthetic Contoso demo product - not a real bank offer. This health cover is distributed by Contoso Bank (synthetic demo) and underwritten by Meridian Demo Assurance (fictional).",
+    "displayName": "Contoso Health Base Cover",
+    "distributor": "Contoso Bank (synthetic demo)",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "maximumEntryAge": 65,
+      "minimumAge": 18,
+      "requiresHealthDeclaration": true
+    },
+    "family": "health_cover",
+    "fees": [
+      "Monthly premium is ₹INR 3,850.00."
+    ],
+    "fictionalUnderwriter": "Meridian Demo Assurance (fictional)",
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "There is a 30-day initial waiting period before cover begins for applicable claims.",
+      "Pre-existing conditions have a 24-month waiting period.",
+      "A room-rent sub-limit of 1.0% applies, so some hospital bills may not be paid in full.",
+      "A health declaration is required.",
+      "The main trade-off is: Solid everyday cover, but a room-rent sub-limit and a 24-month pre-existing wait mean not every claim is paid in full."
+    ],
+    "liquidityTerms": null,
+    "mainTradeoff": "Solid everyday cover, but a room-rent sub-limit and a 24-month pre-existing wait mean not every claim is paid in full.",
+    "parameters": {
+      "coPayPct": 0,
+      "displayName": "Contoso Health Base Cover",
+      "eligibility": {
+        "maximumEntryAge": 65,
+        "minimumAge": 18,
+        "requiresHealthDeclaration": true
+      },
+      "family": "health_cover",
+      "initialWaitingDays": 30,
+      "monthlyPremium": 3850,
+      "postHospitalisationDays": 60,
+      "preExistingWaitingMonths": 24,
+      "preHospitalisationDays": 30,
+      "roomRentSubLimitPct": 1.0,
+      "sumInsured": 500000,
+      "underwritingRequired": true
+    },
+    "productId": "CB-HEALTH-BASE",
+    "productVersion": "v1",
+    "rateTerms": null,
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Age proof",
+      "Identity proof",
+      "Address proof",
+      "Completed health declaration"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-HEALTH-BASE"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "prepare_application",
+      "request_information",
+      "keep_current"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": true,
+    "unitRepair": {
+      "appliedAt": "2026-09-16T15:19:11Z",
+      "fields": [
+        "audienceDescription",
+        "benefits",
+        "fees"
+      ],
+      "function": "tools/build_release.py::_repair_units",
+      "note": "Percent signs and currency restored to prose that dropped them. authoringProvenance is unchanged and still describes the model's own output, which these strings no longer match; `replacements` carries that output so the hash stays checkable.",
+      "replacements": [
+        {
+          "before": "This may suit adults aged 18 to 65 who want a basic health cover option with ₹500000 sum insured and are comfortable completing health declaration requirements. It can also fit someone looking for cover with no co-pay, while accepting waiting periods and room-rent limits.",
+          "field": "audienceDescription",
+          "index": null
+        },
+        {
+          "before": "₹500000 sum insured is available under the policy.",
+          "field": "benefits",
+          "index": 0
+        },
+        {
+          "before": "Monthly premium is ₹3850.",
+          "field": "fees",
+          "index": 0
+        }
+      ],
+      "stringsChanged": 3,
+      "tool": "tools/repair_release_units.py"
+    },
+    "whyNotSuitable": "This may be a poor fit for someone who wants immediate cover for pre-existing conditions or wants to avoid room-rent limits. It may also not suit anyone outside the 18 to 65 entry age range or anyone unwilling to provide a health declaration."
+  },
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This may suit adults who already have a base health policy or other cover for the deductible and want extra protection above that threshold. It can also fit someone looking for ₹10,00,000 top-up cover with a monthly premium of ₹1,200, while accepting waiting periods and shared claim costs.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:16:53Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-HEALTH-TOPUP",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "57e37b39ceafba8141e6ab8dfacd83a475b22f51a503fb679eda7b605606d211",
+      "responseId": "resp_00d0017c7694b2b5006aaab2e1970c819584cacfc2140a7e3b",
+      "specSha256": "425bf5bad39f2abadeaaba36eda36fcb598747648732fece5c9fe59c1fc206fa"
+    },
+    "benefits": [
+      "Provides ₹10,00,000 of health top-up cover.",
+      "Monthly premium is ₹1,200.",
+      "Entry age starts from 18 and goes up to 65.",
+      "There is no room rent sub-limit on this cover.",
+      "Designed to work above a deductible of ₹5,00,000 for people who already have base policy or deductible cover."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Synthetic Contoso demo product - not a real bank offer.",
+    "displayName": "Contoso Health Top-Up Cover",
+    "distributor": "Contoso Bank (synthetic demo)",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "maximumEntryAge": 65,
+      "minimumAge": 18,
+      "requiresBasePolicyOrDeductibleCover": true,
+      "requiresHealthDeclaration": true
+    },
+    "family": "health_cover",
+    "fees": [
+      "Monthly premium is ₹1,200."
+    ],
+    "fictionalUnderwriter": "Meridian Demo Assurance (fictional)",
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "Nothing is paid until the deductible of ₹5,00,000 is crossed.",
+      "After the deductible is crossed, a 10% co-pay applies.",
+      "There is an initial waiting period of 30 days.",
+      "Pre-existing conditions have a waiting period of 24 months.",
+      "A health declaration is required and underwriting is required."
+    ],
+    "liquidityTerms": null,
+    "mainTradeoff": "Large cover for a small premium, but nothing is paid until the deductible is crossed, and a 10% co-pay applies after that.",
+    "parameters": {
+      "coPayPct": 10,
+      "deductible": 500000,
+      "displayName": "Contoso Health Top-Up Cover",
+      "eligibility": {
+        "maximumEntryAge": 65,
+        "minimumAge": 18,
+        "requiresBasePolicyOrDeductibleCover": true,
+        "requiresHealthDeclaration": true
+      },
+      "family": "health_cover",
+      "initialWaitingDays": 30,
+      "monthlyPremium": 1200,
+      "preExistingWaitingMonths": 24,
+      "roomRentSubLimitPct": 0,
+      "sumInsured": 1000000,
+      "underwritingRequired": true
+    },
+    "productId": "CB-HEALTH-TOPUP",
+    "productVersion": "v1",
+    "rateTerms": null,
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Age proof",
+      "Identity and address proof",
+      "Details of existing base policy or deductible cover",
+      "Completed health declaration"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-HEALTH-TOPUP"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "prepare_application",
+      "request_information",
+      "keep_current"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": true,
+    "whyNotSuitable": "This is a poor fit for someone who does not already have a base policy or other cover for the deductible, or who wants claims support from the first rupee of hospitalisation. It may also not suit anyone uncomfortable with a 30-day initial waiting period, a 24-month pre-existing condition waiting period, or paying 10% of eligible costs after the deductible."
+  },
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This may suit home buyers who want a fixed monthly home loan instalment and prefer repayment certainty over possible savings if market rates fall. It is meant for customers aged 23 or above who can provide income proof and property documents.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:17:01Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-HL-FIXED",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "647166449efb9b47e96b78af875c0b10b3587109a222b67b09259679c9b9403f",
+      "responseId": "resp_098ae734cdac334e006aaab2e756fc81949294cebdb1883a81",
+      "specSha256": "b9f754f00dc3dbfe54af5984335c950e70acb8478a73ddf6773210b186d89e79"
+    },
+    "benefits": [
+      "The interest rate is fixed at 9.25%, so the instalment stays the same through the loan term.",
+      "You can take the loan for up to 20 years, which can help spread repayment over a longer period.",
+      "The product allows borrowing up to 75% of the property value, with the remaining amount to be arranged by the customer.",
+      "The age criteria are clearly defined: minimum age is 23, and the loan must finish by age 65.",
+      "The processing fee is 0.5%, giving a clearly stated upfront charge for handling the application."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Synthetic Contoso demo product - not a real bank offer.",
+    "displayName": "Contoso Fixed-Rate Home Loan",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "maximumAgeAtMaturity": 65,
+      "minimumAge": 23,
+      "requiresIncomeEvidence": true,
+      "requiresPropertyDocuments": true
+    },
+    "family": "home_loan",
+    "fees": [
+      "Processing fee of 0.5%.",
+      "Prepayment charge of 2.0% after the first 24 months."
+    ],
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "The main trade-off is that the instalment is fixed for the whole term, so the repayment never moves whatever happens to rates - but it is the highest rate in the range, prepayment is locked for twenty-four months and then charged, and the maximum loan-to-value is lower. Paying more from the start is what buys the certainty, and that is a loss if rates fall.",
+      "The maximum loan-to-value is 75%, so you will need to bring in a larger own contribution than with a higher-LTV loan.",
+      "Prepayment is locked for the first 24 months.",
+      "After that lock-in period, prepayment is charged at 2.0%.",
+      "This product requires underwriting, so the application is not just a formality and supporting documents are needed."
+    ],
+    "liquidityTerms": "This is a home loan, so money is not available like a deposit balance. Prepayment is locked for the first 24 months, and after that any prepayment attracts a charge of 2.0%.",
+    "mainTradeoff": "The instalment is fixed for the whole term, so the repayment never moves whatever happens to rates - but it is the highest rate in the range, prepayment is locked for twenty-four months and then charged, and the maximum loan-to-value is lower. Paying more from the start is what buys the certainty, and that is a loss if rates fall.",
+    "parameters": {
+      "displayName": "Contoso Fixed-Rate Home Loan",
+      "eligibility": {
+        "maximumAgeAtMaturity": 65,
+        "minimumAge": 23,
+        "requiresIncomeEvidence": true,
+        "requiresPropertyDocuments": true
+      },
+      "family": "home_loan",
+      "interestRatePct": 9.25,
+      "maximumLtvPct": 75,
+      "maximumTenureYears": 20,
+      "prepaymentChargePct": 2.0,
+      "prepaymentLockInMonths": 24,
+      "processingFeePct": 0.5,
+      "rateType": "fixed",
+      "underwritingRequired": true
+    },
+    "productId": "CB-HL-FIXED",
+    "productVersion": "v1",
+    "rateTerms": "Interest is charged at a fixed rate of 9.25% for the loan, so the repayment amount does not change during the term.",
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Income evidence.",
+      "Property documents.",
+      "Proof of age and identity."
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-HL-FIXED"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "prepare_application",
+      "request_information",
+      "keep_current"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": true,
+    "unitRepair": {
+      "appliedAt": "2026-09-16T15:19:11Z",
+      "fields": [
+        "benefits",
+        "fees",
+        "limitations",
+        "liquidityTerms",
+        "rateTerms"
+      ],
+      "function": "tools/build_release.py::_repair_units",
+      "note": "Percent signs and currency restored to prose that dropped them. authoringProvenance is unchanged and still describes the model's own output, which these strings no longer match; `replacements` carries that output so the hash stays checkable.",
+      "replacements": [
+        {
+          "before": "The interest rate is fixed at 9.25, so the instalment stays the same through the loan term.",
+          "field": "benefits",
+          "index": 0
+        },
+        {
+          "before": "The product allows borrowing up to 75 of the property value, with the remaining amount to be arranged by the customer.",
+          "field": "benefits",
+          "index": 2
+        },
+        {
+          "before": "The processing fee is 0.5, giving a clearly stated upfront charge for handling the application.",
+          "field": "benefits",
+          "index": 4
+        },
+        {
+          "before": "The maximum loan-to-value is 75, so you will need to bring in a larger own contribution than with a higher-LTV loan.",
+          "field": "limitations",
+          "index": 1
+        },
+        {
+          "before": "After that lock-in period, prepayment is charged at 2.0.",
+          "field": "limitations",
+          "index": 3
+        },
+        {
+          "before": "Processing fee of 0.5.",
+          "field": "fees",
+          "index": 0
+        },
+        {
+          "before": "Prepayment charge of 2.0 after the first 24 months.",
+          "field": "fees",
+          "index": 1
+        },
+        {
+          "before": "Interest is charged at a fixed rate of 9.25 for the loan, so the repayment amount does not change during the term.",
+          "field": "rateTerms",
+          "index": null
+        },
+        {
+          "before": "This is a home loan, so money is not available like a deposit balance. Prepayment is locked for the first 24 months, and after that any prepayment attracts a charge of 2.0.",
+          "field": "liquidityTerms",
+          "index": null
+        }
+      ],
+      "stringsChanged": 9,
+      "tool": "tools/repair_release_units.py"
+    },
+    "whyNotSuitable": "This is a poor fit for someone who wants flexibility to prepay early or who is trying to maximise borrowing against the property value. It may also not suit a customer who expects falling rates and would prefer repayments that could reduce instead of staying fixed."
+  },
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This may suit a home buyer who wants flexibility to prepay at any time and may make use of an overdraft facility during the loan term. It is more relevant for applicants aged 23 or above whose loan can finish by age 65 and who can provide income and property documents.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:17:09Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-HL-FLEX",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "216c05b9458dd4a4b9fc80181ce2483553a75c3f2dc4e4dffed928039e6acaa2",
+      "responseId": "resp_04f123f15758fc87006aaab2efa06c819688f202231f3b556f",
+      "specSha256": "3f2fe124558368a425c6941f3e24a78620ee9dc46bbfe6b693acbb0855a9c0ba"
+    },
+    "benefits": [
+      "Floating interest rate of 8.75%, so the rate can move over time rather than staying fixed for the full tenure.",
+      "Unlimited free prepayment, because the prepayment charge is 0.0% and the lock-in period is 0 months.",
+      "Overdraft facility is available, which can add flexibility in how funds are accessed and managed.",
+      "Maximum tenure of 20 years can help spread repayments over a longer period.",
+      "Financing is available up to 75% of the property value, which sets the maximum loan-to-value for this product."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Synthetic Contoso demo product - not a real bank offer. Issued by Contoso Bank (synthetic demo).",
+    "displayName": "Contoso Flexi Home Loan",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "maximumAgeAtMaturity": 65,
+      "minimumAge": 23,
+      "requiresIncomeEvidence": true,
+      "requiresPropertyDocuments": true
+    },
+    "family": "home_loan",
+    "fees": [
+      "Processing fee of 0.25% of the loan amount.",
+      "Prepayment charge is 0.0%."
+    ],
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "The main trade-off is a higher rate and a lower maximum loan-to-value, with the flexibility benefits making more sense only if prepayment actually happens.",
+      "The interest rate is floating, so repayments may change over time.",
+      "The maximum loan-to-value is 75%, so you will need to arrange the remaining property cost from your own sources.",
+      "Eligibility is restricted: minimum age is 23 and the loan must mature by age 65.",
+      "Income evidence and property documents are required, and underwriting is required before the loan can proceed."
+    ],
+    "liquidityTerms": "An overdraft facility is available. Prepayment is allowed at any time because the lock-in period is 0 months and the prepayment charge is 0.0%.",
+    "mainTradeoff": "Higher rate and a lower maximum loan-to-value, but unlimited free prepayment and an overdraft facility. Better only if prepayment actually happens.",
+    "parameters": {
+      "displayName": "Contoso Flexi Home Loan",
+      "eligibility": {
+        "maximumAgeAtMaturity": 65,
+        "minimumAge": 23,
+        "requiresIncomeEvidence": true,
+        "requiresPropertyDocuments": true
+      },
+      "family": "home_loan",
+      "interestRatePct": 8.75,
+      "maximumLtvPct": 75,
+      "maximumTenureYears": 20,
+      "overdraftFacility": true,
+      "prepaymentChargePct": 0.0,
+      "prepaymentLockInMonths": 0,
+      "processingFeePct": 0.25,
+      "rateType": "floating",
+      "underwritingRequired": true
+    },
+    "productId": "CB-HL-FLEX",
+    "productVersion": "v1",
+    "rateTerms": "Interest is charged at 8.75% on a floating-rate basis, so the rate can change over the course of the loan.",
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Proof of income",
+      "Property documents"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-HL-FLEX"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "prepare_application",
+      "request_information",
+      "keep_current"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": true,
+    "unitRepair": {
+      "appliedAt": "2026-09-16T15:19:11Z",
+      "fields": [
+        "benefits",
+        "fees",
+        "limitations",
+        "liquidityTerms",
+        "rateTerms",
+        "whyNotSuitable"
+      ],
+      "function": "tools/build_release.py::_repair_units",
+      "note": "Percent signs and currency restored to prose that dropped them. authoringProvenance is unchanged and still describes the model's own output, which these strings no longer match; `replacements` carries that output so the hash stays checkable.",
+      "replacements": [
+        {
+          "before": "Floating interest rate of 8.75, so the rate can move over time rather than staying fixed for the full tenure.",
+          "field": "benefits",
+          "index": 0
+        },
+        {
+          "before": "Unlimited free prepayment, because the prepayment charge is 0.0 and the lock-in period is 0 months.",
+          "field": "benefits",
+          "index": 1
+        },
+        {
+          "before": "Financing is available up to 75 of the property value, which sets the maximum loan-to-value for this product.",
+          "field": "benefits",
+          "index": 4
+        },
+        {
+          "before": "The maximum loan-to-value is 75, so you will need to arrange the remaining property cost from your own sources.",
+          "field": "limitations",
+          "index": 2
+        },
+        {
+          "before": "Processing fee of 0.25 of the loan amount.",
+          "field": "fees",
+          "index": 0
+        },
+        {
+          "before": "Prepayment charge is 0.0.",
+          "field": "fees",
+          "index": 1
+        },
+        {
+          "before": "Interest is charged at 8.75 on a floating-rate basis, so the rate can change over the course of the loan.",
+          "field": "rateTerms",
+          "index": null
+        },
+        {
+          "before": "An overdraft facility is available. Prepayment is allowed at any time because the lock-in period is 0 months and the prepayment charge is 0.0.",
+          "field": "liquidityTerms",
+          "index": null
+        },
+        {
+          "before": "This is a poor fit for someone who wants payment certainty from a fixed rate, needs to borrow more than 75 of the property value, or does not expect to prepay at all. It may also not suit applicants who cannot provide income evidence and property documents or whose loan term would run beyond age 65.",
+          "field": "whyNotSuitable",
+          "index": null
+        }
+      ],
+      "stringsChanged": 9,
+      "tool": "tools/repair_release_units.py"
+    },
+    "whyNotSuitable": "This is a poor fit for someone who wants payment certainty from a fixed rate, needs to borrow more than 75% of the property value, or does not expect to prepay at all. It may also not suit applicants who cannot provide income evidence and property documents or whose loan term would run beyond age 65."
+  },
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This can suit salaried or self-employed customers aged 23 or above who are buying a home and want a floating-rate home loan with a tenure of up to 25 years. It is more relevant for borrowers who can provide income evidence and property documents and who do not expect to prepay early.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:17:17Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-HL-STANDARD",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "47ee08c1509f4cc6f7e7fed3d0a22cc3e913276c5c1efd3d5ea4889e85fb5d04",
+      "responseId": "resp_0d3b8a4cb146b06f006aaab2f75c588197b9c7b33e80b665cd",
+      "specSha256": "1e0a234f216a880f42e3ae613747b599cde46ec32d86171c7ccbeafe9028991a"
+    },
+    "benefits": [
+      "Floating interest rate at 8.45%, which may suit customers comfortable with a rate that can move over time.",
+      "Loan funding is available up to 80% of the property value, which can reduce the upfront amount needed from your own funds.",
+      "Repayment tenure can go up to 25 years, which can help spread the cost over a longer period.",
+      "Processing fee is 0.5% of the loan amount, stated clearly at the start.",
+      "The product is open to applicants from age 23, with maturity allowed up to age 65."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Synthetic Contoso demo product - not a real bank offer.",
+    "displayName": "Contoso Standard Home Loan",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "maximumAgeAtMaturity": 65,
+      "minimumAge": 23,
+      "requiresIncomeEvidence": true,
+      "requiresPropertyDocuments": true
+    },
+    "family": "home_loan",
+    "fees": [
+      "Processing fee of 0.5% of the loan amount.",
+      "Prepayment charge of 2.0% after the first 12 months, with prepayment locked during the first 12 months."
+    ],
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "Prepayment is locked for the first 12 months.",
+      "After the lock-in period, prepayment charge is 2.0%.",
+      "The main trade-off is the lower headline rate, but prepayment is locked for twelve months and then charged. Costly if a bonus is meant to shorten the loan.",
+      "You must provide income evidence as part of the application.",
+      "You must provide property documents, and the loan is subject to underwriting."
+    ],
+    "liquidityTerms": "This is a home loan, not a deposit product. Money is not available for withdrawal like savings; if you want to reduce the loan early, prepayment is not allowed for the first 12 months and is charged at 2.0% after that.",
+    "mainTradeoff": "The lower headline rate, but prepayment is locked for twelve months and then charged. Costly if a bonus is meant to shorten the loan.",
+    "parameters": {
+      "displayName": "Contoso Standard Home Loan",
+      "eligibility": {
+        "maximumAgeAtMaturity": 65,
+        "minimumAge": 23,
+        "requiresIncomeEvidence": true,
+        "requiresPropertyDocuments": true
+      },
+      "family": "home_loan",
+      "interestRatePct": 8.45,
+      "maximumLtvPct": 80,
+      "maximumTenureYears": 25,
+      "prepaymentChargePct": 2.0,
+      "prepaymentLockInMonths": 12,
+      "processingFeePct": 0.5,
+      "rateType": "floating",
+      "underwritingRequired": true
+    },
+    "productId": "CB-HL-STANDARD",
+    "productVersion": "v1",
+    "rateTerms": "Interest is charged at a floating rate of 8.45%, so the rate can change over the life of the loan.",
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Proof of age to show you meet the minimum age of 23 and maturity by age 65.",
+      "Income evidence.",
+      "Property documents."
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-HL-STANDARD"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "prepare_application",
+      "request_information",
+      "keep_current"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": true,
+    "unitRepair": {
+      "appliedAt": "2026-09-16T15:19:11Z",
+      "fields": [
+        "benefits",
+        "fees",
+        "limitations",
+        "liquidityTerms",
+        "rateTerms"
+      ],
+      "function": "tools/build_release.py::_repair_units",
+      "note": "Percent signs and currency restored to prose that dropped them. authoringProvenance is unchanged and still describes the model's own output, which these strings no longer match; `replacements` carries that output so the hash stays checkable.",
+      "replacements": [
+        {
+          "before": "Floating interest rate at 8.45, which may suit customers comfortable with a rate that can move over time.",
+          "field": "benefits",
+          "index": 0
+        },
+        {
+          "before": "Loan funding is available up to 80 of the property value, which can reduce the upfront amount needed from your own funds.",
+          "field": "benefits",
+          "index": 1
+        },
+        {
+          "before": "Processing fee is 0.5 of the loan amount, stated clearly at the start.",
+          "field": "benefits",
+          "index": 3
+        },
+        {
+          "before": "After the lock-in period, prepayment charge is 2.0.",
+          "field": "limitations",
+          "index": 1
+        },
+        {
+          "before": "Processing fee of 0.5 of the loan amount.",
+          "field": "fees",
+          "index": 0
+        },
+        {
+          "before": "Prepayment charge of 2.0 after the first 12 months, with prepayment locked during the first 12 months.",
+          "field": "fees",
+          "index": 1
+        },
+        {
+          "before": "Interest is charged at a floating rate of 8.45, so the rate can change over the life of the loan.",
+          "field": "rateTerms",
+          "index": null
+        },
+        {
+          "before": "This is a home loan, not a deposit product. Money is not available for withdrawal like savings; if you want to reduce the loan early, prepayment is not allowed for the first 12 months and is charged at 2.0 after that.",
+          "field": "liquidityTerms",
+          "index": null
+        }
+      ],
+      "stringsChanged": 8,
+      "tool": "tools/repair_release_units.py"
+    },
+    "whyNotSuitable": "This may be a poor fit for customers who expect to use a bonus or lump sum to close the loan early, because prepayment is locked for 12 months and then charged. It is also not suitable for anyone who cannot provide income evidence or property documents."
+  },
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This suits adults who want to build savings steadily through fixed monthly deposits for a medium to longer term goal. It is better suited to people with regular cash flow who can deposit on time every month.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:17:24Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-RD-GOAL",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "24c29b8b4df4b2cb30d938a9c1347842bf3f81579d5dba7c97b64d4caaf254e7",
+      "responseId": "resp_0c733de046cd28f5006aaab2ff2fd0819491b5b59a861dc645",
+      "specSha256": "49c2a14a6ac2a66ab46d17554d383e56eedccbc8184e1302021b0e7278d77025"
+    },
+    "benefits": [
+      "You can start with a monthly instalment of INR 1,000.00, which keeps the entry amount clear and predictable.",
+      "The deposit earns interest at 7.0%, helping regular monthly savings grow over the chosen term.",
+      "You can choose a term from 12 months up to 60 months, which gives flexibility for different savings goals.",
+      "The product is available to customers aged 18 and above, so an adult can open it in their own name."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Synthetic Contoso demo product - not a real bank offer.",
+    "displayName": "Contoso Goal Recurring Deposit",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "minimumAge": 18
+    },
+    "family": "recurring_deposit",
+    "fees": [
+      "Penalty of INR 100.00 for a missed instalment."
+    ],
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "Every instalment must be paid on time, with 0 missed instalments allowed.",
+      "If an instalment is missed, a penalty of INR 100.00 applies.",
+      "You must commit for at least 12 months, so it is not meant for very short-term parking of money.",
+      "The main trade-off is: The better recurring rate, but every instalment must land on time. Unsuitable for irregular income."
+    ],
+    "liquidityTerms": "This is a recurring deposit with a chosen term between 12 months and 60 months, so money is committed to the deposit plan over that period.",
+    "mainTradeoff": "The better recurring rate, but every instalment must land on time. Unsuitable for irregular income.",
+    "parameters": {
+      "displayName": "Contoso Goal Recurring Deposit",
+      "eligibility": {
+        "minimumAge": 18
+      },
+      "family": "recurring_deposit",
+      "interestRatePct": 7.0,
+      "maximumTermMonths": 60,
+      "minimumInstalment": 1000,
+      "minimumTermMonths": 12,
+      "missedInstalmentPenalty": 100,
+      "missedInstalmentsAllowed": 0
+    },
+    "productId": "CB-RD-GOAL",
+    "productVersion": "v1",
+    "rateTerms": "Interest is 7.0% on the recurring deposit over the chosen term.",
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Proof of age showing the customer is at least 18",
+      "Identity proof",
+      "Address proof",
+      "Recent photograph",
+      "PAN or Form 60, if applicable under account opening requirements"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-RD-GOAL"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "prepare_application",
+      "keep_current",
+      "request_information"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": false,
+    "unitRepair": {
+      "appliedAt": "2026-09-16T15:19:11Z",
+      "fields": [
+        "benefits",
+        "fees",
+        "limitations",
+        "rateTerms"
+      ],
+      "function": "tools/build_release.py::_repair_units",
+      "note": "Percent signs and currency restored to prose that dropped them. authoringProvenance is unchanged and still describes the model's own output, which these strings no longer match; `replacements` carries that output so the hash stays checkable.",
+      "replacements": [
+        {
+          "before": "You can start with a monthly instalment of 1000, which keeps the entry amount clear and predictable.",
+          "field": "benefits",
+          "index": 0
+        },
+        {
+          "before": "The deposit earns interest at 7.0, helping regular monthly savings grow over the chosen term.",
+          "field": "benefits",
+          "index": 1
+        },
+        {
+          "before": "If an instalment is missed, a penalty of 100 applies.",
+          "field": "limitations",
+          "index": 1
+        },
+        {
+          "before": "Penalty of 100 for a missed instalment.",
+          "field": "fees",
+          "index": 0
+        },
+        {
+          "before": "Interest is 7.0 on the recurring deposit over the chosen term.",
+          "field": "rateTerms",
+          "index": null
+        }
+      ],
+      "stringsChanged": 5,
+      "tool": "tools/repair_release_units.py"
+    },
+    "whyNotSuitable": "This is a poor fit for someone with irregular income or anyone who may struggle to deposit every instalment on time. It is also not suitable for a customer who wants a very short commitment or easy access to the money during the savings period."
+  },
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This may suit an adult who wants to build savings gradually with small monthly deposits rather than putting in a lump sum at the start. It can also fit someone whose income timing is not always steady, as one missed instalment is allowed.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:17:34Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-RD-STARTER",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "81d931938504f86bf3f04d331c524e22c6a3099bb533eca9daae41108e36940e",
+      "responseId": "resp_046b02b2212b50d1006aaab3086d308194b6f43a670bc20119",
+      "specSha256": "7c156acb6191092413bcc643f1c4236af49050d53867c5e83b22544f1c0e0787"
+    },
+    "benefits": [
+      "You can start with a minimum instalment of INR 500.00, which keeps the monthly commitment relatively small.",
+      "The deposit earns interest at 6.6%.",
+      "You can choose a term from 6 months up to 12 months, which is useful for short savings goals.",
+      "One missed instalment is allowed without a missed-instalment penalty of 0, giving some flexibility if a month is tight.",
+      "It is available to customers aged 18 and above."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Synthetic Contoso demo product - not a real bank offer.",
+    "displayName": "Contoso Starter Recurring Deposit",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "minimumAge": 18
+    },
+    "family": "recurring_deposit",
+    "fees": [
+      "Missed-instalment penalty: 0."
+    ],
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "The main trade-off is a lower rate and a shorter maximum term, but tolerates one missed instalment - which matters when income arrives unevenly.",
+      "The term cannot be longer than 12 months, so it may not suit someone planning for a longer savings horizon.",
+      "You need to commit to recurring instalments, starting from at least INR 500.00.",
+      "Only one missed instalment is allowed, so this may still feel restrictive if your monthly cash flow is highly irregular."
+    ],
+    "liquidityTerms": null,
+    "mainTradeoff": "Lower rate and a shorter maximum term, but tolerates one missed instalment - which matters when income arrives unevenly.",
+    "parameters": {
+      "displayName": "Contoso Starter Recurring Deposit",
+      "eligibility": {
+        "minimumAge": 18
+      },
+      "family": "recurring_deposit",
+      "interestRatePct": 6.6,
+      "maximumTermMonths": 12,
+      "minimumInstalment": 500,
+      "minimumTermMonths": 6,
+      "missedInstalmentPenalty": 0,
+      "missedInstalmentsAllowed": 1
+    },
+    "productId": "CB-RD-STARTER",
+    "productVersion": "v1",
+    "rateTerms": "Interest is paid at 6.6% on this recurring deposit.",
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Proof of age showing you are at least 18",
+      "Identity proof",
+      "Address proof",
+      "Recent photograph"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-RD-STARTER"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "prepare_application",
+      "keep_current",
+      "request_information"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": false,
+    "unitRepair": {
+      "appliedAt": "2026-09-16T15:19:11Z",
+      "fields": [
+        "benefits",
+        "limitations",
+        "rateTerms"
+      ],
+      "function": "tools/build_release.py::_repair_units",
+      "note": "Percent signs and currency restored to prose that dropped them. authoringProvenance is unchanged and still describes the model's own output, which these strings no longer match; `replacements` carries that output so the hash stays checkable.",
+      "replacements": [
+        {
+          "before": "You can start with a minimum instalment of 500, which keeps the monthly commitment relatively small.",
+          "field": "benefits",
+          "index": 0
+        },
+        {
+          "before": "The deposit earns interest at 6.6.",
+          "field": "benefits",
+          "index": 1
+        },
+        {
+          "before": "You need to commit to recurring instalments, starting from at least 500.",
+          "field": "limitations",
+          "index": 2
+        },
+        {
+          "before": "Interest is paid at 6.6 on this recurring deposit.",
+          "field": "rateTerms",
+          "index": null
+        }
+      ],
+      "stringsChanged": 4,
+      "tool": "tools/repair_release_units.py"
+    },
+    "whyNotSuitable": "This product may be a poor fit for someone who wants a longer tenure than 12 months or is looking for a higher rate. It may also not suit a customer who cannot reliably make recurring deposits, even with one missed instalment allowed."
+  },
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This may suit adults who want a simple savings account with no monthly fee and no extra conditions to meet. It can fit someone who plans to keep at least INR 5,000.00 in the account.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:17:39Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-SAV-CLASSIC",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "64b5d4883cb8650bcb4ceef80e3021498223d0f7844fcc26dff61caa3ea893ed",
+      "responseId": "resp_084ae3dc77125eec006aaab310315481969169482ab1002a47",
+      "specSha256": "090153a47d7a9fac767cb3ea4789441e5813b09f6d7819638692afb175aebccb"
+    },
+    "benefits": [
+      "Available to customers aged 18 and above.",
+      "Pays interest at 3.0%.",
+      "Requires a minimum balance of INR 5,000.00.",
+      "There is no monthly fee.",
+      "There are no conditions to meet."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Synthetic Contoso demo product - not a real bank offer.",
+    "displayName": "Contoso Classic Savings",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "minimumAge": 18
+    },
+    "family": "savings",
+    "fees": [
+      "No monthly fee."
+    ],
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "It offers the lowest interest rate of the savings range.",
+      "You need to maintain a minimum balance of INR 5,000.00.",
+      "This product is only for customers aged 18 and above.",
+      "It does not trade higher interest for extra conditions, so the return is more basic."
+    ],
+    "liquidityTerms": "Money is held in a savings account, subject to maintaining the minimum balance of INR 5,000.00.",
+    "mainTradeoff": "No conditions to meet, but the lowest interest rate of the savings range.",
+    "parameters": {
+      "displayName": "Contoso Classic Savings",
+      "eligibility": {
+        "minimumAge": 18
+      },
+      "family": "savings",
+      "interestRatePct": 3.0,
+      "minimumBalance": 5000,
+      "monthlyFee": 0
+    },
+    "productId": "CB-SAV-CLASSIC",
+    "productVersion": "v1",
+    "rateTerms": "Interest is paid at 3.0%. There are no conditions to meet, but this is the lowest interest rate in the savings range.",
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Proof of age showing you are at least 18",
+      "Identity proof",
+      "Address proof"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-SAV-CLASSIC"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "keep_current",
+      "request_information"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": false,
+    "unitRepair": {
+      "appliedAt": "2026-09-16T15:19:11Z",
+      "fields": [
+        "audienceDescription",
+        "benefits",
+        "limitations",
+        "liquidityTerms",
+        "whyNotSuitable"
+      ],
+      "function": "tools/build_release.py::_repair_units",
+      "note": "Percent signs and currency restored to prose that dropped them. authoringProvenance is unchanged and still describes the model's own output, which these strings no longer match; `replacements` carries that output so the hash stays checkable.",
+      "replacements": [
+        {
+          "before": "This may suit adults who want a simple savings account with no monthly fee and no extra conditions to meet. It can fit someone who plans to keep at least 5000 in the account.",
+          "field": "audienceDescription",
+          "index": null
+        },
+        {
+          "before": "Requires a minimum balance of 5000.",
+          "field": "benefits",
+          "index": 2
+        },
+        {
+          "before": "You need to maintain a minimum balance of 5000.",
+          "field": "limitations",
+          "index": 1
+        },
+        {
+          "before": "Money is held in a savings account, subject to maintaining the minimum balance of 5000.",
+          "field": "liquidityTerms",
+          "index": null
+        },
+        {
+          "before": "This may be a poor fit for someone mainly looking for a higher savings return. It may also not suit anyone who cannot keep a minimum balance of 5000.",
+          "field": "whyNotSuitable",
+          "index": null
+        }
+      ],
+      "stringsChanged": 5,
+      "tool": "tools/repair_release_units.py"
+    },
+    "whyNotSuitable": "This may be a poor fit for someone mainly looking for a higher savings return. It may also not suit anyone who cannot keep a minimum balance of INR 5,000.00."
+  },
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This account suits salaried adults who receive at least INR 25,000.00 as verified salary credit each month and want a savings account without a minimum balance requirement. It is meant for customers who expect regular salary credits to continue.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:17:46Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-SAV-SALARY",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "27cf76bde86e4005f467a6f062f6a1ddf80e7debfc4ebd88c06d2af00d5e762c",
+      "responseId": "resp_098c98a46ccf7bda006aaab315686481939f8dd60bc17b8c52",
+      "specSha256": "f98a293793fd8b80710d362abc89061253abc77053c65acbfa06ecf8d7c7c29e"
+    },
+    "benefits": [
+      "No minimum balance is required to keep the account.",
+      "There is no monthly fee.",
+      "Savings balances earn interest at 3.25%.",
+      "Available to adults from age 18 onwards.",
+      "Designed for customers with verified monthly salary credit of at least INR 25,000.00."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Synthetic Contoso demo product - not a real bank offer. Issued by Contoso Bank (synthetic demo).",
+    "displayName": "Contoso Salary Savings",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "minimumAge": 18,
+      "minimumMonthlySalaryCredit": 25000,
+      "requiresVerifiedSalaryCredit": true
+    },
+    "family": "savings",
+    "fees": [
+      "No monthly fee."
+    ],
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "You need verified salary credit of at least INR 25,000.00 each month to be eligible.",
+      "If salary credit stops for two consecutive months, the account lapses to Classic terms.",
+      "This is a savings account, so the main value depends on continuing salary credits rather than one-time funding.",
+      "Customers below 18 are not eligible."
+    ],
+    "liquidityTerms": "This is a savings account, so money can be accessed as per normal savings account usage.",
+    "mainTradeoff": "Zero balance requirement, but it lapses to Classic terms if the salary credit stops for two consecutive months.",
+    "parameters": {
+      "displayName": "Contoso Salary Savings",
+      "eligibility": {
+        "minimumAge": 18,
+        "minimumMonthlySalaryCredit": 25000,
+        "requiresVerifiedSalaryCredit": true
+      },
+      "family": "savings",
+      "interestRatePct": 3.25,
+      "minimumBalance": 0,
+      "monthlyFee": 0
+    },
+    "productId": "CB-SAV-SALARY",
+    "productVersion": "v1",
+    "rateTerms": "Savings balances earn interest at 3.25%.",
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Proof of age showing the customer is at least 18.",
+      "Evidence of verified salary credit meeting the minimum monthly salary credit requirement."
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-SAV-SALARY"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "prepare_application",
+      "keep_current",
+      "request_information"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": false,
+    "unitRepair": {
+      "appliedAt": "2026-09-16T15:19:11Z",
+      "fields": [
+        "audienceDescription",
+        "benefits",
+        "limitations",
+        "rateTerms"
+      ],
+      "function": "tools/build_release.py::_repair_units",
+      "note": "Percent signs and currency restored to prose that dropped them. authoringProvenance is unchanged and still describes the model's own output, which these strings no longer match; `replacements` carries that output so the hash stays checkable.",
+      "replacements": [
+        {
+          "before": "This account suits salaried adults who receive at least 25000 as verified salary credit each month and want a savings account without a minimum balance requirement. It is meant for customers who expect regular salary credits to continue.",
+          "field": "audienceDescription",
+          "index": null
+        },
+        {
+          "before": "Savings balances earn interest at 3.25.",
+          "field": "benefits",
+          "index": 2
+        },
+        {
+          "before": "Designed for customers with verified monthly salary credit of at least 25000.",
+          "field": "benefits",
+          "index": 4
+        },
+        {
+          "before": "You need verified salary credit of at least 25000 each month to be eligible.",
+          "field": "limitations",
+          "index": 0
+        },
+        {
+          "before": "Savings balances earn interest at 3.25.",
+          "field": "rateTerms",
+          "index": null
+        }
+      ],
+      "stringsChanged": 5,
+      "tool": "tools/repair_release_units.py"
+    },
+    "whyNotSuitable": "This product is a poor fit for people without regular verified salary credits or for anyone whose salary may stop coming into the account for two consecutive months. It may also not suit customers under 18."
+  },
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This suits salaried customers aged 18 or above who receive a verified monthly salary credit of INR 1,00,000.00 and want a savings account with no minimum balance and no monthly fee. It is more relevant for customers who can maintain that salary pattern on an ongoing basis.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:17:54Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-SAV-SALARY-PLUS",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "3464330dac5ac1501ef2f333eb68ac8ea8fb9d7f0b4b8176ea3a153b0a037309",
+      "responseId": "resp_043a41cd3ace64b0006aaab31d57f48194b47b6797383dbee6",
+      "specSha256": "99ed0671cf7c00d4a4c1d4278913809d50a5e8ddd04670454861078a3603735c"
+    },
+    "benefits": [
+      "Pays 3.5% interest on the savings balance.",
+      "There is no minimum balance requirement, so the account can be maintained at 0 without a balance threshold.",
+      "There is no monthly fee for the account.",
+      "It is meant for customers with a verified monthly salary credit of INR 1,00,000.00, matching a regular salary-banking relationship.",
+      "Includes fee waivers and a relationship manager."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Synthetic Contoso demo product - not a real bank offer.",
+    "displayName": "Contoso Salary Plus",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "minimumAge": 18,
+      "minimumMonthlySalaryCredit": 100000,
+      "requiresVerifiedSalaryCredit": true
+    },
+    "family": "savings",
+    "fees": [
+      "Monthly fee: 0.",
+      "Minimum balance requirement: 0."
+    ],
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "You must be at least 18 years old to be eligible.",
+      "A verified monthly salary credit of INR 1,00,000.00 is required.",
+      "The main trade-off is that it adds fee waivers and a relationship manager, but needs a sustained high salary credit that a first job or a variable bonus may not meet.",
+      "It may not work well for customers whose income is irregular or not credited as salary.",
+      "This is a savings account, so the value depends on meeting the salary-credit condition rather than being open to all customers."
+    ],
+    "liquidityTerms": "Money is held in a savings account, so it can be accessed as per normal savings account use.",
+    "mainTradeoff": "Adds fee waivers and a relationship manager, but needs a sustained high salary credit that a first job or a variable bonus may not meet.",
+    "parameters": {
+      "displayName": "Contoso Salary Plus",
+      "eligibility": {
+        "minimumAge": 18,
+        "minimumMonthlySalaryCredit": 100000,
+        "requiresVerifiedSalaryCredit": true
+      },
+      "family": "savings",
+      "interestRatePct": 3.5,
+      "minimumBalance": 0,
+      "monthlyFee": 0
+    },
+    "productId": "CB-SAV-SALARY-PLUS",
+    "productVersion": "v1",
+    "rateTerms": "Interest is 3.5% on the savings account.",
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Proof of age showing the customer is 18 or above.",
+      "Evidence of verified salary credit.",
+      "Identity and address documents as required for opening a bank account."
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-SAV-SALARY-PLUS"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "prepare_application",
+      "keep_current",
+      "request_information"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": false,
+    "unitRepair": {
+      "appliedAt": "2026-09-16T15:19:11Z",
+      "fields": [
+        "audienceDescription",
+        "benefits",
+        "limitations",
+        "whyNotSuitable"
+      ],
+      "function": "tools/build_release.py::_repair_units",
+      "note": "Percent signs and currency restored to prose that dropped them. authoringProvenance is unchanged and still describes the model's own output, which these strings no longer match; `replacements` carries that output so the hash stays checkable.",
+      "replacements": [
+        {
+          "before": "This suits salaried customers aged 18 or above who receive a verified monthly salary credit of 100000 and want a savings account with no minimum balance and no monthly fee. It is more relevant for customers who can maintain that salary pattern on an ongoing basis.",
+          "field": "audienceDescription",
+          "index": null
+        },
+        {
+          "before": "It is meant for customers with a verified monthly salary credit of 100000, matching a regular salary-banking relationship.",
+          "field": "benefits",
+          "index": 3
+        },
+        {
+          "before": "A verified monthly salary credit of 100000 is required.",
+          "field": "limitations",
+          "index": 1
+        },
+        {
+          "before": "This is a poor fit for someone without a verified monthly salary credit of 100000, or for a person whose pay varies significantly from month to month. It may also be unsuitable for students, early-career customers, or others who do not yet meet the sustained salary requirement.",
+          "field": "whyNotSuitable",
+          "index": null
+        }
+      ],
+      "stringsChanged": 4,
+      "tool": "tools/repair_release_units.py"
+    },
+    "whyNotSuitable": "This is a poor fit for someone without a verified monthly salary credit of INR 1,00,000.00, or for a person whose pay varies significantly from month to month. It may also be unsuitable for students, early-career customers, or others who do not yet meet the sustained salary requirement."
+  },
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This account suits customers aged 60 and above who want a regular savings account with a 3.75% interest rate and a minimum balance of INR 2,500.00. It may appeal to those looking for a simple option with no monthly fee.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:17:59Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-SAV-SENIOR",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "bcc475b588a215c9a512858d5fa78d4a4d2d14fdece3b06873b8dca8c2c175e6",
+      "responseId": "resp_0eb1db0543ac46e5006aaab32429e08197a400b22185eb3e6e",
+      "specSha256": "1b96033323b45b6ae9e2bfcfdecaf471139b878de3fa9ad7a9ce10cc83c92d4c"
+    },
+    "benefits": [
+      "Available to customers aged 60 and above.",
+      "Offers a 3.75% interest rate.",
+      "Requires a minimum balance of INR 2,500.00.",
+      "There is no monthly fee.",
+      "It is a savings account, which can suit everyday saving needs."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Synthetic Contoso demo product - not a real bank offer.",
+    "displayName": "Contoso Senior Savings",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "minimumAge": 60
+    },
+    "family": "savings",
+    "fees": [
+      "Monthly fee: 0."
+    ],
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "It is only available to customers aged 60 and above.",
+      "You need to maintain a minimum balance of INR 2,500.00.",
+      "The main trade-off is a better rate and a lower balance requirement, but restricted to customers aged 60 and above.",
+      "No details are provided here about how often interest is paid.",
+      "No other charges or features are described here beyond the monthly fee being 0."
+    ],
+    "liquidityTerms": null,
+    "mainTradeoff": "Better rate and a lower balance requirement, but restricted to customers aged 60 and above.",
+    "parameters": {
+      "displayName": "Contoso Senior Savings",
+      "eligibility": {
+        "minimumAge": 60
+      },
+      "family": "savings",
+      "interestRatePct": 3.75,
+      "minimumBalance": 2500,
+      "monthlyFee": 0
+    },
+    "productId": "CB-SAV-SENIOR",
+    "productVersion": "v1",
+    "rateTerms": "The account offers a 3.75% interest rate.",
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Proof of age showing the customer is at least 60 years old",
+      "Identity proof",
+      "Address proof",
+      "Recent photograph"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-SAV-SENIOR"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "prepare_application",
+      "keep_current",
+      "request_information"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": false,
+    "unitRepair": {
+      "appliedAt": "2026-09-16T15:19:11Z",
+      "fields": [
+        "audienceDescription",
+        "benefits",
+        "limitations",
+        "whyNotSuitable"
+      ],
+      "function": "tools/build_release.py::_repair_units",
+      "note": "Percent signs and currency restored to prose that dropped them. authoringProvenance is unchanged and still describes the model's own output, which these strings no longer match; `replacements` carries that output so the hash stays checkable.",
+      "replacements": [
+        {
+          "before": "This account suits customers aged 60 and above who want a regular savings account with a 3.75% interest rate and a minimum balance of 2500. It may appeal to those looking for a simple option with no monthly fee.",
+          "field": "audienceDescription",
+          "index": null
+        },
+        {
+          "before": "Requires a minimum balance of 2500.",
+          "field": "benefits",
+          "index": 2
+        },
+        {
+          "before": "You need to maintain a minimum balance of 2500.",
+          "field": "limitations",
+          "index": 1
+        },
+        {
+          "before": "This product is a poor fit for anyone below 60 years of age, because they would not meet the age eligibility. It may also not suit someone who does not want to keep a minimum balance of 2500 in the account.",
+          "field": "whyNotSuitable",
+          "index": null
+        }
+      ],
+      "stringsChanged": 4,
+      "tool": "tools/repair_release_units.py"
+    },
+    "whyNotSuitable": "This product is a poor fit for anyone below 60 years of age, because they would not meet the age eligibility. It may also not suit someone who does not want to keep a minimum balance of INR 2,500.00 in the account."
+  },
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This can suit an adult customer who keeps higher balances in a linked savings account and wants surplus funds to move automatically while still being able to access money quickly. It is more relevant for someone comfortable with a sweep structure rather than a simple plain savings balance.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:18:06Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-SWEEP-FLEX",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "985e0f86d3cd569d38c0b67749b75dc20cd9a227a99cfc0d970e4435a75dc50d",
+      "responseId": "resp_0c9429a068186721006aaab32951e48193869c1bc52cac1c05",
+      "specSha256": "b5d5e37d5b155c6232c53a543183620e632c10dacf6049c1fb4942e33f999e37"
+    },
+    "benefits": [
+      "Balances can earn 6.5% interest on the swept portion.",
+      "There is no monthly fee.",
+      "Money can come back through instant reverse sweep when needed.",
+      "Amounts above INR 1,00,000.00 can be considered for sweeping instead of remaining fully in the savings account.",
+      "Sweeping happens in fixed multiples of INR 25,000.00, which can help keep the movement rule clear and predictable."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Synthetic Contoso demo product - not a real bank offer.",
+    "displayName": "Contoso Flexi Sweep",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "minimumAge": 18,
+      "requiresLinkedSavingsAccount": true
+    },
+    "family": "sweep",
+    "fees": [
+      "Monthly fee: 0"
+    ],
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "You must be at least 18 to be eligible.",
+      "A linked savings account is required, so this is not a standalone product.",
+      "Only balances above INR 1,00,000.00 sweep, so money up to that level stays in the savings account.",
+      "Sweeping happens only in multiples of INR 25,000.00, so some excess balance may remain unswept.",
+      "The main trade-off is: Deposit-like interest with instant reverse sweep, but only balances above the threshold sweep, and only in fixed multiples - so a portion always earns the savings rate."
+    ],
+    "liquidityTerms": "Money can be accessed with instant reverse sweep through the linked savings account.",
+    "mainTradeoff": "Deposit-like interest with instant reverse sweep, but only balances above the threshold sweep, and only in fixed multiples - so a portion always earns the savings rate.",
+    "parameters": {
+      "displayName": "Contoso Flexi Sweep",
+      "eligibility": {
+        "minimumAge": 18,
+        "requiresLinkedSavingsAccount": true
+      },
+      "family": "sweep",
+      "interestRatePct": 6.5,
+      "monthlyFee": 0,
+      "reverseSweepInstant": true,
+      "sweepMultiple": 25000,
+      "sweepThreshold": 100000
+    },
+    "productId": "CB-SWEEP-FLEX",
+    "productVersion": "v1",
+    "rateTerms": "The swept portion earns 6.5% interest. Because only balances above INR 1,00,000.00 sweep and only in multiples of INR 25,000.00, part of the balance may continue to earn the savings rate instead.",
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Proof of age showing the customer is at least 18",
+      "Details of the linked savings account"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-SWEEP-FLEX"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "prepare_application",
+      "keep_current",
+      "request_information"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": false,
+    "unitRepair": {
+      "appliedAt": "2026-09-16T15:19:11Z",
+      "fields": [
+        "benefits",
+        "limitations",
+        "rateTerms"
+      ],
+      "function": "tools/build_release.py::_repair_units",
+      "note": "Percent signs and currency restored to prose that dropped them. authoringProvenance is unchanged and still describes the model's own output, which these strings no longer match; `replacements` carries that output so the hash stays checkable.",
+      "replacements": [
+        {
+          "before": "Balances can earn 6.5 interest on the swept portion.",
+          "field": "benefits",
+          "index": 0
+        },
+        {
+          "before": "Amounts above 100000 can be considered for sweeping instead of remaining fully in the savings account.",
+          "field": "benefits",
+          "index": 3
+        },
+        {
+          "before": "Sweeping happens in fixed multiples of 25000, which can help keep the movement rule clear and predictable.",
+          "field": "benefits",
+          "index": 4
+        },
+        {
+          "before": "Only balances above 100000 sweep, so money up to that level stays in the savings account.",
+          "field": "limitations",
+          "index": 2
+        },
+        {
+          "before": "Sweeping happens only in multiples of 25000, so some excess balance may remain unswept.",
+          "field": "limitations",
+          "index": 3
+        },
+        {
+          "before": "The swept portion earns 6.5 interest. Because only balances above 100000 sweep and only in multiples of 25000, part of the balance may continue to earn the savings rate instead.",
+          "field": "rateTerms",
+          "index": null
+        }
+      ],
+      "stringsChanged": 6,
+      "tool": "tools/repair_release_units.py"
+    },
+    "whyNotSuitable": "This is a poor fit for someone who keeps lower balances or does not want to maintain a linked savings account. It may also not suit a customer who wants the entire surplus balance to earn the higher rate without threshold and fixed-multiple conditions."
+  },
+  {
+    "approvedAt": "2026-09-16T15:19:11Z",
+    "approvedBy": "hrshl-demo (operator)",
+    "approvedByDemoOwner": true,
+    "audienceDescription": "This suits an adult customer who already has a linked Contoso savings account and usually keeps a small or uneven balance. It can be useful for someone who wants extra funds above a basic level to move automatically without needing a large balance.",
+    "authoringProvenance": {
+      "authoredAt": "2026-09-16T15:18:12Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "product::CB-SWEEP-MICRO",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "0a581fcaa77b96aaaf2f2e9e0859013f4fc6feb6fdc97debc485a8f2e5e80d76",
+      "responseId": "resp_010eb3dc4eaf05a4006aaab3305bb081939a569184a7f4e59f",
+      "specSha256": "c3273c2196067a4dfb0c5e07bb1c80ece99e9571582f3cc5467bc481e26331c7"
+    },
+    "benefits": [
+      "Available to customers aged 18 and above who have a linked savings account.",
+      "No monthly fee is charged.",
+      "Sweeping starts once the balance goes above INR 10,000.00, so it can begin working at a relatively low balance.",
+      "Amounts are swept in multiples of INR 1,000.00, which can suit smaller or uneven balances.",
+      "Reverse sweep is instant, so money can come back quickly when needed."
+    ],
+    "catalogueVersion": "catalogue-v1",
+    "disclosureText": "Synthetic Contoso demo product - not a real bank offer. Issued by Contoso Bank (synthetic demo).",
+    "displayName": "Contoso Micro Sweep",
+    "effectiveFrom": "2026-01-01",
+    "effectiveTo": null,
+    "eligibilityRules": {
+      "minimumAge": 18,
+      "requiresLinkedSavingsAccount": true
+    },
+    "family": "sweep",
+    "fees": [
+      "Monthly fee: 0"
+    ],
+    "issuer": "Contoso Bank (synthetic demo)",
+    "limitations": [
+      "It pays 5.5% interest, which is lower than the standard sweep mentioned in the trade-off.",
+      "Sweeping stops above the ceiling of INR 1,00,000.00, so it may not suit customers whose balance regularly grows beyond that level.",
+      "You must have a linked savings account to use it.",
+      "Only customers aged 18 or above are eligible.",
+      "The main trade-off is that it works on a small or uneven balance, but it is likely to be outgrown rather than kept."
+    ],
+    "liquidityTerms": "Money can be accessed through instant reverse sweep, with sweeping starting above INR 10,000.00, moving funds in multiples of INR 1,000.00, and stopping above the ceiling of INR 1,00,000.00.",
+    "mainTradeoff": "Starts sweeping at a far lower balance and in much smaller multiples, so it works on a small or uneven balance - but it pays less than the standard sweep and stops sweeping above its ceiling, so it is outgrown rather than kept.",
+    "parameters": {
+      "displayName": "Contoso Micro Sweep",
+      "eligibility": {
+        "minimumAge": 18,
+        "requiresLinkedSavingsAccount": true
+      },
+      "family": "sweep",
+      "interestRatePct": 5.5,
+      "monthlyFee": 0,
+      "reverseSweepInstant": true,
+      "sweepCeiling": 100000,
+      "sweepMultiple": 1000,
+      "sweepThreshold": 10000
+    },
+    "productId": "CB-SWEEP-MICRO",
+    "productVersion": "v1",
+    "rateTerms": "Interest is 5.5% on the swept amount.",
+    "releaseId": "retail4-v1",
+    "requiredEvidence": [
+      "Proof of age showing the customer is at least 18",
+      "Details of the linked Contoso savings account",
+      "Standard identity and address documents requested for account servicing or product setup"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "TERMS-CB-SWEEP-MICRO"
+    ],
+    "status": "active",
+    "supportedActions": [
+      "prepare_application",
+      "keep_current",
+      "request_information"
+    ],
+    "syntheticActivationMode": "recorded_synthetic_instruction",
+    "underwritingRequired": false,
+    "unitRepair": {
+      "appliedAt": "2026-09-16T15:19:11Z",
+      "fields": [
+        "benefits",
+        "limitations",
+        "liquidityTerms",
+        "whyNotSuitable"
+      ],
+      "function": "tools/build_release.py::_repair_units",
+      "note": "Percent signs and currency restored to prose that dropped them. authoringProvenance is unchanged and still describes the model's own output, which these strings no longer match; `replacements` carries that output so the hash stays checkable.",
+      "replacements": [
+        {
+          "before": "Sweeping starts once the balance goes above 10000, so it can begin working at a relatively low balance.",
+          "field": "benefits",
+          "index": 2
+        },
+        {
+          "before": "Amounts are swept in multiples of 1000, which can suit smaller or uneven balances.",
+          "field": "benefits",
+          "index": 3
+        },
+        {
+          "before": "Sweeping stops above the ceiling of 100000, so it may not suit customers whose balance regularly grows beyond that level.",
+          "field": "limitations",
+          "index": 1
+        },
+        {
+          "before": "Money can be accessed through instant reverse sweep, with sweeping starting above 10000, moving funds in multiples of 1000, and stopping above the ceiling of 100000.",
+          "field": "liquidityTerms",
+          "index": null
+        },
+        {
+          "before": "This is a poor fit for someone who wants a higher sweep return or expects to hold balances above 100000 for long periods. It is also not suitable for anyone who does not already have a linked savings account or is below 18 years of age.",
+          "field": "whyNotSuitable",
+          "index": null
+        }
+      ],
+      "stringsChanged": 5,
+      "tool": "tools/repair_release_units.py"
+    },
+    "whyNotSuitable": "This is a poor fit for someone who wants a higher sweep return or expects to hold balances above INR 1,00,000.00 for long periods. It is also not suitable for anyone who does not already have a linked savings account or is below 18 years of age."
+  }
+]

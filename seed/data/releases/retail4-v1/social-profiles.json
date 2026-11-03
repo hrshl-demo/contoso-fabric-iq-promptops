@@ -1,0 +1,179 @@
+[
+  {
+    "bio": "Product photography - Hyderabad. Available for small brand shoots.",
+    "capturedAt": "2026-09-12T18:00:00+05:30",
+    "collaborationText": "For collaborations, message here.",
+    "contentThemes": [
+      "product photography",
+      "lighting setups",
+      "behind the scenes"
+    ],
+    "displayName": "ravi.creates",
+    "isCurrentSnapshot": true,
+    "ownerId": "ravi",
+    "platformStyle": "instagram_like",
+    "postingCadence": "3-4 posts per week",
+    "posts": [
+      {
+        "caption": "Studio lighting test for a ceramics set.",
+        "likes": 412,
+        "postId": "p-rc-01"
+      },
+      {
+        "caption": "Three-light setup, one lens, natural fill.",
+        "likes": 688,
+        "postId": "p-rc-02"
+      },
+      {
+        "caption": "Shot list for a small brand campaign.",
+        "likes": 540,
+        "postId": "p-rc-03"
+      }
+    ],
+    "profileId": "ravi-creates",
+    "profileSlug": "ravi-creates",
+    "prohibitedInferences": [
+      "income",
+      "creditworthiness",
+      "protected traits",
+      "verified brand partnership",
+      "business identity or KYC"
+    ],
+    "provenance": "Local synthetic fixture. No external site was contacted.",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceVersion": 1,
+    "supersededBy": {
+      "profileId": "ravi-creates",
+      "sourceVersion": 2
+    },
+    "syntheticFollowers": 8420,
+    "syntheticLikesLast30": 11930
+  },
+  {
+    "bio": "Archive of older work. Not actively updated.",
+    "capturedAt": "2026-09-12T18:00:00+05:30",
+    "collaborationText": "",
+    "contentThemes": [
+      "street",
+      "portraits"
+    ],
+    "displayName": "ravi.photo.archive",
+    "isCurrentSnapshot": true,
+    "ownerId": "ravi",
+    "platformStyle": "portfolio_like",
+    "postingCadence": "rarely",
+    "posts": [
+      {
+        "caption": "Archive set, 2024.",
+        "likes": 96,
+        "postId": "p-rp-01"
+      }
+    ],
+    "profileId": "ravi-photo",
+    "profileSlug": "ravi-photo",
+    "prohibitedInferences": [
+      "income",
+      "creditworthiness",
+      "protected traits"
+    ],
+    "provenance": "Local synthetic fixture. No external site was contacted.",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceVersion": 1,
+    "syntheticFollowers": 1140,
+    "syntheticLikesLast30": 260
+  },
+  {
+    "bio": "Short tutorials on lighting and editing.",
+    "capturedAt": "2026-09-12T18:00:00+05:30",
+    "collaborationText": "Open to sponsored tutorials.",
+    "contentThemes": [
+      "tutorials",
+      "editing"
+    ],
+    "displayName": "ravi.learns",
+    "isCurrentSnapshot": true,
+    "ownerId": "ravi",
+    "platformStyle": "youtube_like",
+    "postingCadence": "weekly",
+    "posts": [
+      {
+        "caption": "Editing a product shot in six minutes.",
+        "likes": 1320,
+        "postId": "p-rl-01"
+      }
+    ],
+    "profileId": "ravi-learns",
+    "profileSlug": "ravi-learns",
+    "prohibitedInferences": [
+      "income",
+      "creditworthiness",
+      "protected traits"
+    ],
+    "provenance": "Local synthetic fixture. No external site was contacted.",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceVersion": 1,
+    "syntheticFollowers": 3260,
+    "syntheticLikesLast30": 2480
+  },
+  {
+    "approvedByDemoOwner": true,
+    "bio": "Product photography - Hyderabad. Available for small brand shoots.",
+    "capturedAt": "2026-09-13T09:30:00+05:30",
+    "collaborationText": "For collaborations, message here.",
+    "contentThemes": [
+      "product photography",
+      "lighting setups",
+      "behind the scenes"
+    ],
+    "displayName": "ravi.creates",
+    "isCurrentSnapshot": false,
+    "ownerId": "ravi",
+    "platformStyle": "instagram_like",
+    "postingCadence": "5-6 posts per week",
+    "posts": [
+      {
+        "caption": "Studio lighting test for a ceramics set.",
+        "likes": 470,
+        "postId": "p-rc-01"
+      },
+      {
+        "caption": "Three-light setup, one lens, natural fill.",
+        "likes": 934,
+        "postId": "p-rc-02"
+      },
+      {
+        "caption": "Shot list for a small brand campaign.",
+        "likes": 612,
+        "postId": "p-rc-03"
+      },
+      {
+        "caption": "Two weeks of shoots, one setup.",
+        "likes": 1180,
+        "postId": "p-rc-04"
+      }
+    ],
+    "profileId": "ravi-creates",
+    "profileSlug": "ravi-creates-v2",
+    "prohibitedInferences": [
+      "income",
+      "creditworthiness",
+      "protected traits",
+      "verified brand partnership",
+      "business identity or KYC"
+    ],
+    "provenance": "Local synthetic fixture. No external site was contacted.",
+    "releaseId": "retail4-v1",
+    "scenario": "ravi-social-metric-change",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceVersion": 2,
+    "supersedes": {
+      "profileId": "ravi-creates",
+      "sourceVersion": 1
+    },
+    "syntheticFollowers": 11260,
+    "syntheticLikesLast30": 18400
+  }
+]

@@ -1,0 +1,11 @@
+title = "contoso-fabric-iq-promptops"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Hash-only lock file and compressed test fixtures: long hex strings, no secrets"
+paths = [
+  '''(^|/)manifest\.lock\.json$''',
+  '''^kit/tests/fixtures/''',
+]

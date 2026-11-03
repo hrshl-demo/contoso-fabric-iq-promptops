@@ -1,0 +1,72 @@
+[
+  {
+    "consentId": "cons-niv-01",
+    "expiresAt": "2026-12-13T09:00:00+05:30",
+    "grantedAt": "2026-09-13T09:00:00+05:30",
+    "ownerId": "nivedita",
+    "purpose": "evidence_analysis",
+    "recipientScope": "contoso_demo_assistant",
+    "releaseId": "retail4-v1",
+    "resourceRefs": [
+      {
+        "sourceId": "DOC-N-PENSION",
+        "sourceVersion": 1
+      },
+      {
+        "sourceId": "DOC-N-FD-RENEWAL",
+        "sourceVersion": 1
+      },
+      {
+        "sourceId": "DOC-N-RETIREMENT-NOTE",
+        "sourceVersion": 1
+      }
+    ],
+    "revision": 1,
+    "revokedAt": null,
+    "schemaVersion": "retail4-seed-v1"
+  },
+  {
+    "consentId": "cons-rhe-01",
+    "expiresAt": "2026-12-13T09:00:00+05:30",
+    "grantedAt": "2026-09-13T09:00:00+05:30",
+    "ownerId": "rhea",
+    "purpose": "evidence_analysis",
+    "recipientScope": "contoso_demo_assistant",
+    "releaseId": "retail4-v1",
+    "resourceRefs": [
+      {
+        "sourceId": "DOC-R-CARD-STATEMENT",
+        "sourceVersion": 1
+      },
+      {
+        "sourceId": "DOC-R-SCHOOL-CIRCULAR",
+        "sourceVersion": 1
+      }
+    ],
+    "revision": 1,
+    "revokedAt": null,
+    "schemaVersion": "retail4-seed-v1"
+  },
+  {
+    "consentId": "cons-rav-01",
+    "expiresAt": "2026-12-13T09:00:00+05:30",
+    "grantedAt": "2026-09-13T09:00:00+05:30",
+    "ownerId": "ravi",
+    "purpose": "evidence_analysis",
+    "recipientScope": "contoso_demo_assistant",
+    "releaseId": "retail4-v1",
+    "resourceRefs": [
+      {
+        "sourceId": "DOC-V-OFFER-LETTER",
+        "sourceVersion": 1
+      },
+      {
+        "sourceId": "DOC-V-CREDIT-QUESTION",
+        "sourceVersion": 1
+      }
+    ],
+    "revision": 1,
+    "revokedAt": null,
+    "schemaVersion": "retail4-seed-v1"
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "contactChannel": "mobile_app",
+    "debtPreference": "prepay_when_liquidity_floor_is_protected",
+    "emergencyReserveMonths": 6,
+    "humanReviewFor": [
+      "new_credit",
+      "insurance_purchase",
+      "mandate_change",
+      "household_access"
+    ],
+    "ownerId": "rhea",
+    "preferenceId": "pref-rhea-frontier",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  }
+]

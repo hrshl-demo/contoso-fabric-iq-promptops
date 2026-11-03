@@ -1,0 +1,294 @@
+silver:
+  - table: silver_consent
+    entity: Consent
+    profile: true
+    profile_entity: Consent
+    ontology_entity: Consent
+    domain: Authority
+    serves: [consent]
+    grain: One legacy (retail4) consent record.
+    description: One legacy (retail4) consent record. Conformed to the CDM profile entity Consent (realises the ontology entity Consent). Attributes without a seed counterpart stay null; other seed fields the ontology needs are x columns.
+    notes: 'Two profile entities realise the ontology Consent: legacy consents (Consent, this table) and Frontier consents (FrontierConsent, silver_frontier_consent). Gold unions them.'
+    cdm: null
+    bian: []
+    sources:
+      - {release: retail4-v1, file: consents.json}
+    key: [consentId]
+    owner: ownerId
+    common:                                        # app/data_xray/projection.py 1701-1705 (authority_records: Consent)
+      cite: app/data_xray/projection.py:1701-1705
+      source_kind: consent                         # 1703
+      state: {when: revokedAt, then: revoked, default: recorded}   # 1703: "revoked" if raw.get("revokedAt") else "recorded"
+    version: revision
+    columns:
+      - {col: consentId, origin: profile, type: string, from: consentId}
+      - {col: applicationId, origin: profile, type: string, none: not recorded in the seed}
+      - {col: planId, origin: profile, type: string, none: not recorded in the seed}
+      - {col: itemId, origin: profile, type: string, none: not recorded in the seed}
+      - {col: purpose, origin: profile, type: string, from: purpose}
+      - {col: consentType, origin: profile, type: string, none: not recorded in the seed}
+      - {col: reviewFingerprint, origin: profile, type: string, none: not recorded in the seed}
+      - {col: receiptId, origin: profile, type: string, none: not recorded in the seed}
+      - {col: at, origin: profile, type: datetime, from: [at, grantedAt]}
+      - {col: expiresAt, origin: profile, type: datetime, from: expiresAt}
+      - {col: revokedAt, origin: profile, type: datetime, from: revokedAt}
+      - {col: xRecipientScope, origin: extension, type: string, from: recipientScope, desc: 'Who may receive the data, for example contoso_demo_assistant (legacy only).'}
+      - {col: xRevision, origin: extension, type: integer, from: revision, desc: Consent revision number (legacy only).}
+      - {col: xResourceRefsCount, origin: extension, type: integer, from: resourceRefs, t: len, desc: Number of documents the consent covers (legacy only).}
+  - table: silver_frontier_consent
+    entity: FrontierConsent
+    profile: true
+    profile_entity: FrontierConsent
+    ontology_entity: Consent
+    domain: Authority
+    serves: [consent]
+    grain: One Frontier consent record.
+    description: One Frontier consent record. Conformed to the CDM profile entity FrontierConsent (realises the ontology entity Consent). Attributes without a seed counterpart stay null; other seed fields the ontology needs are x columns.
+    notes: 'See silver_consent: the profile keeps Frontier consents distinct from legacy application consents.'
+    cdm: null
+    bian: []
+    sources:
+      - {release: retail-frontier-v1, file: consents.json}
+    key: [consentId]
+    owner: ownerId
+    common:                                        # app/data_xray/projection.py 1985-1994 (frontier_records adapters); app/frontier/contracts.py 95-107
+      cite: [app/data_xray/projection.py:1985-1994, app/frontier/contracts.py:95-107]
+      source_kind: frontier                        # 1993
+      state: {const: recorded}                     # 1992 getattr(row, "status", "recorded"): the frontier ConsentRecord declares no status (the seed's status stays in xStatus)
+    columns:
+      - {col: consentId, origin: profile, type: string, from: consentId}
+      - {col: subjectKind, origin: profile, type: string, none: the seed records the subject id only; gold derives the kind from the id prefix}
+      - {col: subjectId, origin: profile, type: string, from: subjectRef}
+      - {col: purpose, origin: profile, type: string, from: purpose}
+      - {col: resourceRefs, origin: profile, type: string, none: not recorded in the seed}
+      - {col: permissions, origin: profile, type: string, none: not recorded in the seed}
+      - {col: recordedAt, origin: profile, type: datetime, from: grantedAt}
+      - {col: expiresAt, origin: profile, type: datetime, from: expiresAt}
+      - {col: revokedAt, origin: profile, type: datetime, from: revokedAt}
+      - {col: evidenceRefs, origin: profile, type: string, none: not recorded in the seed}
+      - {col: xStatus, origin: extension, type: string, from: status, desc: 'Status the seed records: granted or revoked.'}
+  - table: silver_consent_resource
+    entity: ConsentResource
+    profile: false
+    ontology_entity: ConsentResource
+    domain: Authority
+    serves: [consent_resource]
+    grain: One document a legacy consent covers (element of resourceRefs).
+    description: 'One document a legacy consent covers (element of resourceRefs). Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    sources:
+      - {release: retail4-v1, file: consents.json, explode: resourceRefs}
+    key: [consentId, sourceId]
+    record_id: '{^.consentId}>{sourceId}'
+    owner: ^.ownerId
+    common:                                        # extension entity: the app's put() defaults (app/data_xray/projection.py 322-338)
+      cite: app/data_xray/projection.py:322-338
+      source_kind: bank_record
+      state: {const: recorded}
+    columns:
+      - {col: consentId, origin: extension, type: string, from: ^.consentId, nullable: false}
+      - {col: sourceId, origin: extension, type: string, from: sourceId, desc: Document covered by the consent., nullable: false}
+      - {col: ordinal, origin: extension, type: integer, from: $index, nullable: false, desc: 1-based position within the array (the order the seed lists it).}
+      - {col: resourceVersion, origin: extension, type: integer, from: sourceVersion, desc: Document version the consent covers.}
+  - table: silver_household_access_grant
+    entity: HouseholdAccessGrant
+    profile: true
+    profile_entity: HouseholdAccessGrant
+    ontology_entity: HouseholdAccessGrant
+    domain: Authority
+    serves: [access_grant]
+    grain: One household access grant.
+    description: One household access grant. Conformed to the CDM profile entity HouseholdAccessGrant (realises the ontology entity of the same name). Attributes without a seed counterpart stay null; other seed fields the ontology needs are x columns.
+    cdm: null
+    bian: []
+    sources:
+      - {release: retail-frontier-v1, file: access-grants.json}
+    key: [grantId]
+    owner: ownerId
+    common:                                        # app/data_xray/projection.py 1985-1994 (frontier_records adapters); app/frontier/contracts.py 72-93
+      cite: [app/data_xray/projection.py:1985-1994, app/frontier/contracts.py:72-93]
+      source_kind: frontier                        # 1993
+      state: {const: recorded}                     # 1992 getattr(row, "status", "recorded"): HouseholdAccessGrant declares no status (the seed's status stays in xStatus)
+    columns:
+      - {col: grantId, origin: profile, type: string, from: grantId}
+      - {col: subjectId, origin: profile, type: string, from: subjectRef}
+      - {col: subjectKind, origin: profile, type: string, none: the seed records the subject id only; gold derives the kind from the id prefix}
+      - {col: resourceScopes, origin: profile, type: string, none: not recorded in the seed}
+      - {col: permissions, origin: profile, type: string, from: permissions, t: join}
+      - {col: validFrom, origin: profile, type: datetime, none: grants carry no timestamps in the seed}
+      - {col: expiresAt, origin: profile, type: datetime, none: grants carry no timestamps in the seed}
+      - {col: revokedAt, origin: profile, type: datetime, none: grants carry no timestamps in the seed}
+      - {col: createdAt, origin: profile, type: datetime, none: grants carry no timestamps in the seed}
+      - {col: xHouseholdId, origin: extension, type: string, from: householdId, desc: Household the grant belongs to.}
+      - {col: xConsentRef, origin: extension, type: string, from: consentRef, desc: Consent that backs the grant. Null for an inactive grant with no consent.}
+      - {col: xStatus, origin: extension, type: string, from: status, desc: active or inactive.}
+      - {col: xDeniedPermissions, origin: extension, type: string, from: deniedPermissions, t: join, desc: 'Permissions explicitly denied, such as transact or change_access (semicolon separated). Denied wins.'}
+  - table: silver_grant_permission
+    entity: GrantPermission
+    profile: false
+    ontology_entity: GrantPermission
+    domain: Authority
+    serves: [grant_permission]
+    grain: One allowed or denied permission of an access grant (element of permissions or deniedPermissions).
+    description: 'One allowed or denied permission of an access grant (element of permissions or deniedPermissions). Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    sources:
+      - {release: retail-frontier-v1, file: access-grants.json, explode: permissions, set: {kind: allow, is_denied: false}}
+      - {release: retail-frontier-v1, file: access-grants.json, explode: deniedPermissions, set: {kind: deny, is_denied: true}}
+    key: [grantId, permissionKind, ordinal]
+    record_id: '{^.grantId}#{$kind}#{$index:02d}'
+    owner: ^.ownerId
+    common:                                        # extension entity: the app's put() defaults (app/data_xray/projection.py 322-338)
+      cite: app/data_xray/projection.py:322-338
+      source_kind: bank_record
+      state: {const: recorded}
+    columns:
+      - {col: grantId, origin: extension, type: string, from: ^.grantId, nullable: false}
+      - {col: permissionKind, origin: extension, type: string, from: $kind, nullable: false}
+      - {col: ordinal, origin: extension, type: integer, from: $index, nullable: false, desc: 1-based position within the array (the order the seed lists it).}
+      - {col: permission, origin: extension, type: string, from: '@'}
+      - {col: isDenied, origin: extension, type: boolean, from: $is_denied}
+  - table: silver_registered_agent
+    entity: RegisteredAgent
+    profile: true
+    profile_entity: RegisteredAgent
+    ontology_entity: RegisteredAgent
+    domain: Authority
+    serves: [registered_agent]
+    grain: One registered (KYA) agent.
+    description: One registered (KYA) agent. Conformed to the CDM profile entity RegisteredAgent (realises the ontology entity RegisteredAgent). Attributes without a seed counterpart stay null; other seed fields the ontology needs are x columns.
+    cdm: null
+    bian: []
+    sources:
+      - {release: retail-frontier-v1, file: agents.json}
+    key: [agentId]
+    owner: ownerId
+    common:                                        # app/data_xray/projection.py 1985-1994 (frontier_records adapters); app/frontier/contracts.py 109-131
+      cite: [app/data_xray/projection.py:1985-1994, app/frontier/contracts.py:109-131]
+      source_kind: frontier                        # 1993
+      state: {from: status, default: recorded}     # 1992 str(getattr(row, "status", "recorded")); RegisteredAgent.status (contracts.py 120)
+    columns:
+      - {col: agentId, origin: profile, type: string, from: agentId}
+      - {col: displayName, origin: profile, type: string, none: not recorded (the registration type is kept as xRegistrationType)}
+      - {col: identityRef, origin: profile, type: string, none: not recorded in the seed}
+      - {col: permittedData, origin: profile, type: string, none: 'the seed lists combined action:resource scopes (xScopes and silver_agent_scope), not separate data and action lists'}
+      - {col: permittedActions, origin: profile, type: string, none: 'the seed lists combined action:resource scopes (xScopes and silver_agent_scope), not separate data and action lists'}
+      - {col: transactionLimitMinor, origin: profile, type: minor, none: no per-agent limit in the seed (limits live on the mandate)}
+      - {col: currency, origin: profile, type: string, none: the agent carries no money field}
+      - {col: validFrom, origin: profile, type: datetime, none: not recorded in the seed}
+      - {col: expiresAt, origin: profile, type: datetime, none: not recorded in the seed}
+      - {col: status, origin: profile, type: string, from: status}
+      - {col: humanAccountability, origin: profile, type: string, none: not recorded}
+      - {col: registeredAt, origin: profile, type: datetime, none: 'the seed records only the KYA verification time (xKyaVerifiedAt), which is not the registration time'}
+      - {col: revokedAt, origin: profile, type: datetime, none: not recorded in the seed}
+      - {col: xHouseholdId, origin: extension, type: string, from: householdId, desc: Household the agent operates in.}
+      - {col: xConsentRef, origin: extension, type: string, from: consentRef, desc: Consent that lets the agent read the customer's data.}
+      - {col: xRegistrationType, origin: extension, type: string, from: registrationType, desc: Registration type such as personal_agent.}
+      - {col: xDelegationMode, origin: extension, type: string, from: delegationMode, desc: 'How authority is delegated, for example household_financial_assistant.'}
+      - {col: xScopes, origin: extension, type: string, from: scopes, t: join, desc: 'Scopes the agent may use, such as read:goals or propose:goal_transfer (semicolon separated).'}
+      - {col: xDeniedScopes, origin: extension, type: string, from: deniedScopes, t: join, desc: 'Scopes the agent is explicitly denied, such as execute:unmandated_transfer (semicolon separated). Denied wins.'}
+      - {col: xKyaProviderName, origin: extension, type: string, from: kya.providerName, desc: KYA provider name (synthetic registry fixture).}
+      - {col: xKyaProviderRegistrationId, origin: extension, type: string, from: kya.providerRegistrationId, desc: KYA registration id (synthetic).}
+      - {col: xKyaVerificationMethod, origin: extension, type: string, from: kya.verificationMethod, desc: 'How the agent was verified: synthetic_registry_fixture. Not an external certification.'}
+      - {col: xKyaVerifiedAt, origin: extension, type: datetime, from: kya.verifiedAt, desc: When KYA verification was recorded.}
+      - {col: xKyaSigningKeyFingerprint, origin: extension, type: string, from: kya.signingKeyFingerprint, desc: Signing key fingerprint. Restricted., restricted: true}
+  - table: silver_agent_scope
+    entity: AgentScope
+    profile: false
+    ontology_entity: AgentScope
+    domain: Authority
+    serves: [agent_scope]
+    grain: One allowed or denied scope of a registered agent (element of scopes or deniedScopes).
+    description: 'One allowed or denied scope of a registered agent (element of scopes or deniedScopes). Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    sources:
+      - {release: retail-frontier-v1, file: agents.json, explode: scopes, set: {kind: allow, is_denied: false}}
+      - {release: retail-frontier-v1, file: agents.json, explode: deniedScopes, set: {kind: deny, is_denied: true}}
+    key: [agentId, scopeKind, ordinal]
+    record_id: '{^.agentId}#{$kind}#{$index:02d}'
+    owner: ^.ownerId
+    common:                                        # extension entity: the app's put() defaults (app/data_xray/projection.py 322-338)
+      cite: app/data_xray/projection.py:322-338
+      source_kind: bank_record
+      state: {const: recorded}
+    columns:
+      - {col: agentId, origin: extension, type: string, from: ^.agentId, nullable: false}
+      - {col: scopeKind, origin: extension, type: string, from: $kind, nullable: false}
+      - {col: ordinal, origin: extension, type: integer, from: $index, nullable: false, desc: 1-based position within the array (the order the seed lists it).}
+      - {col: scope, origin: extension, type: string, from: '@'}
+      - {col: isDenied, origin: extension, type: boolean, from: $is_denied}
+  - table: silver_frontier_mandate
+    entity: FrontierMandate
+    profile: true
+    profile_entity: FrontierMandate
+    ontology_entity: FrontierMandate
+    domain: Authority
+    serves: [mandate]
+    grain: One bounded surplus-to-goal mandate.
+    description: One bounded surplus-to-goal mandate. Conformed to the CDM profile entity FrontierMandate (realises the ontology entity of the same name). Attributes without a seed counterpart stay null; other seed fields the ontology needs are x columns.
+    cdm: null
+    bian: []
+    sources:
+      - {release: retail-frontier-v1, file: mandates.json}
+    key: [mandateId]
+    owner: ownerId
+    common:                                        # app/data_xray/projection.py 1985-1994 (frontier_records adapters); app/frontier/contracts.py 134-164
+      cite: [app/data_xray/projection.py:1985-1994, app/frontier/contracts.py:134-164]
+      source_kind: frontier                        # 1993
+      state: {from: status, default: recorded}     # 1992 str(getattr(row, "status", "recorded")); SurplusToGoalMandate.status (contracts.py 147)
+    columns:
+      - {col: mandateId, origin: profile, type: string, from: mandateId}
+      - {col: agentId, origin: profile, type: string, from: agentId}
+      - {col: journeyId, origin: profile, type: string, none: not recorded in the seed}
+      - {col: consentId, origin: profile, type: string, from: consentRef}
+      - {col: sourceAccountId, origin: profile, type: string, from: sourceAccountId}
+      - {col: targetGoalId, origin: profile, type: string, from: goalId}
+      - {col: protectedCashMinor, origin: profile, type: minor, from: limits.minimumSourceBalanceAfterAction, t: paise}
+      - {col: perExecutionLimitMinor, origin: profile, type: minor, from: limits.perAction, t: paise}
+      - {col: monthlyLimitMinor, origin: profile, type: minor, from: limits.monthlyAggregate, t: paise}
+      - {col: currency, origin: profile, type: string, from: [currency, limits.perAction.currency]}
+      - {col: effectiveFrom, origin: profile, type: datetime, from: limits.validFrom}
+      - {col: expiresAt, origin: profile, type: datetime, from: limits.validUntil}
+      - {col: status, origin: profile, type: string, from: status}
+      - {col: revision, origin: profile, type: integer, none: not recorded in the seed}
+      - {col: createdAt, origin: profile, type: datetime, none: not a field; the creation time is only implied by the created event in the history}
+      - {col: updatedAt, origin: profile, type: datetime, none: not recorded in the seed}
+      - {col: revokedAt, origin: profile, type: datetime, none: not a field; the revocation time is only implied by the revoked event in the history}
+      - {col: xDestinationAccountId, origin: extension, type: string, from: destinationAccountId, desc: Account money may go to.}
+      - {col: xHistoryCount, origin: extension, type: integer, from: history, t: len, desc: Number of recorded mandate events.}
+  - table: silver_mandate_action
+    entity: MandateAction
+    profile: true
+    profile_entity: MandateAction
+    ontology_entity: MandateAction
+    domain: Authority
+    serves: [mandate_event]
+    grain: One recorded event of a mandate (element of history).
+    description: One recorded event of a mandate (element of history). Conformed to the CDM profile entity MandateAction (realises the ontology entity of the same name). Attributes without a seed counterpart stay null; other seed fields the ontology needs are x columns.
+    notes: Mapped by standards.ONTOLOGY_ENTITY. Only executed and skipped events resemble the profile's mandate action; created and revoked events are kept as rows too (xEventType), with no amount or reason.
+    cdm: null
+    bian: []
+    sources:
+      - {release: retail-frontier-v1, file: mandates.json, explode: history}
+    key: [actionRecordId]
+    owner: ^.ownerId
+    common:                                        # app/data_xray/projection.py 1985-1994 (frontier_records adapters); app/frontier/contracts.py 237-260
+      cite: [app/data_xray/projection.py:1985-1994, app/frontier/contracts.py:237-260]
+      source_kind: frontier                        # 1993
+      state: {from: status, default: recorded}     # 1992; MandateActionRecord.status (contracts.py 248) is executed/refused/referred, the seed events carry only an eventType (kept in xEventType)
+    columns:
+      - {col: actionRecordId, origin: profile, type: string, from: eventId}
+      - {col: mandateId, origin: profile, type: string, from: ^.mandateId}
+      - {col: candidateId, origin: profile, type: string, none: not recorded in the seed}
+      - {col: preparedActionId, origin: profile, type: string, none: not recorded in the seed}
+      - {col: amountMinor, origin: profile, type: minor, from: amount, t: paise}
+      - {col: protectedCashBeforeMinor, origin: profile, type: minor, none: not recorded in the seed}
+      - {col: protectedCashAfterMinor, origin: profile, type: minor, from: sourceBalanceAfterAction, t: paise}
+      - {col: monthlyUsedBeforeMinor, origin: profile, type: minor, none: not recorded in the seed}
+      - {col: monthlyUsedAfterMinor, origin: profile, type: minor, none: not recorded in the seed}
+      - {col: currency, origin: profile, type: string, from: [amount.currency, sourceBalanceAfterAction.currency, ^.currency]}
+      - {col: status, origin: profile, type: string, none: 'the seed event types (created, action_executed, action_skipped, revoked) are not the profile''s executed, refused or referred (kept as xEventType)'}
+      - {col: reasons, origin: profile, type: string, from: reason}
+      - {col: receiptId, origin: profile, type: string, none: not recorded in the seed}
+      - {col: recordedAt, origin: profile, type: datetime, from: occurredAt}
+      - {col: xEventType, origin: extension, type: string, from: eventType, desc: 'created, action_executed, action_skipped or revoked.'}
+      - {col: xActorRef, origin: extension, type: string, from: actorRef, desc: 'Who caused the event: the customer or the agent.'}
+      - {col: xTransactionDescriptions, origin: extension, type: string, from: transactionDescriptions, t: join, desc: Bank narration of the resulting transaction.}
+      - {col: xOrdinal, origin: extension, type: integer, from: $index, desc: 1-based position of the event in the mandate's history.}

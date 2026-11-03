@@ -1,0 +1,2194 @@
+[
+  {
+    "assets": [
+      {
+        "bytes": 3193,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-N-PENSION.pdf",
+        "renderStyle": "pdf",
+        "sha256": "c209844349737d725d7722b9f169d340191018f7b279ecfb3b8fe9e98a0dcae5",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:47:14Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-N-PENSION",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "260ffbd03109e6b59d908f5506891c3e069e3e4b647e7af930e46a45cbd0f38c",
+      "responseId": "resp_0b1a7eca637442db006aa6b76eb2c4819790f109f284fc916e",
+      "specSha256": "f07eb30054f1f80859b86b6803a0fc48f3fd1127739be3a38ec2b34861590f92"
+    },
+    "cases": [
+      "UC01"
+    ],
+    "declaredFacts": {
+      "creditDay": "3rd of each month",
+      "creditedTo": "Contoso Classic Savings",
+      "lastThreeCredits": [
+        "2026-07-03",
+        "2026-08-03",
+        "2026-09-03"
+      ],
+      "monthlyPension": "INR 48,500",
+      "ppoReference": "PPO/SYN/2019/44821"
+    },
+    "documentId": "DOC-N-PENSION",
+    "documentKind": "pension_advice",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "A footnote mentions that a periodic dearness relief revision is announced separately and is not reflected in this advice, so the customer cannot tell from this document alone whether the amount will change.",
+    "issuer": "State Treasury (synthetic)",
+    "ownerId": "nivedita",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-N-PENSION",
+    "sourceVersion": 1,
+    "title": "Monthly Pension Credit Advice",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3465,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-N-FD-RENEWAL.pdf",
+        "renderStyle": "pdf",
+        "sha256": "28a174a4abfe9c923fccb7edf7beb9ca23375cb1fee0f2a452dac65ded606341",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:47:19Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-N-FD-RENEWAL",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "50038fb97a1026ebda13dea69cf498fcf6fdf7556701b44e7ea80196735d510f",
+      "responseId": "resp_03263c45f7767b46006aa6b773a9048195aa401c5b06a4c601",
+      "specSha256": "7cc0643610e0da19b1a15354f3fb1628c44fea1a8e7907c9dd57d0cf2032462e"
+    },
+    "cases": [
+      "UC01"
+    ],
+    "declaredFacts": {
+      "depositId": "dep-niv-fd-01",
+      "maturesOn": "2026-09-20",
+      "openedOn": "2024-09-20",
+      "principal": "INR 6,00,000",
+      "productName": "Contoso Standard Fixed Deposit",
+      "ratePct": "6.85%",
+      "standingInstruction": "renew principal and interest"
+    },
+    "documentId": "DOC-N-FD-RENEWAL",
+    "documentKind": "deposit_notice",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "The renewal clause says the deposit will renew 'at the rate prevailing on the date of renewal' without stating that rate, and separately says the standing instruction 'may be revised up to the maturity date' without saying how. Whether acting is urgent is therefore genuinely unclear from this notice.",
+    "issuer": "Contoso Bank",
+    "ownerId": "nivedita",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-N-FD-RENEWAL",
+    "sourceVersion": 1,
+    "supersededBy": {
+      "documentId": "DOC-N-FD-RENEWAL-V2",
+      "scenario": "nivedita-renewal-clause-change",
+      "sourceVersion": 2
+    },
+    "title": "Fixed Deposit Maturity and Renewal Notice",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3116,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-N-RETIREMENT-NOTE.pdf",
+        "renderStyle": "pdf",
+        "sha256": "b21dd7776f75e139973c85253b84d5cce2e32cbdf2305a9da2db6c6de60f0c38",
+        "sourceVersion": 1
+      },
+      {
+        "bytes": 373505,
+        "mimeType": "image/png",
+        "note": "Deliberately imperfect: slight skew, softened contrast and light sensor noise, so live OCR has something real to process.",
+        "pages": 1,
+        "relativePath": "documents/DOC-N-RETIREMENT-NOTE.png",
+        "renderStyle": "scan",
+        "sha256": "503113f00c2b8a48966514f75794d4a798e420412b0103e9176b138fe1204533",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:47:24Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-N-RETIREMENT-NOTE",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "074c440bbbd5d6cace5c3a7d0ea9069443d222f19483af5f3a10d0958dcdb6fb",
+      "responseId": "resp_0dadf17865396ab5006aa6b778e49c81978cd66d676258bdc9",
+      "specSha256": "697f752a1f8fb2266715e790d80b9f115c54efe0374ff0dcd6be22e76c832117"
+    },
+    "cases": [
+      "UC01"
+    ],
+    "declaredFacts": {
+      "monthlyHouseholdNeed": "INR 38,000",
+      "writtenOn": "2026-09-08"
+    },
+    "documentId": "DOC-N-RETIREMENT-NOTE",
+    "documentKind": "customer_note",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "She writes that she wants 'a steady monthly amount' but also that she must 'keep something reachable for hospital things'. She never says which matters more, and the two pull in opposite directions.",
+    "issuer": "Nivedita Rao",
+    "ownerId": "nivedita",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-N-RETIREMENT-NOTE",
+    "sourceVersion": 1,
+    "title": "Customer's own note on retirement priorities",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3591,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-N-MEDICAL-ESTIMATE.pdf",
+        "renderStyle": "pdf",
+        "sha256": "9a16f8b685e6798ea228256ccfd6516bcd4e28b878b9df68bf578a376f65c387",
+        "sourceVersion": 1
+      },
+      {
+        "bytes": 493831,
+        "mimeType": "image/png",
+        "note": "Deliberately imperfect: slight skew, softened contrast and light sensor noise, so live OCR has something real to process.",
+        "pages": 1,
+        "relativePath": "documents/DOC-N-MEDICAL-ESTIMATE.png",
+        "renderStyle": "scan",
+        "sha256": "bd25dae1d5904e3c516839c68d3c9c46c169814111d7954ca3ff6a2b567f797a",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:47:31Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-N-MEDICAL-ESTIMATE",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "b54de068f4ba208f2462654e55be81f0ed8a10656bf7794a7a22dcb7d6ac5b79",
+      "responseId": "resp_07cfa133665c9df2006aa6b77df2308194b94bcc473eea0804",
+      "specSha256": "dad0cac81dffc5c476e628d96f703dcf5044b376ba5c6c8a9715668339bea015"
+    },
+    "cases": [
+      "UC02"
+    ],
+    "declaredFacts": {
+      "consultOn": "2026-08-22",
+      "estimateTotal": "INR 1,86,400",
+      "estimatedStayDays": "3",
+      "preAdmissionDiagnostics": "INR 4,280",
+      "procedure": "Elective orthopaedic day-care procedure",
+      "roomCategory": "Twin sharing",
+      "roomRentPerDay": "INR 9,000"
+    },
+    "documentId": "DOC-N-MEDICAL-ESTIMATE",
+    "documentKind": "medical_estimate",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "One line reads 'Pre-admission diagnostics (as advised) - INR 4,280' without stating the date they were performed. Whether they fall inside the policy's 30-day pre-hospitalisation window cannot be determined from this document.",
+    "issuer": "Manipal Hospital (synthetic)",
+    "ownerId": "nivedita",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-N-MEDICAL-ESTIMATE",
+    "sourceVersion": 1,
+    "title": "Procedure Cost Estimate",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3673,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-N-HEALTH-POLICY.pdf",
+        "renderStyle": "pdf",
+        "sha256": "f8fb665109c15c405fd5f49263bc49e2a6304bcbd4fb2efb83dee20295564d32",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:47:38Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-N-HEALTH-POLICY",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "613ca7daaf421f337a734ea89ddc60a8cf7add96b4c4d26d184029e00a0dc1a9",
+      "responseId": "resp_073e4204e35c1001006aa6b78506148195b35365d3c2ad2718",
+      "specSha256": "3fb01bfe109df47d1058211e084336d73eb3ce56909789b8910f73749ec97481"
+    },
+    "cases": [
+      "UC02"
+    ],
+    "declaredFacts": {
+      "monthlyPremium": "INR 3,850",
+      "policyId": "pol-niv-health-01",
+      "postHospitalisationDays": "60",
+      "preExistingWaitingMonths": "24",
+      "preHospitalisationDays": "30",
+      "productName": "Contoso Health Base Cover",
+      "roomRentSubLimit": "1% of sum insured per day",
+      "sumInsured": "INR 5,00,000"
+    },
+    "documentId": "DOC-N-HEALTH-POLICY",
+    "documentKind": "policy_schedule",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "The room-rent sub-limit is stated as a percentage, not a rupee figure, so the customer must do the arithmetic to see whether the quoted room rate exceeds it.",
+    "issuer": "Meridian Demo Assurance (fictional), distributed by Contoso Bank",
+    "ownerId": "nivedita",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-N-HEALTH-POLICY",
+    "sourceVersion": 1,
+    "title": "Health Base Cover - Policy Schedule",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3308,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-N-INSURER-CLARIFICATION.pdf",
+        "renderStyle": "pdf",
+        "sha256": "0ab0d1bee62283e0817188f3aa0cfce31c3c6a837031165311f337b9bfc57fcf",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:47:45Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-N-INSURER-CLARIFICATION",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "ca1cf9beb1ce15daf16aa74b83b75c9ec9c677f20839da275bb83e5a5b88c9ba",
+      "responseId": "resp_026fbf14626c4984006aa6b78c17f081978fa7862e84d61ea9",
+      "specSha256": "dca888f34d99500700df9e9ec6e7802b60b077a7ade22accbb13b2c03c85238b"
+    },
+    "cases": [
+      "UC02"
+    ],
+    "declaredFacts": {
+      "issuedOn": "2026-09-09",
+      "referenceNumber": "MDA/CLR/2026/7741"
+    },
+    "documentId": "DOC-N-INSURER-CLARIFICATION",
+    "documentKind": "insurer_letter",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "It confirms the general rule for pre-hospitalisation expenses but explicitly declines to confirm THIS case without the dated diagnostic reports. It answers the policy question while leaving the customer's actual question open.",
+    "issuer": "Meridian Demo Assurance (fictional)",
+    "ownerId": "nivedita",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-N-INSURER-CLARIFICATION",
+    "sourceVersion": 1,
+    "title": "Clarification on Pre-Admission Expenses",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3631,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-N-SCAM-CHAT.pdf",
+        "renderStyle": "pdf",
+        "sha256": "603e8f4733fe4f8be525cd3a1869abb7485b26c37ae8af6d164397130287398b",
+        "sourceVersion": 1
+      },
+      {
+        "bytes": 687955,
+        "mimeType": "image/png",
+        "note": "Deliberately imperfect: slight skew, softened contrast and light sensor noise, so live OCR has something real to process.",
+        "pages": 1,
+        "relativePath": "documents/DOC-N-SCAM-CHAT.png",
+        "renderStyle": "scan",
+        "sha256": "25c7e8f272dd3d8d5e7cea4230e138150535ce83b61e2dee12f9d7128c0238b5",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:47:53Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-N-SCAM-CHAT",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "f515738bb0860bc0851ed01c6a3683d131571aaa927a7efa853a7dc5aa8c7bef",
+      "responseId": "resp_0559dd6e78d36545006aa6b79264cc8193b847a79948531cc8",
+      "specSha256": "b919794baafaf2af20e34cbabbafe7f667837e6a2d44a056efd55bb2c138b448"
+    },
+    "cases": [
+      "UC03"
+    ],
+    "declaredFacts": {
+      "claimedSender": "Contoso Bank Verification Cell",
+      "threadDate": "2026-09-11"
+    },
+    "documentId": "DOC-N-SCAM-CHAT",
+    "documentKind": "chat_transcript",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "The sender uses real Contoso branding and a plausible reference number, but the callback number differs from the one printed on her card, the urgency escalates across messages, and it asks her to approve a mandate to 'confirm' her identity. Plausible enough that dismissing it as obvious would be wrong.",
+    "issuer": "Unknown sender",
+    "ownerId": "nivedita",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-N-SCAM-CHAT",
+    "sourceVersion": 1,
+    "title": "Message thread - claimed bank verification",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3187,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-N-LEGITIMATE-NOTICE.pdf",
+        "renderStyle": "pdf",
+        "sha256": "381adc73220fcc167652484c07108402b38d646f56bc03a5e75372c0143c0278",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:47:58Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-N-LEGITIMATE-NOTICE",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "d58e5e71ed6e051b13a76e5bc1644b9cb853f1bb7a5d653c9e2d63dbbd65717a",
+      "responseId": "resp_09afe985bcc1f537006aa6b79a5a948195926b823fea16b32f",
+      "specSha256": "5d947e85575582aa8aaa3ed6495fbd2ff1533e688ff91da32aaa1aeb0393410b"
+    },
+    "cases": [
+      "UC03"
+    ],
+    "declaredFacts": {
+      "dueBy": "2026-11-30",
+      "noticeRef": "CB/KYC/2026/33110"
+    },
+    "documentId": "DOC-N-LEGITIMATE-NOTICE",
+    "documentKind": "bank_notice",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "A GENUINE notice, deliberately included so the assistant cannot simply classify every bank-related message as fraud. It asks her to visit a branch or use the app, never to share a code or approve a mandate.",
+    "issuer": "Contoso Bank",
+    "ownerId": "nivedita",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-N-LEGITIMATE-NOTICE",
+    "sourceVersion": 1,
+    "title": "Scheduled Re-KYC Reminder",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3006,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-R-FAMILY-NOTE.pdf",
+        "renderStyle": "pdf",
+        "sha256": "f7101aa4dad2f627cb5f5419c1f0d56872fc5363041598f065cbcb90fbbbb51b",
+        "sourceVersion": 1
+      },
+      {
+        "bytes": 321765,
+        "mimeType": "image/png",
+        "note": "Deliberately imperfect: slight skew, softened contrast and light sensor noise, so live OCR has something real to process.",
+        "pages": 1,
+        "relativePath": "documents/DOC-R-FAMILY-NOTE.png",
+        "renderStyle": "scan",
+        "sha256": "fa0ff014e76921930c2e9cba24443e249ccdf3ae0676a1bd59ae8ba975e64c07",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:48:03Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-R-FAMILY-NOTE",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "26d79b0aeea3f4966583ae2afd3d2a51c1b96576470a67ab3d682ac616c3f974",
+      "responseId": "resp_06a4c993621abcd4006aa6b79fc6b08190b659eef8170809ae",
+      "specSha256": "905972ed4129ddf07f4b554d8cbb05da5e218985fc0780d7e4664fc82fbc2f54"
+    },
+    "cases": [
+      "UC04"
+    ],
+    "declaredFacts": {
+      "monthlySurplusEstimate": "INR 40,000",
+      "writtenOn": "2026-09-06"
+    },
+    "documentId": "DOC-R-FAMILY-NOTE",
+    "documentKind": "customer_note",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "She lists three commitments - the revised school fee, a possible move, and support for a parent - without ranking them, and her surplus cannot cover all three.",
+    "issuer": "Rhea Bansal",
+    "ownerId": "rhea",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-R-FAMILY-NOTE",
+    "sourceVersion": 1,
+    "title": "Household planning note",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3346,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-R-SCHOOL-CIRCULAR.pdf",
+        "renderStyle": "pdf",
+        "sha256": "3759294b8526b530560a01e1af68467cd67a61465eada02140752dd9ab7a8a5a",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:48:08Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-R-SCHOOL-CIRCULAR",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "dc3eeb34c997820b3af1f009672c886dfacdc8ea2962539aa254edf873de313f",
+      "responseId": "resp_028b96071805c59f006aa6b7a45bf08194ae9caa9279d2e763",
+      "specSha256": "76df059d714415df274fcb731b5c0ac1bdb06e98675e627b339bfb186957599f"
+    },
+    "cases": [
+      "UC04"
+    ],
+    "declaredFacts": {
+      "circularRef": "OIS/FEE/2026-27/09",
+      "effectiveFrom": "2026-09-01",
+      "previousTermFee": "INR 18,500",
+      "revisedTermFee": "INR 26,800"
+    },
+    "documentId": "DOC-R-SCHOOL-CIRCULAR",
+    "documentKind": "school_circular",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "The circular mentions an optional activity component without stating whether it is included in the revised figure.",
+    "issuer": "Orchid International School (synthetic)",
+    "ownerId": "rhea",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-R-SCHOOL-CIRCULAR",
+    "sourceVersion": 1,
+    "title": "Revised Term Fee Structure",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3442,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-R-RELOCATION-LETTER.pdf",
+        "renderStyle": "pdf",
+        "sha256": "6760dfb592ac3523249b832dd5f108eda703559b281bd3cae4631144fdc56782",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:48:14Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-R-RELOCATION-LETTER",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "d6d38bf4c1aadbd4d8d09ba585723b8b9ffb6a7710bd9a4513eeaf1b200c57f7",
+      "responseId": "resp_027fa867e0da72d6006aa6b7a991bc8196aff717d49a99e7bd",
+      "specSha256": "b8b8d17f2ea502b444dc37f3cf0b2e6ba3d6a5e12f52b4dd3b122b9b1d8096ae"
+    },
+    "cases": [
+      "UC04"
+    ],
+    "declaredFacts": {
+      "indicativeMonth": "2027-02",
+      "proposedCity": "Bengaluru",
+      "relocationAllowance": "INR 1,50,000"
+    },
+    "documentId": "DOC-R-RELOCATION-LETTER",
+    "documentKind": "employer_letter",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "The move is described as 'under consideration' and 'subject to business confirmation'. It is not decided, so planning around it as certain would be wrong, and ignoring it entirely would also be wrong.",
+    "issuer": "Northwind Tech Pvt Ltd (synthetic)",
+    "ownerId": "rhea",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-R-RELOCATION-LETTER",
+    "sourceVersion": 1,
+    "supersededBy": {
+      "documentId": "DOC-R-RELOCATION-LETTER-V2",
+      "scenario": "rhea-relocation-uncertain",
+      "sourceVersion": 2
+    },
+    "title": "Proposed Role Relocation",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3809,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-R-HOME-OFFER-A.pdf",
+        "renderStyle": "pdf",
+        "sha256": "76d424fa678135a18b614f60fb8b9fe8679970c1a0d6988872c1d61167438c9d",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:48:21Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-R-HOME-OFFER-A",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "eac49f9ae9e2c1308ad74a5e7f688b3b8b25eb3722195da58761c2cc84e71ad5",
+      "responseId": "resp_078968a330bf056b006aa6b7af75d0819082ff94368d93eefd",
+      "specSha256": "8fcff14fda4e088bd680e0896af478fef5e3bc2d194590a0c7ae47b78af21dfe"
+    },
+    "cases": [
+      "UC05"
+    ],
+    "declaredFacts": {
+      "maximumLtvPct": "80%",
+      "maximumTenureYears": "25",
+      "prepaymentChargePct": "2.00%",
+      "prepaymentLockInMonths": "12",
+      "processingFeePct": "0.50%",
+      "productId": "CB-HL-STANDARD",
+      "ratePct": "8.45%",
+      "rateType": "floating"
+    },
+    "documentId": "DOC-R-HOME-OFFER-A",
+    "documentKind": "loan_offer",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "Prepayment is described as 'permitted after the initial period, subject to applicable charges'. The initial period and the charge appear in a separate clause, so the two must be read together to see the real cost.",
+    "issuer": "Contoso Bank",
+    "ownerId": "rhea",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-R-HOME-OFFER-A",
+    "sourceVersion": 1,
+    "supersededBy": {
+      "documentId": "DOC-R-HOME-OFFER-A-V2",
+      "scenario": "rhea-offer-condition-revised",
+      "sourceVersion": 2
+    },
+    "title": "Indicative Home Loan Terms - Standard",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3664,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-R-HOME-OFFER-B.pdf",
+        "renderStyle": "pdf",
+        "sha256": "24d8015dd161869d74b75bf9b1b540349df6f0dfb7e1e53c2169456253cd19ee",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:48:27Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-R-HOME-OFFER-B",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "433040e3247216a82c6a69e356d07baf02eee02151cbe759da9b805264dff345",
+      "responseId": "resp_0bd6da48d35e31b2006aa6b7b677f88196aade77280ee78ee2",
+      "specSha256": "2235380911e5460c573b18a9428edbfa31b768d757ef05bbeed4d928470ae0b4"
+    },
+    "cases": [
+      "UC05"
+    ],
+    "declaredFacts": {
+      "maximumLtvPct": "75%",
+      "maximumTenureYears": "20",
+      "overdraftFacility": "available",
+      "prepaymentChargePct": "0.00%",
+      "prepaymentLockInMonths": "0",
+      "processingFeePct": "0.25%",
+      "productId": "CB-HL-FLEX",
+      "ratePct": "8.75%",
+      "rateType": "floating"
+    },
+    "documentId": "DOC-R-HOME-OFFER-B",
+    "documentKind": "loan_offer",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "Free prepayment is stated plainly, but the lower maximum loan-to-value is buried in a schedule, so the headline flexibility hides a larger required down payment.",
+    "issuer": "Contoso Bank",
+    "ownerId": "rhea",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-R-HOME-OFFER-B",
+    "sourceVersion": 1,
+    "title": "Indicative Home Loan Terms - Flexi",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3258,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-R-BONUS-LETTER.pdf",
+        "renderStyle": "pdf",
+        "sha256": "46c7c40796c0a7898ff7cdef7c6de9df72059c820b9128be177673b53fbb532c",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:48:33Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-R-BONUS-LETTER",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "5f9e6e84396e69fe0e7ff119fcb49e2e1e495af1d7ad9f5823be6e5f313500ba",
+      "responseId": "resp_06d5061cad711a1e006aa6b7bcea10819696525620a6eac98d",
+      "specSha256": "2c4353005f5cd0591c2438f9e97e0e8f1017942cf6c2361f1198abfee8358809"
+    },
+    "cases": [
+      "UC05"
+    ],
+    "declaredFacts": {
+      "indicativeAmount": "INR 3,20,000",
+      "indicativeMonth": "2027-04"
+    },
+    "documentId": "DOC-R-BONUS-LETTER",
+    "documentKind": "employer_letter",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "The amount is 'indicative and subject to company and individual performance'. It is not guaranteed cash, so a prepayment plan built on it is a plan with a condition attached.",
+    "issuer": "Northwind Tech Pvt Ltd (synthetic)",
+    "ownerId": "rhea",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-R-BONUS-LETTER",
+    "sourceVersion": 1,
+    "title": "Performance Bonus Intimation",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 5775,
+        "mimeType": "application/pdf",
+        "pages": 2,
+        "relativePath": "documents/DOC-R-CARD-STATEMENT.pdf",
+        "renderStyle": "pdf",
+        "sha256": "a9e18bbda9c0a7bfd0124fa679dab5c448f0e0c4dc91c7d23b2c0ed3b5385aeb",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "function": "_card_statement",
+      "method": "deterministic_python",
+      "module": "tools.document_registry",
+      "note": "Composed from canonical release data. No language model produced this content, so no model, deployment or response ID is recorded.",
+      "rendererVersion": "retail4-render-v2"
+    },
+    "cases": [
+      "UC06"
+    ],
+    "declaredFacts": {
+      "availableCredit": "INR 1,29,310.00",
+      "cardId": "card-rhe-cc-01",
+      "closingBalance": "INR 1,20,690.00",
+      "creditLimit": "INR 2,50,000.00",
+      "includesDescriptors": [
+        "PAYU*MERCH 4471",
+        "RAZORPAY*RZP 88213",
+        "PAYTM*QR 20915"
+      ],
+      "minimumAmountDue": "INR 6,034.50",
+      "openingPosition": "INR 1,16,127.00",
+      "paymentDueDate": "2026-10-03",
+      "paymentsAndCreditsThisPeriod": "INR 53,633.00",
+      "productName": "Contoso Classic Credit Card",
+      "purchasesThisPeriod": "INR 58,196.00",
+      "statementFrom": "2026-08-14",
+      "statementTo": "2026-09-13",
+      "transactionCount": "18"
+    },
+    "documentId": "DOC-R-CARD-STATEMENT",
+    "documentKind": "card_statement",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "Three line items carry payment-gateway descriptors that do not name the actual merchant, so the statement alone cannot tell her what she bought. The totals and the arithmetic behind them are fully stated; only the descriptors are opaque.",
+    "issuer": "Contoso Bank",
+    "ownerId": "rhea",
+    "pageCount": 2,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-R-CARD-STATEMENT",
+    "sourceVersion": 1,
+    "title": "Credit Card Statement",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3332,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-R-MERCHANT-RECEIPTS.pdf",
+        "renderStyle": "pdf",
+        "sha256": "deaa25038f5491c74b943081d2a39ffdebf2cc92b938f6993db05129cdf25929",
+        "sourceVersion": 1
+      },
+      {
+        "bytes": 421843,
+        "mimeType": "image/png",
+        "note": "Deliberately imperfect: slight skew, softened contrast and light sensor noise, so live OCR has something real to process.",
+        "pages": 1,
+        "relativePath": "documents/DOC-R-MERCHANT-RECEIPTS.png",
+        "renderStyle": "scan",
+        "sha256": "f59cd64379834fa17316ed10036cba6cc3d0ec5562022c1b08cabd61918b7909",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "function": "_merchant_receipts",
+      "method": "deterministic_python",
+      "module": "tools.document_registry",
+      "note": "Composed from canonical release data. No language model produced this content, so no model, deployment or response ID is recorded.",
+      "rendererVersion": "retail4-render-v2"
+    },
+    "cases": [
+      "UC06"
+    ],
+    "declaredFacts": {
+      "receiptOne": {
+        "billTotal": "INR 4,460.00",
+        "cardPortion": "INR 4,460.00",
+        "category": "education",
+        "date": "2026-08-19",
+        "descriptor": "PAYU*MERCH 4471",
+        "merchant": "Orchid School Uniform Supplier",
+        "otherPortion": "INR 0.00"
+      },
+      "receiptTwo": {
+        "billTotal": "INR 5,340.00",
+        "cardPortion": "INR 3,180.00",
+        "category": "groceries",
+        "date": "2026-08-27",
+        "descriptor": "RAZORPAY*RZP 88213",
+        "merchant": "BigBasket Pune",
+        "otherInstrument": "UPI",
+        "otherPortion": "INR 2,160.00"
+      }
+    },
+    "documentId": "DOC-R-MERCHANT-RECEIPTS",
+    "documentKind": "receipt_packet",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "The second receipt shows one bill settled across two instruments, so the amount that reached the card statement is smaller than what she actually spent at that merchant. Reading the statement line alone understates the purchase.",
+    "issuer": "Various merchants (synthetic)",
+    "ownerId": "rhea",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-R-MERCHANT-RECEIPTS",
+    "sourceVersion": 1,
+    "title": "Receipts for unrecognised card charges",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3262,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-R-TRAVEL-RECEIPT.pdf",
+        "renderStyle": "pdf",
+        "sha256": "8e822b94d59c07e68814d525276c59bea38bfcaca6e976f735fa39f9f506a4e3",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:48:49Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-R-TRAVEL-RECEIPT",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "6a9b6e1e5ba18be9ce80ee5d37f82bf192c002862d101717aaef1ae7a4df9b33",
+      "responseId": "resp_06194b65858aa79b006aa6b7cc7d448197ab0ea8a2aac6425f",
+      "specSha256": "a28cdac5ca8fb6e16228b1d329abd9e40a1e9e030adfaa9da1a54f7f4ab43934"
+    },
+    "cases": [
+      "UC06"
+    ],
+    "declaredFacts": {
+      "airTickets": "INR 62,400",
+      "occasion": "annual family holiday",
+      "stay": "INR 28,900",
+      "travelDates": "2026-07-11 to 2026-07-17",
+      "travellers": "4"
+    },
+    "documentId": "DOC-R-TRAVEL-RECEIPT",
+    "documentKind": "receipt_packet",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "It reads as a large travel spend, but the booking itself describes an annual family holiday. Whether this represents a travel PATTERN or a single occasion is the open question.",
+    "issuer": "MakeMyTrip (synthetic)",
+    "ownerId": "rhea",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-R-TRAVEL-RECEIPT",
+    "sourceVersion": 1,
+    "supersededBy": {
+      "documentId": "DOC-R-TRAVEL-RECEIPT-V2",
+      "scenario": "rhea-one-off-travel",
+      "sourceVersion": 2
+    },
+    "title": "Holiday booking confirmation",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3353,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-R-REFUND-RECEIPT.pdf",
+        "renderStyle": "pdf",
+        "sha256": "f34979e2db3831b3b56a2fe0d5a36447837199ace68a2b28c658aa263dcd93ab",
+        "sourceVersion": 1
+      },
+      {
+        "bytes": 366698,
+        "mimeType": "image/png",
+        "note": "Deliberately imperfect: slight skew, softened contrast and light sensor noise, so live OCR has something real to process.",
+        "pages": 1,
+        "relativePath": "documents/DOC-R-REFUND-RECEIPT.png",
+        "renderStyle": "scan",
+        "sha256": "a3d0bbf3fd5e6d06c9d1b28f65057a013bcee64c8d762bb1a7e74960da4fbc4e",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:48:54Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-R-REFUND-RECEIPT",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "5d5c18bc11864d6b625122b74883ce2ecac3ed4ca4106dc4442f76b5b2697387",
+      "responseId": "resp_08d7bb4b37ecdbf4006aa6b7d211488195a7759469b04ca00a",
+      "specSha256": "f0139d5bc13cd345badceda69c34cfe373d2cee0f6d122822f50a1bfd48fa93d"
+    },
+    "cases": [
+      "UC07"
+    ],
+    "declaredFacts": {
+      "amount": "INR 21,750",
+      "deliveryPromisedBy": "2026-09-06",
+      "item": "Two-seat fabric sofa",
+      "orderRef": "UW-2026-55841",
+      "purchasedOn": "2026-08-30"
+    },
+    "documentId": "DOC-R-REFUND-RECEIPT",
+    "documentKind": "purchase_receipt",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "The receipt shows the purchase clearly. It says nothing about a refund.",
+    "issuer": "UrbanWeave Furnishings (synthetic)",
+    "ownerId": "rhea",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-R-REFUND-RECEIPT",
+    "sourceVersion": 1,
+    "title": "Purchase receipt - furnishings",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3247,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-R-MERCHANT-CHAT.pdf",
+        "renderStyle": "pdf",
+        "sha256": "33969869c373ebe3d43edcd27c6aa38ebab574cb2dc7b8c7f0b2d9d49c78d5b0",
+        "sourceVersion": 1
+      },
+      {
+        "bytes": 459919,
+        "mimeType": "image/png",
+        "note": "Deliberately imperfect: slight skew, softened contrast and light sensor noise, so live OCR has something real to process.",
+        "pages": 1,
+        "relativePath": "documents/DOC-R-MERCHANT-CHAT.png",
+        "renderStyle": "scan",
+        "sha256": "e5146a589a3ff28163d8fa87f6a05088e2eb9f5c5e22c764300aaeec362fcaf8",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:49:00Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-R-MERCHANT-CHAT",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "44b7690aa10a78b432c9637132e79b0d5b55629d46bb07978c8dbd503280d1ee",
+      "responseId": "resp_046a71ccb89fe617006aa6b7d71f5081909ddcb6d52b448173",
+      "specSha256": "148bc84ebd665e34e703c6d87006213b595246654586fc61ee879275f71f20c7"
+    },
+    "cases": [
+      "UC07"
+    ],
+    "declaredFacts": {
+      "agentStatement": "refund initiated, 5-7 working days",
+      "orderRef": "UW-2026-55841",
+      "threadDates": "2026-09-07 to 2026-09-12"
+    },
+    "documentId": "DOC-R-MERCHANT-CHAT",
+    "documentKind": "chat_transcript",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "The agent says a refund has been 'initiated' and gives a reference. The bank ledger has NO matching credit. A promise is not a posting, and the whole case turns on keeping those two apart.",
+    "issuer": "UrbanWeave Support (synthetic)",
+    "ownerId": "rhea",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-R-MERCHANT-CHAT",
+    "sourceVersion": 1,
+    "title": "Support conversation with merchant",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3388,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-R-REFUND-TERMS.pdf",
+        "renderStyle": "pdf",
+        "sha256": "315a4e4272f62f8d70297b1e1cd3138ef4f90cb9e0d8b905f4c4d5f333d5bd9e",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:49:06Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-R-REFUND-TERMS",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "75ed25fe69b11de0139d2cf6e5a14789e51aab58942083d9e7b42ee934227aac",
+      "responseId": "resp_0ec75a2b673d46a8006aa6b7dd2a508195ab3d1ddfbbe7415c",
+      "specSha256": "cc4bac0381bae5fb2141376987bae45b79a499e2674bf797995c185dc8699ea6"
+    },
+    "cases": [
+      "UC07"
+    ],
+    "declaredFacts": {
+      "refundProcessingDays": "5-7 working days",
+      "restockingFeePct": "0% for damaged goods",
+      "returnWindowDays": "7"
+    },
+    "documentId": "DOC-R-REFUND-TERMS",
+    "documentKind": "policy_terms",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "The window runs from 'delivery', and delivery never happened, so it is unclear whether the clock has started at all.",
+    "issuer": "UrbanWeave Furnishings (synthetic)",
+    "ownerId": "rhea",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-R-REFUND-TERMS",
+    "sourceVersion": 1,
+    "title": "Returns and Refund Policy",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3762,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-V-OFFER-LETTER.pdf",
+        "renderStyle": "pdf",
+        "sha256": "afa25968f97cfbbf2949207bf1f5d3581e53cf844f6550e791e9bc0f807d6e1c",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:49:12Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-V-OFFER-LETTER",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "be21e1a1bec3efab4dccfce5d1ba9e768bdff89012a44d53881b39ef7b10f415",
+      "responseId": "resp_0007e4a79c39592a006aa6b7e3375c8196bb208773a4306fed",
+      "specSha256": "1d0b36fb88199e58cc6aca655dcf2483f62e46c1a6766bfb7d350f1205f16bef"
+    },
+    "cases": [
+      "UC08"
+    ],
+    "declaredFacts": {
+      "fixedMonthlyGross": "INR 62,000",
+      "joiningDate": "2026-10-06",
+      "location": "Hyderabad",
+      "probationMonths": "6",
+      "variableAnnualTarget": "INR 1,20,000"
+    },
+    "documentId": "DOC-V-OFFER-LETTER",
+    "documentKind": "employment_offer",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "The total is presented as a single annual figure that folds fixed and variable together, so the recurring monthly amount is not what the headline suggests.",
+    "issuer": "Kestrel Analytics Pvt Ltd (synthetic)",
+    "ownerId": "ravi",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-V-OFFER-LETTER",
+    "sourceVersion": 1,
+    "title": "Offer of Employment",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 2960,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-V-RELOCATION-NOTE.pdf",
+        "renderStyle": "pdf",
+        "sha256": "c0a60c1354f0fd775a3c8e2cdde8a5c12935d09fc1c56dbc4ae87117b045346e",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:49:17Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-V-RELOCATION-NOTE",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "b04ca7186d38c112dd5851bebb58f5b17f4b39c3958b75f269546993395bd31f",
+      "responseId": "resp_0cf9da65f7e9e2bb006aa6b7e9edb481968f527ef0ef1456ac",
+      "specSha256": "973fdfa0ae0fcbbd09d17d292ca18c9cce2c925094c4969175632e8a8f3e83ad"
+    },
+    "cases": [
+      "UC08"
+    ],
+    "declaredFacts": {
+      "claimWindowDays": "45",
+      "reimbursementBasis": "against bills",
+      "relocationSupport": "INR 40,000"
+    },
+    "documentId": "DOC-V-RELOCATION-NOTE",
+    "documentKind": "employer_letter",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "It is a reimbursement against bills, not an advance, so he must spend the money before he receives it.",
+    "issuer": "Kestrel Analytics Pvt Ltd (synthetic)",
+    "ownerId": "ravi",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-V-RELOCATION-NOTE",
+    "sourceVersion": 1,
+    "title": "Joining and Relocation Support",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3278,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-V-SALARY-ADDENDUM.pdf",
+        "renderStyle": "pdf",
+        "sha256": "3b7b252fc039b0310ff0c28188270bf7822e77cd810a3ebbd9d7dde04879459f",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:49:22Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-V-SALARY-ADDENDUM",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "88f5e58fd14922b6e0da2aabe01684effde8213e646548660c29b0f0966cc097",
+      "responseId": "resp_0180363871a8be59006aa6b7ee168c8197873ca4c11df2b1da",
+      "specSha256": "f69ad58f14edf90f17ab9f6dc6bfc7423739a1c07a586dc10554d11a45bd90f6"
+    },
+    "cases": [
+      "UC08"
+    ],
+    "declaredFacts": {
+      "firstEligibleCycle": "2027-2028",
+      "payoutFrequency": "annual, after appraisal",
+      "proRataInFirstYear": "yes"
+    },
+    "documentId": "DOC-V-SALARY-ADDENDUM",
+    "documentKind": "employer_letter",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "Confirms the variable component is annual and pro-rated, which means it contributes nothing to monthly cash in the first year - the opposite of what the offer's headline figure implies.",
+    "issuer": "Kestrel Analytics Pvt Ltd (synthetic)",
+    "ownerId": "ravi",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-V-SALARY-ADDENDUM",
+    "sourceVersion": 1,
+    "supersededBy": {
+      "documentId": "DOC-V-SALARY-ADDENDUM-V2",
+      "scenario": "ravi-variable-bonus",
+      "sourceVersion": 2
+    },
+    "title": "Addendum - Variable Pay Terms",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3322,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-V-BNPL-OFFER.pdf",
+        "renderStyle": "pdf",
+        "sha256": "11698a609798215aa5f8057d361daa56afaf7ea6802d1eed032c354ecbd1f4ac",
+        "sourceVersion": 1
+      },
+      {
+        "bytes": 374236,
+        "mimeType": "image/png",
+        "note": "Deliberately imperfect: slight skew, softened contrast and light sensor noise, so live OCR has something real to process.",
+        "pages": 1,
+        "relativePath": "documents/DOC-V-BNPL-OFFER.png",
+        "renderStyle": "scan",
+        "sha256": "4f7a6b928b4ae385604d7bf078e2e618b9db537b689657f4cf73645d0c52e5bc",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:49:27Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-V-BNPL-OFFER",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "648031bde25f76de3b4dab5885b9336bcd83794d31a90e48ea836e5f4a2e781e",
+      "responseId": "resp_0bd0331b9b2f8f92006aa6b7f3d30c8194850470ed63645004",
+      "specSha256": "977ebf50038359db6287b93a06e92f1a8c669d4d83ca4fae130d3fc3966a3627"
+    },
+    "cases": [
+      "UC09"
+    ],
+    "declaredFacts": {
+      "advertisedCost": "no cost",
+      "instalments": "3 x INR 2,499",
+      "lateFee": "INR 250 per missed instalment",
+      "purchaseAmount": "INR 7,497",
+      "reportedToBureau": "yes, on default"
+    },
+    "documentId": "DOC-V-BNPL-OFFER",
+    "documentKind": "bnpl_terms",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "'No cost' is prominent; the late fee and the bureau reporting are in smaller print at the foot. Both statements are true, and only one is easy to see.",
+    "issuer": "Simpl (synthetic)",
+    "ownerId": "ravi",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-V-BNPL-OFFER",
+    "sourceVersion": 1,
+    "title": "Pay-in-3 Offer Summary",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3799,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-V-CARD-TERMS.pdf",
+        "renderStyle": "pdf",
+        "sha256": "28fd5415d2b170332a1e7b075a7e0bf48c079c3b56f4ea0b45fabcc181efb227",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:49:34Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-V-CARD-TERMS",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "dd20af9f0c0d5c55d176ccbe7f6d7598fec9eae11fb08ba74f4411a571c842ee",
+      "responseId": "resp_08a09c6ddd7021ff006aa6b7f8bff081968dd2ddca268d2a83",
+      "specSha256": "218aa0598a54a4e007338cbc3a200f46ecc644ac08ab3d7c03ee0cf19fdc51cf"
+    },
+    "cases": [
+      "UC09"
+    ],
+    "declaredFacts": {
+      "annualFee": "INR 0",
+      "cashbackPct": "0.50%",
+      "limitAsPctOfDeposit": "90%",
+      "minimumDeposit": "INR 25,000",
+      "productId": "CB-CARD-STARTER-SECURED",
+      "securedAgainst": "fixed deposit"
+    },
+    "documentId": "DOC-V-CARD-TERMS",
+    "documentKind": "product_terms",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "The card has no fee, but it requires locking money into a deposit first. 'Free' and 'no cost to obtain' are not the same thing.",
+    "issuer": "Contoso Bank",
+    "ownerId": "ravi",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-V-CARD-TERMS",
+    "sourceVersion": 1,
+    "title": "Starter Secured Card - Key Terms",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3065,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-V-CREDIT-QUESTION.pdf",
+        "renderStyle": "pdf",
+        "sha256": "475718fc8331f9a72517392ac0c049535a36e9f5076c945e7de535f677b2c591",
+        "sourceVersion": 1
+      },
+      {
+        "bytes": 372628,
+        "mimeType": "image/png",
+        "note": "Deliberately imperfect: slight skew, softened contrast and light sensor noise, so live OCR has something real to process.",
+        "pages": 1,
+        "relativePath": "documents/DOC-V-CREDIT-QUESTION.png",
+        "renderStyle": "scan",
+        "sha256": "5301923c2b1478379920ae8452e69c82570235f3282cd2534b9dbf235816a501",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:49:40Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-V-CREDIT-QUESTION",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "14c9aa83ee11f7948dfabbde51ea94fd4592f575a41a2ce9f57066c42ab1f3d1",
+      "responseId": "resp_0513ec4366e72039006aa6b7fff6f081939d325083d0dfcde8",
+      "specSha256": "e666606873d5272c4ea0a3e6be4f689c3140e5ce47dd011fb8094c0852ffda8e"
+    },
+    "cases": [
+      "UC09"
+    ],
+    "declaredFacts": {
+      "writtenOn": "2026-09-10"
+    },
+    "documentId": "DOC-V-CREDIT-QUESTION",
+    "documentKind": "customer_note",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "He writes that paying 'the minimum due' each month means 'there is no extra charge'. That is a genuine and common misunderstanding. He also says he is 'not sure I even want a credit card' - so education, not a product, may be the right outcome.",
+    "issuer": "Ravi Mehta",
+    "ownerId": "ravi",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-V-CREDIT-QUESTION",
+    "sourceVersion": 1,
+    "title": "Customer's own question about credit",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3116,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-V-GROUP-CHAT.pdf",
+        "renderStyle": "pdf",
+        "sha256": "a97be59b94189bcaa86a9a317892093a89d15bf00cda0c0bc37edc87da112e30",
+        "sourceVersion": 1
+      },
+      {
+        "bytes": 392315,
+        "mimeType": "image/png",
+        "note": "Deliberately imperfect: slight skew, softened contrast and light sensor noise, so live OCR has something real to process.",
+        "pages": 1,
+        "relativePath": "documents/DOC-V-GROUP-CHAT.png",
+        "renderStyle": "scan",
+        "sha256": "5140cf84609227bc1476d295a94547fe4de34874a849463dee251e6272fc7fe9",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:49:46Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-V-GROUP-CHAT",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "633b7bbe757aac57d5761e8b3a1f1ae77256f7a30fa63e450a1c5be06ad10587",
+      "responseId": "resp_0f24c330aaf8e0d4006aa6b80590148195a1936338425861e9",
+      "specSha256": "bcdae8c0c3270fc5027da98e3b301ed77d2cf5a23cff6848925125b09e9612ce"
+    },
+    "cases": [
+      "UC10"
+    ],
+    "declaredFacts": {
+      "cab": "INR 1,450",
+      "dinner": "INR 4,180 paid by Ravi",
+      "participants": "Ravi, Aditya, Meera, Sanjana",
+      "railBooking": "INR 7,320 paid by Ravi",
+      "tripDates": "2026-07-18 to 2026-07-21"
+    },
+    "documentId": "DOC-V-GROUP-CHAT",
+    "documentKind": "chat_transcript",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "Meera says she 'only came for the dinner'. Someone claims to have paid the cab in cash but no one confirms it. The chat is a conversation, not an agreement, and it is certainly not anyone's consent.",
+    "issuer": "Four friends (synthetic)",
+    "ownerId": "ravi",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-V-GROUP-CHAT",
+    "sourceVersion": 1,
+    "supersededBy": {
+      "documentId": "DOC-V-GROUP-CHAT-V2",
+      "scenario": "ravi-dinner-only",
+      "sourceVersion": 2
+    },
+    "title": "Trip settlement group chat",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3547,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-V-TRIP-RECEIPTS.pdf",
+        "renderStyle": "pdf",
+        "sha256": "190a03827a2bd362c6496dadb1ab758b384907a94373a0e562279e6c129fb8c3",
+        "sourceVersion": 1
+      },
+      {
+        "bytes": 455907,
+        "mimeType": "image/png",
+        "note": "Deliberately imperfect: slight skew, softened contrast and light sensor noise, so live OCR has something real to process.",
+        "pages": 1,
+        "relativePath": "documents/DOC-V-TRIP-RECEIPTS.png",
+        "renderStyle": "scan",
+        "sha256": "3619afe5ad5ce59a2216c8e22639f85b7aae1342c5cad8f380b03d44f29bda4f",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:49:54Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-V-TRIP-RECEIPTS",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "c4dfe0fba849a53ba5696a91434e7c30e7cc5a1843fa2d9b4bbd7d3ca2a4553f",
+      "responseId": "resp_07b2414c781d17c5006aa6b80b7ae08195a1f913928652990f",
+      "specSha256": "4b5c65f84e125d5ffc32aa856f2d1ea6411844bf04f0c0356737b5b3bb7c1cb6"
+    },
+    "cases": [
+      "UC10"
+    ],
+    "declaredFacts": {
+      "cab": "INR 1,450 on 2026-07-20",
+      "dinner": "INR 4,180 on 2026-07-19",
+      "rail": "INR 7,320 on 2026-07-18"
+    },
+    "documentId": "DOC-V-TRIP-RECEIPTS",
+    "documentKind": "receipt_packet",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "The cab receipt shows no payment instrument, so it cannot settle the dispute in the chat about who paid it.",
+    "issuer": "Various merchants (synthetic)",
+    "ownerId": "ravi",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-V-TRIP-RECEIPTS",
+    "sourceVersion": 1,
+    "title": "Trip receipts",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 2855,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-V-REFUNDED-TICKET.pdf",
+        "renderStyle": "pdf",
+        "sha256": "d0b0eab668eb01f7eed5c936c7e52cc50bae6e34e89d53ee8dc0c8d1f220336f",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:49:57Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-V-REFUNDED-TICKET",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "6b2a0d9196c57d170146e691d106c76d065f19e072b8132f06c379b22003aa78",
+      "responseId": "resp_0b54bc536a6280b1006aa6b8132e5c81908b3ff5b5ae89d149",
+      "specSha256": "69cecdec56e5af66fda1973ac2ebb5d1c0a6cb387c7682caf621a460314d2b1a"
+    },
+    "cases": [
+      "UC10"
+    ],
+    "declaredFacts": {
+      "amount": "INR 5,890",
+      "bookedOn": "2026-07-02",
+      "bookingRef": "pur-rav-ticket-01",
+      "refundStatus": "credited",
+      "refundedOn": "2026-07-14"
+    },
+    "documentId": "DOC-V-REFUNDED-TICKET",
+    "documentKind": "purchase_receipt",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "None. This refund genuinely posted, and the ledger agrees. It exists as the counter-example to Rhea's promised-but-unpaid refund.",
+    "issuer": "IndiGo (synthetic)",
+    "ownerId": "ravi",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-V-REFUNDED-TICKET",
+    "sourceVersion": 1,
+    "title": "Cancelled flight - refund confirmation",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3044,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-V-CLIENT-BRIEF.pdf",
+        "renderStyle": "pdf",
+        "sha256": "4749ec77df7eb2f53f2244dfa76d8e591e3ad2f743c4bc31008e7d9dbf7bdad2",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:50:02Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-V-CLIENT-BRIEF",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "7969a1a30e72a2463c3ea7e734a7008a0b7e51017df851d9c229ef1e19237742",
+      "responseId": "resp_0a2a59d8d75b00c6006aa6b8169b8c8197a139648922887bf5",
+      "specSha256": "b8ea36a4e0c01f2a20f331275783cace5513aa93225d38d76c2d15a06b75ecbb"
+    },
+    "cases": [
+      "UC11"
+    ],
+    "declaredFacts": {
+      "deliverables": "20 edited images",
+      "paymentTerms": "on delivery",
+      "projectFee": "INR 18,000",
+      "revisionsIncluded": "2"
+    },
+    "documentId": "DOC-V-CLIENT-BRIEF",
+    "documentKind": "client_brief",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "The deliverable count is fixed, but 'minor adjustments' are described as not counting towards the two included revisions, without defining minor.",
+    "issuer": "Lumen Studio (synthetic)",
+    "ownerId": "ravi",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-V-CLIENT-BRIEF",
+    "sourceVersion": 1,
+    "title": "Project brief - product photography",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3616,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-V-CLIENT-CHAT.pdf",
+        "renderStyle": "pdf",
+        "sha256": "03d0803b3eb5f15b3c023a359c67cf2e66f2b6d256c7e18ec0ed28dd28bdef84",
+        "sourceVersion": 1
+      },
+      {
+        "bytes": 566413,
+        "mimeType": "image/png",
+        "note": "Deliberately imperfect: slight skew, softened contrast and light sensor noise, so live OCR has something real to process.",
+        "pages": 1,
+        "relativePath": "documents/DOC-V-CLIENT-CHAT.png",
+        "renderStyle": "scan",
+        "sha256": "567dc0e05bf6c99f5b72c5c32494239738ce906700df5d5c2627e3223319c147",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:50:09Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-V-CLIENT-CHAT",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "d3a12b7ddc10c1e5dc422ceac363e03a512c423dd85aa73ffd6ad1f0f3d14816",
+      "responseId": "resp_05c8d27d135148cf006aa6b81b354c8194ad314d5b4ba596c7",
+      "specSha256": "c05a341f5b64138caf1598f35102abafec7442f1205943632568f4200d08ffd7"
+    },
+    "cases": [
+      "UC11"
+    ],
+    "declaredFacts": {
+      "additionalRequests": "6 extra images, 3 further revisions",
+      "threadDates": "2026-08-20 to 2026-09-10"
+    },
+    "documentId": "DOC-V-CLIENT-CHAT",
+    "documentKind": "chat_transcript",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "The client calls the extra work 'small tweaks' and says payment will follow 'once the campaign goes live', with no date. Both the scope and the timing have moved without either being renegotiated.",
+    "issuer": "Lumen Studio (synthetic)",
+    "ownerId": "ravi",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-V-CLIENT-CHAT",
+    "sourceVersion": 1,
+    "supersededBy": {
+      "documentId": "DOC-V-CLIENT-CHAT-V2",
+      "scenario": "ravi-extra-revisions",
+      "sourceVersion": 2
+    },
+    "title": "Client conversation - scope and timing",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3144,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-V-INVOICE-DRAFT.pdf",
+        "renderStyle": "pdf",
+        "sha256": "29c27b853441d865707bdf5d86768d638441767b18410ac9d58b6b0c57aefa68",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:50:13Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-V-INVOICE-DRAFT",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "c75668f75ed8179b71ca4299364934d907d580e4fc9737a31c77aeca83126311",
+      "responseId": "resp_018e5bc804b5261f006aa6b8229a948193bc897e429a96956e",
+      "specSha256": "b315f4ef9effac10558e25b1f991fd09310f68c55b83d49e1ccf4f156341d731"
+    },
+    "cases": [
+      "UC11"
+    ],
+    "declaredFacts": {
+      "amount": "INR 26,500",
+      "dueTerms": "on campaign go-live, date not fixed",
+      "invoiceNumber": "RM-2026-007",
+      "issuedOn": "2026-09-11",
+      "status": "unpaid"
+    },
+    "documentId": "DOC-V-INVOICE-DRAFT",
+    "documentKind": "invoice",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "This is a RECEIVABLE. There is deliberately no matching credit in the ledger. An invoice is not cash, and any plan that treats it as cash is wrong.",
+    "issuer": "Ravi Mehta (synthetic)",
+    "ownerId": "ravi",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-V-INVOICE-DRAFT",
+    "sourceVersion": 1,
+    "supersededBy": {
+      "documentId": "DOC-V-INVOICE-DRAFT-V2",
+      "scenario": "ravi-irregular-income",
+      "sourceVersion": 2
+    },
+    "title": "Draft invoice - Project 3",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "assets": [
+      {
+        "bytes": 3385,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-V-SOCIAL-SNAPSHOT.pdf",
+        "renderStyle": "pdf",
+        "sha256": "2f228679dbe23bffb2c712024b8e44d306854545d31dca79904249d5a0049381",
+        "sourceVersion": 1
+      }
+    ],
+    "authoringProvenance": {
+      "authoredAt": "2026-09-13T14:50:18Z",
+      "deployment": "gpt-5.4-buildagent",
+      "key": "document::DOC-V-SOCIAL-SNAPSHOT",
+      "model": "gpt-5.4-buildagent",
+      "outputSha256": "c0a9c85f64d386f50b49b3a8e64caae9029974e2477fc5a313de01ffbda98b17",
+      "responseId": "resp_0ecf36dda7a17353006aa6b827006c8195b67502d19efffd46",
+      "specSha256": "1f4f8a4a35a8b43382bb0f80fda0957040469f2836617c55d535061904447b06"
+    },
+    "cases": [
+      "UC11"
+    ],
+    "declaredFacts": {
+      "capturedAt": "2026-09-12",
+      "postingCadence": "3-4 posts per week",
+      "profileSlug": "ravi-creates",
+      "sourceVersion": "1",
+      "syntheticFollowers": "8,420",
+      "syntheticLikesLast30": "11,930"
+    },
+    "documentId": "DOC-V-SOCIAL-SNAPSHOT",
+    "documentKind": "social_snapshot",
+    "inCustomerDocumentSet": true,
+    "intendedAmbiguity": "It shows reach and a collaboration enquiry. It establishes NO income, no creditworthiness and no verified brand partnership, and must never be treated as evidence of any of them.",
+    "issuer": "/ravisocial (local synthetic fixture)",
+    "ownerId": "ravi",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-V-SOCIAL-SNAPSHOT",
+    "sourceVersion": 1,
+    "title": "Synthetic social profile snapshot",
+    "version": 1,
+    "visibility": "owner_seed"
+  },
+  {
+    "approvedByDemoOwner": false,
+    "assets": [
+      {
+        "bytes": 3667,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-N-FD-RENEWAL-V2.pdf",
+        "renderStyle": "pdf",
+        "sha256": "5656b957a91d41f9a3d6d9b2bd994ea2874aa93b9814b8892fca211befcaa975",
+        "sourceVersion": 2
+      }
+    ],
+    "authoringProvenance": {
+      "function": "_fd_renewal_revised",
+      "method": "deterministic_python",
+      "module": "tools.document_registry",
+      "note": "Composed from canonical release data. No language model produced this content, so no model, deployment or response ID is recorded.",
+      "rendererVersion": "retail4-render-v2"
+    },
+    "cases": [],
+    "declaredFacts": {
+      "depositId": "dep-niv-fd-01",
+      "instructionCutOff": "2026-09-17",
+      "maturesOn": "2026-09-20",
+      "noticeRevision": "Revision 2",
+      "openedOn": "2024-09-20",
+      "principal": "INR 6,00,000.00",
+      "productName": "Contoso Standard Fixed Deposit",
+      "ratePct": "6.85%",
+      "renewalRatePct": "6.40%",
+      "standingInstruction": "renew principal and interest"
+    },
+    "documentId": "DOC-N-FD-RENEWAL-V2",
+    "documentKind": "deposit_notice",
+    "inCustomerDocumentSet": false,
+    "intendedAmbiguity": "The revised notice resolves the rate the original left unstated and shortens the instruction window, so the question becomes whether to act before the cut-off rather than whether the rate is knowable at all.",
+    "issuer": "Contoso Bank",
+    "ownerId": "nivedita",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "scenario": "nivedita-renewal-clause-change",
+    "scenarioCases": [
+      "UC01"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-N-FD-RENEWAL-V2",
+    "sourceVersion": 2,
+    "supersedes": {
+      "documentId": "DOC-N-FD-RENEWAL",
+      "sourceVersion": 1
+    },
+    "title": "Fixed Deposit Maturity and Renewal Notice (Revised)",
+    "version": 2,
+    "visibility": "owner_seed"
+  },
+  {
+    "approvedByDemoOwner": false,
+    "assets": [
+      {
+        "bytes": 3529,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-R-RELOCATION-LETTER-V2.pdf",
+        "renderStyle": "pdf",
+        "sha256": "948a8812d948caa6abc0ef07d0a0d79505ebb87bacb35a351d07aab45eb09a27",
+        "sourceVersion": 2
+      }
+    ],
+    "authoringProvenance": {
+      "function": "_relocation_letter_revised",
+      "method": "deterministic_python",
+      "module": "tools.document_registry",
+      "note": "Composed from canonical release data. No language model produced this content, so no model, deployment or response ID is recorded.",
+      "rendererVersion": "retail4-render-v2"
+    },
+    "cases": [],
+    "declaredFacts": {
+      "employer": "Northwind Tech Pvt Ltd (synthetic)",
+      "indicativeMonth": "not specified",
+      "noticeRevision": "Revision 2",
+      "proposedCity": "Bengaluru",
+      "relocationAllowance": "INR 1,50,000"
+    },
+    "documentId": "DOC-R-RELOCATION-LETTER-V2",
+    "documentKind": "employer_letter",
+    "inCustomerDocumentSet": false,
+    "intendedAmbiguity": "The indicative month is withdrawn rather than changed, so the relocation has no date attached at all. A plan that leaned on 2027-02 no longer has anything under it, and the competing school fee has a date while this does not.",
+    "issuer": "Northwind Tech Pvt Ltd (synthetic)",
+    "ownerId": "rhea",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "scenario": "rhea-relocation-uncertain",
+    "scenarioCases": [
+      "UC04"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-R-RELOCATION-LETTER-V2",
+    "sourceVersion": 2,
+    "supersedes": {
+      "documentId": "DOC-R-RELOCATION-LETTER",
+      "sourceVersion": 1
+    },
+    "title": "Proposed Role Relocation (Revised)",
+    "version": 2,
+    "visibility": "owner_seed"
+  },
+  {
+    "approvedByDemoOwner": false,
+    "assets": [
+      {
+        "bytes": 4812,
+        "mimeType": "application/pdf",
+        "pages": 2,
+        "relativePath": "documents/DOC-R-HOME-OFFER-A-V2.pdf",
+        "renderStyle": "pdf",
+        "sha256": "30ea744ba544cb80763593c2e09eac1e63fe966844266ada98338682cf154a5f",
+        "sourceVersion": 2
+      }
+    ],
+    "authoringProvenance": {
+      "function": "_home_offer_a_revised",
+      "method": "deterministic_python",
+      "module": "tools.document_registry",
+      "note": "Composed from canonical release data. No language model produced this content, so no model, deployment or response ID is recorded.",
+      "rendererVersion": "retail4-render-v2"
+    },
+    "cases": [],
+    "declaredFacts": {
+      "maximumLtvPct": "80%",
+      "maximumTenure": "25 years",
+      "noticeRevision": "Revision 2",
+      "prepaymentChargePct": "1.25%",
+      "prepaymentLockInMonths": "6 months",
+      "processingFeePct": "0.50%",
+      "productId": "CB-HL-STANDARD",
+      "ratePct": "8.45%",
+      "rateType": "floating"
+    },
+    "documentId": "DOC-R-HOME-OFFER-A-V2",
+    "documentKind": "loan_offer",
+    "inCustomerDocumentSet": false,
+    "intendedAmbiguity": "Rate, LTV, tenure and processing fee are unchanged, so the comparison against Offer B now turns entirely on the prepayment clause. Whether the shorter lock-in and lower charge outweigh Offer B depends on whether she actually intends to prepay, which this sheet does not say.",
+    "issuer": "Contoso Bank",
+    "ownerId": "rhea",
+    "pageCount": 2,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "scenario": "rhea-offer-condition-revised",
+    "scenarioCases": [
+      "UC05"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-R-HOME-OFFER-A-V2",
+    "sourceVersion": 2,
+    "supersedes": {
+      "documentId": "DOC-R-HOME-OFFER-A",
+      "sourceVersion": 1
+    },
+    "title": "Indicative Home Loan Terms - Standard (Revised)",
+    "version": 2,
+    "visibility": "owner_seed"
+  },
+  {
+    "approvedByDemoOwner": false,
+    "assets": [
+      {
+        "bytes": 3532,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-R-TRAVEL-RECEIPT-V2.pdf",
+        "renderStyle": "pdf",
+        "sha256": "c8db1fc3b60f8037403fe0ee99f5d36bb32203fa1a157cb984547599f0a1c57b",
+        "sourceVersion": 2
+      }
+    ],
+    "authoringProvenance": {
+      "function": "_travel_receipt_revised",
+      "method": "deterministic_python",
+      "module": "tools.document_registry",
+      "note": "Composed from canonical release data. No language model produced this content, so no model, deployment or response ID is recorded.",
+      "rendererVersion": "retail4-render-v2"
+    },
+    "cases": [],
+    "declaredFacts": {
+      "airAmount": "INR 62,400.00",
+      "bookingReference": "MMT/SYN/2026/774193",
+      "bookingTotal": "INR 91,300.00",
+      "itineraryType": "return",
+      "noticeRevision": "Revision 2",
+      "priorBookingsLast24Months": "0",
+      "stayAmount": "INR 28,900.00",
+      "travelFrom": "2026-07-11",
+      "travelTo": "2026-07-17",
+      "travellerCount": "4"
+    },
+    "documentId": "DOC-R-TRAVEL-RECEIPT-V2",
+    "documentKind": "receipt_packet",
+    "inCustomerDocumentSet": false,
+    "intendedAmbiguity": "The statement shows both components on one booking reference, a return itinerary and no prior bookings in twenty-four months. It reports what was booked and does not characterise the trip, so whether this is a pattern or a single occasion is still a reading rather than a stated fact.",
+    "issuer": "MakeMyTrip (synthetic)",
+    "ownerId": "rhea",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "scenario": "rhea-one-off-travel",
+    "scenarioCases": [
+      "UC06"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-R-TRAVEL-RECEIPT-V2",
+    "sourceVersion": 2,
+    "supersedes": {
+      "documentId": "DOC-R-TRAVEL-RECEIPT",
+      "sourceVersion": 1
+    },
+    "title": "Holiday booking confirmation - consolidated statement (Revised)",
+    "version": 2,
+    "visibility": "owner_seed"
+  },
+  {
+    "approvedByDemoOwner": false,
+    "assets": [
+      {
+        "bytes": 3674,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-V-SALARY-ADDENDUM-V2.pdf",
+        "renderStyle": "pdf",
+        "sha256": "1435351f17e5712daafe9f1a758a8fcd5893f2482c7fb9106761b8c783dafe44",
+        "sourceVersion": 2
+      }
+    ],
+    "authoringProvenance": {
+      "function": "_salary_addendum_revised",
+      "method": "deterministic_python",
+      "module": "tools.document_registry",
+      "note": "Composed from canonical release data. No language model produced this content, so no model, deployment or response ID is recorded.",
+      "rendererVersion": "retail4-render-v2"
+    },
+    "cases": [],
+    "declaredFacts": {
+      "firstEligibleCycle": "2027-2028",
+      "indicativeVariablePct": "18% of annual fixed pay",
+      "monthlyContribution": "nil",
+      "noticeRevision": "Revision 2",
+      "payoutFrequency": "annual, after appraisal",
+      "previousIndicativeVariablePct": "not stated in the earlier addendum",
+      "proRataInFirstYear": "yes"
+    },
+    "documentId": "DOC-V-SALARY-ADDENDUM-V2",
+    "documentKind": "employer_letter",
+    "inCustomerDocumentSet": false,
+    "intendedAmbiguity": "The revision names an indicative percentage the original never gave, so the variable component looks materially larger. The frequency, the first eligible cycle and the pro-rata treatment are unchanged, so the monthly cash position in the first year is exactly what it was: nil.",
+    "issuer": "Kestrel Analytics Pvt Ltd (synthetic)",
+    "ownerId": "ravi",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "scenario": "ravi-variable-bonus",
+    "scenarioCases": [
+      "UC08"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-V-SALARY-ADDENDUM-V2",
+    "sourceVersion": 2,
+    "supersedes": {
+      "documentId": "DOC-V-SALARY-ADDENDUM",
+      "sourceVersion": 1
+    },
+    "title": "Addendum - Variable Pay Terms (Revised)",
+    "version": 2,
+    "visibility": "owner_seed"
+  },
+  {
+    "approvedByDemoOwner": false,
+    "assets": [
+      {
+        "bytes": 3521,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-V-GROUP-CHAT-V2.pdf",
+        "renderStyle": "pdf",
+        "sha256": "b4f97f0022cae8eea7b04312e3a1689123864c362eb9d4777ddbbd027f2c5746",
+        "sourceVersion": 2
+      }
+    ],
+    "authoringProvenance": {
+      "function": "_group_chat_revised",
+      "method": "deterministic_python",
+      "module": "tools.document_registry",
+      "note": "Composed from canonical release data. No language model produced this content, so no model, deployment or response ID is recorded.",
+      "rendererVersion": "retail4-render-v2"
+    },
+    "cases": [],
+    "declaredFacts": {
+      "cab": "INR 1,450",
+      "dinner": "INR 4,180 paid by Ravi",
+      "exportedOn": "2026-09-13",
+      "noticeRevision": "Revision 2",
+      "participants": "Ravi, Aditya, Meera, Sanjana",
+      "railBooking": "INR 7,320 paid by Ravi",
+      "tripDates": "2026-07-18 to 2026-07-21"
+    },
+    "documentId": "DOC-V-GROUP-CHAT-V2",
+    "documentKind": "chat_transcript",
+    "inCustomerDocumentSet": false,
+    "intendedAmbiguity": "Meera now sets out that she drove separately and stayed for the dinner only, which settles what she joined. The cab is still unaccounted for and the chat is still a conversation rather than an agreement, so what anyone OWES remains a judgement.",
+    "issuer": "Four friends (synthetic)",
+    "ownerId": "ravi",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "scenario": "ravi-dinner-only",
+    "scenarioCases": [
+      "UC10"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-V-GROUP-CHAT-V2",
+    "sourceVersion": 2,
+    "supersedes": {
+      "documentId": "DOC-V-GROUP-CHAT",
+      "sourceVersion": 1
+    },
+    "title": "Trip settlement group chat (later export)",
+    "version": 2,
+    "visibility": "owner_seed"
+  },
+  {
+    "approvedByDemoOwner": false,
+    "assets": [
+      {
+        "bytes": 3687,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-V-CLIENT-CHAT-V2.pdf",
+        "renderStyle": "pdf",
+        "sha256": "514a7b31e1970134c1e79bb0bf97f9043e4e2ada8717559b9346f209f627f1dd",
+        "sourceVersion": 2
+      }
+    ],
+    "authoringProvenance": {
+      "function": "_client_chat_revised",
+      "method": "deterministic_python",
+      "module": "tools.document_registry",
+      "note": "Composed from canonical release data. No language model produced this content, so no model, deployment or response ID is recorded.",
+      "rendererVersion": "retail4-render-v2"
+    },
+    "cases": [],
+    "declaredFacts": {
+      "additionalRequests": "6 extra images, 3 further revisions",
+      "furtherRequests": "4 more images, a second format for social",
+      "noticeRevision": "Revision 2",
+      "paymentTrigger": "once the campaign goes live",
+      "threadDates": "2026-08-20 to 2026-09-13"
+    },
+    "documentId": "DOC-V-CLIENT-CHAT-V2",
+    "documentKind": "chat_transcript",
+    "inCustomerDocumentSet": false,
+    "intendedAmbiguity": "Further scope arrives and is still called small tweaks, and the studio's question about treating it separately is answered by keeping it together. Payment is still tied to a go-live with no date, so more work is now attached to the same uncertain trigger.",
+    "issuer": "Lumen Studio (synthetic)",
+    "ownerId": "ravi",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "scenario": "ravi-extra-revisions",
+    "scenarioCases": [
+      "UC11"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-V-CLIENT-CHAT-V2",
+    "sourceVersion": 2,
+    "supersedes": {
+      "documentId": "DOC-V-CLIENT-CHAT",
+      "sourceVersion": 1
+    },
+    "title": "Client conversation - scope and timing (later export)",
+    "version": 2,
+    "visibility": "owner_seed"
+  },
+  {
+    "approvedByDemoOwner": false,
+    "assets": [
+      {
+        "bytes": 3277,
+        "mimeType": "application/pdf",
+        "pages": 1,
+        "relativePath": "documents/DOC-V-INVOICE-DRAFT-V2.pdf",
+        "renderStyle": "pdf",
+        "sha256": "4d601da51111a069b3c7fc8723200507a0058a1dd1b47c1228ebf66d20c050e0",
+        "sourceVersion": 2
+      }
+    ],
+    "authoringProvenance": {
+      "function": "_invoice_draft_revised",
+      "method": "deterministic_python",
+      "module": "tools.document_registry",
+      "note": "Composed from canonical release data. No language model produced this content, so no model, deployment or response ID is recorded.",
+      "rendererVersion": "retail4-render-v2"
+    },
+    "cases": [],
+    "declaredFacts": {
+      "amount": "INR 26,500",
+      "dueTerms": "on campaign go-live; go-live postponed, no revised date",
+      "invoiceNumber": "RM-2026-007",
+      "issuedOn": "2026-09-11",
+      "noticeRevision": "Revision 2",
+      "revisedOn": "2026-09-13",
+      "status": "unpaid"
+    },
+    "documentId": "DOC-V-INVOICE-DRAFT-V2",
+    "documentKind": "invoice",
+    "inCustomerDocumentSet": false,
+    "intendedAmbiguity": "The amount and the unpaid status do not move. The due trigger loses its date entirely, so the receivable is no closer to being cash and now has nothing to plan around at all.",
+    "issuer": "Ravi Mehta (synthetic)",
+    "ownerId": "ravi",
+    "pageCount": 1,
+    "purpose": "evidence_analysis",
+    "releaseId": "retail4-v1",
+    "rendererVersion": "retail4-render-v2",
+    "scenario": "ravi-irregular-income",
+    "scenarioCases": [
+      "UC11"
+    ],
+    "schemaVersion": "retail4-seed-v1",
+    "sourceId": "DOC-V-INVOICE-DRAFT-V2",
+    "sourceVersion": 2,
+    "supersedes": {
+      "documentId": "DOC-V-INVOICE-DRAFT",
+      "sourceVersion": 1
+    },
+    "title": "Draft invoice - Project 3 (Revised)",
+    "version": 2,
+    "visibility": "owner_seed"
+  }
+]

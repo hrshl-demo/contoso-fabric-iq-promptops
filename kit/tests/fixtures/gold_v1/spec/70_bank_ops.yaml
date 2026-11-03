@@ -1,0 +1,167 @@
+tables:
+  - table: business_unit
+    entity: BusinessUnit
+    tier: extended
+    domain: BankOps
+    description: "A business unit of the bank (Retail Deposits, Cards, Home Loans, ...). Portfolio figures are in crore INR (1 crore = 10,000,000 rupees) as reporting aggregates, not exact paise."
+    synonyms: [BU, division, line of business]
+    sources:
+      - {release: retail4-v1, file: bank/business-units.json, list: businessUnits}
+    columns:
+      - {col: bu_id, type: string, key: true, from: buId, desc: "Business unit identifier such as BU-RETAIL-DEPOSITS."}
+      - {col: name, type: string, default_label: true, from: name, desc: "Business unit name."}
+      - {col: short_name, type: string, from: shortName, desc: "Short name."}
+      - {col: head_name, type: string, from: head, desc: "Business unit head (synthetic)."}
+      - {col: description, type: string, from: description, desc: "What the unit owns."}
+      - {col: health_status, type: string, from: healthStatus, desc: "strong, steady or watch."}
+      - {col: portfolio_crore_inr, type: double, from: portfolioCroreINR, desc: "Portfolio size in crore INR (1 crore = 10,000,000 rupees). Reporting aggregate."}
+      - {col: customers, type: int, from: customers, desc: "Number of customers served."}
+      - {col: nim_pct, type: double, from: nimPercent, desc: "Net interest margin, percent."}
+      - {col: yoy_growth_pct, type: double, from: yoyGrowthPercent, desc: "Year-on-year growth, percent."}
+      - {col: target_attainment_pct, type: double, from: targetAttainmentPercent, desc: "Share of target achieved, percent."}
+
+  - table: region
+    entity: Region
+    tier: extended
+    domain: BankOps
+    description: "A bank region (Mumbai, Bengaluru, ...) with branches, customers and digital adoption. Money in crore INR reporting aggregates."
+    synonyms: [circle, zone, territory]
+    sources:
+      - {release: retail4-v1, file: bank/regions.json, list: regions}
+    columns:
+      - {col: region_id, type: string, key: true, from: regionId, desc: "Region identifier such as REG-MUMBAI."}
+      - {col: city, type: string, default_label: true, from: city, desc: "Region city."}
+      - {col: state, type: string, from: state, desc: "State."}
+      - {col: branches, type: int, from: branches, desc: "Number of branches."}
+      - {col: customers, type: int, from: customers, desc: "Number of customers."}
+      - {col: deposits_crore_inr, type: double, from: depositsCroreINR, desc: "Deposits in crore INR."}
+      - {col: advances_crore_inr, type: double, from: advancesCroreINR, desc: "Advances (loans) in crore INR."}
+      - {col: yoy_growth_pct, type: double, from: yoyGrowthPercent, desc: "Year-on-year growth, percent."}
+      - {col: nps_score, type: int, from: npsScore, desc: "Net promoter score."}
+      - {col: digital_adoption_pct, type: double, from: digitalAdoptionPercent, desc: "Digital adoption, percent."}
+
+  - table: relationship_manager
+    entity: RelationshipManager
+    tier: extended
+    domain: BankOps
+    description: "A relationship manager who owns CRM cases and customers in a business unit and region."
+    synonyms: [RM, banker, advisor, agent, handler]
+    sources:
+      - {release: retail4-v1, file: bank/rm-team.json, list: relationshipManagers}
+    columns:
+      - {col: rm_id, type: string, key: true, from: rmId, desc: "Relationship manager identifier such as rm-001."}
+      - {col: name, type: string, default_label: true, pii: true, from: name, desc: "RM name (synthetic)."}
+      - {col: role, type: string, from: role, desc: "Role title."}
+      - {col: bu_id, type: string, from: buId, desc: "Business unit."}
+      - {col: region_id, type: string, from: regionId, desc: "Region."}
+      - {col: portfolio_customers, type: int, from: portfolioCustomers, desc: "Customers in the RM's portfolio."}
+      - {col: open_cases, type: int, from: openCases, desc: "Open cases."}
+      - {col: sla_breaches, type: int, from: slaBreaches, desc: "Cases that breached SLA."}
+      - {col: csat_score, type: double, from: csatScore, desc: "Customer satisfaction score out of 5."}
+      - {col: specialisations, type: string, from: specialisations, t: join, desc: "Specialisations (semicolon separated)."}
+
+  - table: campaign
+    entity: Campaign
+    tier: extended
+    domain: BankOps
+    description: "A marketing campaign with reach, engagement, conversion and attributed revenue in crore INR."
+    synonyms: [promotion, offer campaign]
+    sources:
+      - {release: retail4-v1, file: bank/campaigns.json, list: campaigns}
+    columns:
+      - {col: campaign_id, type: string, key: true, from: campaignId, desc: "Campaign identifier such as CMP-2026-001."}
+      - {col: name, type: string, default_label: true, from: name, desc: "Campaign name."}
+      - {col: bu_id, type: string, from: buId, desc: "Business unit running the campaign."}
+      - {col: status, type: string, from: status, desc: "live, planned or ended."}
+      - {col: start_date, type: date, from: startDate, desc: "Start date."}
+      - {col: end_date, type: date, from: endDate, desc: "End date."}
+      - {col: channel, type: string, from: channel, desc: "Primary channel."}
+      - {col: target_segment, type: string, from: targetSegment, desc: "Who the campaign targets."}
+      - {col: reach, type: int, from: reach, desc: "People reached."}
+      - {col: engaged, type: int, from: engaged, desc: "People engaged."}
+      - {col: converted, type: int, from: converted, desc: "People converted."}
+      - {col: conversion_pct, type: double, from: conversionPercent, desc: "Conversion rate, percent."}
+      - {col: revenue_attributed_crore_inr, type: double, from: revenueAttributedCroreINR, desc: "Revenue attributed in crore INR."}
+      - {col: product_ids, type: string, from: productIds, t: join, desc: "Products promoted (semicolon separated)."}
+
+  - table: monthly_metric
+    entity: MonthlyMetric
+    tier: extended
+    domain: BankOps
+    description: "Twelve months of reporting metrics per business unit: portfolio and revenue in crore INR, new customers, cases opened and resolved."
+    synonyms: [KPI, monthly trend, business metric]
+    sources:
+      - {custom: monthly_metric}
+    columns:
+      - {col: metric_id, type: string, key: true, tpl: "{buId}/{month}", desc: "Identifier: business unit / month."}
+      - {col: bu_id, type: string, from: buId, desc: "Business unit."}
+      - {col: month, type: string, default_label: true, from: month, desc: "Month as YYYY-MM."}
+      - {col: portfolio_crore_inr, type: double, from: portfolioCroreINR, desc: "Portfolio in crore INR."}
+      - {col: revenue_crore_inr, type: double, from: revenueCroreINR, desc: "Revenue in crore INR."}
+      - {col: new_customers, type: int, from: newCustomers, desc: "New customers in the month."}
+      - {col: cases_opened, type: int, from: casesOpened, desc: "Cases opened."}
+      - {col: cases_resolved, type: int, from: casesResolved, desc: "Cases resolved."}
+
+  - table: risk_alert
+    entity: RiskAlert
+    tier: extended
+    domain: BankOps
+    description: "A bank-level risk or fraud alert, for example a phishing SMS spike."
+    synonyms: [alert, fraud alert, risk signal]
+    sources:
+      - {release: retail4-v1, file: bank/risk.json, list: alerts}
+    columns:
+      - {col: alert_id, type: string, key: true, from: alertId, desc: "Alert identifier such as RISK-ALERT-001."}
+      - {col: title, type: string, default_label: true, from: title, desc: "Alert title."}
+      - {col: severity, type: string, from: severity, desc: "low, medium or high."}
+      - {col: detail, type: string, from: detail, desc: "What was detected."}
+      - {col: bu_id, type: string, from: buId, desc: "Business unit affected."}
+      - {instant: raised_at, label: Raised At, from: raisedAt, desc: "When the alert was raised."}
+
+  - table: fraud_signal
+    entity: FraudSignal
+    tier: extended
+    domain: BankOps
+    description: "A fraud signal type with detections and blocks over the last 30 days (impersonation calls, phishing links, ...)."
+    synonyms: [fraud type, scam type]
+    sources:
+      - {release: retail4-v1, file: bank/risk.json, list: fraudSignals}
+    columns:
+      - {col: signal_id, type: string, key: true, from: signalId, desc: "Signal identifier such as FRD-IMP-CALL."}
+      - {col: label, type: string, default_label: true, from: label, desc: "Signal name."}
+      - {col: detected_last_30d, type: int, from: detectedLast30d, desc: "Detections in the last 30 days."}
+      - {col: blocked_last_30d, type: int, from: blockedLast30d, desc: "Attempts blocked in the last 30 days."}
+      - {col: trend, type: string, from: trend, desc: "up, flat or down."}
+
+  - table: product_business_unit
+    entity: ProductBusinessUnit
+    tier: extended
+    domain: BankOps
+    description: "Link between a business unit and the products it owns. Each catalogue product belongs to at most one business unit."
+    synonyms: [product ownership]
+    sources:
+      - {release: retail4-v1, file: bank/business-units.json, list: businessUnits, explode: productIds}
+    columns:
+      - {col: link_id, type: string, key: true, tpl: "{^.buId}>{@}", desc: "Link identifier: business unit > product id."}
+      - {col: bu_id, type: string, from: ^.buId, desc: "Business unit."}
+      - {col: product_id, type: string, default_label: true, from: "@", desc: "Product owned by the unit."}
+
+  - table: calendar
+    entity: Calendar
+    tier: core
+    domain: Time
+    ontology: false          # semantic-model only: time intelligence for measures
+    description: "Date dimension (2025-10-01 to 2027-12-31) with India fiscal year (April-March), month, quarter and weekday."
+    synonyms: [date, day]
+    sources:
+      - {custom: calendar, start: "2025-10-01", end: "2027-12-31"}
+    columns:
+      - {col: date, type: date, key: true, from: date, desc: "Calendar date."}
+      - {col: year, type: int, from: year, desc: "Calendar year."}
+      - {col: month_number, type: int, from: month, desc: "Month number 1-12."}
+      - {col: month_name, type: string, from: monthName, desc: "Month name."}
+      - {col: year_month, type: string, from: yearMonth, desc: "Year and month as YYYY-MM."}
+      - {col: quarter, type: string, from: quarter, desc: "Calendar quarter Q1-Q4."}
+      - {col: weekday, type: string, from: weekday, desc: "Day of week."}
+      - {col: is_weekend, type: bool, from: isWeekend, desc: "True on Saturday and Sunday."}
+      - {col: fiscal_year, type: string, from: fiscalYear, desc: "Indian fiscal year, April to March, for example FY2026-27."}

@@ -1,0 +1,17 @@
+# Allow list for tools/pii_guard.py. Everything here must be synthetic.
+allowed_email_domains:
+  - contoso.com
+  - example.com
+  - example.org
+  - example.net
+  - invalid          # RFC 2606: the seed personas use demo.contoso.invalid
+  - test
+  - localhost
+  - noreply.github.com   # git commit trailers
+ignore_paths:        # repo-relative prefixes skipped entirely; keep this list short
+  - tests/test_pii_guard.py   # holds deliberate fake PII to test the guard itself
+ignore_rule_paths:   # rule code -> repo-relative prefixes where that one rule is skipped
+  EMAIL:
+    - kit/tests/             # unit-test placeholder addresses
+    - kit/scripts/hostvm.sh  # ssh clone URL
+ignore_values: []    # exact matched values that are known to be synthetic

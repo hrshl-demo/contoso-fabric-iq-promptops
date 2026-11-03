@@ -1,0 +1,512 @@
+{
+  "nivedita-cashflow-recorded": {
+    "eventId": "nivedita-cashflow-recorded",
+    "ownerId": "nivedita",
+    "type": "evidence_recorded",
+    "label": "Record an explicit pension, obligations and reserve declaration",
+    "businessDate": "2026-09-13",
+    "accountId": "acc-niv-sav-01",
+    "requiresEventIds": [],
+    "sourceRefs": ["REL-N-CASHFLOW", "DOC-N-PENSION", "DOC-N-RETIREMENT-NOTE", "txn-niv-0166"],
+    "sources": [
+      {
+        "sourceId": "REL-N-CASHFLOW", "sourceVersion": 1, "ownerId": "nivedita",
+        "kind": "synthetic_customer_cashflow_declaration", "asOf": "2026-09-13",
+        "title": "Pension household and reserve declaration",
+        "text": "PROPOSED SYNTHETIC EVENT, not a previously approved document. Nivedita declares INR 38,000 monthly household essentials, INR 3,850 health premium in addition, no external debt or unused external credit lines, and no other monthly commitments. Her posted September pension is INR 48,500 (txn-niv-0166); the declaration itself credits no money. Keep INR 1,50,000 emergency cash and INR 50,000 for near-term medical costs, total INR 2,00,000, unpledged. The declaration supplies information, not approval or consent to buy a product."
+      }
+    ],
+    "evidence": [
+      {
+        "evidenceId": "rel-n-cashflow", "sourceId": "REL-N-CASHFLOW", "ownerId": "nivedita", "kind": "cash_flow", "asOf": "2026-09-13",
+        "monthlyNetIncomeMinor": 4850000, "monthlyLivingCostsMinor": 3800000,
+        "monthlyDebtPaymentsMinor": 0, "monthlyOtherCommitmentsMinor": 385000,
+        "monthlyObligationsMinor": 4185000, "externalOutstandingMinor": 0, "externalCreditLimitsMinor": 0,
+        "emergencyReserveMinor": 15000000, "nearTermCommitmentsMinor": 5000000, "protectedCashMinor": 20000000,
+        "incomeKind": "pension", "incomeTransactionIds": ["txn-niv-0166"], "observedIncomePeriods": 6,
+        "declarationComplete": true, "externalDebtAuthority": "customer_declaration_not_bureau_verification"
+      }
+    ]
+  },
+  "rhea-cashflow-recorded": {
+    "eventId": "rhea-cashflow-recorded",
+    "ownerId": "rhea",
+    "type": "evidence_recorded",
+    "label": "Record salary, existing card debt and household commitments",
+    "businessDate": "2026-09-13",
+    "accountId": "acc-rhe-sal-01",
+    "requiresEventIds": [],
+    "sourceRefs": ["REL-R-CASHFLOW", "DOC-R-FAMILY-NOTE", "card-rhe-cc-01", "txn-rhe-0216"],
+    "sources": [
+      {
+        "sourceId": "REL-R-CASHFLOW", "sourceVersion": 1, "ownerId": "rhea",
+        "kind": "synthetic_customer_cashflow_declaration", "asOf": "2026-09-13",
+        "title": "Household commitments and existing credit declaration",
+        "text": "PROPOSED SYNTHETIC EVENT. Rhea confirms the posted INR 1,85,000 monthly salary, INR 1,35,000 regular household costs and saving commitments, and INR 10,000 monthly debt-service provision while the existing card remains outstanding. No external debt or external credit lines are declared. The existing Contoso card's INR 2,50,000 limit and INR 1,20,690 outstanding remain on the bank ledger and must also be assessed, not replaced with zero. Her INR 40,000 surplus estimate is after those regular costs. Protect INR 2,00,000 emergency cash plus INR 1,20,690 for the existing card balance due on 2026-10-03. This does not pay that balance or make any promised bonus/refund available."
+      }
+    ],
+    "evidence": [
+      {
+        "evidenceId": "rel-r-cashflow", "sourceId": "REL-R-CASHFLOW", "ownerId": "rhea", "kind": "cash_flow", "asOf": "2026-09-13",
+        "monthlyNetIncomeMinor": 18500000, "monthlyLivingCostsMinor": 13500000,
+        "monthlyDebtPaymentsMinor": 1000000, "monthlyOtherCommitmentsMinor": 0,
+        "monthlyObligationsMinor": 14500000, "externalOutstandingMinor": 0, "externalCreditLimitsMinor": 0,
+        "emergencyReserveMinor": 20000000, "nearTermCommitmentsMinor": 12069000, "protectedCashMinor": 32069000,
+        "incomeKind": "salary", "incomeTransactionIds": ["txn-rhe-0216"], "observedIncomePeriods": 6,
+        "declarationComplete": true, "externalDebtAuthority": "customer_declaration_not_bureau_verification"
+      }
+    ]
+  },
+  "ravi-budget-recorded": {
+    "eventId": "ravi-budget-recorded",
+    "ownerId": "ravi",
+    "type": "evidence_recorded",
+    "label": "Record pre-payday costs without treating an offer as cash",
+    "businessDate": "2026-09-13",
+    "accountId": "acc-rav-sav-01",
+    "requiresEventIds": [],
+    "sourceRefs": ["REL-V-BUDGET", "DOC-V-OFFER-LETTER", "DOC-V-BNPL-OFFER", "DOC-V-INVOICE-DRAFT"],
+    "sources": [
+      {
+        "sourceId": "REL-V-BUDGET", "sourceVersion": 1, "ownerId": "ravi",
+        "kind": "synthetic_customer_cashflow_declaration", "asOf": "2026-09-13",
+        "title": "Pre-payday household budget",
+        "text": "PROPOSED SYNTHETIC EVENT. Ravi's planned monthly essentials are INR 17,501 plus one remaining INR 2,499 BNPL instalment. No other external debts or credit limits are declared. He wants INR 40,000 emergency cash and INR 20,000 next-month commitments protected. No salary has posted. INR 62,000 in the offer is gross, the annual variable target is conditional, and invoice RM-2026-007 for INR 26,500 is unpaid. None is spendable cash or verified regular net income. An unfunded plan does not close this shortfall."
+      }
+    ],
+    "evidence": [
+      {
+        "evidenceId": "rel-v-budget", "sourceId": "REL-V-BUDGET", "ownerId": "ravi", "kind": "cash_flow", "asOf": "2026-09-13",
+        "monthlyNetIncomeMinor": 0, "monthlyLivingCostsMinor": 1750100,
+        "monthlyDebtPaymentsMinor": 249900, "monthlyOtherCommitmentsMinor": 0,
+        "monthlyObligationsMinor": 2000000, "externalOutstandingMinor": 249900, "externalCreditLimitsMinor": 0,
+        "emergencyReserveMinor": 4000000, "nearTermCommitmentsMinor": 2000000, "protectedCashMinor": 6000000,
+        "incomeKind": "none_posted", "incomeTransactionIds": [], "observedIncomePeriods": 0,
+        "declarationComplete": true, "externalDebtAuthority": "customer_declaration_not_bureau_verification"
+      }
+    ]
+  },
+  "ravi-payday-posted": {
+    "eventId": "ravi-payday-posted",
+    "ownerId": "ravi",
+    "type": "salary_posted",
+    "label": "Post Ravi's explicitly synthetic first net salary",
+    "businessDate": "2026-10-31",
+    "accountId": "acc-rav-sav-01",
+    "requiresEventIds": [],
+    "transactionId": "txn-rel-ravi-payday-20261031",
+    "amountMinor": 4600000,
+    "category": "salary",
+    "description": "KESTREL ANALYTICS - SYNTHETIC OCTOBER NET PAY",
+    "purchaseReference": null,
+    "sourceRefs": ["REL-V-PAYSLIP-OCT", "DOC-V-OFFER-LETTER", "DOC-V-SALARY-ADDENDUM"],
+    "sources": [
+      {
+        "sourceId": "REL-V-PAYSLIP-OCT", "sourceVersion": 1, "ownerId": "ravi",
+        "kind": "synthetic_payroll_remittance", "asOf": "2026-10-31",
+        "title": "Synthetic October payslip and net-payment advice",
+        "text": "PROPOSED SYNTHETIC BANK EVENT, not an extraction from the offer letter and not previously approved. Employer: Kestrel Analytics Pvt Ltd (synthetic). Joined 2026-10-06. Pay period 2026-10-06 through 2026-10-31, 26 of 31 calendar days. Contract fixed monthly gross INR 62,000; this period's gross INR 52,000 (62,000 x 26 / 31). Explicit synthetic deductions: provident fund INR 3,600, professional-tax provision INR 200, income-tax provision INR 2,200; total INR 6,000. These are illustrative payroll entries, not statutory tax advice. Net remittance INR 46,000 to acc-rav-sav-01, value date 2026-10-31, reference PAY-KESTREL-202610-RAVI. No bonus, variable pay, invoice or relocation reimbursement is included. This advice is not cash until this event's matching bank transaction is posted. Probation remains six months."
+      }
+    ],
+    "evidence": [
+      {
+        "evidenceId": "rel-v-payroll-oct", "sourceId": "REL-V-PAYSLIP-OCT", "ownerId": "ravi", "kind": "posted_income", "asOf": "2026-10-31",
+        "incomeKind": "salary", "periodFrom": "2026-10-06", "periodTo": "2026-10-31",
+        "fixedMonthlyGrossMinor": 6200000, "paidCalendarDays": 26, "periodCalendarDays": 31,
+        "periodGrossMinor": 5200000, "deductionsMinor": 600000, "netPaymentMinor": 4600000,
+        "deductions": {"providentFundMinor": 360000, "professionalTaxProvisionMinor": 20000, "incomeTaxProvisionMinor": 220000},
+        "transactionId": "txn-rel-ravi-payday-20261031", "observedIncomePeriods": 1,
+        "paymentReference": "PAY-KESTREL-202610-RAVI", "probationMonths": 6
+      }
+    ]
+  },
+  "ravi-cashflow-recorded": {
+    "eventId": "ravi-cashflow-recorded",
+    "ownerId": "ravi",
+    "type": "evidence_recorded",
+    "label": "Record fresh post-payday obligations and protected cash",
+    "businessDate": "2026-10-31",
+    "accountId": "acc-rav-sav-01",
+    "requiresEventIds": ["ravi-payday-posted"],
+    "sourceRefs": ["REL-V-CASHFLOW", "REL-V-PAYSLIP-OCT", "DOC-V-BNPL-OFFER"],
+    "sources": [
+      {
+        "sourceId": "REL-V-CASHFLOW", "sourceVersion": 1, "ownerId": "ravi",
+        "kind": "synthetic_customer_cashflow_declaration", "asOf": "2026-10-31",
+        "title": "October net-income, BNPL and reserve declaration",
+        "text": "PROPOSED SYNTHETIC EVENT. This fresh declaration is available only after the separate October salary posting. Use the one observed INR 46,000 net monthly payment conservatively, not the INR 62,000 offer gross or a future net-pay estimate. Ravi declares INR 17,501 monthly essentials and one remaining INR 2,499 BNPL payment, with no additional debt or external credit lines. The synthetic lender's current schedule dates the final instalment 2026-11-05; it is not paid by this declaration. Protect INR 40,000 emergency cash plus INR 20,000 near-term obligations, total INR 60,000. Probation and only one observed payroll period remain relevant to an independent credit assessment. An unpaid invoice still counts as zero cash unless its separate remittance event is explicitly posted."
+      }
+    ],
+    "evidence": [
+      {
+        "evidenceId": "rel-v-cashflow", "sourceId": "REL-V-CASHFLOW", "ownerId": "ravi", "kind": "cash_flow", "asOf": "2026-10-31",
+        "monthlyNetIncomeMinor": 4600000, "monthlyLivingCostsMinor": 1750100,
+        "monthlyDebtPaymentsMinor": 249900, "monthlyOtherCommitmentsMinor": 0,
+        "monthlyObligationsMinor": 2000000, "externalOutstandingMinor": 249900, "externalCreditLimitsMinor": 0,
+        "emergencyReserveMinor": 4000000, "nearTermCommitmentsMinor": 2000000, "protectedCashMinor": 6000000,
+        "incomeKind": "salary", "incomeTransactionIds": ["txn-rel-ravi-payday-20261031"], "observedIncomePeriods": 1,
+        "nextDebtPaymentDate": "2026-11-05", "declarationComplete": true,
+        "externalDebtAuthority": "customer_declaration_and_synthetic_current_lender_schedule"
+      }
+    ]
+  },
+  "ravi-invoice-paid": {
+    "eventId": "ravi-invoice-paid",
+    "ownerId": "ravi",
+    "type": "invoice_paid",
+    "label": "Post the actual synthetic remittance for invoice RM-2026-007",
+    "businessDate": "2026-09-15",
+    "accountId": "acc-rav-sav-01",
+    "requiresEventIds": [],
+    "transactionId": "txn-rel-ravi-invoice-20260915",
+    "amountMinor": 2650000,
+    "category": "freelance",
+    "description": "PROJECT 3 - SYNTHETIC INVOICE RM-2026-007 REMITTANCE",
+    "purchaseReference": "RM-2026-007",
+    "sourceRefs": ["REL-V-INVOICE-REMITTANCE", "DOC-V-INVOICE-DRAFT"],
+    "sources": [
+      {
+        "sourceId": "REL-V-INVOICE-REMITTANCE", "sourceVersion": 1, "ownerId": "ravi",
+        "kind": "synthetic_invoice_remittance", "asOf": "2026-09-15",
+        "title": "Project 3 actual payment advice",
+        "text": "PROPOSED SYNTHETIC BANK EVENT. The Project 3 client confirms campaign go-live on 2026-09-15 and remits INR 26,500 for invoice RM-2026-007 to acc-rav-sav-01. This is a new dated remittance, not a reinterpretation of the original unpaid draft or a promise. Only its matching posted bank transaction makes the receipt available. It is an irregular one-off receipt, not a monthly salary. Tax provisioning needs the customer's chosen amount or professional advice; no statutory tax liability is asserted here."
+      }
+    ],
+    "evidence": [
+      {
+        "evidenceId": "rel-v-invoice-payment", "sourceId": "REL-V-INVOICE-REMITTANCE", "ownerId": "ravi", "kind": "posted_invoice_payment", "asOf": "2026-09-15",
+        "invoiceId": "RM-2026-007", "originalDocumentId": "DOC-V-INVOICE-DRAFT",
+        "netPaymentMinor": 2650000, "transactionId": "txn-rel-ravi-invoice-20260915", "incomeIsRecurring": false
+      }
+    ]
+  },
+  "nivedita-household-ready": {
+    "eventId": "nivedita-household-ready", "ownerId": "nivedita", "type": "evidence_recorded",
+    "label": "Record a priced household purchase, not a credit approval",
+    "businessDate": "2026-09-13", "accountId": "acc-niv-sav-01", "requiresEventIds": [],
+    "sourceRefs": ["REL-N-HOUSEHOLD-QUOTE"],
+    "sources": [
+      {
+        "sourceId": "REL-N-HOUSEHOLD-QUOTE", "sourceVersion": 1, "ownerId": "nivedita",
+        "kind": "synthetic_merchant_quote", "asOf": "2026-09-13", "title": "Household appliance estimate",
+        "text": "PROPOSED SYNTHETIC INPUT. Cedar Home Appliances (fictional) quotes INR 18,000 inclusive of delivery for a replacement washing machine, valid through 2026-10-13. Nothing has been purchased or paid. Nivedita wants to compare paying from unreserved funds, saving first or affordable small borrowing while keeping her declared medical reserve accessible. This is a request for comparison, not product consent or a bank decision."
+      }
+    ],
+    "evidence": [
+      {"evidenceId": "rel-n-household-quote", "sourceId": "REL-N-HOUSEHOLD-QUOTE", "ownerId": "nivedita", "kind": "purchase_quote", "asOf": "2026-09-13", "amountMinor": 1800000, "validUntil": "2026-10-13", "purpose": "replacement washing machine", "paymentStatus": "not_purchased"}
+    ]
+  },
+  "rhea-household-ready": {
+    "eventId": "rhea-household-ready", "ownerId": "rhea", "type": "evidence_recorded",
+    "label": "Record a priced purchase competing with family commitments",
+    "businessDate": "2026-09-13", "accountId": "acc-rhe-sal-01", "requiresEventIds": [],
+    "sourceRefs": ["REL-R-HOUSEHOLD-QUOTE"],
+    "sources": [
+      {
+        "sourceId": "REL-R-HOUSEHOLD-QUOTE", "sourceVersion": 1, "ownerId": "rhea",
+        "kind": "synthetic_merchant_quote", "asOf": "2026-09-13", "title": "Household furnishing estimate",
+        "text": "PROPOSED SYNTHETIC INPUT. Cedar Home Furnishings (fictional) quotes INR 60,000 inclusive of delivery for a desk, storage and a child's bed, valid through 2026-10-13. This is a new prospective purchase, not the existing disputed furnishings order. It has not been paid. Rhea wants it considered alongside school costs, the card balance, possible relocation and a home down payment, without counting an unposted bonus or refund."
+      }
+    ],
+    "evidence": [
+      {"evidenceId": "rel-r-household-quote", "sourceId": "REL-R-HOUSEHOLD-QUOTE", "ownerId": "rhea", "kind": "purchase_quote", "asOf": "2026-09-13", "amountMinor": 6000000, "validUntil": "2026-10-13", "purpose": "household furniture", "paymentStatus": "not_purchased"}
+    ]
+  },
+  "ravi-household-ready": {
+    "eventId": "ravi-household-ready", "ownerId": "ravi", "type": "evidence_recorded",
+    "label": "Record a post-payday work-equipment estimate",
+    "businessDate": "2026-10-31", "accountId": "acc-rav-sav-01", "requiresEventIds": [],
+    "sourceRefs": ["REL-V-HOUSEHOLD-QUOTE"],
+    "sources": [
+      {
+        "sourceId": "REL-V-HOUSEHOLD-QUOTE", "sourceVersion": 1, "ownerId": "ravi",
+        "kind": "synthetic_merchant_quote", "asOf": "2026-10-31", "title": "Work-equipment estimate",
+        "text": "PROPOSED SYNTHETIC INPUT. Cedar Computing (fictional) quotes INR 25,000 inclusive of delivery for a refurbished laptop, valid through 2026-11-30. It has not been purchased or paid. Ravi wants to understand cash purchase, saving and borrowing costs without using his emergency reserve. The estimate does not post salary, pay an invoice, authorise borrowing or choose a financial product."
+      }
+    ],
+    "evidence": [
+      {"evidenceId": "rel-v-household-quote", "sourceId": "REL-V-HOUSEHOLD-QUOTE", "ownerId": "ravi", "kind": "purchase_quote", "asOf": "2026-10-31", "amountMinor": 2500000, "validUntil": "2026-11-30", "purpose": "work laptop", "paymentStatus": "not_purchased"}
+    ]
+  },
+  "nivedita-purchase-posted": {
+    "eventId": "nivedita-purchase-posted", "ownerId": "nivedita", "type": "purchase_posted",
+    "label": "Post a small household purchase and its unrefunded return evidence",
+    "businessDate": "2026-09-13", "accountId": "acc-niv-sav-01", "requiresEventIds": [],
+    "transactionId": "txn-rel-nivedita-purchase-20260913", "amountMinor": 180000,
+    "category": "shopping", "description": "CEDAR HOUSEHOLD - SYNTHETIC PURCHASE",
+    "purchaseReference": "pur-rel-nivedita-01", "sourceRefs": ["REL-N-PURCHASE-RETURN"],
+    "sources": [
+      {
+        "sourceId": "REL-N-PURCHASE-RETURN", "sourceVersion": 1, "ownerId": "nivedita",
+        "kind": "synthetic_purchase_and_return_receipt", "asOf": "2026-09-13", "title": "Household purchase and return acknowledgement",
+        "text": "PROPOSED SYNTHETIC BANK EVENT. Order pur-rel-nivedita-01: INR 1,800 paid from acc-niv-sav-01 on 2026-09-13 for a household accessory, returned the same day because the wrong item was supplied. The merchant acknowledges the return but provides no settlement reference or guaranteed refund date. The purchase event posts the debit only. There is no refund credit or automatic determination that a reimbursement is due."
+      }
+    ],
+    "evidence": [
+      {"evidenceId": "rel-n-purchase-return", "sourceId": "REL-N-PURCHASE-RETURN", "ownerId": "nivedita", "kind": "purchase_return", "asOf": "2026-09-13", "purchaseReference": "pur-rel-nivedita-01", "amountMinor": 180000, "transactionId": "txn-rel-nivedita-purchase-20260913", "refundStatus": "not_posted"}
+    ]
+  },
+  "ravi-purchase-posted": {
+    "eventId": "ravi-purchase-posted", "ownerId": "ravi", "type": "purchase_posted",
+    "label": "Post a small purchase and its unrefunded return evidence",
+    "businessDate": "2026-10-31", "accountId": "acc-rav-sav-01", "requiresEventIds": [],
+    "transactionId": "txn-rel-ravi-purchase-20261031", "amountMinor": 200000,
+    "category": "shopping", "description": "CEDAR ACCESSORIES - SYNTHETIC PURCHASE",
+    "purchaseReference": "pur-rel-ravi-01", "sourceRefs": ["REL-V-PURCHASE-RETURN"],
+    "sources": [
+      {
+        "sourceId": "REL-V-PURCHASE-RETURN", "sourceVersion": 1, "ownerId": "ravi",
+        "kind": "synthetic_purchase_and_return_receipt", "asOf": "2026-10-31", "title": "Accessory purchase and return acknowledgement",
+        "text": "PROPOSED SYNTHETIC BANK EVENT. Order pur-rel-ravi-01: INR 2,000 paid from acc-rav-sav-01 on 2026-10-31 for an accessory, returned the same day because the wrong model was supplied. The seller has acknowledged the return but no refund has posted. This event posts only the purchase debit and supplies the dated receipt; it neither reimburses the customer nor resolves the dispute."
+      }
+    ],
+    "evidence": [
+      {"evidenceId": "rel-v-purchase-return", "sourceId": "REL-V-PURCHASE-RETURN", "ownerId": "ravi", "kind": "purchase_return", "asOf": "2026-10-31", "purchaseReference": "pur-rel-ravi-01", "amountMinor": 200000, "transactionId": "txn-rel-ravi-purchase-20261031", "refundStatus": "not_posted"}
+    ]
+  },
+  "nivedita-group-expenses-recorded": {
+    "eventId": "nivedita-group-expenses-recorded", "ownerId": "nivedita", "type": "evidence_recorded",
+    "label": "Record group receipts without inventing reimbursements",
+    "businessDate": "2026-09-13", "accountId": "acc-niv-sav-01", "requiresEventIds": [],
+    "sourceRefs": ["REL-N-GROUP-RECEIPTS"],
+    "sources": [
+      {
+        "sourceId": "REL-N-GROUP-RECEIPTS", "sourceVersion": 1, "ownerId": "nivedita",
+        "kind": "synthetic_external_receipts", "asOf": "2026-09-13", "title": "Two-person outing receipts",
+        "text": "PROPOSED SYNTHETIC INPUT. On a two-person outing, Nivedita paid INR 9,000 and her friend paid INR 3,000, from cash outside the Contoso account ledger. Both agree to equal shares of the total. No reimbursement has been received. Receipts do not create deposits into this bank account. The friend's bank beneficiary details still require explicit customer verification before any transfer."
+      }
+    ],
+    "evidence": [
+      {"evidenceId": "rel-n-group-expenses", "sourceId": "REL-N-GROUP-RECEIPTS", "ownerId": "nivedita", "kind": "group_expenses", "asOf": "2026-09-13", "participants": ["nivedita", "friend"], "equalShares": true, "receipts": [{"payer": "nivedita", "amountMinor": 900000}, {"payer": "friend", "amountMinor": 300000}], "reimbursementsPosted": false}
+    ]
+  },
+  "rhea-group-expenses-recorded": {
+    "eventId": "rhea-group-expenses-recorded", "ownerId": "rhea", "type": "evidence_recorded",
+    "label": "Record group receipts without inventing reimbursements",
+    "businessDate": "2026-09-13", "accountId": "acc-rhe-sal-01", "requiresEventIds": [],
+    "sourceRefs": ["REL-R-GROUP-RECEIPTS"],
+    "sources": [
+      {
+        "sourceId": "REL-R-GROUP-RECEIPTS", "sourceVersion": 1, "ownerId": "rhea",
+        "kind": "synthetic_external_receipts", "asOf": "2026-09-13", "title": "Two-person shared outing receipts",
+        "text": "PROPOSED SYNTHETIC INPUT. Rhea paid INR 6,000 and her friend paid INR 2,000 for an outing, from cash outside the Contoso account ledger. Both agree to equal shares. No reimbursement has arrived, so nothing is added to the account balance. Verify beneficiary identity and transfer details separately before initiating any payment."
+      }
+    ],
+    "evidence": [
+      {"evidenceId": "rel-r-group-expenses", "sourceId": "REL-R-GROUP-RECEIPTS", "ownerId": "rhea", "kind": "group_expenses", "asOf": "2026-09-13", "participants": ["rhea", "friend"], "equalShares": true, "receipts": [{"payer": "rhea", "amountMinor": 600000}, {"payer": "friend", "amountMinor": 200000}], "reimbursementsPosted": false}
+    ]
+  },
+  "nivedita-irregular-receipt-posted": {
+    "eventId": "nivedita-irregular-receipt-posted", "ownerId": "nivedita", "type": "invoice_paid",
+    "label": "Post one separately evidenced synthetic tutoring receipt",
+    "businessDate": "2026-09-14", "accountId": "acc-niv-sav-01", "requiresEventIds": [],
+    "transactionId": "txn-rel-nivedita-receipt-20260914", "amountMinor": 600000,
+    "category": "freelance", "description": "CEDAR LEARNING - SYNTHETIC TUTORING RECEIPT",
+    "purchaseReference": "INV-REL-N-001", "sourceRefs": ["REL-N-TUTORING-REMITTANCE"],
+    "sources": [
+      {
+        "sourceId": "REL-N-TUTORING-REMITTANCE", "sourceVersion": 1, "ownerId": "nivedita",
+        "kind": "synthetic_invoice_remittance", "asOf": "2026-09-14", "title": "One-off tutoring payment",
+        "text": "PROPOSED SYNTHETIC BANK EVENT. Cedar Learning (fictional) remits INR 6,000 for a completed one-off tutoring workshop, invoice INV-REL-N-001, to acc-niv-sav-01 on 2026-09-14. There is no recurring teaching contract or promised next payment. It supplements, but does not replace or increase, the evidenced pension. Any tax reserve is a customer allocation, not an asserted statutory liability."
+      }
+    ],
+    "evidence": [
+      {"evidenceId": "rel-n-tutoring-payment", "sourceId": "REL-N-TUTORING-REMITTANCE", "ownerId": "nivedita", "kind": "posted_invoice_payment", "asOf": "2026-09-14", "invoiceId": "INV-REL-N-001", "netPaymentMinor": 600000, "transactionId": "txn-rel-nivedita-receipt-20260914", "incomeIsRecurring": false}
+    ]
+  },
+  "rhea-irregular-receipt-posted": {
+    "eventId": "rhea-irregular-receipt-posted", "ownerId": "rhea", "type": "invoice_paid",
+    "label": "Post one separately evidenced synthetic freelance receipt",
+    "businessDate": "2026-09-14", "accountId": "acc-rhe-sal-01", "requiresEventIds": [],
+    "transactionId": "txn-rel-rhea-receipt-20260914", "amountMinor": 1200000,
+    "category": "freelance", "description": "CEDAR REVIEW - SYNTHETIC FREELANCE RECEIPT",
+    "purchaseReference": "INV-REL-R-001", "sourceRefs": ["REL-R-FREELANCE-REMITTANCE"],
+    "sources": [
+      {
+        "sourceId": "REL-R-FREELANCE-REMITTANCE", "sourceVersion": 1, "ownerId": "rhea",
+        "kind": "synthetic_invoice_remittance", "asOf": "2026-09-14", "title": "One-off technical review payment",
+        "text": "PROPOSED SYNTHETIC BANK EVENT. Cedar Review (fictional) remits INR 12,000 for a completed one-off technical review, invoice INV-REL-R-001, to acc-rhe-sal-01 on 2026-09-14. It is independent of the employer's unposted bonus and the disputed merchant refund. There is no monthly freelance contract. Only this event's exact posted receipt becomes cash; no future receipt is promised."
+      }
+    ],
+    "evidence": [
+      {"evidenceId": "rel-r-freelance-payment", "sourceId": "REL-R-FREELANCE-REMITTANCE", "ownerId": "rhea", "kind": "posted_invoice_payment", "asOf": "2026-09-14", "invoiceId": "INV-REL-R-001", "netPaymentMinor": 1200000, "transactionId": "txn-rel-rhea-receipt-20260914", "incomeIsRecurring": false}
+    ]
+  },
+  "rhea-medical-estimate-recorded": {
+    "eventId": "rhea-medical-estimate-recorded", "ownerId": "rhea", "type": "evidence_recorded",
+    "label": "Record a self-pay estimate without inventing existing insurance",
+    "businessDate": "2026-09-13", "accountId": "acc-rhe-sal-01", "requiresEventIds": [],
+    "sourceRefs": ["REL-R-MEDICAL-ESTIMATE"],
+    "sources": [
+      {
+        "sourceId": "REL-R-MEDICAL-ESTIMATE", "sourceVersion": 1, "ownerId": "rhea",
+        "kind": "synthetic_provider_estimate", "asOf": "2026-09-13", "title": "Prospective diagnostic estimate",
+        "text": "PROPOSED SYNTHETIC INPUT. Cedar Clinic (fictional) estimates INR 12,000 for a diagnostic visit planned on 2026-09-25, valid until that date. This is not a diagnosis, claim acceptance or proof of insurance. No health policy is recorded for Rhea in the seed. Any external cover must be evidenced separately; a new policy cannot be presented as paying this known current expense. Her health declaration is still required before future protection can be underwritten."
+      }
+    ],
+    "evidence": [
+      {"evidenceId": "rel-r-medical-estimate", "sourceId": "REL-R-MEDICAL-ESTIMATE", "ownerId": "rhea", "kind": "medical_estimate", "asOf": "2026-09-13", "amountMinor": 1200000, "plannedDate": "2026-09-25", "coverageVerified": false}
+    ]
+  },
+  "ravi-medical-estimate-recorded": {
+    "eventId": "ravi-medical-estimate-recorded", "ownerId": "ravi", "type": "evidence_recorded",
+    "label": "Record a self-pay estimate without inventing existing insurance",
+    "businessDate": "2026-10-31", "accountId": "acc-rav-sav-01", "requiresEventIds": [],
+    "sourceRefs": ["REL-V-MEDICAL-ESTIMATE"],
+    "sources": [
+      {
+        "sourceId": "REL-V-MEDICAL-ESTIMATE", "sourceVersion": 1, "ownerId": "ravi",
+        "kind": "synthetic_provider_estimate", "asOf": "2026-10-31", "title": "Prospective diagnostic estimate",
+        "text": "PROPOSED SYNTHETIC INPUT. Cedar Clinic (fictional) estimates INR 5,000 for a diagnostic visit planned on 2026-11-12, valid until that date. This is not a diagnosis, accepted claim or proof of employer insurance. No health policy is recorded for Ravi. Verify any external cover and fund the known current expense separately. New cover remains subject to health declaration and waiting periods and must never be represented as retroactive cover."
+      }
+    ],
+    "evidence": [
+      {"evidenceId": "rel-v-medical-estimate", "sourceId": "REL-V-MEDICAL-ESTIMATE", "ownerId": "ravi", "kind": "medical_estimate", "asOf": "2026-10-31", "amountMinor": 500000, "plannedDate": "2026-11-12", "coverageVerified": false}
+    ]
+  },
+  "nivedita-health-declaration-recorded": {
+    "eventId": "nivedita-health-declaration-recorded", "ownerId": "nivedita", "type": "evidence_recorded",
+    "label": "Record a complete health declaration, not an underwriting decision",
+    "businessDate": "2026-09-13", "accountId": "acc-niv-sav-01", "requiresEventIds": [],
+    "sourceRefs": ["REL-N-HEALTH-DECLARATION", "pol-niv-health-01", "DOC-N-MEDICAL-ESTIMATE"],
+    "sources": [
+      {"sourceId": "REL-N-HEALTH-DECLARATION", "sourceVersion": 1, "ownerId": "nivedita", "kind": "synthetic_customer_health_declaration", "asOf": "2026-09-13", "title": "Nivedita's proposed-demo health declaration",
+       "text": "NEW PROPOSED SYNTHETIC SOURCE, not prior approved medical evidence. Nivedita, DOB 1964-04-12, declares controlled hypertension diagnosed in 2019, ongoing prescribed medication, no tobacco use, no hospital admission in the preceding 12 months, and the planned procedure already described in DOC-N-MEDICAL-ESTIMATE. Existing base policy pol-niv-health-01 remains active; its actual terms and current claim are not changed. She wishes to understand additional FUTURE protection without replacing current cover or expecting the known procedure to be reimbursed by a new policy. Identity/source intake has been checked in this demo; declaration completeness and verification mean document provenance only, not medical certification, insurer acceptance, policy consent or an underwriting result. The declared conditions and current episode must be considered under the new policy's waiting/exclusion wording."}
+    ],
+    "evidence": [
+      {"evidenceId": "rel-n-health-declaration", "ownerId": "nivedita", "sourceId": "REL-N-HEALTH-DECLARATION", "documentId": "REL-N-HEALTH-DECLARATION", "kind": "health_declaration", "asOf": "2026-09-13", "recordedOn": "2026-09-13", "expiresOn": "2026-10-13", "verified": true, "status": "verified", "complete": true,
+       "verificationScope": "identity_and_declared_source_intake_not_underwriting",
+       "dateOfBirth": "1964-04-12", "declaredConditions": [{"condition": "controlled hypertension", "diagnosedYear": 2019, "ongoingMedication": true}], "tobaccoUse": false, "hospitalAdmissionsLast12Months": 0,
+       "knownCurrentEpisode": true, "plannedTreatmentSourceIds": ["DOC-N-MEDICAL-ESTIMATE"], "existingPolicyIds": ["pol-niv-health-01"], "requestedScope": "future_additional_cover_only"}
+    ]
+  },
+  "rhea-health-declaration-recorded": {
+    "eventId": "rhea-health-declaration-recorded", "ownerId": "rhea", "type": "evidence_recorded",
+    "label": "Record health-history inputs without insurer approval",
+    "businessDate": "2026-09-13", "accountId": "acc-rhe-sal-01", "requiresEventIds": [],
+    "sourceRefs": ["REL-R-HEALTH-DECLARATION"],
+    "sources": [
+      {"sourceId": "REL-R-HEALTH-DECLARATION", "sourceVersion": 1, "ownerId": "rhea", "kind": "synthetic_customer_health_declaration", "asOf": "2026-09-13", "title": "Rhea's proposed-demo health declaration",
+       "text": "NEW PROPOSED SYNTHETIC SOURCE. Rhea, DOB 1985-01-24, declares controlled hypothyroidism since 2022 with continuing prescribed medication, no tobacco use and no hospital admission during the preceding 12 months. The diagnostic visit estimated for 2026-09-25 is a known current expense, not something a new policy is promised to pay. No existing base policy is declared or recorded. She is exploring protection for future eligible episodes. The demo verifies identity and source intake; it does not certify clinical facts, waive waiting periods, accept risk, authorise a premium debit or record insurer approval."}
+    ],
+    "evidence": [
+      {"evidenceId": "rel-r-health-declaration", "ownerId": "rhea", "sourceId": "REL-R-HEALTH-DECLARATION", "documentId": "REL-R-HEALTH-DECLARATION", "kind": "health_declaration", "asOf": "2026-09-13", "recordedOn": "2026-09-13", "expiresOn": "2026-10-13", "verified": true, "status": "verified", "complete": true,
+       "verificationScope": "identity_and_declared_source_intake_not_underwriting",
+       "dateOfBirth": "1985-01-24", "declaredConditions": [{"condition": "controlled hypothyroidism", "diagnosedYear": 2022, "ongoingMedication": true}], "tobaccoUse": false, "hospitalAdmissionsLast12Months": 0,
+       "knownCurrentEpisode": true, "plannedTreatmentSourceIds": [], "existingPolicyIds": [], "requestedScope": "future_base_cover_only"}
+    ]
+  },
+  "ravi-health-declaration-recorded": {
+    "eventId": "ravi-health-declaration-recorded", "ownerId": "ravi", "type": "evidence_recorded",
+    "label": "Record a post-payday health declaration without approving cover",
+    "businessDate": "2026-10-31", "accountId": "acc-rav-sav-01", "requiresEventIds": [],
+    "sourceRefs": ["REL-V-HEALTH-DECLARATION"],
+    "sources": [
+      {"sourceId": "REL-V-HEALTH-DECLARATION", "sourceVersion": 1, "ownerId": "ravi", "kind": "synthetic_customer_health_declaration", "asOf": "2026-10-31", "title": "Ravi's proposed-demo health declaration",
+       "text": "NEW PROPOSED SYNTHETIC SOURCE. Ravi, DOB 2001-06-18, declares seasonal allergic rhinitis with occasional non-prescription antihistamine use, no other known chronic condition, no tobacco use and no admission during the preceding 12 months. The diagnostic visit planned for 2026-11-12 is a known current expense; it is not retroactively insured. No employer or personal base cover is evidenced. Identity and source intake are verified for the demo, not clinical truth or an underwriting outcome. He is considering only future protection; no policy purchase or premium debit has been authorised."}
+    ],
+    "evidence": [
+      {"evidenceId": "rel-v-health-declaration", "ownerId": "ravi", "sourceId": "REL-V-HEALTH-DECLARATION", "documentId": "REL-V-HEALTH-DECLARATION", "kind": "health_declaration", "asOf": "2026-10-31", "recordedOn": "2026-10-31", "expiresOn": "2026-11-30", "verified": true, "status": "verified", "complete": true,
+       "verificationScope": "identity_and_declared_source_intake_not_underwriting",
+       "dateOfBirth": "2001-06-18", "declaredConditions": [{"condition": "seasonal allergic rhinitis", "diagnosedYear": 2020, "ongoingMedication": false}], "tobaccoUse": false, "hospitalAdmissionsLast12Months": 0,
+       "knownCurrentEpisode": true, "plannedTreatmentSourceIds": [], "existingPolicyIds": [], "requestedScope": "future_base_cover_only"}
+    ]
+  },
+  "nivedita-fd-maturity-posted": {
+    "eventId": "nivedita-fd-maturity-posted", "ownerId": "nivedita", "type": "deposit_maturity_posted",
+    "label": "Settle the actual matured FD principal only; interest remains unasserted",
+    "businessDate": "2026-09-20", "accountId": "acc-niv-sav-01", "requiresEventIds": [],
+    "depositId": "dep-niv-fd-01", "settlementVerified": true, "principalOnly": true,
+    "transactionId": "txn-rel-nivedita-fd-principal-20260920", "amountMinor": 60000000,
+    "category": "deposit_maturity", "description": "SYNTHETIC FD MATURITY - VERIFIED PRINCIPAL ONLY",
+    "purchaseReference": null,
+    "sourceRefs": ["REL-N-FD-PRINCIPAL-SETTLEMENT", "dep-niv-fd-01", "nivedita-fd-maturity-posted"],
+    "sources": [
+      {"sourceId": "REL-N-FD-PRINCIPAL-SETTLEMENT", "sourceVersion": 1, "ownerId": "nivedita", "kind": "synthetic_bank_maturity_settlement", "asOf": "2026-09-20", "title": "Principal-only maturity settlement advice",
+       "text": "NEW PROPOSED SYNTHETIC CORE-BANK EVENT. Holding dep-niv-fd-01 is owned by Nivedita, matures contractually on 2026-09-20 and links to acc-niv-sav-01. Its recorded principal is INR 6,00,000. This explicitly selected bank-state variant settles that existing principal to the linked savings account on the contractual date, closes/zeros the old principal and preserves the original holding and its default renewal instruction in history. It does not author a customer renewal consent or create a replacement FD. Only verified principal is settled: no accrued interest, tax, rate or interest payout is guessed, and zero credited interest is not a claim that interest entitlement is zero. Any interest settlement requires a separate sourced advice. The earlier default renew-principal-and-interest instruction is not executed in this principal-settled variant; any subsequent deposit needs a separate current review and customer confirmation."}
+    ],
+    "evidence": [
+      {"evidenceId": "rel-n-fd-principal-settlement", "ownerId": "nivedita", "sourceId": "REL-N-FD-PRINCIPAL-SETTLEMENT", "documentId": "REL-N-FD-PRINCIPAL-SETTLEMENT", "kind": "deposit_maturity_settlement", "asOf": "2026-09-20", "recordedOn": "2026-09-20",
+       "depositId": "dep-niv-fd-01", "linkedAccountId": "acc-niv-sav-01", "maturesOn": "2026-09-20", "principalMinor": 60000000, "netPaymentMinor": 60000000, "interestCreditedMinor": 0, "interestEntitlement": "not_valued_or_settled",
+       "transactionId": "txn-rel-nivedita-fd-principal-20260920", "settlementVerified": true, "principalOnly": true}
+    ]
+  },
+  "rhea-property-ready": {
+    "eventId": "rhea-property-ready", "ownerId": "rhea", "type": "evidence_recorded",
+    "label": "Record a priced small-home purchase and independently sourced valuation",
+    "businessDate": "2026-09-13", "accountId": "acc-rhe-sal-01", "requiresEventIds": ["rhea-cashflow-recorded"],
+    "sourceRefs": ["REL-R-PROPERTY-VALUATION", "REL-R-PURCHASE-AGREEMENT", "REL-R-DOWNPAYMENT-SOURCE", "acc-rhe-sal-01"],
+    "sources": [
+      {"sourceId": "REL-R-PROPERTY-VALUATION", "sourceVersion": 1, "ownerId": "rhea", "kind": "synthetic_property_valuation", "asOf": "2026-09-13", "title": "Daund studio valuation and title-search record",
+       "text": "NEW PROPOSED SYNTHETIC EVIDENCE, not a real appraisal or loan approval. Cedar Valuers (fictional) records INR 6,00,000 open-market value for a modest older 24-square-metre completed residential studio in Daund, Pune district, property prop-rel-rhea-daund-01. This is an explicit small-town demo reference price, not an assertion about Pune city housing prices. The demo title search identifies seller-rel-rhea-01 as current legal owner, with title and identity verified and no registered charge. Rhea is the identified prospective buyer, not already the owner. Completion, conveyance and mortgage registration remain conditions of the purchase transaction; source verification does not transfer title or approve lending. Valuation valid through 2026-12-12."},
+      {"sourceId": "REL-R-PURCHASE-AGREEMENT", "sourceVersion": 1, "ownerId": "rhea", "kind": "synthetic_property_purchase_agreement", "asOf": "2026-09-13", "title": "Small-home purchase agreement and full price schedule",
+       "text": "NEW PROPOSED SYNTHETIC PURCHASE INPUT. Buyer Rhea Bansal and verified seller seller-rel-rhea-01 identify property prop-rel-rhea-daund-01, an older completed 24-square-metre studio in Daund. Agreed total price INR 6,00,000. Buyer's own contribution INR 1,20,000 and requested financing INR 4,80,000 reconcile exactly to the price; neither is a bank approval or an amount already paid. Closing costs total INR 42,000: INR 36,000 stamp/registration provision (6% illustrative allowance) plus INR 6,000 legal/conveyance. These are explicit demo cost assumptions, not statutory tax advice. Actual quoted bank processing fees are additional. No payment has posted, no deposit has been supplied by the seller, and title transfer requires confirmed funded completion. Planned completion is within 30 days, subject to financing, customer confirmation and valid title/settlement steps."},
+      {"sourceId": "REL-R-DOWNPAYMENT-SOURCE", "sourceVersion": 1, "ownerId": "rhea", "kind": "synthetic_bank_funding_trace", "asOf": "2026-09-13", "title": "Existing-account contribution trace",
+       "text": "NEW PROPOSED SYNTHETIC FUNDING TRACE. Own contribution comes only from existing posted money in acc-rhe-sal-01, whose seed available balance is INR 4,91,131. The existing declaration protects INR 3,20,690 for emergency cash and the existing card balance. Thus INR 1,70,441 is initially unreserved. Proposed contribution INR 1,20,000 plus closing costs INR 42,000 leave INR 8,441 for actual quoted bank fees or remaining surplus. No incoming credit, employer bonus, merchant refund, new collateral cash or loan approval is invented. Affordability and balances must be checked again against all current/proposed commitments at execution; this trace does not earmark or debit anything."}
+    ],
+    "evidence": [
+      {"evidenceId": "rel-r-property-valuation", "ownerId": "rhea", "sourceId": "REL-R-PROPERTY-VALUATION", "documentId": "REL-R-PROPERTY-VALUATION", "kind": "property_valuation", "asOf": "2026-09-13", "recordedOn": "2026-09-13", "expiresOn": "2026-12-12", "verified": true, "status": "verified",
+       "propertyId": "prop-rel-rhea-daund-01", "assetOwnerId": "seller-rel-rhea-01", "buyerId": "rhea", "sellerId": "seller-rel-rhea-01", "transactionType": "purchase", "ownershipVerified": true, "titleVerified": true, "unencumbered": true, "valueMinor": 60000000, "currency": "INR",
+       "purchaseEvidenceId": "rel-r-property-purchase", "ownershipScope": "current_seller_title_verified_buyer_transfer_pending"},
+      {"evidenceId": "rel-r-property-purchase", "ownerId": "rhea", "sourceId": "REL-R-PURCHASE-AGREEMENT", "documentId": "REL-R-PURCHASE-AGREEMENT", "kind": "property_purchase", "asOf": "2026-09-13", "recordedOn": "2026-09-13", "expiresOn": "2026-10-13", "verified": true, "status": "verified", "complete": true,
+       "propertyId": "prop-rel-rhea-daund-01", "buyerId": "rhea", "sellerId": "seller-rel-rhea-01", "purchasePriceMinor": 60000000, "requestedLoanMinor": 48000000, "downPaymentMinor": 12000000, "closingCostsMinor": 4200000,
+       "downPaymentSourceAccountId": "acc-rhe-sal-01", "fundingEvidenceId": "rel-r-downpayment-source", "contributionStatus": "not_paid", "titleTransferRequired": true},
+      {"evidenceId": "rel-r-downpayment-source", "ownerId": "rhea", "sourceId": "REL-R-DOWNPAYMENT-SOURCE", "documentId": "REL-R-DOWNPAYMENT-SOURCE", "kind": "purchase_funding", "asOf": "2026-09-13", "recordedOn": "2026-09-13", "verified": true, "status": "verified",
+       "propertyId": "prop-rel-rhea-daund-01", "sourceAccountId": "acc-rhe-sal-01", "purchaseEvidenceId": "rel-r-property-purchase", "downPaymentMinor": 12000000, "closingCostsMinor": 4200000, "observedAvailableMinor": 49113100, "declaredProtectedCashMinor": 32069000, "fundingKind": "existing_posted_unreserved_cash"}
+    ]
+  },
+  "nivedita-shared-money-ready": {
+    "eventId": "nivedita-shared-money-ready", "ownerId": "nivedita", "type": "evidence_recorded",
+    "label": "Record a verified recipient and a separate reconciled shared expense",
+    "businessDate": "2026-09-13", "accountId": "acc-niv-sav-01", "requiresEventIds": [],
+    "sourceRefs": ["REL-N-SHARED-LEDGER", "REL-N-RECIPIENT"],
+    "sources": [
+      {"sourceId": "REL-N-SHARED-LEDGER", "sourceVersion": 1, "ownerId": "nivedita", "kind": "synthetic_shared_expense_receipts", "asOf": "2026-09-13", "title": "Second outing receipts and agreed equal split",
+       "text": "NEW PROPOSED SYNTHETIC INPUT for a separate second outing, not a revision of the original group receipts. Nivedita paid INR 3,000 and Meera Shah (synthetic) paid INR 9,000 from external cash; total INR 12,000, agreed equal shares INR 6,000. Nivedita consequently owes Meera INR 3,000. No bank settlement, reimbursement or debit has occurred. The verified split establishes the amount owed, not consent to a bank payment. Any transfer needs exact customer review/authorisation and available unreserved cash."},
+      {"sourceId": "REL-N-RECIPIENT", "sourceVersion": 1, "ownerId": "nivedita", "kind": "synthetic_bank_recipient_verification", "asOf": "2026-09-13", "title": "Meera synthetic recipient verification",
+       "text": "NEW PROPOSED SYNTHETIC BANK DIRECTORY RECORD owned by Nivedita. Recipient Meera Shah (synthetic), recipient-rel-n-meera, destination demo-external-n-meera, INR-only synthetic transfer rail. Identity, routing and account-name match are verified for this demo record through 2026-12-12. This is an external recipient, not Nivedita's own account and not another demo persona's account. Registration does not authorise a payment or guarantee any incoming funds."}
+    ],
+    "evidence": [
+      {"evidenceId": "rel-n-recipient", "ownerId": "nivedita", "sourceId": "REL-N-RECIPIENT", "documentId": "REL-N-RECIPIENT", "kind": "verified_recipient", "asOf": "2026-09-13", "recordedOn": "2026-09-13", "expiresOn": "2026-12-12", "verified": true, "status": "verified", "recipientId": "recipient-rel-n-meera", "recipientPartyId": "meera", "displayName": "Meera Shah (synthetic)", "destinationAccountRef": "demo-external-n-meera", "currency": "INR", "rail": "synthetic_external_transfer", "routingVerified": true, "accountNameMatched": true},
+      {"evidenceId": "rel-n-shared-ledger", "ownerId": "nivedita", "sourceId": "REL-N-SHARED-LEDGER", "documentId": "REL-N-SHARED-LEDGER", "kind": "shared_ledger", "asOf": "2026-09-13", "recordedOn": "2026-09-13", "verified": true, "status": "verified",
+       "ledgerId": "shared-rel-n-outing-02", "recipientId": "recipient-rel-n-meera", "recipientEvidenceId": "rel-n-recipient", "participants": ["nivedita", "meera"], "equalShares": true,
+       "entries": [{"entryId": "shared-n-01", "payerId": "nivedita", "amountMinor": 300000}, {"entryId": "shared-n-02", "payerId": "meera", "amountMinor": 900000}], "totalMinor": 1200000, "ownerShareMinor": 600000, "ownerPaidMinor": 300000, "outstandingMinor": 300000, "settledMinor": 0, "currency": "INR", "paymentStatus": "unsettled"}
+    ]
+  },
+  "rhea-shared-money-ready": {
+    "eventId": "rhea-shared-money-ready", "ownerId": "rhea", "type": "evidence_recorded",
+    "label": "Record a verified shared-expense recipient and unpaid settlement",
+    "businessDate": "2026-09-13", "accountId": "acc-rhe-sal-01", "requiresEventIds": [],
+    "sourceRefs": ["REL-R-SHARED-LEDGER", "REL-R-RECIPIENT"],
+    "sources": [
+      {"sourceId": "REL-R-SHARED-LEDGER", "sourceVersion": 1, "ownerId": "rhea", "kind": "synthetic_shared_expense_receipts", "asOf": "2026-09-13", "title": "Separate shared outing ledger",
+       "text": "NEW PROPOSED SYNTHETIC INPUT for a separate outing. Rhea paid INR 2,000 and Leena (synthetic) paid INR 6,000 externally; total INR 8,000 and equal shares INR 4,000. Rhea owes Leena INR 2,000, still unpaid. These receipts do not alter bank balances, authorise a transfer, create a refund or replace the earlier group-expense record. Exact owner authorisation is still required."},
+      {"sourceId": "REL-R-RECIPIENT", "sourceVersion": 1, "ownerId": "rhea", "kind": "synthetic_bank_recipient_verification", "asOf": "2026-09-13", "title": "Leena synthetic recipient verification",
+       "text": "NEW PROPOSED SYNTHETIC BANK DIRECTORY RECORD owned by Rhea. Leena (synthetic), recipient-rel-r-leena, destination demo-external-r-leena; INR-only synthetic transfer rail. Identity/routing/account-name match verified through 2026-12-12. The recipient is external, not Rhea's owned account or another demo persona. Registration grants no payment authorisation."}
+    ],
+    "evidence": [
+      {"evidenceId": "rel-r-recipient", "ownerId": "rhea", "sourceId": "REL-R-RECIPIENT", "documentId": "REL-R-RECIPIENT", "kind": "verified_recipient", "asOf": "2026-09-13", "recordedOn": "2026-09-13", "expiresOn": "2026-12-12", "verified": true, "status": "verified", "recipientId": "recipient-rel-r-leena", "recipientPartyId": "leena", "displayName": "Leena (synthetic)", "destinationAccountRef": "demo-external-r-leena", "currency": "INR", "rail": "synthetic_external_transfer", "routingVerified": true, "accountNameMatched": true},
+      {"evidenceId": "rel-r-shared-ledger", "ownerId": "rhea", "sourceId": "REL-R-SHARED-LEDGER", "documentId": "REL-R-SHARED-LEDGER", "kind": "shared_ledger", "asOf": "2026-09-13", "recordedOn": "2026-09-13", "verified": true, "status": "verified",
+       "ledgerId": "shared-rel-r-outing-02", "recipientId": "recipient-rel-r-leena", "recipientEvidenceId": "rel-r-recipient", "participants": ["rhea", "leena"], "equalShares": true,
+       "entries": [{"entryId": "shared-r-01", "payerId": "rhea", "amountMinor": 200000}, {"entryId": "shared-r-02", "payerId": "leena", "amountMinor": 600000}], "totalMinor": 800000, "ownerShareMinor": 400000, "ownerPaidMinor": 200000, "outstandingMinor": 200000, "settledMinor": 0, "currency": "INR", "paymentStatus": "unsettled"}
+    ]
+  },
+  "ravi-shared-money-ready": {
+    "eventId": "ravi-shared-money-ready", "ownerId": "ravi", "type": "evidence_recorded",
+    "label": "Record a separate reconciled shared bill and verified recipient",
+    "businessDate": "2026-10-31", "accountId": "acc-rav-sav-01", "requiresEventIds": [],
+    "sourceRefs": ["REL-V-SHARED-LEDGER", "REL-V-RECIPIENT"],
+    "sources": [
+      {"sourceId": "REL-V-SHARED-LEDGER", "sourceVersion": 1, "ownerId": "ravi", "kind": "synthetic_shared_expense_receipts", "asOf": "2026-10-31", "title": "Post-joining shared outing ledger",
+       "text": "NEW PROPOSED SYNTHETIC INPUT for a new post-joining outing, distinct from the original trip/refunded-ticket documents. Ravi paid INR 1,000 and Arjun (synthetic) paid INR 3,000 externally; total INR 4,000, agreed equal shares INR 2,000. Ravi owes Arjun INR 1,000 and none has been settled. There is no bank credit/debit or consent in this source. Posted income, protected reserves and exact customer authorisation must be checked before a transfer."},
+      {"sourceId": "REL-V-RECIPIENT", "sourceVersion": 1, "ownerId": "ravi", "kind": "synthetic_bank_recipient_verification", "asOf": "2026-10-31", "title": "Arjun synthetic recipient verification",
+       "text": "NEW PROPOSED SYNTHETIC BANK DIRECTORY RECORD owned by Ravi. Arjun (synthetic), recipient-rel-v-arjun, destination demo-external-v-arjun; INR-only synthetic transfer rail. Identity/routing/account-name match verified through 2027-01-29. This external recipient is not an owned Ravi account or another demo persona. Registration is not payment consent."}
+    ],
+    "evidence": [
+      {"evidenceId": "rel-v-recipient", "ownerId": "ravi", "sourceId": "REL-V-RECIPIENT", "documentId": "REL-V-RECIPIENT", "kind": "verified_recipient", "asOf": "2026-10-31", "recordedOn": "2026-10-31", "expiresOn": "2027-01-29", "verified": true, "status": "verified", "recipientId": "recipient-rel-v-arjun", "recipientPartyId": "arjun", "displayName": "Arjun (synthetic)", "destinationAccountRef": "demo-external-v-arjun", "currency": "INR", "rail": "synthetic_external_transfer", "routingVerified": true, "accountNameMatched": true},
+      {"evidenceId": "rel-v-shared-ledger", "ownerId": "ravi", "sourceId": "REL-V-SHARED-LEDGER", "documentId": "REL-V-SHARED-LEDGER", "kind": "shared_ledger", "asOf": "2026-10-31", "recordedOn": "2026-10-31", "verified": true, "status": "verified",
+       "ledgerId": "shared-rel-v-outing-01", "recipientId": "recipient-rel-v-arjun", "recipientEvidenceId": "rel-v-recipient", "participants": ["ravi", "arjun"], "equalShares": true,
+       "entries": [{"entryId": "shared-v-01", "payerId": "ravi", "amountMinor": 100000}, {"entryId": "shared-v-02", "payerId": "arjun", "amountMinor": 300000}], "totalMinor": 400000, "ownerShareMinor": 200000, "ownerPaidMinor": 100000, "outstandingMinor": 100000, "settledMinor": 0, "currency": "INR", "paymentStatus": "unsettled"}
+    ]
+  }
+}

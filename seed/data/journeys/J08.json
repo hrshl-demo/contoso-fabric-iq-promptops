@@ -1,0 +1,109 @@
+{
+  "journeyId": "J08",
+  "title": "First salary and account setup",
+  "oneLiner": "Set up salary banking so the first pay-cheque lands somewhere sensible.",
+  "buId": "BU-RETAIL-DEPOSITS",
+  "icon": "bolt",
+  "accentHue": 218,
+  "goal": "Establish what the offer actually pays and when, and set up an account structure that separates spending from saving before the first credit arrives.",
+  "triggers": [
+    "first job",
+    "salary account",
+    "new job offer",
+    "my first salary",
+    "where should my salary go",
+    "ctc breakdown",
+    "joining next month",
+    "salary credit"
+  ],
+  "antiTriggers": [],
+  "sopIds": [
+    "SOP-UC08-FIRST-SALARY",
+    "SOP-SHARED-PRODUCT-SUITABILITY",
+    "SOP-SHARED-DOCUMENT-REVIEW"
+  ],
+  "productIds": [
+    "CB-SAV-SALARY",
+    "CB-SAV-SALARY-PLUS",
+    "CB-RD-STARTER",
+    "CB-SWEEP-MICRO",
+    "CB-SWEEP-FLEX"
+  ],
+  "evidenceHints": [
+    "DOC-V-OFFER-LETTER",
+    "DOC-V-RELOCATION-NOTE",
+    "DOC-V-SALARY-ADDENDUM"
+  ],
+  "documentChoiceStages": [
+    "extract"
+  ],
+  "toolHints": [
+    "document_analyze",
+    "document_read",
+    "holdings",
+    "catalogue_lookup",
+    "projection"
+  ],
+  "stages": [
+    {
+      "id": "understand",
+      "goal": "Find out where they are: offer in hand, joined, or first credit already landed. Those are three answers, so ask with `quick_replies`: `Offer in hand`, `Already joined`, `First salary has landed`.",
+      "exitWhen": "The stage of the transition is known."
+    },
+    {
+      "id": "extract",
+      "goal": "Read the offer and separate fixed monthly pay from variable, bonus and deductions. Show what you read, then hand back with `quick_replies`: `That matches my offer`, `The figures are different`.",
+      "exitWhen": "Fixed monthly take-home is established or explicitly unknown."
+    },
+    {
+      "id": "structure",
+      "goal": "Propose a simple split - spending, short-term saving, buffer - as amounts, not percentages of a number they do not have yet. Ask whether it fits with `quick_replies`: `That split works`, `Change the amounts`, `Not now`.",
+      "exitWhen": "A structure has been shown."
+    },
+    {
+      "id": "match",
+      "goal": "Match the structure to real catalogue accounts, checking eligibility honestly. Offer `quick_replies` naming the accounts you matched, plus `Neither of these`.",
+      "exitWhen": "Products are matched or the gap is stated."
+    },
+    {
+      "id": "act",
+      "goal": "Prepare one proposal, or save the plan for when they join.",
+      "exitWhen": "A proposal or a saved plan exists."
+    }
+  ],
+  "mustEstablish": [
+    "Fixed monthly pay, separated from variable and bonus. This is the single most common place to go wrong.",
+    "The first credit date.",
+    "Whether relocation or a deposit will consume the first month or two.",
+    "Whether the employer mandates a particular bank."
+  ],
+  "neverDo": [
+    "Never treat CTC as take-home. Never treat a variable bonus as monthly income.",
+    "Do not bundle. One account and at most one savings instrument is the right answer for a first job.",
+    "Do not commit them to a recurring deposit amount from a salary that has not arrived yet.",
+    "Do not check eligibility against a number the customer guessed."
+  ],
+  "objectionPaths": [
+    {
+      "signal": "employer chooses the bank",
+      "respondBy": "Accept it immediately. Help with the structure regardless - the split matters more than where it sits."
+    },
+    {
+      "signal": "does not want to commit to saving yet",
+      "respondBy": "Reasonable before the first credit. Save the plan with a review date and stop."
+    }
+  ],
+  "completion": {
+    "default": "The next action is explicit: prepare the chosen salary account or starter saving proposal, or save the split-and-review plan until the first credit arrives.",
+    "nivedita": "Unusual - likely asking for a grandchild. The next action is a general first-salary checklist, without pulling her own accounts into it.",
+    "rhea": "Likely a family member's first job. The next action is a shareable account-and-savings structure, keeping her own position separate unless she brings it in.",
+    "ravi": "His core journey. The next action is a confirmation-ready starter structure after resolving the offer-letter/addendum pay conflict, with a monthly figure small enough to survive a bad month."
+  },
+  "turnCap": 14,
+  "salesPosture": "advise",
+  "openers": [
+    "I have just started my first job - how should I set up my banking?",
+    "My salary lands next month and I want it to go somewhere sensible",
+    "How much of my pay should I be putting aside?"
+  ]
+}

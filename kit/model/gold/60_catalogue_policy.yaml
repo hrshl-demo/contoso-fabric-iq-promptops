@@ -1,0 +1,241 @@
+tables:
+  - table: product
+    entity: Product
+    tier: core
+    domain: Catalogue
+    kind: dimension
+    grain: "One catalogue product."
+    physical: dim_product
+    silver: [silver_product]
+    description: "A bank product: savings, fixed and recurring deposit, sweep, credit and debit card, home loan, health cover. 24 catalogue products carry full terms; products named only by Frontier records (card, floating home loan, education term cover, index fund) are reference stubs with no terms: do not quote their rates or fees. Rupee parameters are whole rupees, rates are percent."
+    synonyms: [offering, scheme, plan, card type, deposit scheme]
+    allow_duplicates: true    # CB-SAV-SALARY is both a catalogue product and a Frontier reference; the catalogue row wins by source order
+    expected_merged: 1        # the one duplicate key (CB-SAV-SALARY): a different count fails the build
+    post: [product_names]
+    sources:
+      - {silver: silver_product}
+    columns:
+      - {col: product_id, type: string, key: true, from: productId, desc: "Product code such as CB-FD-STANDARD or CB-CARD-CLASSIC."}
+      - {col: display_name, type: string, default_label: true, from: [name, xProductType], desc: "Customer-facing product name. Reference stubs show their type only."}
+      - {col: family, type: string, from: [productFamily, xProductType], desc: "Product family: savings, fixed_deposit, recurring_deposit, sweep, credit_card, debit_card, prepaid_card, home_loan, health_cover, personal_loan, goal_pocket, or a Frontier product type."}
+      - {col: data_role, type: string, from: xDataRole, desc: "catalogue (full terms), relationship_proposal (planner proposal, not an approved offer) or reference_only (stub with no terms)."}
+      - {col: status, type: string, from: xStatus, desc: "Catalogue status such as active or proposed."}
+      - {col: issuer, type: string, from: xIssuer, desc: "Issuer name (synthetic)."}
+      - {col: catalogue_version, type: string, from: xCatalogueVersion, desc: "Catalogue version, for example catalogue-v1."}
+      - {col: effective_from, type: date, from: xEffectiveFrom, desc: "Date the product terms take effect."}
+      - {col: effective_to, type: date, from: xEffectiveTo, desc: "Date the terms end; null while open."}
+      - {col: audience, type: string, from: xAudienceDescription, desc: "Who the product suits."}
+      - {col: main_tradeoff, type: string, from: xMainTradeoff, desc: "The main trade-off of choosing the product."}
+      - {col: why_not_suitable, type: string, from: xWhyNotSuitable, desc: "Who the product does not suit."}
+      - {col: rate_terms, type: string, from: xRateTerms, desc: "Plain-language rate or cashback terms."}
+      - {col: liquidity_terms, type: string, from: xLiquidityTerms, desc: "Plain-language liquidity terms."}
+      - {col: benefits_text, type: string, from: xBenefits, desc: "Benefits (semicolon separated)."}
+      - {col: fees_text, type: string, from: xFees, desc: "Fees (semicolon separated)."}
+      - {col: limitations_text, type: string, from: xLimitations, desc: "Limitations (semicolon separated)."}
+      - {col: required_evidence, type: string, from: xRequiredEvidence, desc: "Evidence needed to apply (semicolon separated)."}
+      - {col: supported_actions, type: string, from: xSupportedActions, desc: "What the assistant may do: prepare_application, keep_current, request_information."}
+      - {col: underwriting_required, type: bool, from: xUnderwritingRequired, desc: "True when the product needs underwriting."}
+      - {col: min_age, type: int, from: xEligibilityRulesMinimumAge, desc: "Minimum customer age in years."}
+      - {col: min_monthly_income_inr, type: double, from: xEligibilityRulesMinimumMonthlyIncomeMinor, t: minor_to_inr, desc: "Minimum monthly income in rupees."}
+      - {col: min_principal_inr, type: double, from: [xEligibilityRulesMinimumPrincipalMinor, minimumPrincipalMinor], t: minor_to_inr, desc: "Minimum amount to place or borrow, in rupees."}
+      - {col: max_principal_inr, type: double, from: maximumPrincipalMinor, t: minor_to_inr, desc: "Maximum amount to place or borrow, in rupees."}
+      - {rate_pct: interest_rate, from: ratePct, label: Interest Rate, desc: "Annual interest rate of the product."}
+      - {col: annual_fee_inr, type: double, from: annualFeeMinor, t: minor_to_inr, desc: "Annual fee in rupees."}
+      - {col: monthly_fee_inr, type: double, from: monthlyFeeMinor, t: minor_to_inr, desc: "Monthly fee in rupees."}
+      - {col: minimum_balance_inr, type: double, from: xParametersMinimumBalanceMinor, t: minor_to_inr, desc: "Minimum balance to maintain, in rupees."}
+      - {col: processing_fee_pct, type: double, from: xParametersProcessingFeePct, t: dec_to_float, desc: "Processing fee as a percentage of the amount."}
+      - {col: prepayment_charge_pct, type: double, from: xParametersPrepaymentChargePct, t: dec_to_float, desc: "Prepayment charge as a percentage."}
+      - {col: early_withdrawal_penalty_pct, type: double, from: xParametersPrematureWithdrawalPenaltyPct, t: dec_to_float, desc: "Penalty percentage for withdrawing a deposit early."}
+      - {col: min_term_months, type: int, from: minimumTermMonths, desc: "Shortest term in months."}
+      - {col: max_term_months, type: int, from: xParametersMaximumTermMonths, desc: "Longest term in months."}
+      - {col: max_tenure_years, type: int, from: xParametersMaximumTenureYears, desc: "Longest loan tenure in years."}
+      - {col: max_ltv_pct, type: double, from: xParametersMaximumLtvPct, t: dec_to_float, desc: "Maximum loan-to-value percentage."}
+      - {col: cashback_pct, type: double, from: xParametersCashbackPct, t: dec_to_float, desc: "Cashback percentage on spends."}
+      - {col: forex_markup_pct, type: double, from: xParametersForexMarkupPct, t: dec_to_float, desc: "Foreign exchange mark-up percentage."}
+      - {col: monthly_premium_inr, type: double, from: monthlyPremiumMinor, t: minor_to_inr, desc: "Monthly premium in rupees."}
+      - {col: sum_insured_inr, type: double, from: sumInsuredMinor, t: minor_to_inr, desc: "Sum insured in rupees."}
+      - {col: rate_type, type: string, from: xParametersRateType, desc: "Loan rate type: fixed or floating."}
+      - {col: payout_mode, type: string, from: xParametersPayoutMode, desc: "Deposit payout mode: monthly, quarterly, on_maturity."}
+      - {col: disclosure, type: string, from: xDisclosureText, desc: "Mandatory demo disclosure."}
+      - {col: release_id, type: string, from: [xReleaseId, _release_id], desc: "Seed release the row comes from."}
+
+  - table: product_parameter
+    entity: ProductParameter
+    tier: extended
+    domain: Catalogue
+    kind: dimension
+    grain: "One parameter of one product (outrigger of dim_product)."
+    grain_key: [product_id, parameter_name]
+    physical: dim_product_parameter
+    silver: [silver_product_parameter]
+    description: "Every raw catalogue parameter of every product as name/value rows (nested names are dotted, such as eligibility.minimumAge). Use it for parameters that Product does not expose as a column."
+    synonyms: [product term, product attribute, catalogue parameter]
+    sources:
+      - {silver: silver_product_parameter}
+    columns:
+      - {col: parameter_id, type: string, key: true, tpl: "{productId}.{parameterName}", desc: "Identifier: product id and parameter name."}
+      - {col: product_id, type: string, from: productId, desc: "Product the parameter belongs to."}
+      - {col: parameter_name, type: string, default_label: true, from: parameterName, desc: "Parameter name such as annualFee or eligibility.minimumAge."}
+      - {col: value_text, type: string, from: [valueBoolean, valueText], t: str, desc: "Parameter value as text. Rupee values are whole rupees, rates are percent."}
+      - {col: value_number, type: double, from: [valueInteger, valueDecimal], t: dec_to_float, desc: "Parameter value when numeric."}
+
+  - table: journey
+    entity: Journey
+    tier: core
+    domain: Catalogue
+    kind: dimension
+    grain: "One journey (curated reference source)."
+    physical: dim_journey
+    reference: true
+    description: "A conversation journey the assistant runs. Legacy J01-J12 are goal-led playbooks (retirement income, scam check, card fit, ...) with triggers, must-establish facts and never-do rules. Frontier F01-F06 are the household journeys, each with specialists, an autonomy ceiling and the operations it may only prepare."
+    synonyms: [playbook, use case, conversation flow, scenario, intent flow]
+    sources:
+      - {data_glob: "journeys/J[0-9][0-9].json", single: true, set: {kind: legacy}}
+      - {custom: frontier_journeys, doc: "docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md", crosswalk_heading: "8. Six journeys and exact fourteen-requirement crosswalk", behavior_heading: "Journey behavior", set: {kind: frontier}}
+    columns:
+      - {col: journey_id, type: string, key: true, from: journeyId, desc: "Journey identifier: J01-J12 (legacy) or F01-F06 (Frontier)."}
+      - {col: title, type: string, default_label: true, from: title, desc: "Journey title."}
+      - {col: journey_kind, type: string, from: "$kind", desc: "legacy (J) or frontier (F)."}
+      - {col: one_liner, type: string, from: oneLiner, desc: "One-line promise of the journey."}
+      - {col: goal, type: string, from: goal, desc: "What the journey must achieve for the customer (legacy)."}
+      - {col: bu_id, type: string, from: buId, desc: "Business unit that owns the journey (legacy)."}
+      - {col: sales_posture, type: string, from: salesPosture, desc: "advise, light_touch or never_sell: how much selling is allowed (legacy)."}
+      - {col: turn_cap, type: int, from: turnCap, desc: "Maximum conversation turns before handoff (legacy, when set)."}
+      - {col: autonomy_ceiling, type: int, from: autonomyCeiling, desc: "Highest workflow level the journey may request (Frontier). It grants no authority by itself."}
+      - {col: primary_specialists, type: string, from: primarySpecialists, desc: "Specialist agents used by the journey (Frontier)."}
+      - {col: allowed_prepared_operations, type: string, from: allowedOperations, desc: "Operations the journey may only prepare, never execute (Frontier)."}
+      - {col: triggers_text, type: string, from: triggers, t: join, desc: "Phrases and situations that start the journey (legacy)."}
+      - {col: must_establish_text, type: string, from: mustEstablish, t: join, desc: "Facts that must be established before advising (legacy)."}
+      - {col: never_do_text, type: string, from: neverDo, t: join, desc: "Things the assistant must never do in this journey (legacy)."}
+      - {col: tool_hints, type: string, from: toolHints, t: join, desc: "Tools the journey normally uses (legacy)."}
+      - {col: opener_examples, type: string, from: openers, t: join, desc: "Example customer openers (legacy)."}
+
+  - table: sop
+    entity: Sop
+    tier: core
+    domain: Catalogue
+    kind: dimension
+    grain: "One standard operating procedure."
+    physical: dim_sop
+    silver: [silver_sop]
+    description: "A standard operating procedure the assistant follows (retirement income review, suspected fraud, card controls, request handling). The procedure text lives in Foundry IQ; this entity says which SOP exists, its scope and which case it applies to."
+    synonyms: [procedure, runbook, bank procedure, policy document]
+    sources:
+      - {silver: silver_sop}
+    columns:
+      - {col: sop_id, type: string, key: true, from: sopId, desc: "SOP identifier such as SOP-UC03-SUSPECTED-FRAUD."}
+      - {col: title, type: string, default_label: true, from: title, desc: "SOP title."}
+      - {col: scope, type: string, from: scope, desc: "case (one use case) or shared (all cases)."}
+      - {col: audience, type: string, from: audience, desc: "Who the SOP is for, for example bank_global."}
+      - {col: applies_to_case, type: string, from: appliesToCase, desc: "Use case the SOP applies to, for example UC03."}
+      - {col: knowledge_path, type: string, from: knowledgePath, desc: "Path of the SOP text in the knowledge store."}
+      - {col: source_version, type: int, from: sopVersion, desc: "SOP version number."}
+      - {col: release_id, type: string, from: _release_id, desc: "Seed release the row comes from."}
+
+  - table: journey_sop
+    entity: JourneySop
+    tier: extended
+    domain: Catalogue
+    kind: bridge
+    grain: "One link between a journey and an SOP it follows (curated reference source)."
+    grain_key: [journey_id, sop_id]
+    physical: bridge_journey_sop
+    reference: true
+    description: "Link between a legacy journey and the SOPs it follows."
+    synonyms: [journey procedure link]
+    sources:
+      - {data_glob: "journeys/J[0-9][0-9].json", single: true, explode: sopIds}
+    columns:
+      - {col: link_id, type: string, key: true, tpl: "{^.journeyId}>{@}", desc: "Link identifier: journey id > SOP id."}
+      - {col: journey_id, type: string, from: ^.journeyId, desc: "Journey."}
+      - {col: sop_id, type: string, default_label: true, from: "@", desc: "SOP the journey follows."}
+
+  - table: journey_product
+    entity: JourneyProduct
+    tier: extended
+    domain: Catalogue
+    kind: bridge
+    grain: "One link between a journey and a product it may discuss (curated reference source)."
+    grain_key: [journey_id, product_id]
+    physical: bridge_journey_product
+    reference: true
+    description: "Link between a legacy journey and the products it may discuss."
+    synonyms: [journey product link]
+    sources:
+      - {data_glob: "journeys/J[0-9][0-9].json", single: true, explode: productIds}
+    columns:
+      - {col: link_id, type: string, key: true, tpl: "{^.journeyId}>{@}", desc: "Link identifier: journey id > product id."}
+      - {col: journey_id, type: string, from: ^.journeyId, desc: "Journey."}
+      - {col: product_id, type: string, default_label: true, from: "@", desc: "Product the journey may discuss."}
+
+  - table: law
+    entity: Law
+    tier: core
+    domain: Policy
+    kind: reference
+    grain: "One design law."
+    physical: ref_law
+    reference: true
+    description: "One of the bank's twelve non-negotiable design laws for the conversational and agentic experience (no figure without authority, no consent by implication, no execution by language, no double allocation, no future money as cash, no stale authority, no self-expanding agent, no sales during harm, ...). The same laws are loaded as ontology rules."
+    synonyms: [rule, principle, guardrail, constraint, policy]
+    sources:
+      - {doc: "docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md", heading: "5. Laws"}
+    columns:
+      - {col: law_id, type: string, key: true, from: Law, t: "re:^(L\\d+)", desc: "Law identifier L1-L12."}
+      - {col: name, type: string, default_label: true, from: Law, t: "re:^L\\d+:\\s*(.*)$", desc: "Short name of the law."}
+      - {col: required_behavior, type: string, from: "Required behavior", desc: "Behaviour the law requires."}
+
+  - table: authority_rule
+    entity: AuthorityRule
+    tier: core
+    domain: Policy
+    kind: reference
+    grain: "One authority rule: a capability and the actor's permission for it."
+    physical: ref_authority_rule
+    reference: true
+    description: "Who may do what: for each capability (ask, read, calculate, retrieve policy, prepare, approve, execute, review, expand consent) the permission of each actor (customer, Financial Companion, specialist, Rhea agent, active mandate, human specialist, deterministic bank). Analysis, preparation and effect are separate; the default agent mode is prepare-only."
+    synonyms: [authority matrix, permission matrix, who can approve, who can execute]
+    sources:
+      - {custom: authority_matrix, doc: "docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md", heading: "10. Autonomy and authority matrix"}
+    columns:
+      - {col: rule_id, type: string, key: true, tpl: "{capability} / {actor}", desc: "Identifier: capability / actor."}
+      - {col: capability, type: string, default_label: true, from: capability, desc: "Capability such as Approve customer action or Execute bounded surplus action."}
+      - {col: actor, type: string, from: actor, desc: "Actor: Customer, Financial Companion, Specialist, Rhea agent, Active mandate, Human specialist, Deterministic bank."}
+      - {col: permission_class, type: string, from: text, t: perm_class, desc: "yes, no or qualified (read PermissionText for the condition)."}
+      - {col: permission_text, type: string, from: text, desc: "What the actor may do for the capability, as written in the authority matrix."}
+
+  - table: frontier_requirement
+    entity: FrontierRequirement
+    tier: extended
+    domain: Policy
+    kind: reference
+    grain: "One retail requirement."
+    physical: ref_frontier_requirement
+    reference: true
+    description: "One of the fourteen retail requirements (R01-R14) the Frontier journeys must deliver, with the deterministic outcome that proves it."
+    synonyms: [requirement, R01, acceptance criterion]
+    sources:
+      - {doc: "docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md", heading: "8. Six journeys and exact fourteen-requirement crosswalk"}
+    columns:
+      - {col: requirement_id, type: string, key: true, from: Requirement, desc: "Requirement identifier R01-R14."}
+      - {col: retail_requirement, type: string, default_label: true, from: "Retail requirement", desc: "Requirement name such as Emergency fund or Scam intervention."}
+      - {col: journey_id, type: string, from: Journey, t: "re:^(F\\d\\d)", desc: "Frontier journey that delivers the requirement."}
+      - {col: deterministic_outcome, type: string, from: "Implemented deterministic outcome", desc: "Deterministic outcome that proves the requirement."}
+
+  - table: bank_agent
+    entity: BankAgent
+    tier: extended
+    domain: Policy
+    kind: reference
+    grain: "One bank agent."
+    physical: ref_bank_agent
+    reference: true
+    description: "One of the eight agents in the Frontier multi-agent model: the Financial Companion orchestrator, six specialists and Rhea's personal agent. None has direct ledger authority."
+    synonyms: [agent roster, specialist, orchestrator]
+    sources:
+      - {doc: "docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md", heading: "9. Multi-agent model"}
+    columns:
+      - {col: agent_name, type: string, key: true, default_label: true, from: Agent, desc: "Agent name."}
+      - {col: form, type: string, from: Form, desc: "How the agent is built, for example Managed prompt specialist."}
+      - {col: responsibility, type: string, from: Responsibility, desc: "What the agent is responsible for."}
+      - {col: direct_ledger_authority, type: string, from: "Direct ledger authority", desc: "None for every agent: only the deterministic bank changes state."}

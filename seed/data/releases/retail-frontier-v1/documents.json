@@ -1,0 +1,235 @@
+[
+  {
+    "documentId": "doc-home-title",
+    "documentType": "home_ownership_evidence",
+    "facts": {
+      "coOwnerNames": [
+        "Rhea Bansal",
+        "Vivek Bansal"
+      ],
+      "propertyRef": "home-pune-001"
+    },
+    "issuedOn": "2020-08-21",
+    "ownerId": "rhea",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "source": "Pune Sub-Registrar synthetic extract",
+    "synthetic": true
+  },
+  {
+    "documentId": "doc-school-fee",
+    "documentType": "school_fee_evidence",
+    "facts": {
+      "academicYear": "2026-27",
+      "monthlyTuition": {
+        "amountMinor": 1250000,
+        "currency": "INR"
+      },
+      "studentRef": "member-anika"
+    },
+    "issuedOn": "2026-03-20",
+    "ownerId": "rhea",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "source": "Orchid International School synthetic circular",
+    "synthetic": true
+  },
+  {
+    "documentId": "doc-salary-2026-04",
+    "documentType": "salary_slip",
+    "facts": {
+      "employeeRef": "employee-rhea-synthetic",
+      "gross": {
+        "amountMinor": 34200000,
+        "currency": "INR"
+      },
+      "netCredit": {
+        "amountMinor": 28500000,
+        "currency": "INR"
+      }
+    },
+    "issuedOn": "2026-04-01",
+    "ownerId": "rhea",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "source": "Northwind Technology India synthetic payroll",
+    "synthetic": true
+  },
+  {
+    "documentId": "doc-salary-2026-05",
+    "documentType": "salary_slip",
+    "facts": {
+      "employeeRef": "employee-rhea-synthetic",
+      "gross": {
+        "amountMinor": 34200000,
+        "currency": "INR"
+      },
+      "netCredit": {
+        "amountMinor": 28500000,
+        "currency": "INR"
+      }
+    },
+    "issuedOn": "2026-05-01",
+    "ownerId": "rhea",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "source": "Northwind Technology India synthetic payroll",
+    "synthetic": true
+  },
+  {
+    "documentId": "doc-salary-2026-06",
+    "documentType": "salary_slip",
+    "facts": {
+      "employeeRef": "employee-rhea-synthetic",
+      "gross": {
+        "amountMinor": 34200000,
+        "currency": "INR"
+      },
+      "netCredit": {
+        "amountMinor": 28500000,
+        "currency": "INR"
+      }
+    },
+    "issuedOn": "2026-06-01",
+    "ownerId": "rhea",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "source": "Northwind Technology India synthetic payroll",
+    "synthetic": true
+  },
+  {
+    "documentId": "doc-salary-2026-07",
+    "documentType": "salary_slip",
+    "facts": {
+      "employeeRef": "employee-rhea-synthetic",
+      "gross": {
+        "amountMinor": 34200000,
+        "currency": "INR"
+      },
+      "netCredit": {
+        "amountMinor": 28500000,
+        "currency": "INR"
+      }
+    },
+    "issuedOn": "2026-07-01",
+    "ownerId": "rhea",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "source": "Northwind Technology India synthetic payroll",
+    "synthetic": true
+  },
+  {
+    "documentId": "doc-salary-2026-08",
+    "documentType": "salary_slip",
+    "facts": {
+      "employeeRef": "employee-rhea-synthetic",
+      "gross": {
+        "amountMinor": 34200000,
+        "currency": "INR"
+      },
+      "netCredit": {
+        "amountMinor": 28500000,
+        "currency": "INR"
+      }
+    },
+    "issuedOn": "2026-08-01",
+    "ownerId": "rhea",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "source": "Northwind Technology India synthetic payroll",
+    "synthetic": true
+  },
+  {
+    "documentId": "doc-salary-2026-09",
+    "documentType": "salary_slip",
+    "facts": {
+      "employeeRef": "employee-rhea-synthetic",
+      "gross": {
+        "amountMinor": 34200000,
+        "currency": "INR"
+      },
+      "netCredit": {
+        "amountMinor": 28500000,
+        "currency": "INR"
+      }
+    },
+    "issuedOn": "2026-09-01",
+    "ownerId": "rhea",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "source": "Northwind Technology India synthetic payroll",
+    "synthetic": true
+  },
+  {
+    "documentId": "doc-scam-message",
+    "documentType": "suspicious_message",
+    "facts": {
+      "message": "Verify today to avoid account suspension. Send INR 74,999 to the secure UPI handle.",
+      "pressureIndicators": [
+        "deadline",
+        "account_suspension_threat",
+        "payment_request"
+      ],
+      "sender": "KYC-SUPPORT"
+    },
+    "issuedOn": "2026-08-27",
+    "ownerId": "rhea",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "source": "Synthetic SMS capture",
+    "synthetic": true
+  },
+  {
+    "documentId": "doc-suspicious-payment",
+    "documentType": "payment_receipt",
+    "facts": {
+      "amount": {
+        "amountMinor": 7499900,
+        "currency": "INR"
+      },
+      "transactionRef": "txn-frontier-0091"
+    },
+    "issuedOn": "2026-08-27",
+    "ownerId": "rhea",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "source": "Synthetic UPI receipt",
+    "synthetic": true
+  },
+  {
+    "documentId": "doc-recovery-confirmation",
+    "documentType": "recovery_credit_notice",
+    "facts": {
+      "amount": {
+        "amountMinor": 7499900,
+        "currency": "INR"
+      },
+      "caseRef": "case-scam-001",
+      "status": "posted_recovery_credit"
+    },
+    "issuedOn": "2026-09-03",
+    "ownerId": "rhea",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "source": "Synthetic bank operations notice",
+    "synthetic": true
+  },
+  {
+    "documentId": "doc-card-dispute-evidence",
+    "documentType": "card_statement_and_merchant_receipt",
+    "facts": {
+      "caseRef": "case-card-dispute-001",
+      "duplicateAmount": {
+        "amountMinor": 1249900,
+        "currency": "INR"
+      },
+      "merchant": "ELECTRONICS HUB PUNE"
+    },
+    "issuedOn": "2026-09-18",
+    "ownerId": "rhea",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "source": "Synthetic card evidence pack",
+    "synthetic": true
+  }
+]

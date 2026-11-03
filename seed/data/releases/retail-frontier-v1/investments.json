@@ -1,0 +1,72 @@
+[
+  {
+    "currentValue": {
+      "amountMinor": 5000000,
+      "currency": "INR"
+    },
+    "goalRefs": [
+      "goal-emergency"
+    ],
+    "investmentId": "inv-liquid-fd",
+    "investmentType": "fixed_deposit",
+    "liquidity": "within_two_business_days_with_penalty",
+    "ownerId": "rhea",
+    "productId": "CB-FD-LIQUID",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  },
+  {
+    "costBasis": {
+      "amountMinor": 16500000,
+      "currency": "INR"
+    },
+    "currentValue": {
+      "amountMinor": 19800000,
+      "currency": "INR"
+    },
+    "goalRefs": [
+      "goal-education"
+    ],
+    "investmentId": "inv-index-fund",
+    "investmentType": "mutual_fund",
+    "liquidity": "market_liquid",
+    "ownerId": "rhea",
+    "productId": "CB-MF-INDEX",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  },
+  {
+    "currentValue": {
+      "amountMinor": 46000000,
+      "currency": "INR"
+    },
+    "goalRefs": [
+      "goal-retirement"
+    ],
+    "investmentId": "inv-epf",
+    "investmentType": "retirement_epf",
+    "liquidity": "restricted",
+    "ownerId": "rhea",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  },
+  {
+    "currentValue": {
+      "amountMinor": 12000000,
+      "currency": "INR"
+    },
+    "goalRefs": [
+      "goal-retirement"
+    ],
+    "investmentId": "inv-nps",
+    "investmentType": "retirement_nps",
+    "liquidity": "restricted",
+    "ownerId": "rhea",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  }
+]

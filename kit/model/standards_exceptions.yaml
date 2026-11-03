@@ -1,0 +1,23 @@
+# Honest exceptions to the standards conformance checks (tests/test_standards_conformance.py). The first draft of every list was generated from the
+# real mismatch between the profile and the ontology, then curated: each entry carries the one-line reason it is not a gap to close, and the test fails
+# for an entry that is stale (the mismatch is gone), unknown, has no reason, or whose reason the specs do not back.
+#
+# profile_relationships: a relationship of the CDM profile (model/standards.yaml `relationships`) whose two entities are both realised by ontology
+#   entities but which has no ontology relationship between the two. `from` and `to` are `ProfileEntity.attribute`. The reason must be backed by the
+#   silver spec: the foreign key attribute is a `none:` column of the silver table, i.e. the seed carries no value to relate.
+# ontology_keys: an ontology entity whose gold key is not built from the silver table's business key (`key:` in model/silver/*.yaml), per silver table.
+standards_exceptions:
+  profile_relationships:
+    - from: Loan.linkedAccountId
+      to: Account.accountId
+      reason: "loans.json names no servicing account, so silver_loan.linkedAccountId is null in every row: there is no Loan to Account link to model."
+    - from: MandateAction.candidateId
+      to: ProactiveCandidate.candidateId
+      reason: "the seed's mandate events carry no proactive candidate (silver_mandate_action.candidateId is null in every row), and ProactiveCandidate is a fixture with evidence references only."
+  ontology_keys:
+    - entity: Customer
+      silver_table: silver_crm_case
+      reason: "a CRM-only party has no persona record: its customer id is the owner of the case (customerId); the case's own business key (caseId) is the key of CrmCase."
+    - entity: LoanInstallment
+      silver_table: silver_loan_installment
+      reason: "the key is the loan id plus the instalment's position in repaymentSchedule (ordinal); the silver business key names the seed's own installmentNumber, and the two are equal in every row."

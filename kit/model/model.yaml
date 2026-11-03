@@ -1,0 +1,41 @@
+# Contoso bank gold model - global settings. One declarative model drives the lakehouse tables, the Direct Lake semantic
+# model, the Gen-2 ontology, the data dictionary and the agent grounding. Source of truth for every column below is the
+# read-only seed in hrshl-demo/contoso-retail-superapp4 (pinned commit, see contoso_onto/__init__.py).
+version: 1
+name: ContosoBank
+
+lakehouse:
+  name: ContosoBankLH
+  schema: null           # plain lakehouse (no schemas): simplest binding for the ontology and the Load Table API
+
+semanticModel:
+  name: ContosoBankModel
+  culture: en-IN
+
+ontology:
+  name: ContosoBankOntology
+  description: "Business-context backbone for Contoso bank conversational AI and voice: customers, households, holdings, money movement, goals, delegated authority (consents, access grants, agents, mandates), servicing, catalogue and bank laws. Synthetic data only."
+
+# One person can appear in two seed releases with the same ownerId but different, non-reconciled records.
+# The canonical (Frontier) release keeps the raw id; other releases get '<id>~<short>' so nothing is merged by accident.
+canonical_release: retail-frontier-v1
+release_short:
+  retail-frontier-v1: frontier
+  retail4-v1: legacy
+
+# Where the personas are: an ownerId that is a persona (this silver table) in more than one release is two data generations of one
+# person, so gold namespaces it '<id>~<short>' in every non-canonical release (the `owner` transform).
+identity:
+  table: silver_customer
+  key: ownerId
+
+# id prefix -> kind, used to type polymorphic references (counterparty, subject, actor, payee, evidence).
+ref_prefixes:
+  "DOC-": document
+  "REL-": planner_document
+  "rhea": customer
+  "nivedita": customer
+  "ravi": customer
+
+docs:
+  prd: docs/Frontier-Retail-Strategy-PRD-Architecture-Handover.md

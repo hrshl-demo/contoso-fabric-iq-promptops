@@ -1,0 +1,34 @@
+[
+  {
+    "agentId": "agent-rhea-001",
+    "consentRef": "consent-agent-read",
+    "delegatedBy": "rhea",
+    "delegationMode": "household_financial_assistant",
+    "deniedScopes": [
+      "execute:unmandated_transfer",
+      "open:credit",
+      "purchase:insurance",
+      "change:household_access"
+    ],
+    "householdId": "household-bansal",
+    "kya": {
+      "providerName": "Frontier Personal Agent Demo",
+      "providerRegistrationId": "SYN-KYA-FPA-0001",
+      "signingKeyFingerprint": "sha256:7b6d690e8f75971c44f4e184e2e94dd876f89db672e8d9f56649a487f75ad011",
+      "verificationMethod": "synthetic_registry_fixture",
+      "verifiedAt": "2026-07-01T10:30:00+05:30"
+    },
+    "ownerId": "rhea",
+    "registrationType": "personal_agent",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "scopes": [
+      "read:financial_health",
+      "read:goals",
+      "propose:goal_transfer",
+      "notify:obligations"
+    ],
+    "status": "registered",
+    "synthetic": true
+  }
+]

@@ -1,0 +1,19 @@
+[
+  {
+    "annualRateBps": 650,
+    "depositId": "dep-rhea-liquid-001",
+    "liquidityClass": "available_with_penalty",
+    "maturesOn": "2027-02-15",
+    "openedOn": "2026-02-15",
+    "ownerId": "rhea",
+    "prematureWithdrawalPenaltyBps": 50,
+    "principal": {
+      "amountMinor": 5000000,
+      "currency": "INR"
+    },
+    "productId": "CB-FD-LIQUID",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  }
+]

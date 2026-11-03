@@ -1,0 +1,323 @@
+silver:
+  - table: silver_account
+    entity: Account
+    profile: true
+    profile_entity: Account
+    ontology_entity: Account
+    domain: Holdings
+    serves: [account]
+    grain: One account record per seed release.
+    description: One account record per seed release. Conformed to the CDM profile entity Account (realises the ontology entity Account; official reference FHAccount (semantic reference only)). Attributes without a seed counterpart stay null; other seed fields the ontology needs are x columns.
+    cdm: {entity: FHAccount, status: custom, reference: verified-reference}
+    bian:
+      - {domain: Customer Product and Service Directory, control_record: CustomerProductAndServiceDirectoryEntry, custom: 8, provisional: 0}
+      - {domain: Savings Account, control_record: SavingsAccountFacility, custom: 8, provisional: 0}
+    sources:
+      - {release: retail-frontier-v1, file: accounts.json}
+      - {release: retail4-v1, file: accounts.json}
+    key: [accountId]
+    owner: ownerId
+    common:                                        # app/data_xray/projection.py 516-523 (bank_records: holdings loop); _INACTIVE at 66
+      cite: [app/data_xray/projection.py:516-523, app/data_xray/projection.py:66]
+      source_kind: bank_record                     # 522: "history" if historical else "bank_record"
+      state: {from: status, default: recorded}     # 516: row.get("status", "recorded")
+      historical: {state_in: inactive, source_kind: history}   # 517: state in _INACTIVE
+    version: version
+    columns:
+      - {col: accountId, origin: profile, type: string, from: accountId}
+      - {col: productId, origin: profile, type: string, from: productId}
+      - {col: currency, origin: profile, type: string, from: [currency, postedBalance.currency, availableBalance.currency]}
+      - {col: postedBalanceMinor, origin: profile, type: minor, from: postedBalance, t: paise}
+      - {col: availableBalanceMinor, origin: profile, type: minor, from: availableBalance, t: paise}
+      - {col: holdsMinor, origin: profile, type: minor, from: holds, t: paise}
+      - {col: openedOn, origin: profile, type: date, from: openedOn}
+      - {col: version, origin: profile, type: integer, from: version}
+      - {col: xAccountType, origin: extension, type: string, from: accountType, desc: Account type such as salary or reserve (Frontier only).}
+      - {col: xStatus, origin: extension, type: string, from: status, desc: Account status such as active.}
+      - {col: xHistoryStart, origin: extension, type: date, from: historyStart, desc: First date covered by the seeded transaction history (Frontier only).}
+      - {col: xBalanceAsOf, origin: extension, type: date, from: balanceAsOf, desc: 'Date the balances are valid for, as the seed records it (Frontier release only); see xReleaseBusinessDate.'}
+      - {col: xReleaseBusinessDate, origin: extension, type: date, from: $business_date, desc: Business date of the release the record comes from (release.json).}
+      - {col: xOpeningBalanceMinor, origin: extension, type: minor, from: openingBalance, t: paise, unit: 'currency minor units; INR paise, exponent 2', desc: Balance at the start of the seeded history.}
+  - table: silver_card
+    entity: Card
+    profile: true
+    profile_entity: Card
+    ontology_entity: Card
+    domain: Holdings
+    serves: [card]
+    grain: One card record per seed release.
+    description: One card record per seed release. Conformed to the CDM profile entity Card (realises the ontology entity Card; official reference FICard (semantic reference only)). Attributes without a seed counterpart stay null; other seed fields the ontology needs are x columns.
+    cdm: {entity: FICard, status: custom, reference: verified-reference}
+    bian:
+      - {domain: Credit Card, control_record: CreditCardFacility, custom: 12, provisional: 0}
+      - {domain: Customer Product and Service Directory, control_record: CustomerProductAndServiceDirectoryEntry, custom: 12, provisional: 0}
+    sources:
+      - {release: retail-frontier-v1, file: cards.json}
+      - {release: retail4-v1, file: cards.json}
+    key: [cardId]
+    owner: ownerId
+    common:                                        # app/data_xray/projection.py 516-523 (bank_records: holdings loop); _INACTIVE at 66
+      cite: [app/data_xray/projection.py:516-523, app/data_xray/projection.py:66]
+      source_kind: bank_record                     # 522: "history" if historical else "bank_record"
+      state: {from: status, default: recorded}     # 516: row.get("status", "recorded")
+      historical: {state_in: inactive, source_kind: history}   # 517: state in _INACTIVE
+    version: version
+    columns:
+      - {col: cardId, origin: profile, type: string, from: cardId}
+      - {col: productId, origin: profile, type: string, from: productId}
+      - {col: linkedAccountId, origin: profile, type: string, from: [linkedAccountId, accountId]}
+      - {col: cardType, origin: profile, type: string, from: cardType}
+      - {col: maskedNumber, origin: profile, type: string, from: maskedNumber, pii: true}
+      - {col: currency, origin: profile, type: string, from: [creditLimit.currency, currentOutstanding.currency, currentBalance.currency, availableCredit.currency]}
+      - {col: limitMinor, origin: profile, type: minor, from: creditLimit, t: paise}
+      - {col: outstandingMinor, origin: profile, type: minor, from: [currentOutstanding, currentBalance], t: paise}
+      - {col: availableCreditMinor, origin: profile, type: minor, from: availableCredit, t: paise}
+      - {col: prepaidBalanceMinor, origin: profile, type: minor, none: no prepaid card in the seed}
+      - {col: expiry, origin: profile, type: string, from: expiry}
+      - {col: version, origin: profile, type: integer, from: version}
+      - {col: xStatus, origin: extension, type: string, from: status, desc: Card status such as active or temporarily_locked_after_dispute.}
+      - {col: xMinimumDueMinor, origin: extension, type: minor, from: minimumDue, t: paise, unit: 'currency minor units; INR paise, exponent 2', desc: Minimum payment due on the latest statement (legacy only).}
+      - {col: xAnnualRateBps, origin: extension, type: integer, from: annualRateBps, unit: basis points, desc: Annual interest rate on card balances (Frontier only).}
+      - {col: xStatementDay, origin: extension, type: integer, from: statementDay, desc: Day of month the statement is generated (Frontier only).}
+      - {col: xPaymentDueDay, origin: extension, type: integer, from: paymentDueDay, desc: Day of month payment is due (Frontier only).}
+      - {col: xPaymentDueDate, origin: extension, type: date, from: paymentDueDate, desc: Next payment due date (legacy only).}
+      - {col: xStatementPeriodFrom, origin: extension, type: date, from: statementPeriod.from, desc: Start of the current statement period (legacy only).}
+      - {col: xStatementPeriodTo, origin: extension, type: date, from: statementPeriod.to, desc: End of the current statement period (legacy only).}
+      - {col: xControlsInternationalTransactions, origin: extension, type: boolean, from: controls.internationalTransactions, desc: True when international use is switched on (legacy only).}
+      - {col: xControlsOnlineTransactions, origin: extension, type: boolean, from: controls.onlineTransactions, desc: True when online use is switched on (legacy only).}
+      - {col: xControlsContactless, origin: extension, type: boolean, from: controls.contactless, desc: True when contactless use is switched on (legacy only).}
+  - table: silver_deposit
+    entity: Deposit
+    profile: true
+    profile_entity: Deposit
+    ontology_entity: Deposit
+    domain: Holdings
+    serves: [deposit]
+    grain: One deposit record per seed release.
+    description: One deposit record per seed release. Conformed to the CDM profile entity Deposit (realises the ontology entity Deposit; official reference FHSaving (semantic reference only)). Attributes without a seed counterpart stay null; other seed fields the ontology needs are x columns.
+    cdm: {entity: FHSaving, status: custom, reference: verified-reference}
+    bian:
+      - {domain: Customer Product and Service Directory, control_record: CustomerProductAndServiceDirectoryEntry, custom: 12, provisional: 0}
+      - {domain: Term Deposit, control_record: TermDepositFacility, custom: 12, provisional: 12}
+    sources:
+      - {release: retail-frontier-v1, file: deposits.json}
+      - {release: retail4-v1, file: deposits.json}
+    key: [depositId]
+    owner: ownerId
+    common:                                        # app/data_xray/projection.py 516-523 (bank_records: holdings loop); _INACTIVE at 66
+      cite: [app/data_xray/projection.py:516-523, app/data_xray/projection.py:66]
+      source_kind: bank_record                     # 522: "history" if historical else "bank_record"
+      state: {from: status, default: recorded}     # 516: row.get("status", "recorded")
+      historical: {state_in: inactive, source_kind: history}   # 517: state in _INACTIVE (matured, renewed, closed deposits)
+    version: version
+    columns:
+      - {col: depositId, origin: profile, type: string, from: depositId}
+      - {col: productId, origin: profile, type: string, from: productId}
+      - {col: linkedAccountId, origin: profile, type: string, from: linkedAccountId}
+      - {col: currency, origin: profile, type: string, from: principal.currency}
+      - {col: principalMinor, origin: profile, type: minor, from: principal, t: paise}
+      - {col: monthlyInstalmentMinor, origin: profile, type: minor, none: no recurring deposit in the seed}
+      - {col: depositType, origin: profile, type: string, none: not recorded; the profile's catalogue-family derivation needs the product catalogue (a gold-side join)}
+      - {col: openedOn, origin: profile, type: date, from: openedOn}
+      - {col: maturesOn, origin: profile, type: date, from: maturesOn}
+      - {col: ratePct, origin: profile, type: decimal, from: annualRateBps, t: bps_to_pct_text}
+      - {col: payoutMode, origin: profile, type: string, none: not recorded in the seed}
+      - {col: version, origin: profile, type: integer, from: version}
+      - {col: xStatus, origin: extension, type: string, from: status, desc: Deposit status such as active (legacy only).}
+      - {col: xLiquidityClass, origin: extension, type: string, from: liquidityClass, desc: 'How quickly the money can be reached, for example available_with_penalty (Frontier only).'}
+      - {col: xMaturityInstruction, origin: extension, type: string, from: maturityInstruction, desc: 'What happens at maturity, for example renew_principal_and_interest (legacy only).'}
+      - {col: xPrematureWithdrawalPenaltyBps, origin: extension, type: integer, from: prematureWithdrawalPenaltyBps, unit: basis points, desc: Penalty for withdrawing before maturity (Frontier only).}
+  - table: silver_loan
+    entity: Loan
+    profile: true
+    profile_entity: Loan
+    ontology_entity: Loan
+    domain: Holdings
+    serves: [loan]
+    grain: One loan facility per Frontier seed record.
+    description: One loan facility per Frontier seed record. Conformed to the CDM profile entity Loan (realises the ontology entity Loan; official reference FHLoan (semantic reference only)). Attributes without a seed counterpart stay null; other seed fields the ontology needs are x columns.
+    cdm: {entity: FHLoan, status: custom, reference: verified-reference}
+    bian:
+      - {domain: Consumer Loan, control_record: ConsumerLoanFacility, custom: 12, provisional: 0}
+      - {domain: Customer Product and Service Directory, control_record: CustomerProductAndServiceDirectoryEntry, custom: 12, provisional: 0}
+    sources:
+      - {release: retail-frontier-v1, file: loans.json}
+    key: [liabilityId]
+    owner: ownerId
+    common:                                        # app/data_xray/projection.py 516-523 (bank_records: holdings loop); _INACTIVE at 66
+      cite: [app/data_xray/projection.py:516-523, app/data_xray/projection.py:66]
+      source_kind: bank_record                     # 522: "history" if historical else "bank_record"
+      state: {from: status, default: recorded}     # 516: row.get("status", "recorded"); the seed loans carry none
+      historical: {state_in: inactive, source_kind: history}   # 517: state in _INACTIVE
+    columns:
+      - {col: liabilityId, origin: profile, type: string, from: loanId}
+      - {col: productId, origin: profile, type: string, from: productId}
+      - {col: linkedAccountId, origin: profile, type: string, none: loans.json names no servicing account}
+      - {col: currency, origin: profile, type: string, from: [currentPrincipal.currency, openingPrincipal.currency, emi.currency]}
+      - {col: principalMinor, origin: profile, type: minor, none: 'openingPrincipal is the principal at the start of the seeded history, not the original disbursed principal (kept as xOpeningPrincipalMinor)'}
+      - {col: outstandingMinor, origin: profile, type: minor, from: currentPrincipal, t: paise}
+      - {col: monthlyPaymentMinor, origin: profile, type: minor, from: emi, t: paise}
+      - {col: ratePct, origin: profile, type: decimal, from: annualRateBps, t: bps_to_pct_text}
+      - {col: termMonths, origin: profile, type: integer, none: not recorded; the seeded repayment schedule is only a window of the term}
+      - {col: openedOn, origin: profile, type: date, none: not recorded in the seed}
+      - {col: maturesOn, origin: profile, type: date, none: not recorded in the seed}
+      - {col: version, origin: profile, type: integer, none: the Frontier seed records no revision}
+      - {col: xPurpose, origin: extension, type: string, from: purpose, desc: Loan purpose such as owner_occupied_home.}
+      - {col: xRateType, origin: extension, type: string, from: rateType, desc: floating or fixed.}
+      - {col: xOpeningPrincipalMinor, origin: extension, type: minor, from: openingPrincipal, t: paise, unit: 'currency minor units; INR paise, exponent 2', desc: Principal at the start of the seeded history.}
+      - {col: xOriginationFeeMinor, origin: extension, type: minor, from: originationFee, t: paise, unit: 'currency minor units; INR paise, exponent 2', desc: One-time fee charged at origination.}
+      - {col: xPrepaymentTermsAppliesTo, origin: extension, type: string, from: prepaymentTerms.appliesTo, desc: Borrower type the prepayment terms apply to.}
+      - {col: xPrepaymentTermsChargeBps, origin: extension, type: integer, from: prepaymentTerms.chargeBps, unit: basis points, desc: Charge on prepayment.}
+      - {col: xPrepaymentTermsMinimumAmountMinor, origin: extension, type: minor, from: prepaymentTerms.minimumAmount, t: paise, unit: 'currency minor units; INR paise, exponent 2', desc: Smallest allowed prepayment.}
+      - {col: xPrepaymentTermsNoticeDays, origin: extension, type: integer, from: prepaymentTerms.noticeDays, desc: Days of notice needed before a prepayment.}
+      - {col: xRepaymentScheduleCount, origin: extension, type: integer, from: repaymentSchedule, t: len, desc: Number of instalments in the seeded repayment schedule.}
+  - table: silver_loan_installment
+    entity: LoanInstallment
+    profile: false
+    ontology_entity: LoanInstallment
+    domain: Holdings
+    serves: [loan_installment]
+    grain: One scheduled or paid instalment of a loan (element of repaymentSchedule).
+    description: 'One scheduled or paid instalment of a loan (element of repaymentSchedule). Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    notes: The closest seed analogue of the profile Commitment repayment-schedule row (liabilities.repaymentSchedule), but it splits principal, interest and fees, which the profile row does not, so it stays an extension entity.
+    sources:
+      - {release: retail-frontier-v1, file: loans.json, explode: repaymentSchedule}
+    key: [loanId, installmentNumber]
+    record_id: '{^.loanId}#{$index:02d}'
+    owner: ^.ownerId
+    common:                                        # extension entity: the app's put() defaults (app/data_xray/projection.py 322-338)
+      cite: app/data_xray/projection.py:322-338
+      source_kind: bank_record
+      state: {from: status, default: recorded}     # the seed's own instalment status (paid, due, ...)
+    columns:
+      - {col: loanId, origin: extension, type: string, from: ^.loanId, nullable: false}
+      - {col: installmentNumber, origin: extension, type: integer, from: installmentNumber, desc: Sequence number of the instalment (1 = first)., nullable: false}
+      - {col: ordinal, origin: extension, type: integer, from: $index, nullable: false, desc: 1-based position within the array (the order the seed lists it).}
+      - {col: dueDate, origin: extension, type: date, from: dueDate, desc: Due date of the instalment.}
+      - {col: status, origin: extension, type: string, from: status, desc: paid or scheduled.}
+      - {col: openingPrincipalMinor, origin: extension, type: minor, from: openingPrincipal, t: paise, unit: 'currency minor units; INR paise, exponent 2', desc: Principal at the start of the instalment.}
+      - {col: principalPaidMinor, origin: extension, type: minor, from: principalPaid, t: paise, unit: 'currency minor units; INR paise, exponent 2', desc: Principal repaid by this instalment.}
+      - {col: interestPaidMinor, origin: extension, type: minor, from: interestPaid, t: paise, unit: 'currency minor units; INR paise, exponent 2', desc: Interest paid in this instalment.}
+      - {col: feesPaidMinor, origin: extension, type: minor, from: feesPaid, t: paise, unit: 'currency minor units; INR paise, exponent 2', desc: Fees paid in this instalment.}
+      - {col: totalPaidMinor, origin: extension, type: minor, from: totalPaid, t: paise, unit: 'currency minor units; INR paise, exponent 2', desc: 'Total paid: principal + interest + fees.'}
+      - {col: closingPrincipalMinor, origin: extension, type: minor, from: closingPrincipal, t: paise, unit: 'currency minor units; INR paise, exponent 2', desc: Principal remaining after this instalment.}
+      - {col: paymentTransactionDescription, origin: extension, type: string, from: paymentTransactionDescription, desc: 'Bank statement narration of the payment, for example HOME LOAN EMI.'}
+      - {col: currency, origin: extension, type: string, from: [openingPrincipal.currency, principalPaid.currency, interestPaid.currency, feesPaid.currency, totalPaid.currency, closingPrincipal.currency], desc: ISO currency of every money amount in the row (checked at build time).}
+  - table: silver_protection_policy
+    entity: ProtectionPolicy
+    profile: true
+    profile_entity: ProtectionPolicy
+    ontology_entity: ProtectionPolicy
+    domain: Holdings
+    serves: [insurance_policy]
+    grain: One insurance policy record per seed release.
+    description: One insurance policy record per seed release. Conformed to the CDM profile entity ProtectionPolicy (realises the ontology entity of the same name). Attributes without a seed counterpart stay null; other seed fields the ontology needs are x columns.
+    cdm: null
+    bian:
+      - {domain: Customer Product and Service Directory, control_record: CustomerProductAndServiceDirectoryEntry, custom: 14, provisional: 0}
+    sources:
+      - {release: retail-frontier-v1, file: insurance.json, require: policyId}
+      - {release: retail4-v1, file: policies.json}
+    key: [policyId]
+    owner: ownerId
+    common:                                        # app/data_xray/projection.py 516-523 (bank_records: holdings loop); _INACTIVE at 66
+      cite: [app/data_xray/projection.py:516-523, app/data_xray/projection.py:66]
+      source_kind: bank_record                     # 522: "history" if historical else "bank_record"
+      state: {from: status, default: recorded}     # 516: row.get("status", "recorded")
+      historical: {state_in: inactive, source_kind: history}   # 517: state in _INACTIVE (expired, cancelled, ...)
+    version: version
+    columns:
+      - {col: policyId, origin: profile, type: string, from: policyId}
+      - {col: productId, origin: profile, type: string, from: productId}
+      - {col: linkedAccountId, origin: profile, type: string, from: linkedAccountId}
+      - {col: coverType, origin: profile, type: string, from: [coverType, policyType]}
+      - {col: currency, origin: profile, type: string, from: [premium.currency, sumInsured.currency]}
+      - {col: premiumMinor, origin: profile, type: minor, from: premium, t: paise}
+      - {col: sumInsuredMinor, origin: profile, type: minor, from: sumInsured, t: paise}
+      - {col: deductibleMinor, origin: profile, type: minor, none: not recorded in the seed}
+      - {col: premiumFrequency, origin: profile, type: string, from: [premiumFrequency, premiumCadence]}
+      - {col: startedOn, origin: profile, type: date, from: startedOn}
+      - {col: renewsOn, origin: profile, type: date, from: renewsOn}
+      - {col: futureCoverOnly, origin: profile, type: boolean, none: not recorded (absence is neither true nor false)}
+      - {col: claimsApproved, origin: profile, type: boolean, none: not recorded (absence is neither a denial nor an approval)}
+      - {col: version, origin: profile, type: integer, from: version}
+      - {col: xStatus, origin: extension, type: string, from: status, desc: Policy status such as active.}
+      - {col: xInsurer, origin: extension, type: string, from: insurer, desc: Insurer name (legacy only; fictional).}
+      - {col: xBeneficiaries, origin: extension, type: string, from: beneficiaries, t: join, desc: Household members named as beneficiaries (semicolon separated).}
+      - {col: xCoveredMembers, origin: extension, type: string, from: coveredMembers, t: join, desc: People covered by the policy (semicolon separated).}
+      - {col: xCoPayPct, origin: extension, type: decimal, from: coPayPct, t: decimal_text, unit: percentage points, desc: Co-payment percentage (legacy only).}
+      - {col: xWaitingPeriodsInitialDays, origin: extension, type: integer, from: waitingPeriods.initialDays, desc: Initial waiting period in days (legacy only).}
+      - {col: xWaitingPeriodsPreExistingMonths, origin: extension, type: integer, from: waitingPeriods.preExistingMonths, desc: Waiting period for pre-existing conditions in months (legacy only).}
+      - {col: xPolicyNumber, origin: extension, type: string, from: policyNumber, desc: Insurer policy number. Restricted., restricted: true}
+  - table: silver_protection_gap
+    entity: ProtectionGap
+    profile: false
+    ontology_entity: ProtectionGap
+    domain: Holdings
+    serves: [protection_gap]
+    grain: One computed protection gap per customer and cover type at the Frontier business date.
+    description: 'One computed protection gap per customer and cover type at the Frontier business date. Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    sources:
+      - {release: retail-frontier-v1, file: insurance.json, require: protectionGapId}
+    key: [protectionGapId]
+    owner: ownerId
+    common:                                        # extension entity: the app's put() defaults (app/data_xray/projection.py 322-338)
+      cite: app/data_xray/projection.py:322-338
+      source_kind: bank_record
+      state: {const: recorded}                     # the seed record carries no lifecycle field
+    columns:
+      - {col: protectionGapId, origin: extension, type: string, from: protectionGapId, desc: Gap identifier such as gap-life-001., nullable: false}
+      - {col: gapType, origin: extension, type: string, from: gapType, desc: 'Type of cover, for example life_cover.'}
+      - {col: existingProtectionMinor, origin: extension, type: minor, from: existingProtection, t: paise, unit: 'currency minor units; INR paise, exponent 2', desc: Cover already in force.}
+      - {col: targetProtectionMinor, origin: extension, type: minor, from: targetProtection, t: paise, unit: 'currency minor units; INR paise, exponent 2', desc: Cover the household would need.}
+      - {col: gapMinor, origin: extension, type: minor, from: gap, t: paise, unit: 'currency minor units; INR paise, exponent 2', desc: Target minus existing protection.}
+      - {col: basisIncomeReplacementMinor, origin: extension, type: minor, from: basis.incomeReplacement, t: paise, unit: 'currency minor units; INR paise, exponent 2', desc: Part of the target that replaces income.}
+      - {col: basisLoanAndEducationNeedsMinor, origin: extension, type: minor, from: basis.loanAndEducationNeeds, t: paise, unit: 'currency minor units; INR paise, exponent 2', desc: Part of the target that covers loans and education.}
+      - {col: basisOffsetLiquidAssetsMinor, origin: extension, type: minor, from: basis.offsetLiquidAssets, t: paise, unit: 'currency minor units; INR paise, exponent 2', desc: Liquid assets deducted from the target.}
+      - {col: disclosure, origin: extension, type: string, from: disclosure, desc: Mandatory disclosure that this is a planning figure only.}
+      - {col: currency, origin: extension, type: string, from: [existingProtection.currency, targetProtection.currency, gap.currency, basis.incomeReplacement.currency, basis.loanAndEducationNeeds.currency, basis.offsetLiquidAssets.currency], desc: ISO currency of every money amount in the row (checked at build time).}
+  - table: silver_investment
+    entity: Investment
+    profile: false
+    ontology_entity: Investment
+    domain: Holdings
+    serves: [investment]
+    grain: One investment holding.
+    description: 'One investment holding. Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    sources:
+      - {release: retail-frontier-v1, file: investments.json}
+    key: [investmentId]
+    owner: ownerId
+    common:                                        # extension entity: the app's put() defaults (app/data_xray/projection.py 322-338)
+      cite: app/data_xray/projection.py:322-338
+      source_kind: bank_record
+      state: {const: recorded}                     # the seed record carries no lifecycle field
+    columns:
+      - {col: investmentId, origin: extension, type: string, from: investmentId, desc: Investment identifier such as inv-liquid-fd., nullable: false}
+      - {col: productId, origin: extension, type: string, from: productId, desc: Catalogue product of the investment.}
+      - {col: investmentType, origin: extension, type: string, from: investmentType, desc: Type such as fixed_deposit or index_fund.}
+      - {col: liquidity, origin: extension, type: string, from: liquidity, desc: How quickly the money can be reached.}
+      - {col: currentValueMinor, origin: extension, type: minor, from: currentValue, t: paise, unit: 'currency minor units; INR paise, exponent 2', desc: Current value of the holding.}
+      - {col: goalRefs, origin: extension, type: string, from: goalRefs, t: join, desc: Goals the investment funds (semicolon separated).}
+      - {col: currency, origin: extension, type: string, from: [currentValue.currency], desc: ISO currency of every money amount in the row (checked at build time).}
+  - table: silver_investment_goal
+    entity: InvestmentGoal
+    profile: false
+    ontology_entity: InvestmentGoal
+    domain: Holdings
+    serves: [investment_goal]
+    grain: One goal funded by an investment (element of goalRefs).
+    description: 'One goal funded by an investment (element of goalRefs). Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    sources:
+      - {release: retail-frontier-v1, file: investments.json, explode: goalRefs}
+    key: [investmentId, goalId]
+    record_id: '{^.investmentId}>{@}'
+    owner: ^.ownerId
+    common:                                        # extension entity: the app's put() defaults (app/data_xray/projection.py 322-338)
+      cite: app/data_xray/projection.py:322-338
+      source_kind: bank_record
+      state: {const: recorded}
+    columns:
+      - {col: investmentId, origin: extension, type: string, from: ^.investmentId, nullable: false}
+      - {col: goalId, origin: extension, type: string, from: '@', nullable: false}
+      - {col: ordinal, origin: extension, type: integer, from: $index, nullable: false, desc: 1-based position within the array (the order the seed lists it).}

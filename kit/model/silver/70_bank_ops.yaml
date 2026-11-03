@@ -1,0 +1,203 @@
+silver:
+  - table: silver_business_unit
+    entity: BusinessUnit
+    profile: false
+    ontology_entity: BusinessUnit
+    domain: BankOps
+    serves: [business_unit]
+    grain: One business unit.
+    description: 'One business unit. Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    sources:
+      - {release: retail4-v1, file: bank/business-units.json, list: businessUnits}
+    key: [buId]
+    common:                                        # extension entity, reference data: the app's catalogue kind (app/data_xray/projection.py 469) and put() defaults (322-338)
+      cite: [app/data_xray/projection.py:322-338, app/data_xray/projection.py:466-470]
+      source_kind: catalogue
+      state: {const: recorded}
+      label: {from: [name]}
+    columns:
+      - {col: buId, origin: extension, type: string, from: buId, desc: Business unit identifier such as BU-RETAIL-DEPOSITS., nullable: false}
+      - {col: name, origin: extension, type: string, from: name, desc: Business unit name.}
+      - {col: shortName, origin: extension, type: string, from: shortName, desc: Short name.}
+      - {col: head, origin: extension, type: string, from: head, desc: Business unit head (synthetic).}
+      - {col: description, origin: extension, type: string, from: description, desc: What the unit owns.}
+      - {col: healthStatus, origin: extension, type: string, from: healthStatus, desc: 'strong, steady or watch.'}
+      - {col: portfolioCroreINR, origin: extension, type: decimal, from: portfolioCroreINR, t: decimal_text, unit: INR crore, desc: 'Portfolio size in crore INR (1 crore = 10,000,000 rupees). Reporting aggregate.'}
+      - {col: customers, origin: extension, type: integer, from: customers, desc: Number of customers served.}
+      - {col: nimPercent, origin: extension, type: decimal, from: nimPercent, t: decimal_text, unit: percentage points, desc: 'Net interest margin, percent.'}
+      - {col: yoyGrowthPercent, origin: extension, type: decimal, from: yoyGrowthPercent, t: decimal_text, unit: percentage points, desc: 'Year-on-year growth, percent.'}
+      - {col: targetAttainmentPercent, origin: extension, type: decimal, from: targetAttainmentPercent, t: decimal_text, unit: percentage points, desc: 'Share of target achieved, percent.'}
+  - table: silver_region
+    entity: Region
+    profile: false
+    ontology_entity: Region
+    domain: BankOps
+    serves: [region]
+    grain: One bank region.
+    description: 'One bank region. Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    sources:
+      - {release: retail4-v1, file: bank/regions.json, list: regions}
+    key: [regionId]
+    common:                                        # extension entity, reference data: the app's catalogue kind (app/data_xray/projection.py 469) and put() defaults (322-338)
+      cite: [app/data_xray/projection.py:322-338, app/data_xray/projection.py:466-470]
+      source_kind: catalogue
+      state: {const: recorded}                     # the seed's `state` field is the Indian state of the region, not a lifecycle
+    columns:
+      - {col: regionId, origin: extension, type: string, from: regionId, desc: Region identifier such as REG-MUMBAI., nullable: false}
+      - {col: city, origin: extension, type: string, from: city, desc: Region city.}
+      - {col: stateName, origin: extension, type: string, from: state, desc: State.}
+      - {col: branches, origin: extension, type: integer, from: branches, desc: Number of branches.}
+      - {col: customers, origin: extension, type: integer, from: customers, desc: Number of customers.}
+      - {col: depositsCroreINR, origin: extension, type: decimal, from: depositsCroreINR, t: decimal_text, unit: INR crore, desc: Deposits in crore INR.}
+      - {col: advancesCroreINR, origin: extension, type: decimal, from: advancesCroreINR, t: decimal_text, unit: INR crore, desc: Advances (loans) in crore INR.}
+      - {col: yoyGrowthPercent, origin: extension, type: decimal, from: yoyGrowthPercent, t: decimal_text, unit: percentage points, desc: 'Year-on-year growth, percent.'}
+      - {col: npsScore, origin: extension, type: integer, from: npsScore, desc: Net promoter score.}
+      - {col: digitalAdoptionPercent, origin: extension, type: decimal, from: digitalAdoptionPercent, t: decimal_text, unit: percentage points, desc: 'Digital adoption, percent.'}
+  - table: silver_relationship_manager
+    entity: RelationshipManager
+    profile: false
+    ontology_entity: RelationshipManager
+    domain: BankOps
+    serves: [relationship_manager]
+    grain: One relationship manager.
+    description: 'One relationship manager. Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    sources:
+      - {release: retail4-v1, file: bank/rm-team.json, list: relationshipManagers}
+    key: [rmId]
+    common:                                        # extension entity, reference data: the app's catalogue kind (app/data_xray/projection.py 469) and put() defaults (322-338)
+      cite: [app/data_xray/projection.py:322-338, app/data_xray/projection.py:466-470]
+      source_kind: catalogue
+      state: {const: recorded}
+      label: {from: [name]}
+    columns:
+      - {col: rmId, origin: extension, type: string, from: rmId, desc: Relationship manager identifier such as rm-001., nullable: false}
+      - {col: name, origin: extension, type: string, from: name, desc: RM name (synthetic)., pii: true}
+      - {col: role, origin: extension, type: string, from: role, desc: Role title.}
+      - {col: buId, origin: extension, type: string, from: buId, desc: Business unit.}
+      - {col: regionId, origin: extension, type: string, from: regionId, desc: Region.}
+      - {col: portfolioCustomers, origin: extension, type: integer, from: portfolioCustomers, desc: Customers in the RM's portfolio.}
+      - {col: openCases, origin: extension, type: integer, from: openCases, desc: Open cases.}
+      - {col: slaBreaches, origin: extension, type: integer, from: slaBreaches, desc: Cases that breached SLA.}
+      - {col: csatScore, origin: extension, type: decimal, from: csatScore, t: decimal_text, desc: Customer satisfaction score out of 5.}
+      - {col: specialisations, origin: extension, type: string, from: specialisations, t: join, desc: Specialisations (semicolon separated).}
+  - table: silver_campaign
+    entity: Campaign
+    profile: false
+    ontology_entity: Campaign
+    domain: BankOps
+    serves: [campaign]
+    grain: One marketing campaign.
+    description: 'One marketing campaign. Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    sources:
+      - {release: retail4-v1, file: bank/campaigns.json, list: campaigns}
+    key: [campaignId]
+    common:                                        # extension entity, reference data: the app's catalogue kind (app/data_xray/projection.py 469) and put() defaults (322-338)
+      cite: [app/data_xray/projection.py:322-338, app/data_xray/projection.py:466-470]
+      source_kind: catalogue
+      state: {from: status, default: recorded}     # the seed's own campaign status (planned, live, completed)
+      label: {from: [name]}
+    columns:
+      - {col: campaignId, origin: extension, type: string, from: campaignId, desc: Campaign identifier such as CMP-2026-001., nullable: false}
+      - {col: name, origin: extension, type: string, from: name, desc: Campaign name.}
+      - {col: buId, origin: extension, type: string, from: buId, desc: Business unit running the campaign.}
+      - {col: status, origin: extension, type: string, from: status, desc: 'live, planned or ended.'}
+      - {col: startDate, origin: extension, type: date, from: startDate, desc: Start date.}
+      - {col: endDate, origin: extension, type: date, from: endDate, desc: End date.}
+      - {col: channel, origin: extension, type: string, from: channel, desc: Primary channel.}
+      - {col: targetSegment, origin: extension, type: string, from: targetSegment, desc: Who the campaign targets.}
+      - {col: reach, origin: extension, type: integer, from: reach, desc: People reached.}
+      - {col: engaged, origin: extension, type: integer, from: engaged, desc: People engaged.}
+      - {col: converted, origin: extension, type: integer, from: converted, desc: People converted.}
+      - {col: conversionPercent, origin: extension, type: decimal, from: conversionPercent, t: decimal_text, unit: percentage points, desc: 'Conversion rate, percent.'}
+      - {col: revenueAttributedCroreINR, origin: extension, type: decimal, from: revenueAttributedCroreINR, t: decimal_text, unit: INR crore, desc: Revenue attributed in crore INR.}
+      - {col: productIds, origin: extension, type: string, from: productIds, t: join, desc: Products promoted (semicolon separated).}
+  - table: silver_monthly_metric
+    entity: MonthlyMetric
+    profile: false
+    ontology_entity: MonthlyMetric
+    domain: BankOps
+    serves: [monthly_metric]
+    grain: One reporting metric set per business unit and month.
+    description: 'One reporting metric set per business unit and month. Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    sources:
+      - {custom: monthly_metric, release: retail4-v1, file: bank/monthly-metrics.json}
+    key: [buId, month]
+    record_id: '{buId}/{month}'
+    common:                                        # extension entity: the app's put() defaults (app/data_xray/projection.py 322-338)
+      cite: app/data_xray/projection.py:322-338
+      source_kind: bank_record
+      state: {const: recorded}
+    columns:
+      - {col: buId, origin: extension, type: string, from: buId, desc: Business unit., nullable: false}
+      - {col: month, origin: extension, type: string, from: month, desc: Month as YYYY-MM., nullable: false}
+      - {col: ordinal, origin: extension, type: integer, from: $ordinal, nullable: false, desc: 1-based position within the array (the order the seed lists it).}
+      - {col: portfolioCroreINR, origin: extension, type: decimal, from: portfolioCroreINR, t: decimal_text, unit: INR crore, desc: Portfolio in crore INR.}
+      - {col: revenueCroreINR, origin: extension, type: decimal, from: revenueCroreINR, t: decimal_text, unit: INR crore, desc: Revenue in crore INR.}
+      - {col: newCustomers, origin: extension, type: integer, from: newCustomers, desc: New customers in the month.}
+      - {col: casesOpened, origin: extension, type: integer, from: casesOpened, desc: Cases opened.}
+      - {col: casesResolved, origin: extension, type: integer, from: casesResolved, desc: Cases resolved.}
+  - table: silver_risk_alert
+    entity: RiskAlert
+    profile: false
+    ontology_entity: RiskAlert
+    domain: BankOps
+    serves: [risk_alert]
+    grain: One bank-level risk alert.
+    description: 'One bank-level risk alert. Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    sources:
+      - {release: retail4-v1, file: bank/risk.json, list: alerts}
+    key: [alertId]
+    common:                                        # extension entity: the app's put() defaults (app/data_xray/projection.py 322-338)
+      cite: app/data_xray/projection.py:322-338
+      source_kind: bank_record
+      state: {const: recorded}                     # `severity` is a risk level, not a lifecycle
+      label: {from: [title]}
+    columns:
+      - {col: alertId, origin: extension, type: string, from: alertId, desc: Alert identifier such as RISK-ALERT-001., nullable: false}
+      - {col: title, origin: extension, type: string, from: title, desc: Alert title.}
+      - {col: severity, origin: extension, type: string, from: severity, desc: 'low, medium or high.'}
+      - {col: detail, origin: extension, type: string, from: detail, desc: What was detected.}
+      - {col: buId, origin: extension, type: string, from: buId, desc: Business unit affected.}
+      - {col: raisedAt, origin: extension, type: datetime, from: raisedAt, desc: When the alert was raised.}
+  - table: silver_fraud_signal
+    entity: FraudSignal
+    profile: false
+    ontology_entity: FraudSignal
+    domain: BankOps
+    serves: [fraud_signal]
+    grain: One fraud-signal type with 30-day counts.
+    description: 'One fraud-signal type with 30-day counts. Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    sources:
+      - {release: retail4-v1, file: bank/risk.json, list: fraudSignals}
+    key: [signalId]
+    common:                                        # extension entity: the app's put() defaults (app/data_xray/projection.py 322-338)
+      cite: app/data_xray/projection.py:322-338
+      source_kind: bank_record
+      state: {const: recorded}
+      label: {from: [label]}
+    columns:
+      - {col: signalId, origin: extension, type: string, from: signalId, desc: Signal identifier such as FRD-IMP-CALL., nullable: false}
+      - {col: signalLabel, origin: extension, type: string, from: label, desc: Signal name.}
+      - {col: detectedLast30d, origin: extension, type: integer, from: detectedLast30d, desc: Detections in the last 30 days.}
+      - {col: blockedLast30d, origin: extension, type: integer, from: blockedLast30d, desc: Attempts blocked in the last 30 days.}
+      - {col: trend, origin: extension, type: string, from: trend, desc: 'up, flat or down.'}
+  - table: silver_product_business_unit
+    entity: ProductBusinessUnit
+    profile: false
+    ontology_entity: ProductBusinessUnit
+    domain: BankOps
+    serves: [product_business_unit]
+    grain: One product owned by a business unit (element of productIds).
+    description: 'One product owned by a business unit (element of productIds). Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    sources:
+      - {release: retail4-v1, file: bank/business-units.json, list: businessUnits, explode: productIds}
+    key: [buId, productId]
+    record_id: '{^.buId}>{@}'
+    common:                                        # extension entity, reference data (product to business unit): the app's catalogue kind (app/data_xray/projection.py 469) and put() defaults (322-338)
+      cite: [app/data_xray/projection.py:322-338, app/data_xray/projection.py:466-470]
+      source_kind: catalogue
+      state: {const: recorded}
+    columns:
+      - {col: buId, origin: extension, type: string, from: ^.buId, nullable: false}
+      - {col: productId, origin: extension, type: string, from: '@', nullable: false}
+      - {col: ordinal, origin: extension, type: integer, from: $index, nullable: false, desc: 1-based position within the array (the order the seed lists it).}

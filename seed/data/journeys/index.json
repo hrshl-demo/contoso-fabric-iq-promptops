@@ -1,0 +1,170 @@
+[
+  {
+    "journeyId": "J01",
+    "title": "Retirement income and deposits",
+    "oneLiner": "Turn a maturing deposit into the income and access you actually need.",
+    "buId": "BU-RETAIL-DEPOSITS",
+    "icon": "vault",
+    "accentHue": 198,
+    "salesPosture": "advise",
+    "openers": [
+      "My fixed deposit matures this month and I am not sure what to do with it",
+      "I want a steady monthly income once I stop working",
+      "Should I renew my deposit or move the money somewhere else?"
+    ]
+  },
+  {
+    "journeyId": "J02",
+    "title": "Medical estimate and cover",
+    "oneLiner": "Work out what a medical estimate will and will not be covered, before you commit.",
+    "buId": "BU-BANCASSURANCE",
+    "icon": "shield",
+    "accentHue": 158,
+    "salesPosture": "evidence_gated",
+    "openers": [
+      "The hospital has given me an estimate - how much of it will my cover pay?",
+      "I need to understand what my health policy would leave me to pay myself",
+      "There is a procedure coming up and I want to plan for the cost"
+    ]
+  },
+  {
+    "journeyId": "J03",
+    "title": "Suspicious contact and scam check",
+    "oneLiner": "Work out whether a message or call is genuine, and act before anything is lost.",
+    "buId": "BU-SERVICE-COLLECTIONS",
+    "icon": "alert",
+    "accentHue": 8,
+    "salesPosture": "never_sell",
+    "openers": [
+      "Someone called saying they were from the bank and asked me for a code",
+      "I got a message saying my account will be blocked - is it genuine?",
+      "I think I have been scammed and I do not know what to do"
+    ]
+  },
+  {
+    "journeyId": "J04",
+    "title": "Competing family commitments",
+    "oneLiner": "Sequence the things your household is trying to fund at once.",
+    "buId": "BU-RETAIL-DEPOSITS",
+    "icon": "home",
+    "accentHue": 268,
+    "salesPosture": "advise",
+    "openers": [
+      "There are school fees and a car this year and I cannot fund both at once",
+      "Too many things need money at the same time - help me put them in order",
+      "How do I decide which of these to pay for first?"
+    ]
+  },
+  {
+    "journeyId": "J05",
+    "title": "Home-loan offer and fine print",
+    "oneLiner": "Compare loan offers on the clauses that actually cost money.",
+    "buId": "BU-LENDING",
+    "icon": "doc",
+    "accentHue": 32,
+    "salesPosture": "advise",
+    "openers": [
+      "I have two home loan offers and I cannot tell which one is better",
+      "What should I be looking for in the fine print of a home loan?",
+      "Is a floating rate better than a fixed one in my situation?"
+    ]
+  },
+  {
+    "journeyId": "J06",
+    "title": "Spending and card benefits",
+    "oneLiner": "Understand where the money went, and whether your card still fits.",
+    "buId": "BU-CARDS",
+    "icon": "card",
+    "accentHue": 288,
+    "salesPosture": "advise",
+    "openers": [
+      "Where is my money actually going every month?",
+      "Is my card still the right one for the way I spend?",
+      "Show me what I spent the most on recently"
+    ]
+  },
+  {
+    "journeyId": "J07",
+    "title": "Purchase and refund resolution",
+    "oneLiner": "Build the evidence timeline and get a stuck refund moving.",
+    "buId": "BU-SERVICE-COLLECTIONS",
+    "icon": "headset",
+    "accentHue": 188,
+    "salesPosture": "never_sell",
+    "openers": [
+      "I returned something weeks ago and the refund still has not arrived",
+      "A payment went out twice and I want the second one back",
+      "There is a charge on my account I do not recognise"
+    ]
+  },
+  {
+    "journeyId": "J08",
+    "title": "First salary and account setup",
+    "oneLiner": "Set up salary banking so the first pay-cheque lands somewhere sensible.",
+    "buId": "BU-RETAIL-DEPOSITS",
+    "icon": "bolt",
+    "accentHue": 218,
+    "salesPosture": "advise",
+    "openers": [
+      "I have just started my first job - how should I set up my banking?",
+      "My salary lands next month and I want it to go somewhere sensible",
+      "How much of my pay should I be putting aside?"
+    ]
+  },
+  {
+    "journeyId": "J09",
+    "title": "Credit and BNPL, explained",
+    "oneLiner": "Understand what credit actually costs before you use it.",
+    "buId": "BU-CARDS",
+    "icon": "book",
+    "accentHue": 48,
+    "salesPosture": "educate_only",
+    "openers": [
+      "Is buy now pay later actually free?",
+      "What happens if I only pay the minimum due on my card?",
+      "Should I get a credit card, and what would it really cost me?"
+    ]
+  },
+  {
+    "journeyId": "J10",
+    "title": "Group expenses and settling up",
+    "oneLiner": "Turn a messy group chat into a fair split everyone can see.",
+    "buId": "BU-DIGITAL-PAYMENTS",
+    "icon": "users",
+    "accentHue": 308,
+    "salesPosture": "advise",
+    "openers": [
+      "We all paid for different things on a trip and it has become a mess",
+      "I paid for the whole group and I want to work out who owes me what",
+      "How do I split these costs fairly when one thing got refunded?"
+    ]
+  },
+  {
+    "journeyId": "J11",
+    "title": "Side-hustle income and savings",
+    "oneLiner": "Smooth irregular freelance income and keep the tax money separate.",
+    "buId": "BU-RETAIL-DEPOSITS",
+    "icon": "spark",
+    "accentHue": 138,
+    "salesPosture": "advise",
+    "openers": [
+      "My freelance income is different every month and I cannot budget",
+      "I need to keep the tax money separate from the money I can spend",
+      "How do I save when I do not know what I will earn?"
+    ]
+  },
+  {
+    "journeyId": "J12",
+    "title": "Trip planning and travel money",
+    "oneLiner": "Plan the trip inside the chat, then sort the money before you go.",
+    "buId": "BU-CARDS",
+    "icon": "plane",
+    "accentHue": 88,
+    "salesPosture": "advise",
+    "openers": [
+      "I am thinking about a trip and I have no idea what it would cost",
+      "Find me a flight and a hotel, then tell me how I should pay for it",
+      "What is the cheapest way to pay for things abroad?"
+    ]
+  }
+]

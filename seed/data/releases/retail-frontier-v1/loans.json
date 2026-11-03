@@ -1,0 +1,439 @@
+[
+  {
+    "annualRateBps": 850,
+    "currentPrincipal": {
+      "amountMinor": 553317788,
+      "currency": "INR"
+    },
+    "emi": {
+      "amountMinor": 4850000,
+      "currency": "INR"
+    },
+    "loanId": "loan-home-001",
+    "openingPrincipal": {
+      "amountMinor": 580000000,
+      "currency": "INR"
+    },
+    "originationFee": {
+      "amountMinor": 1770000,
+      "currency": "INR"
+    },
+    "ownerId": "rhea",
+    "prepaymentTerms": {
+      "appliesTo": "individual_floating_rate_borrower",
+      "chargeBps": 0,
+      "minimumAmount": {
+        "amountMinor": 4850000,
+        "currency": "INR"
+      },
+      "noticeDays": 3
+    },
+    "productId": "CB-HL-FLOATING",
+    "purpose": "owner_occupied_home",
+    "rateType": "floating",
+    "releaseId": "retail-frontier-v1",
+    "repaymentSchedule": [
+      {
+        "closingPrincipal": {
+          "amountMinor": 575560833,
+          "currency": "INR"
+        },
+        "dueDate": "2026-04-05",
+        "feesPaid": {
+          "amountMinor": 0,
+          "currency": "INR"
+        },
+        "installmentNumber": 1,
+        "interestPaid": {
+          "amountMinor": 410833,
+          "currency": "INR"
+        },
+        "openingPrincipal": {
+          "amountMinor": 580000000,
+          "currency": "INR"
+        },
+        "paymentTransactionDescription": "HOME LOAN EMI",
+        "principalPaid": {
+          "amountMinor": 4439167,
+          "currency": "INR"
+        },
+        "status": "paid",
+        "totalPaid": {
+          "amountMinor": 4850000,
+          "currency": "INR"
+        }
+      },
+      {
+        "closingPrincipal": {
+          "amountMinor": 571118522,
+          "currency": "INR"
+        },
+        "dueDate": "2026-05-05",
+        "feesPaid": {
+          "amountMinor": 0,
+          "currency": "INR"
+        },
+        "installmentNumber": 2,
+        "interestPaid": {
+          "amountMinor": 407689,
+          "currency": "INR"
+        },
+        "openingPrincipal": {
+          "amountMinor": 575560833,
+          "currency": "INR"
+        },
+        "paymentTransactionDescription": "HOME LOAN EMI",
+        "principalPaid": {
+          "amountMinor": 4442311,
+          "currency": "INR"
+        },
+        "status": "paid",
+        "totalPaid": {
+          "amountMinor": 4850000,
+          "currency": "INR"
+        }
+      },
+      {
+        "closingPrincipal": {
+          "amountMinor": 566673064,
+          "currency": "INR"
+        },
+        "dueDate": "2026-06-05",
+        "feesPaid": {
+          "amountMinor": 0,
+          "currency": "INR"
+        },
+        "installmentNumber": 3,
+        "interestPaid": {
+          "amountMinor": 404542,
+          "currency": "INR"
+        },
+        "openingPrincipal": {
+          "amountMinor": 571118522,
+          "currency": "INR"
+        },
+        "paymentTransactionDescription": "HOME LOAN EMI",
+        "principalPaid": {
+          "amountMinor": 4445458,
+          "currency": "INR"
+        },
+        "status": "paid",
+        "totalPaid": {
+          "amountMinor": 4850000,
+          "currency": "INR"
+        }
+      },
+      {
+        "closingPrincipal": {
+          "amountMinor": 562224457,
+          "currency": "INR"
+        },
+        "dueDate": "2026-07-05",
+        "feesPaid": {
+          "amountMinor": 0,
+          "currency": "INR"
+        },
+        "installmentNumber": 4,
+        "interestPaid": {
+          "amountMinor": 401393,
+          "currency": "INR"
+        },
+        "openingPrincipal": {
+          "amountMinor": 566673064,
+          "currency": "INR"
+        },
+        "paymentTransactionDescription": "HOME LOAN EMI",
+        "principalPaid": {
+          "amountMinor": 4448607,
+          "currency": "INR"
+        },
+        "status": "paid",
+        "totalPaid": {
+          "amountMinor": 4850000,
+          "currency": "INR"
+        }
+      },
+      {
+        "closingPrincipal": {
+          "amountMinor": 557772699,
+          "currency": "INR"
+        },
+        "dueDate": "2026-08-05",
+        "feesPaid": {
+          "amountMinor": 0,
+          "currency": "INR"
+        },
+        "installmentNumber": 5,
+        "interestPaid": {
+          "amountMinor": 398242,
+          "currency": "INR"
+        },
+        "openingPrincipal": {
+          "amountMinor": 562224457,
+          "currency": "INR"
+        },
+        "paymentTransactionDescription": "HOME LOAN EMI",
+        "principalPaid": {
+          "amountMinor": 4451758,
+          "currency": "INR"
+        },
+        "status": "paid",
+        "totalPaid": {
+          "amountMinor": 4850000,
+          "currency": "INR"
+        }
+      },
+      {
+        "closingPrincipal": {
+          "amountMinor": 553317788,
+          "currency": "INR"
+        },
+        "dueDate": "2026-09-05",
+        "feesPaid": {
+          "amountMinor": 0,
+          "currency": "INR"
+        },
+        "installmentNumber": 6,
+        "interestPaid": {
+          "amountMinor": 395089,
+          "currency": "INR"
+        },
+        "openingPrincipal": {
+          "amountMinor": 557772699,
+          "currency": "INR"
+        },
+        "paymentTransactionDescription": "HOME LOAN EMI",
+        "principalPaid": {
+          "amountMinor": 4454911,
+          "currency": "INR"
+        },
+        "status": "paid",
+        "totalPaid": {
+          "amountMinor": 4850000,
+          "currency": "INR"
+        }
+      }
+    ],
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  },
+  {
+    "annualRateBps": 1075,
+    "currentPrincipal": {
+      "amountMinor": 40591425,
+      "currency": "INR"
+    },
+    "emi": {
+      "amountMinor": 1275000,
+      "currency": "INR"
+    },
+    "loanId": "loan-education-001",
+    "openingPrincipal": {
+      "amountMinor": 48000000,
+      "currency": "INR"
+    },
+    "originationFee": {
+      "amountMinor": 350000,
+      "currency": "INR"
+    },
+    "ownerId": "rhea",
+    "prepaymentTerms": {
+      "chargeBps": 0,
+      "condition": "zero_after_twelve_paid_installments",
+      "minimumAmount": {
+        "amountMinor": 1275000,
+        "currency": "INR"
+      },
+      "noticeDays": 0,
+      "paidInstallmentsBeforeHistory": 18
+    },
+    "productId": "CB-EDU-TERM",
+    "purpose": "prior_higher_education",
+    "rateType": "fixed",
+    "releaseId": "retail-frontier-v1",
+    "repaymentSchedule": [
+      {
+        "closingPrincipal": {
+          "amountMinor": 46768000,
+          "currency": "INR"
+        },
+        "dueDate": "2026-04-08",
+        "feesPaid": {
+          "amountMinor": 0,
+          "currency": "INR"
+        },
+        "installmentNumber": 1,
+        "interestPaid": {
+          "amountMinor": 43000,
+          "currency": "INR"
+        },
+        "openingPrincipal": {
+          "amountMinor": 48000000,
+          "currency": "INR"
+        },
+        "paymentTransactionDescription": "EDUCATION LOAN EMI",
+        "principalPaid": {
+          "amountMinor": 1232000,
+          "currency": "INR"
+        },
+        "status": "paid",
+        "totalPaid": {
+          "amountMinor": 1275000,
+          "currency": "INR"
+        }
+      },
+      {
+        "closingPrincipal": {
+          "amountMinor": 45534896,
+          "currency": "INR"
+        },
+        "dueDate": "2026-05-08",
+        "feesPaid": {
+          "amountMinor": 0,
+          "currency": "INR"
+        },
+        "installmentNumber": 2,
+        "interestPaid": {
+          "amountMinor": 41896,
+          "currency": "INR"
+        },
+        "openingPrincipal": {
+          "amountMinor": 46768000,
+          "currency": "INR"
+        },
+        "paymentTransactionDescription": "EDUCATION LOAN EMI",
+        "principalPaid": {
+          "amountMinor": 1233104,
+          "currency": "INR"
+        },
+        "status": "paid",
+        "totalPaid": {
+          "amountMinor": 1275000,
+          "currency": "INR"
+        }
+      },
+      {
+        "closingPrincipal": {
+          "amountMinor": 44300688,
+          "currency": "INR"
+        },
+        "dueDate": "2026-06-08",
+        "feesPaid": {
+          "amountMinor": 0,
+          "currency": "INR"
+        },
+        "installmentNumber": 3,
+        "interestPaid": {
+          "amountMinor": 40792,
+          "currency": "INR"
+        },
+        "openingPrincipal": {
+          "amountMinor": 45534896,
+          "currency": "INR"
+        },
+        "paymentTransactionDescription": "EDUCATION LOAN EMI",
+        "principalPaid": {
+          "amountMinor": 1234208,
+          "currency": "INR"
+        },
+        "status": "paid",
+        "totalPaid": {
+          "amountMinor": 1275000,
+          "currency": "INR"
+        }
+      },
+      {
+        "closingPrincipal": {
+          "amountMinor": 43065374,
+          "currency": "INR"
+        },
+        "dueDate": "2026-07-08",
+        "feesPaid": {
+          "amountMinor": 0,
+          "currency": "INR"
+        },
+        "installmentNumber": 4,
+        "interestPaid": {
+          "amountMinor": 39686,
+          "currency": "INR"
+        },
+        "openingPrincipal": {
+          "amountMinor": 44300688,
+          "currency": "INR"
+        },
+        "paymentTransactionDescription": "EDUCATION LOAN EMI",
+        "principalPaid": {
+          "amountMinor": 1235314,
+          "currency": "INR"
+        },
+        "status": "paid",
+        "totalPaid": {
+          "amountMinor": 1275000,
+          "currency": "INR"
+        }
+      },
+      {
+        "closingPrincipal": {
+          "amountMinor": 41828953,
+          "currency": "INR"
+        },
+        "dueDate": "2026-08-08",
+        "feesPaid": {
+          "amountMinor": 0,
+          "currency": "INR"
+        },
+        "installmentNumber": 5,
+        "interestPaid": {
+          "amountMinor": 38579,
+          "currency": "INR"
+        },
+        "openingPrincipal": {
+          "amountMinor": 43065374,
+          "currency": "INR"
+        },
+        "paymentTransactionDescription": "EDUCATION LOAN EMI",
+        "principalPaid": {
+          "amountMinor": 1236421,
+          "currency": "INR"
+        },
+        "status": "paid",
+        "totalPaid": {
+          "amountMinor": 1275000,
+          "currency": "INR"
+        }
+      },
+      {
+        "closingPrincipal": {
+          "amountMinor": 40591425,
+          "currency": "INR"
+        },
+        "dueDate": "2026-09-08",
+        "feesPaid": {
+          "amountMinor": 0,
+          "currency": "INR"
+        },
+        "installmentNumber": 6,
+        "interestPaid": {
+          "amountMinor": 37472,
+          "currency": "INR"
+        },
+        "openingPrincipal": {
+          "amountMinor": 41828953,
+          "currency": "INR"
+        },
+        "paymentTransactionDescription": "EDUCATION LOAN EMI",
+        "principalPaid": {
+          "amountMinor": 1237528,
+          "currency": "INR"
+        },
+        "status": "paid",
+        "totalPaid": {
+          "amountMinor": 1275000,
+          "currency": "INR"
+        }
+      }
+    ],
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  }
+]

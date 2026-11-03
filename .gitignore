@@ -1,0 +1,19 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+.cache/
+out/
+*.log
+.DS_Store
+
+# Power BI Desktop local state; previews and screenshots live outside the PBIP folder (_preview/ is never committed)
+**/.pbi/
+**/localSettings.json
+**/cache.abf
+_preview/
+
+# local-only files: IDs and settings go to GitHub Actions variables, never into the repo
+.env
+*.local.json

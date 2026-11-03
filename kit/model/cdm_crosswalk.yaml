@@ -1,0 +1,491 @@
+# Official-name alias crosswalk: repo CDM application profile attribute -> official Microsoft CDM attribute.
+# Hand-reviewed, not generated. contoso_onto/cdm_crosswalk.py loads and validates it, tests/test_cdm_crosswalk.py checks every
+# entry against the vendored official entity files (data/banking-model/v1/vendor/cdm/references in the source repo, Microsoft CDM
+# commit dd21d715e05ebf740a11356c80b5c3b4c38a89c2, sha256-pinned in sources.json).
+#
+# Wording everywhere (silver catalog, docs, ontology text): "official-name alias" and "semantic reference", never "CDM conformance".
+# A match needs semantic equality read from both descriptions plus the profile attribute's unit and null semantics. No match is a
+# normal result: the vendored Contact defines only a GUID and CustomDocument only a loan-application category and a description.
+#
+# Layout (fixed order, so diffs stay reviewable): entities in profile order; attributes in profile attribute order; keys in the order
+# profile, official, official_type, match, transform, silver_type, unit, null_rule, rationale, evidence, type_note.
+# `evidence` is the official attribute's own description, quoted exactly as it appears in the vendored file (including its typos).
+# Vocabularies (match, transform, silver_type) are documented in the docstring of contoso_onto/cdm_crosswalk.py.
+crosswalk:
+  - profile_entity: Customer
+    official_entity: Contact
+    attributes: []
+    note: "Reviewed, no official alias. The vendored Contact file defines only contactId, a GUID (type entityId). The profile Customer attributes (ownerId, displayName, city, cohort) have no counterpart in it, and ownerId is a business identifier declared 'not a GUID', so it must not fill contactId."
+  - profile_entity: Account
+    official_entity: FHAccount
+    attributes:
+      - profile: accountId
+        official: integrationKey
+        official_type: string
+        match: semantic
+        transform: identity
+        silver_type: string
+        unit: "none (identifier text)"
+        null_rule: "Null only when accountId is null; an identifier is never synthesised or defaulted."
+        rationale: "Both are the business key of the account record, as opposed to the platform row GUID: the profile's accountId is the 'Account business identifier, not a GUID' and the official integrationKey is what the system integrator uses to uniquely define the record (the official GUID, FH_AccountId, is not aliased). Values are carried verbatim and are unique within a release (silver key = _release_id + business key)."
+        evidence: "Used by the system integrator to uniquely define the data record ."
+      - profile: postedBalanceMinor
+        official: balance
+        official_type: currency
+        match: derived_major_units
+        transform: minor_to_major_decimal
+        silver_type: decimal(38,4)
+        unit: "INR major units (rupees) as an exact decimal; the profile unit is INR paise (currency minor units, exponent 2)"
+        null_rule: "Null only when postedBalanceMinor is null (absent, unknown, redacted or not applicable in the source); never turned into 0.00."
+        rationale: "The profile's posted balance is the account's recorded balance ('Posted account balance, not available funds plus holds'); the official balance is 'the balance or value of the financial holding' in the holding's own currency. For a deposit account that recorded balance is the posted one. Value = paise / 100 as an exact decimal; the sign is kept, so an overdrawn account stays negative. The profile's currency column stays the authority for the currency code."
+        evidence: "The balance or value of the financial holding in the original currency of the financial holding."
+      - profile: availableBalanceMinor
+        official: availableBalance
+        official_type: currency
+        match: derived_major_units
+        transform: minor_to_major_decimal
+        silver_type: decimal(38,4)
+        unit: "INR major units (rupees) as an exact decimal; the profile unit is INR paise (currency minor units, exponent 2)"
+        null_rule: "Null only when availableBalanceMinor is null; never turned into 0.00."
+        rationale: "Both are the funds the holder can use now: the profile's 'Funds currently available after recorded holds' and the official 'Available balance on the account.' Value = paise / 100, exact; the sign is kept."
+        evidence: "Available balance on the account."
+      - profile: holdsMinor
+        official: blockedAmount
+        official_type: currency
+        match: derived_major_units
+        transform: minor_to_major_decimal
+        silver_type: decimal(38,4)
+        unit: "INR major units (rupees) as an exact decimal; the profile unit is INR paise (currency minor units, exponent 2)"
+        null_rule: "Null only when holdsMinor is null (a source with no hold field stays unknown); never turned into 0.00."
+        rationale: "A recorded hold is the part of the account balance the bank has reserved: the profile's 'Recorded held amount, already part of posted wealth' and the official 'amount of the account's balance that has been blocked/reserved by the bank'. Both are a portion of the balance, not an addition to it. Value = paise / 100, exact."
+        evidence: "The amount of the account's balance that has been blocked/reserved by the bank for a specific purpose or as a security measure."
+  - profile_entity: Card
+    official_entity: FICard
+    attributes:
+      - profile: cardId
+        official: integrationKey
+        official_type: string
+        match: semantic
+        transform: identity
+        silver_type: string
+        unit: "none (identifier text)"
+        null_rule: "Null only when cardId is null; an identifier is never synthesised or defaulted."
+        rationale: "Both are the business key of the card record, as opposed to the platform row GUID: the profile's cardId is the 'Card business identifier' and the official integrationKey is what the system integrator uses to uniquely define the record (the official GUID, fi_CardId, is not aliased). Values are carried verbatim and are unique within a release."
+        evidence: "Used by the system integrator to uniquely define the data record ."
+      - profile: maskedNumber
+        official: cardnumber
+        official_type: string
+        match: exact
+        transform: identity
+        silver_type: string
+        unit: "none (already-masked display text)"
+        null_rule: "Null only when maskedNumber is null; the number is never rebuilt or unmasked from any other source."
+        rationale: "Both are the card number held only in masked form: the profile's maskedNumber is an 'Already masked card display number; never full card data' and the official cardnumber is the card number 'with appropriate masking, PCI-compliant'. The value is carried verbatim; the full number is never in silver."
+        evidence: "The customer's card number (with appropriate masking, PCI-compliant)."
+      - profile: limitMinor
+        official: purchasingLimit
+        official_type: currency
+        match: derived_major_units
+        transform: minor_to_major_decimal
+        silver_type: decimal(38,4)
+        unit: "INR major units (rupees) as an exact decimal; the profile unit is INR paise (currency minor units, exponent 2)"
+        null_rule: "Null only when limitMinor is null (debit and prepaid cards carry no credit limit); never turned into 0.00."
+        rationale: "Both are the ceiling on what the holder can spend on the card: the profile's 'Credit facility limit, not money credited or prepaid value' and the official 'maximum amount that the customer can spend using the card'. The profile column is only filled for credit cards, so debit and prepaid cards get a null alias. The official attribute does not separate a credit line from a spending sub-limit; this is the weakest judgement in the list and is flagged for review. Value = paise / 100, exact."
+        evidence: "The maximum amount that the customer can spend using the card."
+  - profile_entity: Deposit
+    official_entity: FHSaving
+    attributes:
+      - profile: depositId
+        official: integrationKey
+        official_type: string
+        match: semantic
+        transform: identity
+        silver_type: string
+        unit: "none (identifier text)"
+        null_rule: "Null only when depositId is null; an identifier is never synthesised or defaulted."
+        rationale: "Both are the business key of the deposit record, as opposed to the platform row GUID: the profile's depositId is the 'Deposit business identifier' and the official integrationKey is what the system integrator uses to uniquely define the record (the official GUID, FH_SavingId, is not aliased). Values are carried verbatim and are unique within a release."
+        evidence: "Used by the system integrator to uniquely define the data record ."
+      - profile: maturesOn
+        official: maturitydate
+        official_type: dateTime
+        match: type_narrowed
+        transform: date_keep
+        silver_type: date32
+        unit: "calendar date (YYYY-MM-DD), no implicit midnight and no timezone (the profile unit)"
+        null_rule: "Null only when maturesOn is null; no default date, time or timezone is substituted."
+        rationale: "Both are the contractual end date of the deposit: the profile's 'Contract maturity date, not evidence that settlement has posted' and the official 'target date on which an interest-bearing savings financial holding is terminated'. Carried as the plain date it is; it is not a settlement posting."
+        evidence: "The target date on which an interest-bearing savings financial holding is terminated, and full interst is paid."
+        type_note: "Official type is dateTime but the profile value is a plain calendar date: silver keeps a date (date32) and never adds a time of day or a timezone."
+      - profile: ratePct
+        official: interestrate
+        official_type: decimal
+        match: semantic
+        transform: identity
+        silver_type: string
+        unit: "percentage points (the profile unit; the official attribute states no unit or period), as canonical decimal text"
+        null_rule: "Null only when ratePct is null; an absent source rate stays unknown and is never turned into 0."
+        rationale: "Both are the interest rate applied to the deposit: the profile's 'Rate stored on the holding' and the official 'rate of interest applied to the financial holding'. The profile pins the unit to percentage points while the official text leaves period and unit open, so the alias is labelled with the profile unit. Carried as the profile's canonical decimal text."
+        evidence: "The rate of interest applied to the financial holding, to be earned during a defined period/term. "
+        type_note: "Official type is decimal. The profile defines the rate as exact decimal text, so the alias keeps that canonical decimal text (string): no binary float and no fixed-scale rounding is introduced. decimal(38,4) is reserved for official currency aliases."
+  - profile_entity: Loan
+    official_entity: FHLoan
+    attributes:
+      - profile: liabilityId
+        official: integrationKey
+        official_type: string
+        match: semantic
+        transform: identity
+        silver_type: string
+        unit: "none (identifier text)"
+        null_rule: "Null only when liabilityId is null; an identifier is never synthesised or defaulted."
+        rationale: "Both are the business key of the loan record, as opposed to the platform row GUID: the profile's liabilityId is the 'Loan liability business identifier' and the official integrationKey is what the system integrator uses to uniquely define the record (the official GUID, FH_LoanId, is not aliased). Values are carried verbatim and are unique within a release."
+        evidence: "Used by the system integrator to uniquely define the data record."
+      - profile: principalMinor
+        official: principalAmount
+        official_type: currency
+        match: derived_major_units
+        transform: minor_to_major_decimal
+        silver_type: decimal(38,4)
+        unit: "INR major units (rupees) as an exact decimal; the profile unit is INR paise (currency minor units, exponent 2)"
+        null_rule: "Null only when principalMinor is null; never turned into 0.00."
+        rationale: "Both are the principal of the loan: the profile's 'Original disbursed or escrow-funded principal' and the official 'principal amount of the financial holding'. The official disbursedAmount (disbursed so far) and balance (owed now) are different quantities and are not used. Value = paise / 100, exact."
+        evidence: "The principal amount of the financial holding."
+      - profile: outstandingMinor
+        official: balanceDisplayValue
+        official_type: currency
+        match: derived_major_units
+        transform: minor_to_major_decimal
+        silver_type: decimal(38,4)
+        unit: "INR major units (rupees) as an exact decimal, the amount owed as a positive number (the profile's sign, no inversion); the profile unit is INR paise (currency minor units, exponent 2)"
+        null_rule: "Null only when outstandingMinor is null; never turned into 0.00."
+        rationale: "Both are the amount the borrower still owes, as a positive number: the profile's 'Outstanding loan liability, not an account balance' and the official display value, which presents a liability as positive when the customer owes the bank ('a loan with an accounting value of -500 will appear as 500'). The stored accounting value, balance, is deliberately not used: by that same description the accounting value of a loan is negative, so aliasing the positive profile value to it would invert its meaning. Value = paise / 100, exact; the sign is kept."
+        evidence: "Display value shows the balance of a financial holding in accordance with the type of the financial holding. Financial holdings that are typically defined as a customer's liabilities (such as lines of credit and loans) are presented as positive when the customer owes money to the financial institution (that is, a loan with an accounting value of -500 will appear as 500). In the inverse case: the display value will be negative for debit balances on a credit financial holding (such as overpayment of a credit card), or overdrawn account."
+      - profile: monthlyPaymentMinor
+        official: installmentAmount
+        official_type: currency
+        match: derived_major_units
+        transform: minor_to_major_decimal
+        silver_type: decimal(38,4)
+        unit: "INR major units (rupees) as an exact decimal; the profile unit is INR paise (currency minor units, exponent 2)"
+        null_rule: "Null only when monthlyPaymentMinor is null; never turned into 0.00."
+        rationale: "Both are the recurring monthly repayment due on the loan: the profile's 'Recorded monthly repayment obligation, not a posted repayment' and the official 'equal monthly installment payments a customer makes to the bank toward repayment of the loan (EMI)'. The official nextPaymentAmount and lastPaymentAmount are different quantities and are not used. Value = paise / 100, exact."
+        evidence: "The equal monthly installment payments a customer makes to the bank toward repayment of the loan (EMI)."
+      - profile: ratePct
+        official: interestrate
+        official_type: decimal
+        match: semantic
+        transform: identity
+        silver_type: string
+        unit: "percentage points per year, annual nominal (the profile unit; the official attribute states no unit or period), as canonical decimal text"
+        null_rule: "Null only when ratePct is null; an absent source rate stays unknown and is never turned into 0."
+        rationale: "Both are the interest rate charged on the loan: the profile's 'Persisted annual nominal percentage rate' and the official 'rate of interest charged to the loan borrower during a defined period or term'. The profile fixes the unit (annual nominal, percentage points) while the official text leaves period and unit open, so the alias is labelled with the profile unit. Carried as the profile's canonical decimal text."
+        evidence: "The rate of interest charged to the loan borrower during a defined period or term during the course of a loan."
+        type_note: "Official type is decimal. The profile defines the rate as exact decimal text, so the alias keeps that canonical decimal text (string): no binary float and no fixed-scale rounding is introduced. decimal(38,4) is reserved for official currency aliases."
+      - profile: maturesOn
+        official: maturitydate
+        official_type: dateTime
+        match: type_narrowed
+        transform: date_keep
+        silver_type: date32
+        unit: "calendar date (YYYY-MM-DD), no implicit midnight and no timezone (the profile unit)"
+        null_rule: "Null only when maturesOn is null; no default date, time or timezone is substituted."
+        rationale: "Both are the contractual date of the final payment: the profile's 'Contractual maturity date' and the official 'date on which the final payment is due on a financial holding'. Carried as the plain date it is."
+        evidence: "The date on which the final payment is due on a financial holding. This can be a repayment towards an investment, a loan, or a saving."
+        type_note: "Official type is dateTime but the profile value is a plain calendar date: silver keeps a date (date32) and never adds a time of day or a timezone."
+  - profile_entity: Document
+    official_entity: CustomDocument
+    attributes: []
+    note: "Reviewed, no official alias. Besides its GUID and system columns CustomDocument defines only name (the category of a document requested for a loan application) and description. No profile Document attribute is equal to either: documentKind covers any owner document and title is a title, not a request category (see skipped.official_attributes.CustomDocument)."
+
+# Every official attribute of the referenced entities that is not aliased above is listed here exactly once, in vendored-file order.
+# Mechanical categories are derived from the official type and name; no_counterpart carries a reason per attribute.
+skipped:
+  categories:
+    guid_or_lookup: "Row GUID, or a lookup that holds a GUID (official type entityId or customer). The profile's identifiers are business identifiers declared 'not a GUID' (contosoBanking.stringIdentifier extends string, not entityId), so no profile attribute can fill one."
+    system_column: "Dataverse system or audit column (record state and status codes, created, modified and migrated timestamps, import sequence, time-zone housekeeping). The seed supplies none of them and they carry no profile meaning."
+    option_set: "Dataverse option set (official type listLookup): a coded value with a localized label. Profile attributes are free text, so their values would not be members of the official set; no alias is created."
+    converted_currency_twin: "Converted-currency companion of a currency attribute: *_Base (base-currency value), *_default and *Default (default-currency value), *Exchangerate (conversion rate), *DefaultDisplayValue. The profile has one recorded currency per row and no conversion, so none can be filled without inventing an exchange rate."
+    no_counterpart: "No profile attribute has the same meaning; the reason is given per attribute."
+  entities:
+    - profile_entity: PartyRelationship
+      official_entity: Relationship
+      reason: "Runtime-only in the profile: it is built from applied verified-recipient evidence, not from a seed file (no seed row exists), so there is no silver table to carry aliases. Its attributes are business identifiers (relationshipId, customerId, relatedPartyRef, evidenceId) and a role, while the official Relationship holds GUID lookups (ContactFrom, ContactTo), an option set (relationshiptype) and a record name; no pair is equal."
+    - profile_entity: EvidenceReading
+      official_entity: CustomDocument
+      reason: "Runtime-only in the profile: persisted extraction identity and metadata of document reads, with no seed row and so no silver table. CustomDocument defines only name and description besides its GUID and system columns, and neither is a reading attribute."
+  official_attributes:
+    Contact:
+      guid_or_lookup:
+        - contactId
+    Relationship:
+      guid_or_lookup:
+        - relationshipId
+        - ContactFrom
+        - ContactTo
+      system_column:
+        - createdOn
+        - modifiedOn
+        - statecode
+        - statuscode
+        - importSequenceNumber
+        - overriddenCreatedOn
+        - timeZoneRuleVersionNumber
+        - UTCConversionTimeZoneCode
+      option_set:
+        - relationshiptype
+      no_counterpart:
+        - attribute: name
+          reason: "The name of the custom entity: a record name; the profile PartyRelationship has no name attribute."
+    FHAccount:
+      guid_or_lookup:
+        - FH_AccountId
+      system_column:
+        - createdOn
+        - modifiedOn
+        - statecode
+        - statuscode
+        - importSequenceNumber
+        - overriddenCreatedOn
+        - timeZoneRuleVersionNumber
+        - UTCConversionTimeZoneCode
+      option_set:
+        - accountingClassification
+        - financialHoldingCategory
+        - financialHoldingType
+        - interestType
+      converted_currency_twin:
+        - availablebalance_Base
+        - availableBalance_default
+        - averagebalance_Base
+        - averageBalance_default
+        - balance_Base
+        - balanceDefault
+        - balanceExchangerate
+        - blockedamount_Base
+        - blockedAmount_default
+        - unclearedbalance_Base
+        - unclearedBalance_default
+        - balanceDefaultDisplayValue
+        - balancedisplayvalue_Base
+      no_counterpart:
+        - attribute: name
+          reason: "Required name field: the table's primary-name column. No profile attribute of this entity is a record name (the common label column is a derived display label that can fall back to the business id, so it is not an equal-meaning source)."
+        - attribute: averageBalance
+          reason: "Average balance over a bank-chosen period; the profile and the seed record no average balance."
+        - attribute: dateoflasttransaction
+          reason: "Date of the last transaction on the account; the profile Account has no such attribute (it would be derived from Transaction rows, not recorded on the account)."
+        - attribute: delinquencyStatus
+          reason: "Overdue-payment indicator (a loan notion); the profile Account has no delinquency attribute."
+        - attribute: interestrate
+          reason: "Interest rate of the account; the profile Account carries no rate (Deposit and Loan do, and are aliased against their own official entities)."
+        - attribute: numberoftransactions
+          reason: "Count of transactions in the last month; a derived activity measure, not a profile attribute."
+        - attribute: unclearedBalance
+          reason: "Pending items not yet credited; the profile records no uncleared amount."
+        - attribute: balanceDisplayValue
+          reason: "Sign-adjusted display variant of balance; the profile has no display-sign attribute (postedBalanceMinor is aliased to the stored value, balance)."
+    FICard:
+      guid_or_lookup:
+        - fi_CardId
+        - Cardholder
+      system_column:
+        - createdOn
+        - modifiedOn
+        - statecode
+        - statuscode
+        - importSequenceNumber
+        - overriddenCreatedOn
+        - timeZoneRuleVersionNumber
+        - UTCConversionTimeZoneCode
+      option_set:
+        - cardType
+        - financialinstrumenttype
+        - status
+      converted_currency_twin:
+        - purchasinglimit_Base
+        - purchasinglimit_default
+        - withdrawallimit_Base
+        - withdrawallimit_default
+      no_counterpart:
+        - attribute: name
+          reason: "Required name field: the table's primary-name column. No profile attribute of this entity is a record name (the common label column is a derived display label that can fall back to the business id, so it is not an equal-meaning source)."
+        - attribute: activationDate
+          reason: "Date the card was activated; the profile Card has no activation date."
+        - attribute: cardNetwork
+          reason: "Card network (Visa, Mastercard, American Express); the profile Card has no network attribute."
+        - attribute: dateoflastcashwithdrawal
+          reason: "Date of the last cash withdrawal with the card; transaction-derived, not a profile attribute."
+        - attribute: dateoflasttransaction
+          reason: "Date of the last transaction with the card; transaction-derived, not a profile attribute."
+        - attribute: embossingName
+          reason: "Name embossed on the card; the profile Card holds no cardholder name."
+        - attribute: expiryDate
+          reason: "A calendar date. The profile expiry is month/year text, 'deliberately not an invented calendar date'; filling this date from it would invent a day (and a time), so the profile attribute stays unaliased."
+        - attribute: issueDate
+          reason: "Date the card was issued; the profile Card has no issue date."
+        - attribute: numberofcashwithdrawal
+          reason: "Monthly count of cash withdrawals; a derived activity measure, not a profile attribute."
+        - attribute: numberoftransactions
+          reason: "Monthly count of card transactions; a derived activity measure, not a profile attribute."
+        - attribute: productName
+          reason: "Marketing name of the card product. The profile productId is an exact catalogue reference (an identifier), not a name, so the meanings differ."
+        - attribute: withdrawalLimit
+          reason: "Maximum cash withdrawal with the card; the profile Card has no cash-withdrawal limit."
+    FHSaving:
+      guid_or_lookup:
+        - FH_SavingId
+      system_column:
+        - createdOn
+        - modifiedOn
+        - statecode
+        - statuscode
+        - importSequenceNumber
+        - overriddenCreatedOn
+        - timeZoneRuleVersionNumber
+        - UTCConversionTimeZoneCode
+      option_set:
+        - accountingClassification
+        - financialHoldingCategory
+        - financialHoldingType
+      converted_currency_twin:
+        - accruedinterest_Base
+        - accruedInterest_default
+        - balance_Base
+        - balanceatmaturity_Base
+        - balanceatMaturity_default
+        - balanceDefault
+        - balanceExchangerate
+        - blockedamount_Base
+        - blockedAmount_default
+        - projectedinterestamount_Base
+        - projectedInterestAmount_default
+        - balanceDefaultDisplayValue
+        - balancedisplayvalue_Base
+      no_counterpart:
+        - attribute: name
+          reason: "Required name field: the table's primary-name column. No profile attribute of this entity is a record name (the common label column is a derived display label that can fall back to the business id, so it is not an equal-meaning source)."
+        - attribute: accruedInterest
+          reason: "Interest accrued to date; the profile Deposit records no accrued interest."
+        - attribute: balance
+          reason: "Value of the holding now. The profile Deposit has no balance: principalMinor is the funded principal, which stays recorded on closed (historical) deposits that no longer hold a balance, so principal is not this balance."
+        - attribute: balanceatMaturity
+          reason: "Principal plus interest at maturity; a computed projection, not a profile attribute."
+        - attribute: blockedAmount
+          reason: "Blocked or reserved part of the balance; the profile Deposit has no hold amount (holdsMinor belongs to Account and is aliased there)."
+        - attribute: initialSource
+          reason: "Source of the funds first deposited; the profile Deposit has no funding-source attribute."
+        - attribute: maturityInstructionsDetails
+          reason: "The customer's instructions for handling the deposit at maturity (for example transfer to another account). The profile payoutMode is the recorded maturity, monthly or quarterly payout choice, which also covers payout frequency during the term, so the two are not the same concept. (The retail4 seed field maturityInstruction would be the counterpart, but it is not a profile attribute and so has nothing to alias.)"
+        - attribute: projectedInterestAmount
+          reason: "Interest expected to be earned; a computed projection, not a profile attribute."
+        - attribute: term
+          reason: "Term of the deposit in months; the profile Deposit has no term attribute (only Loan has termMonths)."
+        - attribute: balanceDisplayValue
+          reason: "Sign-adjusted display variant of balance; the profile Deposit has no balance and so no display value."
+    FHLoan:
+      guid_or_lookup:
+        - FH_LoanId
+      system_column:
+        - createdOn
+        - modifiedOn
+        - statecode
+        - statuscode
+        - importSequenceNumber
+        - overriddenCreatedOn
+        - timeZoneRuleVersionNumber
+        - UTCConversionTimeZoneCode
+      option_set:
+        - accountingClassification
+        - collectionRisk
+        - financialHoldingCategory
+        - financialHoldingType
+        - interestType
+        - modeofPayment
+      converted_currency_twin:
+        - balance_Base
+        - balanceDefault
+        - balanceExchangerate
+        - capitalarrears_Base
+        - capitalArrears_default
+        - disbursedamount_Base
+        - disbursedAmount_default
+        - feearrears_Base
+        - feeArrears_default
+        - installmentamount_Base
+        - installmentAmount_default
+        - interestarrears_Base
+        - interestArrears_default
+        - lastpaymentamount_Base
+        - lastPaymentAmount_default
+        - nextpaymentamount_Base
+        - nextPaymentAmount_default
+        - principalamount_Base
+        - principalAmount_default
+        - totalarrear_Base
+        - totalArrear_default
+        - totalinterestpaid_Base
+        - totalInterestPaid_default
+        - balanceDefaultDisplayValue
+        - balancedisplayvalue_Base
+      no_counterpart:
+        - attribute: name
+          reason: "Required name field: the table's primary-name column. No profile attribute of this entity is a record name (the common label column is a derived display label that can fall back to the business id, so it is not an equal-meaning source)."
+        - attribute: balance
+          reason: "Stored accounting value of the loan. The official display value is defined in the same file as positive when the customer owes the bank ('a loan with an accounting value of -500 will appear as 500'), so the profile's positive outstanding amount is aliased to balanceDisplayValue; aliasing it to balance would invert its sign."
+        - attribute: capitalArrears
+          reason: "Capitalized overdue amounts; the profile records no arrears (a repayment-history fact)."
+        - attribute: delinquencyStatus
+          reason: "Overdue-payment indicator; not a profile attribute."
+        - attribute: disbursedAmount
+          reason: "Amount disbursed so far. The profile principalMinor is the original disbursed or escrow-funded principal, a different quantity, so it is aliased to principalAmount instead."
+        - attribute: disbursementDate
+          reason: "Date the loan was disbursed to the borrower. The profile openedOn is the origination date, and escrow-funded purchase loans are not disbursed to the customer, so origination is not this event."
+        - attribute: feeArrears
+          reason: "Fees for overdue payments; the profile records no arrears (a repayment-history fact)."
+        - attribute: interestArrears
+          reason: "Overdue interest; the profile records no arrears (a repayment-history fact)."
+        - attribute: interestReviewPeriod
+          reason: "Period of the interest-rate review; the profile Loan has no rate-review attribute."
+        - attribute: lastPaymentAmount
+          reason: "Amount of the last repayment made: posted repayment history, which the profile's monthlyPaymentMinor is explicitly not ('not a posted repayment')."
+        - attribute: lastPaymentDate
+          reason: "Date of the last repayment made; posted repayment history, not a profile attribute."
+        - attribute: loanStartDate
+          reason: "By its own description, the date the first repayment is made; not the profile openedOn (the origination date)."
+        - attribute: nextInterestReviewDate
+          reason: "Next date of the interest-rate review; the profile Loan has no rate-review attribute."
+        - attribute: nextPaymentAmount
+          reason: "Amount of the next scheduled repayment; repayment schedules are not Loan attributes in the profile."
+        - attribute: nextPaymentDate
+          reason: "Date of the next scheduled repayment; repayment schedules are not Loan attributes in the profile."
+        - attribute: numberofDeferralsMade
+          reason: "Count of instalment deferrals; a repayment-history counter, not a profile attribute."
+        - attribute: numberofInstallmentsPaid
+          reason: "Count of instalments paid; a repayment-history counter, not a profile attribute."
+        - attribute: overdueDate
+          reason: "Date the loan became overdue; not a profile attribute."
+        - attribute: repaymentAccount
+          reason: "Source account of repayments. The profile linkedAccountId is the owned servicing account reference and is not stated to be the repayment source, and the seed loans carry no linked account, so it is left unaliased rather than assumed."
+        - attribute: totalArrear
+          reason: "Total missed repayments; the profile records no arrears (a repayment-history fact)."
+        - attribute: totalInterestPaid
+          reason: "Cumulative interest paid; a derived repayment-history measure, not a profile attribute."
+        - attribute: dayspastdue
+          reason: "Days the loan has been overdue; not a profile attribute."
+    CustomDocument:
+      guid_or_lookup:
+        - customDocumentId
+      system_column:
+        - createdOn
+        - modifiedOn
+        - statecode
+        - statuscode
+        - importSequenceNumber
+        - overriddenCreatedOn
+        - timeZoneRuleVersionNumber
+        - UTCConversionTimeZoneCode
+      no_counterpart:
+        - attribute: name
+          reason: "Category of the additional or specially-requested document requested for the loan application. The profile documentKind is the kind of any owner document (in the seed: chat transcripts, customer notes, receipts, offers, notices) and title is a customer-visible title; neither is limited to, or equal to, a loan-application request category."
+        - attribute: description
+          reason: "Free-text description of a requested document; the profile Document has no description attribute."

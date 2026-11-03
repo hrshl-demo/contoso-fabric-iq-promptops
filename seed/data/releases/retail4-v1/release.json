@@ -1,0 +1,880 @@
+{
+  "approval": {
+    "approvedAt": "2026-09-16T15:19:52Z",
+    "catalogueApproved": true,
+    "contentManifestSha256": "a0ff6685af9fc10632484f75168c1cb4460f2fadb8cae67d0f9a2d63661da9ad",
+    "note": "Re-authored the full catalogue under instructions that forbid internal identifiers in customer-facing prose, after supportedActions values were found rendered as customer benefits; author_seed now rejects such output rather than trusting the prompt. Unit repair re-applied.",
+    "reviewedManifestSha256": "28288c233e7933f402848eb78dab9a9e107e927a0376d67e8a4825d53382d50e",
+    "reviewerId": "hrshl-demo (operator)"
+  },
+  "approvedCatalogueVersion": "catalogue-v1",
+  "authoringProvenance": {
+    "authoredAt": "2026-09-13T14:43:07Z",
+    "authoredItems": 68,
+    "baseUrl": "https://ontologyproject-resource.services.ai.azure.com/openai/v1/",
+    "composedItems": 10,
+    "deployment": "gpt-5.4-buildagent",
+    "deterministicScaffoldSha256": "2ceeb11870b00fae83b6ed4e8c8227b41e73229389f183b8f5c4af86d7ef24f7",
+    "model": "gpt-5.4",
+    "modelProvenanceSource": "operator_verified",
+    "modelVersion": "2026-03-05",
+    "observedModels": [
+      "gpt-5.4-buildagent"
+    ],
+    "operator": "phase-1-authoring",
+    "rendererVersion": "retail4-render-v2",
+    "reportedModel": "gpt-5.4-buildagent",
+    "responseIds": [
+      "resp_0007e4a79c39592a006aa6b7e3375c8196bb208773a4306fed",
+      "resp_008327892231d02f006aa6b6dfdb348193b82814c3168fef63",
+      "resp_0105f0e5080f9c02006aa6baf18d788195a527f7427812e204",
+      "resp_0180363871a8be59006aa6b7ee168c8197873ca4c11df2b1da",
+      "resp_018e5bc804b5261f006aa6b8229a948193bc897e429a96956e",
+      "resp_01af630e7ed22e5a006aa6b6d544b88190a5cce2b1c97ebf1e",
+      "resp_01ffadb4b06b6bb4006aa6bb1fb5788194b8c59bc5e03868c2",
+      "resp_02065f222169babc006aa6bb29bc7c8193b1247a634130eb25",
+      "resp_02098918ee26d82a006aa6bb3e7ab08197a41c093458d631f5",
+      "resp_02269b49fc5f4d5f006aa6b69759fc8194bb6a9261caf0ebb9",
+      "resp_022cd0de6b46d6fe006aa6b6b30c0c81938dbb038710b6feaf",
+      "resp_026597dcd46ec498006aa6b6a839a0819786c7a91489d7a3c4",
+      "resp_026fbf14626c4984006aa6b78c17f081978fa7862e84d61ea9",
+      "resp_027fa867e0da72d6006aa6b7a991bc8196aff717d49a99e7bd",
+      "resp_028b96071805c59f006aa6b7a45bf08194ae9caa9279d2e763",
+      "resp_02fbbff80ea68edf006aa6b67c92c48194bedecf1e1512149b",
+      "resp_03263c45f7767b46006aa6b773a9048195aa401c5b06a4c601",
+      "resp_03616c1349862b3e006aa6b6be5fe08195892d379d5a5b64e3",
+      "resp_039844b0d50cbed5006aa6b6e5b7f48193b388e2c6f3057a84",
+      "resp_03fea7bfe0bd2382006aa6b6b87dac819588440c17fd373d15",
+      "resp_046a71ccb89fe617006aa6b7d71f5081909ddcb6d52b448173",
+      "resp_04d18c7f0347670c006aa6baeb13e08190b394a228bc7d1c09",
+      "resp_0501ecfa62b4f685006aa6bacd318c8197938b3e7dd3e97fbd",
+      "resp_0513ec4366e72039006aa6b7fff6f081939d325083d0dfcde8",
+      "resp_0559dd6e78d36545006aa6b79264cc8193b847a79948531cc8",
+      "resp_05c03dd629f5453e006aa6bb39473481969ab2911448f628da",
+      "resp_05c8d27d135148cf006aa6b81b354c8194ad314d5b4ba596c7",
+      "resp_05f5e2804c0838aa006aa6baf9811c8190b796942bffd4f3e8",
+      "resp_060db43742b05e23006aa6b67653248195a78e22ca6cc85ea4",
+      "resp_0612458d712603b6006aa6bb105f3c81939b6fd35ed68c88dc",
+      "resp_06194b65858aa79b006aa6b7cc7d448197ab0ea8a2aac6425f",
+      "resp_063e161439f010da006aa6bad5a4248190ac861e6a2f8376a7",
+      "resp_065523aced95ae87006aa6b6eb13348196a8ce63c19139af5f",
+      "resp_06a4c993621abcd4006aa6b79fc6b08190b659eef8170809ae",
+      "resp_06d5061cad711a1e006aa6b7bcea10819696525620a6eac98d",
+      "resp_070b95705b093fa4006aa6bb0113ac81909710d3cf9d2547bf",
+      "resp_0716eac4e36e7e93006aa6bb18b0f48193b27010f7c14c118e",
+      "resp_073e4204e35c1001006aa6b78506148195b35365d3c2ad2718",
+      "resp_078968a330bf056b006aa6b7af75d0819082ff94368d93eefd",
+      "resp_07b2414c781d17c5006aa6b80b7ae08195a1f913928652990f",
+      "resp_07cfa133665c9df2006aa6b77df2308194b94bcc473eea0804",
+      "resp_0851e2e0295dcd05006aa6bb316a6081978063ed54649dea4b",
+      "resp_088539c21407afbe006aa6b6ca91c881949f31d3d9bbc2a8bd",
+      "resp_08a09c6ddd7021ff006aa6b7f8bff081968dd2ddca268d2a83",
+      "resp_08b02d669f6a052a006aa6bb45d48c81939bdc9a97a4c1fc69",
+      "resp_08d7bb4b37ecdbf4006aa6b7d211488195a7759469b04ca00a",
+      "resp_099acd9c59f61d41006aa6bb4d7e7c81958c95fe7d99984cd5",
+      "resp_09afe985bcc1f537006aa6b79a5a948195926b823fea16b32f",
+      "resp_09bd5cb2eee1b74a006aa6b6d037d48197a441c44019c4471f",
+      "resp_09fdae66bb507912006aa6b6ef8f648196a4b2e3d252d6efa8",
+      "resp_0a2a59d8d75b00c6006aa6b8169b8c8197a139648922887bf5",
+      "resp_0b11c217c980721d006aa6b69d8c58819095062a0e08ddc62f",
+      "resp_0b1a7eca637442db006aa6b76eb2c4819790f109f284fc916e",
+      "resp_0b54bc536a6280b1006aa6b8132e5c81908b3ff5b5ae89d149",
+      "resp_0bd0331b9b2f8f92006aa6b7f3d30c8194850470ed63645004",
+      "resp_0bd6da48d35e31b2006aa6b7b677f88196aade77280ee78ee2",
+      "resp_0bfb2873fd9a18c8006aa6bb09377c819592280ea5b620d9bc",
+      "resp_0c7541785fab4ae6006aa6b6910078819682ab358120a907e6",
+      "resp_0cf9da65f7e9e2bb006aa6b7e9edb481968f527ef0ef1456ac",
+      "resp_0d787225745122e7006aa6b6a2a6408196829fcdc42eb8f82a",
+      "resp_0dadf17865396ab5006aa6b778e49c81978cd66d676258bdc9",
+      "resp_0e2ff43fc1fee83e006aa6bae183dc8197ab82e8549fa6f26e",
+      "resp_0ec75a2b673d46a8006aa6b7dd2a508195ab3d1ddfbbe7415c",
+      "resp_0ecf36dda7a17353006aa6b827006c8195b67502d19efffd46",
+      "resp_0f24c330aaf8e0d4006aa6b80590148195a1936338425861e9",
+      "resp_0f30e7306c8e6705006aa6b6ad98108196a2041462def3da05",
+      "resp_0f51cf812a3b5556006aa6b6db084c8193a62008602f5bb0aa",
+      "resp_0fcea3f701e03f77006aa6b6c41af88193b2d874afbd870c00"
+    ]
+  },
+  "businessDate": "2026-09-13",
+  "contractVersion": "retail4-1.0",
+  "counts": {
+    "accounts": 3,
+    "cards": 3,
+    "deposits": 2,
+    "documents": 41,
+    "goals": 8,
+    "knowledgeChunks": 41,
+    "personas": 3,
+    "perturbations": 23,
+    "policies": 1,
+    "products": 24,
+    "socialProfiles": 4,
+    "sops": 17,
+    "transactions": 520
+  },
+  "createdAt": "2026-09-14T11:03:56Z",
+  "files": {
+    "accounts.json": {
+      "bytes": 1875,
+      "contentType": "application/json",
+      "sha256": "b6cccf9d7780d2b144c11bf71c8877cb0d16b845ddce4d550bdc889110527077"
+    },
+    "assets/assets.json": {
+      "bytes": 8415,
+      "contentType": "application/json",
+      "sha256": "bf80c68cb1d710bfcf6d3976bbe66ed2af18c82499879e51a124ec7ff5d1100b"
+    },
+    "assets/exp-commitment-order.svg": {
+      "bytes": 4433,
+      "contentType": "image/svg+xml",
+      "sha256": "a962a74724a893504352600026f48c4c27b0b6bf28cd201f5530a779caece73e"
+    },
+    "assets/exp-credit-utilisation.svg": {
+      "bytes": 2824,
+      "contentType": "image/svg+xml",
+      "sha256": "b5ceed5795fa3b530c0a11de54ff3134b7877a9fbf413e5bab653c63e559de85"
+    },
+    "assets/exp-dispute-stages.svg": {
+      "bytes": 3075,
+      "contentType": "image/svg+xml",
+      "sha256": "bd5acbc4b366af50ec889829939b1a711cda413fcf37db39fca39c6a8f6d9b07"
+    },
+    "assets/exp-fd-ladder.svg": {
+      "bytes": 3025,
+      "contentType": "image/svg+xml",
+      "sha256": "3d140a845df164cf5386748aa021cb25bc6de0fc66e80f03428dc44b9b6115dd"
+    },
+    "assets/exp-fraud-never-share.svg": {
+      "bytes": 2482,
+      "contentType": "image/svg+xml",
+      "sha256": "2ce652322a1a7fd26f63017a7d197ddcdfa331230af1226ffdcb59a1e4434835"
+    },
+    "assets/exp-group-split.svg": {
+      "bytes": 3255,
+      "contentType": "image/svg+xml",
+      "sha256": "1dc6aa67d1398b133e8763ee94bbf7e0acca7f734066c9dfcc093c9c956a3010"
+    },
+    "assets/exp-health-layers.svg": {
+      "bytes": 2814,
+      "contentType": "image/svg+xml",
+      "sha256": "311c62ab07b6bfdf0a7ab722d2995a43ad03d1e5cf62591aa4f68ea5c607fd25"
+    },
+    "assets/exp-home-loan-rates.svg": {
+      "bytes": 2685,
+      "contentType": "image/svg+xml",
+      "sha256": "5bed84fdd466d926d825ced7c7999981a9da2d3c268e2c17cc2f450abcc8ccff"
+    },
+    "assets/exp-irregular-income.svg": {
+      "bytes": 3925,
+      "contentType": "image/svg+xml",
+      "sha256": "8d1850cee2d4e24e8b2dd25d32b399856f52a89579d4296d57edfa1260afbec9"
+    },
+    "assets/exp-salary-split.svg": {
+      "bytes": 3751,
+      "contentType": "image/svg+xml",
+      "sha256": "3c7b49c7e5eccfa85f0b7fe80427e3b47851bea5de465668225c873eeab1ce87"
+    },
+    "assets/exp-spend-mix.svg": {
+      "bytes": 3681,
+      "contentType": "image/svg+xml",
+      "sha256": "2a76dc1436046ec8b4bd24f334d5d76f06a88b7d780d53536be99a9b392f421b"
+    },
+    "assets/exp-sweep-flow.svg": {
+      "bytes": 3747,
+      "contentType": "image/svg+xml",
+      "sha256": "1c2af98702a218d568374ab383c4f8490baac155c412b426940345091a320291"
+    },
+    "assets/offer-credit-card.svg": {
+      "bytes": 2032,
+      "contentType": "image/svg+xml",
+      "sha256": "40214ed726ff987acd13377485d38b3533fb8689323edb28e5fd77f2259ad9ae"
+    },
+    "assets/offer-debit-card.svg": {
+      "bytes": 2224,
+      "contentType": "image/svg+xml",
+      "sha256": "88fc05390ec744ec6b7358c14d9baa62049c24cbd71719a632b5eeaf81fcf010"
+    },
+    "assets/offer-fixed-deposit.svg": {
+      "bytes": 1945,
+      "contentType": "image/svg+xml",
+      "sha256": "079d48222c76612388265b5f79b229268e39edd923c368d39a46cc4fb227fbfb"
+    },
+    "assets/offer-health-cover.svg": {
+      "bytes": 1831,
+      "contentType": "image/svg+xml",
+      "sha256": "00af084dbc22ccc58ef0f5359503405b122ca8c7610533eb11f830081489e20c"
+    },
+    "assets/offer-home-loan.svg": {
+      "bytes": 1954,
+      "contentType": "image/svg+xml",
+      "sha256": "2f528d2148f7a2b8e63aa09148a9ac60e67be5659faa4adfe9582af0e59edb60"
+    },
+    "assets/offer-recurring-deposit.svg": {
+      "bytes": 2099,
+      "contentType": "image/svg+xml",
+      "sha256": "04945e70173299140fc10f83cfad6fd635f7ec9885dcd8cd2c24b7be55bf3e3b"
+    },
+    "assets/offer-savings.svg": {
+      "bytes": 1873,
+      "contentType": "image/svg+xml",
+      "sha256": "9cf6d838c17cebcda514a6159ca23b016000f673d40fef2607cddc4ca35ad1e9"
+    },
+    "assets/offer-sweep.svg": {
+      "bytes": 1960,
+      "contentType": "image/svg+xml",
+      "sha256": "68a36754ce977e3c6d7a7628fca6322bdb35f620193585846a62f4dc98666da0"
+    },
+    "bank/business-units.json": {
+      "bytes": 4699,
+      "contentType": "application/json",
+      "sha256": "5371d5f98d037c5557f399a4441bbd2a7827556c397c9a668564d8be9a55a5f7"
+    },
+    "bank/campaigns.json": {
+      "bytes": 4399,
+      "contentType": "application/json",
+      "sha256": "9832c34cdffd0d3d08b427180a2fe2f63f253591d67acedbbffb1e2c403ea9fc"
+    },
+    "bank/channel-mix.json": {
+      "bytes": 3043,
+      "contentType": "application/json",
+      "sha256": "4082fb21a5f74342c8e3516a7f17f1b42964edee45baf18e9f86eea82670972a"
+    },
+    "bank/crm-cases.json": {
+      "bytes": 32406,
+      "contentType": "application/json",
+      "sha256": "32a3f5d66240df179c8a690adcc80d8666e06ec6077f4fe02cb965af4094a33d"
+    },
+    "bank/monthly-metrics.json": {
+      "bytes": 7423,
+      "contentType": "application/json",
+      "sha256": "52e3d216f9ef8adee6dac28fa83ceed4ac9df6b02ea2aebb5871b4f705f42f9b"
+    },
+    "bank/portfolio-mix.json": {
+      "bytes": 3508,
+      "contentType": "application/json",
+      "sha256": "9043afad165b1924663cb15648ea6976902301ec7403659e311e9d77b8fb24f0"
+    },
+    "bank/regions.json": {
+      "bytes": 3480,
+      "contentType": "application/json",
+      "sha256": "71f3a0a53ace5fbdf6f759c27924be6d11cca8701fc15986fa6e71cedcbc3fd5"
+    },
+    "bank/risk.json": {
+      "bytes": 4545,
+      "contentType": "application/json",
+      "sha256": "4448a3cd1c2805abb7e6b37d840c04e1160956bb30d32f8b42400a8a75f24d11"
+    },
+    "bank/rm-team.json": {
+      "bytes": 2777,
+      "contentType": "application/json",
+      "sha256": "1f55f52afa81872955e3646b92becd7333c12a9f9f6a7b9014cc1ac68e391f33"
+    },
+    "cards.json": {
+      "bytes": 2796,
+      "contentType": "application/json",
+      "sha256": "fd35203f0286a2b1718b2f2c243bc4a3d773bc14dbf66daa60822dd7a057ac27"
+    },
+    "consents.json": {
+      "bytes": 1753,
+      "contentType": "application/json",
+      "sha256": "e4e64182fb6740507587ce2ac02b670eaf1c90bdc03493a9a939950ba015c65f"
+    },
+    "deposits.json": {
+      "bytes": 977,
+      "contentType": "application/json",
+      "sha256": "dd82fa61f5f5f65e49c2b13c8cf3995a1d015fdfd9c47116e33274cce0ee074f"
+    },
+    "documents.json": {
+      "bytes": 81320,
+      "contentType": "application/json",
+      "sha256": "340fc9e679786993e7bfd04d52078baa0fdf9e8f3204be30c1f225bf8262a4af"
+    },
+    "documents/DOC-N-FD-RENEWAL-V2.pdf": {
+      "bytes": 3667,
+      "contentType": "application/pdf",
+      "sha256": "5656b957a91d41f9a3d6d9b2bd994ea2874aa93b9814b8892fca211befcaa975"
+    },
+    "documents/DOC-N-FD-RENEWAL.pdf": {
+      "bytes": 3465,
+      "contentType": "application/pdf",
+      "sha256": "28a174a4abfe9c923fccb7edf7beb9ca23375cb1fee0f2a452dac65ded606341"
+    },
+    "documents/DOC-N-HEALTH-POLICY.pdf": {
+      "bytes": 3673,
+      "contentType": "application/pdf",
+      "sha256": "f8fb665109c15c405fd5f49263bc49e2a6304bcbd4fb2efb83dee20295564d32"
+    },
+    "documents/DOC-N-INSURER-CLARIFICATION.pdf": {
+      "bytes": 3308,
+      "contentType": "application/pdf",
+      "sha256": "0ab0d1bee62283e0817188f3aa0cfce31c3c6a837031165311f337b9bfc57fcf"
+    },
+    "documents/DOC-N-LEGITIMATE-NOTICE.pdf": {
+      "bytes": 3187,
+      "contentType": "application/pdf",
+      "sha256": "381adc73220fcc167652484c07108402b38d646f56bc03a5e75372c0143c0278"
+    },
+    "documents/DOC-N-MEDICAL-ESTIMATE.pdf": {
+      "bytes": 3591,
+      "contentType": "application/pdf",
+      "sha256": "9a16f8b685e6798ea228256ccfd6516bcd4e28b878b9df68bf578a376f65c387"
+    },
+    "documents/DOC-N-MEDICAL-ESTIMATE.png": {
+      "bytes": 493831,
+      "contentType": "image/png",
+      "sha256": "bd25dae1d5904e3c516839c68d3c9c46c169814111d7954ca3ff6a2b567f797a"
+    },
+    "documents/DOC-N-PENSION.pdf": {
+      "bytes": 3193,
+      "contentType": "application/pdf",
+      "sha256": "c209844349737d725d7722b9f169d340191018f7b279ecfb3b8fe9e98a0dcae5"
+    },
+    "documents/DOC-N-RETIREMENT-NOTE.pdf": {
+      "bytes": 3116,
+      "contentType": "application/pdf",
+      "sha256": "b21dd7776f75e139973c85253b84d5cce2e32cbdf2305a9da2db6c6de60f0c38"
+    },
+    "documents/DOC-N-RETIREMENT-NOTE.png": {
+      "bytes": 373505,
+      "contentType": "image/png",
+      "sha256": "503113f00c2b8a48966514f75794d4a798e420412b0103e9176b138fe1204533"
+    },
+    "documents/DOC-N-SCAM-CHAT.pdf": {
+      "bytes": 3631,
+      "contentType": "application/pdf",
+      "sha256": "603e8f4733fe4f8be525cd3a1869abb7485b26c37ae8af6d164397130287398b"
+    },
+    "documents/DOC-N-SCAM-CHAT.png": {
+      "bytes": 687955,
+      "contentType": "image/png",
+      "sha256": "25c7e8f272dd3d8d5e7cea4230e138150535ce83b61e2dee12f9d7128c0238b5"
+    },
+    "documents/DOC-R-BONUS-LETTER.pdf": {
+      "bytes": 3258,
+      "contentType": "application/pdf",
+      "sha256": "46c7c40796c0a7898ff7cdef7c6de9df72059c820b9128be177673b53fbb532c"
+    },
+    "documents/DOC-R-CARD-STATEMENT.pdf": {
+      "bytes": 5775,
+      "contentType": "application/pdf",
+      "sha256": "a9e18bbda9c0a7bfd0124fa679dab5c448f0e0c4dc91c7d23b2c0ed3b5385aeb"
+    },
+    "documents/DOC-R-FAMILY-NOTE.pdf": {
+      "bytes": 3006,
+      "contentType": "application/pdf",
+      "sha256": "f7101aa4dad2f627cb5f5419c1f0d56872fc5363041598f065cbcb90fbbbb51b"
+    },
+    "documents/DOC-R-FAMILY-NOTE.png": {
+      "bytes": 321765,
+      "contentType": "image/png",
+      "sha256": "fa0ff014e76921930c2e9cba24443e249ccdf3ae0676a1bd59ae8ba975e64c07"
+    },
+    "documents/DOC-R-HOME-OFFER-A-V2.pdf": {
+      "bytes": 4812,
+      "contentType": "application/pdf",
+      "sha256": "30ea744ba544cb80763593c2e09eac1e63fe966844266ada98338682cf154a5f"
+    },
+    "documents/DOC-R-HOME-OFFER-A.pdf": {
+      "bytes": 3809,
+      "contentType": "application/pdf",
+      "sha256": "76d424fa678135a18b614f60fb8b9fe8679970c1a0d6988872c1d61167438c9d"
+    },
+    "documents/DOC-R-HOME-OFFER-B.pdf": {
+      "bytes": 3664,
+      "contentType": "application/pdf",
+      "sha256": "24d8015dd161869d74b75bf9b1b540349df6f0dfb7e1e53c2169456253cd19ee"
+    },
+    "documents/DOC-R-MERCHANT-CHAT.pdf": {
+      "bytes": 3247,
+      "contentType": "application/pdf",
+      "sha256": "33969869c373ebe3d43edcd27c6aa38ebab574cb2dc7b8c7f0b2d9d49c78d5b0"
+    },
+    "documents/DOC-R-MERCHANT-CHAT.png": {
+      "bytes": 459919,
+      "contentType": "image/png",
+      "sha256": "e5146a589a3ff28163d8fa87f6a05088e2eb9f5c5e22c764300aaeec362fcaf8"
+    },
+    "documents/DOC-R-MERCHANT-RECEIPTS.pdf": {
+      "bytes": 3332,
+      "contentType": "application/pdf",
+      "sha256": "deaa25038f5491c74b943081d2a39ffdebf2cc92b938f6993db05129cdf25929"
+    },
+    "documents/DOC-R-MERCHANT-RECEIPTS.png": {
+      "bytes": 421843,
+      "contentType": "image/png",
+      "sha256": "f59cd64379834fa17316ed10036cba6cc3d0ec5562022c1b08cabd61918b7909"
+    },
+    "documents/DOC-R-REFUND-RECEIPT.pdf": {
+      "bytes": 3353,
+      "contentType": "application/pdf",
+      "sha256": "f34979e2db3831b3b56a2fe0d5a36447837199ace68a2b28c658aa263dcd93ab"
+    },
+    "documents/DOC-R-REFUND-RECEIPT.png": {
+      "bytes": 366698,
+      "contentType": "image/png",
+      "sha256": "a3d0bbf3fd5e6d06c9d1b28f65057a013bcee64c8d762bb1a7e74960da4fbc4e"
+    },
+    "documents/DOC-R-REFUND-TERMS.pdf": {
+      "bytes": 3388,
+      "contentType": "application/pdf",
+      "sha256": "315a4e4272f62f8d70297b1e1cd3138ef4f90cb9e0d8b905f4c4d5f333d5bd9e"
+    },
+    "documents/DOC-R-RELOCATION-LETTER-V2.pdf": {
+      "bytes": 3529,
+      "contentType": "application/pdf",
+      "sha256": "948a8812d948caa6abc0ef07d0a0d79505ebb87bacb35a351d07aab45eb09a27"
+    },
+    "documents/DOC-R-RELOCATION-LETTER.pdf": {
+      "bytes": 3442,
+      "contentType": "application/pdf",
+      "sha256": "6760dfb592ac3523249b832dd5f108eda703559b281bd3cae4631144fdc56782"
+    },
+    "documents/DOC-R-SCHOOL-CIRCULAR.pdf": {
+      "bytes": 3346,
+      "contentType": "application/pdf",
+      "sha256": "3759294b8526b530560a01e1af68467cd67a61465eada02140752dd9ab7a8a5a"
+    },
+    "documents/DOC-R-TRAVEL-RECEIPT-V2.pdf": {
+      "bytes": 3532,
+      "contentType": "application/pdf",
+      "sha256": "c8db1fc3b60f8037403fe0ee99f5d36bb32203fa1a157cb984547599f0a1c57b"
+    },
+    "documents/DOC-R-TRAVEL-RECEIPT.pdf": {
+      "bytes": 3262,
+      "contentType": "application/pdf",
+      "sha256": "8e822b94d59c07e68814d525276c59bea38bfcaca6e976f735fa39f9f506a4e3"
+    },
+    "documents/DOC-V-BNPL-OFFER.pdf": {
+      "bytes": 3322,
+      "contentType": "application/pdf",
+      "sha256": "11698a609798215aa5f8057d361daa56afaf7ea6802d1eed032c354ecbd1f4ac"
+    },
+    "documents/DOC-V-BNPL-OFFER.png": {
+      "bytes": 374236,
+      "contentType": "image/png",
+      "sha256": "4f7a6b928b4ae385604d7bf078e2e618b9db537b689657f4cf73645d0c52e5bc"
+    },
+    "documents/DOC-V-CARD-TERMS.pdf": {
+      "bytes": 3799,
+      "contentType": "application/pdf",
+      "sha256": "28fd5415d2b170332a1e7b075a7e0bf48c079c3b56f4ea0b45fabcc181efb227"
+    },
+    "documents/DOC-V-CLIENT-BRIEF.pdf": {
+      "bytes": 3044,
+      "contentType": "application/pdf",
+      "sha256": "4749ec77df7eb2f53f2244dfa76d8e591e3ad2f743c4bc31008e7d9dbf7bdad2"
+    },
+    "documents/DOC-V-CLIENT-CHAT-V2.pdf": {
+      "bytes": 3687,
+      "contentType": "application/pdf",
+      "sha256": "514a7b31e1970134c1e79bb0bf97f9043e4e2ada8717559b9346f209f627f1dd"
+    },
+    "documents/DOC-V-CLIENT-CHAT.pdf": {
+      "bytes": 3616,
+      "contentType": "application/pdf",
+      "sha256": "03d0803b3eb5f15b3c023a359c67cf2e66f2b6d256c7e18ec0ed28dd28bdef84"
+    },
+    "documents/DOC-V-CLIENT-CHAT.png": {
+      "bytes": 566413,
+      "contentType": "image/png",
+      "sha256": "567dc0e05bf6c99f5b72c5c32494239738ce906700df5d5c2627e3223319c147"
+    },
+    "documents/DOC-V-CREDIT-QUESTION.pdf": {
+      "bytes": 3065,
+      "contentType": "application/pdf",
+      "sha256": "475718fc8331f9a72517392ac0c049535a36e9f5076c945e7de535f677b2c591"
+    },
+    "documents/DOC-V-CREDIT-QUESTION.png": {
+      "bytes": 372628,
+      "contentType": "image/png",
+      "sha256": "5301923c2b1478379920ae8452e69c82570235f3282cd2534b9dbf235816a501"
+    },
+    "documents/DOC-V-GROUP-CHAT-V2.pdf": {
+      "bytes": 3521,
+      "contentType": "application/pdf",
+      "sha256": "b4f97f0022cae8eea7b04312e3a1689123864c362eb9d4777ddbbd027f2c5746"
+    },
+    "documents/DOC-V-GROUP-CHAT.pdf": {
+      "bytes": 3116,
+      "contentType": "application/pdf",
+      "sha256": "a97be59b94189bcaa86a9a317892093a89d15bf00cda0c0bc37edc87da112e30"
+    },
+    "documents/DOC-V-GROUP-CHAT.png": {
+      "bytes": 392315,
+      "contentType": "image/png",
+      "sha256": "5140cf84609227bc1476d295a94547fe4de34874a849463dee251e6272fc7fe9"
+    },
+    "documents/DOC-V-INVOICE-DRAFT-V2.pdf": {
+      "bytes": 3277,
+      "contentType": "application/pdf",
+      "sha256": "4d601da51111a069b3c7fc8723200507a0058a1dd1b47c1228ebf66d20c050e0"
+    },
+    "documents/DOC-V-INVOICE-DRAFT.pdf": {
+      "bytes": 3144,
+      "contentType": "application/pdf",
+      "sha256": "29c27b853441d865707bdf5d86768d638441767b18410ac9d58b6b0c57aefa68"
+    },
+    "documents/DOC-V-OFFER-LETTER.pdf": {
+      "bytes": 3762,
+      "contentType": "application/pdf",
+      "sha256": "afa25968f97cfbbf2949207bf1f5d3581e53cf844f6550e791e9bc0f807d6e1c"
+    },
+    "documents/DOC-V-REFUNDED-TICKET.pdf": {
+      "bytes": 2855,
+      "contentType": "application/pdf",
+      "sha256": "d0b0eab668eb01f7eed5c936c7e52cc50bae6e34e89d53ee8dc0c8d1f220336f"
+    },
+    "documents/DOC-V-RELOCATION-NOTE.pdf": {
+      "bytes": 2960,
+      "contentType": "application/pdf",
+      "sha256": "c0a60c1354f0fd775a3c8e2cdde8a5c12935d09fc1c56dbc4ae87117b045346e"
+    },
+    "documents/DOC-V-SALARY-ADDENDUM-V2.pdf": {
+      "bytes": 3674,
+      "contentType": "application/pdf",
+      "sha256": "1435351f17e5712daafe9f1a758a8fcd5893f2482c7fb9106761b8c783dafe44"
+    },
+    "documents/DOC-V-SALARY-ADDENDUM.pdf": {
+      "bytes": 3278,
+      "contentType": "application/pdf",
+      "sha256": "3b7b252fc039b0310ff0c28188270bf7822e77cd810a3ebbd9d7dde04879459f"
+    },
+    "documents/DOC-V-SOCIAL-SNAPSHOT.pdf": {
+      "bytes": 3385,
+      "contentType": "application/pdf",
+      "sha256": "2f228679dbe23bffb2c712024b8e44d306854545d31dca79904249d5a0049381"
+    },
+    "documents/DOC-V-TRIP-RECEIPTS.pdf": {
+      "bytes": 3547,
+      "contentType": "application/pdf",
+      "sha256": "190a03827a2bd362c6496dadb1ab758b384907a94373a0e562279e6c129fb8c3"
+    },
+    "documents/DOC-V-TRIP-RECEIPTS.png": {
+      "bytes": 455907,
+      "contentType": "image/png",
+      "sha256": "3619afe5ad5ce59a2216c8e22639f85b7aae1342c5cad8f380b03d44f29bda4f"
+    },
+    "goals.json": {
+      "bytes": 5320,
+      "contentType": "application/json",
+      "sha256": "2ca8a5b09630c01bf0e81aec5bb52b36d6c82e5fbd73e55edd51cd82a6fe9ecd"
+    },
+    "knowledge/SOP-SHARED-CARD-CONTROLS.md": {
+      "bytes": 2139,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "de7dd0189905869f29d5748085bc3b3f097c128c5f11e7366199d92157648fda"
+    },
+    "knowledge/SOP-SHARED-CATALOGUE-USE.md": {
+      "bytes": 2791,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "54b527293acbc1a194c67dd09aadee1598f6c318562cc6abef9b6be19960d686"
+    },
+    "knowledge/SOP-SHARED-DOCUMENT-REVIEW.md": {
+      "bytes": 2623,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "2f42c4d442f4c006225c95e277a947532933d3613ec22a7534a0d87306bbbe30"
+    },
+    "knowledge/SOP-SHARED-PRODUCT-SUITABILITY.md": {
+      "bytes": 3684,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "bf2ad28c271d33ca2f27d92eda8614e0bd1fca985a96da976971575a54b2b073"
+    },
+    "knowledge/SOP-SHARED-REQUEST-HANDLING.md": {
+      "bytes": 2701,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "c17e6432dd0aba204e1ef1c45b65c5198a98524c0709054f199da4533eabc524"
+    },
+    "knowledge/SOP-SHARED-VOICE-HANDOFF.md": {
+      "bytes": 2744,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "93c7b90bb54b4fb4f254385c55c039cd64d17f422cfb3b68d1199cb8e4ea4d33"
+    },
+    "knowledge/SOP-UC01-RETIREMENT-INCOME.md": {
+      "bytes": 2955,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "24d70a02b99c74e374015c23180ad97ffa489d4c0e1fb55d09c120b20cfc5027"
+    },
+    "knowledge/SOP-UC02-MEDICAL-COVER.md": {
+      "bytes": 3240,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "2729193cffa2069c4ce4dd4d36888e0ae1e58c4ba3c5101f58c9164cbda58480"
+    },
+    "knowledge/SOP-UC03-SUSPECTED-FRAUD.md": {
+      "bytes": 3781,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "255cf5b4a8eed2446c1572e8a28bf28f3b4d68886c97291baa8376a7e24eaeef"
+    },
+    "knowledge/SOP-UC04-FAMILY-DECISIONS.md": {
+      "bytes": 2748,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "3fe509240998d23c24ea929980e224bb78308d0ddbf994274c112b573b43e4a5"
+    },
+    "knowledge/SOP-UC05-HOME-LOAN-CLAUSES.md": {
+      "bytes": 3426,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "c5d881709f3f9367fbf5c16d32e82fb6bdbd86d3c772d22d3c06e51b7fd4de08"
+    },
+    "knowledge/SOP-UC06-SPEND-AND-BENEFITS.md": {
+      "bytes": 3674,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "f50d48d5b432e89926c873f596a6d8ce723d227a96550f2b1d69aefb7d4c6198"
+    },
+    "knowledge/SOP-UC07-REFUND-DISPUTE.md": {
+      "bytes": 3261,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "4a45a4b6150954486b7d2aa442f448943a64c7655db278eff006b6cd5fc073a4"
+    },
+    "knowledge/SOP-UC08-FIRST-SALARY.md": {
+      "bytes": 3120,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "cd063c9035d14b2e1999bae77fe06f82058853fabc6571075b3d0b9665487aa5"
+    },
+    "knowledge/SOP-UC09-CREDIT-EDUCATION.md": {
+      "bytes": 3467,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "3a4f25bfa6cb261b45042bdd128756cf9360e63616c3cdf5f97b3ed516089c94"
+    },
+    "knowledge/SOP-UC10-GROUP-EXPENSES.md": {
+      "bytes": 2937,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "320e93d543efc0a0dff3945da1ef0f9bab64e420ac90d3e81b5a49e2e399cc0d"
+    },
+    "knowledge/SOP-UC11-IRREGULAR-INCOME.md": {
+      "bytes": 3124,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "8217d2d89c9dc1d1624e6766d6dcaf91b8a4b8ca6b16235ea0e3b9f63c85a3b6"
+    },
+    "knowledge/TERMS-CB-CARD-CLASSIC.md": {
+      "bytes": 3171,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "481de2b4315de3800d98e44ec54efb81aa8663259ee9a8fdcdd1e935c7b48733"
+    },
+    "knowledge/TERMS-CB-CARD-DEBIT.md": {
+      "bytes": 2140,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "f47e789d0d393ee4f8a41eedc99962ad23e3154866f1e59b8bb4925e8f08d84b"
+    },
+    "knowledge/TERMS-CB-CARD-FAMILY-CASHBACK.md": {
+      "bytes": 3296,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "454dc93a99e28897b820c1ce418b4d44f3ab44bbdb4b8c091b6aab77259469c8"
+    },
+    "knowledge/TERMS-CB-CARD-FOREX-PREPAID.md": {
+      "bytes": 3321,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "a6e14fa498532430486f7da647b793cfa84318bcbb7d5c2a6246bc2105ef3078"
+    },
+    "knowledge/TERMS-CB-CARD-STARTER-SECURED.md": {
+      "bytes": 2801,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "d27e8e21857068ef37a937fb6277f9a387fa957d6333089ba3c3bb3d803d305c"
+    },
+    "knowledge/TERMS-CB-CARD-TRAVEL-DEBIT.md": {
+      "bytes": 2749,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "0727b2f744bb697b78b4be0f0dc7a03d0d669f2376dd27a2d1bd92263497ea82"
+    },
+    "knowledge/TERMS-CB-CARD-TRAVEL-REWARDS.md": {
+      "bytes": 3018,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "04920f08bdb9402e150bb4aa99269133bbd1684b3873390a014d01c1c77b8d08"
+    },
+    "knowledge/TERMS-CB-FD-SENIOR-FLEX.md": {
+      "bytes": 2815,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "f7360d79ba6f5d9c1ed4a058408b059aed92bbaeb3f0749735937c1fd5957c3f"
+    },
+    "knowledge/TERMS-CB-FD-SENIOR-INCOME.md": {
+      "bytes": 2793,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "6f76323ff8969bfc922dcbffe94ba4cb74b2e5ec1ec362ab59b44fcbf74fef60"
+    },
+    "knowledge/TERMS-CB-FD-SHORT-LIQUID.md": {
+      "bytes": 3088,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "a442db9c0a48cb0de710348e285ef16a48d1891046afc093f4189d570bf370bb"
+    },
+    "knowledge/TERMS-CB-FD-STANDARD.md": {
+      "bytes": 2550,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "0cd4c5e85755782e8e3047d074a42e6de9bd9da891b009a9a2d215402d68c5f8"
+    },
+    "knowledge/TERMS-CB-HEALTH-BASE.md": {
+      "bytes": 3083,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "d767d36ab0c3291ee6d011e5199b3c551fbe7764f402908145d25c5ff91033e7"
+    },
+    "knowledge/TERMS-CB-HEALTH-TOPUP.md": {
+      "bytes": 2939,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "561eb5339515d8f5ba2458ddb4dbb82abfdbcc3c3698d9bfa4b9234be96e3b04"
+    },
+    "knowledge/TERMS-CB-HL-FIXED.md": {
+      "bytes": 3805,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "974fd84482477806b1f5e69bfddc284e9786dd8e60f39861cc1b26389a691252"
+    },
+    "knowledge/TERMS-CB-HL-FLEX.md": {
+      "bytes": 3528,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "26422862537a13c6928b55ba7dd0ef85a7e34a70b80b79dc911d35260221a03e"
+    },
+    "knowledge/TERMS-CB-HL-STANDARD.md": {
+      "bytes": 3414,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "c45d331ec4ce07444de1d08c969ee7691afabfb73f37ac8cf86c4b1f22f61b0d"
+    },
+    "knowledge/TERMS-CB-RD-GOAL.md": {
+      "bytes": 2721,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "fcc4d2594237a61368ff7097f355a5f2825cf45b11a19d1619ea7facf5ae8156"
+    },
+    "knowledge/TERMS-CB-RD-STARTER.md": {
+      "bytes": 2672,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "9a1b91dee1d37d9bcb47d2552c05140c114dd1897371b47156d1a6e82e16fdb5"
+    },
+    "knowledge/TERMS-CB-SAV-CLASSIC.md": {
+      "bytes": 2080,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "af38648002b4ba7131a35e0b5ad40abbc82dbe3c038bbb89ea05d0b235f3e644"
+    },
+    "knowledge/TERMS-CB-SAV-SALARY-PLUS.md": {
+      "bytes": 2963,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "ca551fa1fd089351d31632227a44edbf947e6a132aa5601bae2bc90750e2f61c"
+    },
+    "knowledge/TERMS-CB-SAV-SALARY.md": {
+      "bytes": 2517,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "cc724e64949f75b8b43e08cbce492c865e3b30cd1c64e57bd2d4768c9a8f00a8"
+    },
+    "knowledge/TERMS-CB-SAV-SENIOR.md": {
+      "bytes": 2147,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "d5cbfab96282a9981aa783a36e9f6884d15d50cf1b84c2d0d2af58049ffd4d18"
+    },
+    "knowledge/TERMS-CB-SWEEP-FLEX.md": {
+      "bytes": 3049,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "8a4dddbfecf2ef6c922012911b735db99afddbecbc9132d99fe4f93e07a9ea7f"
+    },
+    "knowledge/TERMS-CB-SWEEP-MICRO.md": {
+      "bytes": 3022,
+      "contentType": "text/markdown; charset=utf-8",
+      "sha256": "63a5d86e7742d58d732a6667f04c678329d2fdaf0cf24d723ac32b48ac4cabd1"
+    },
+    "personas.json": {
+      "bytes": 5258,
+      "contentType": "application/json",
+      "sha256": "a95f6806a7df8032ec3718961bf067d81641fd399972028b25daced1343e0189"
+    },
+    "policies.json": {
+      "bytes": 1025,
+      "contentType": "application/json",
+      "sha256": "81416c84c6ca89077fbda8f4f7ee6e9e6f1486eed23a2a1a447faaf138dbf9a9"
+    },
+    "preferences.json": {
+      "bytes": 1438,
+      "contentType": "application/json",
+      "sha256": "3c824476e19c01b8f455d02b5c49122746c8eafdaadd3a0e6a93a56330211e66"
+    },
+    "products.json": {
+      "bytes": 136735,
+      "contentType": "application/json",
+      "sha256": "ed6a419667e81f177b066a2f4be40fabe535c89b73785432a3f4eb7cc95ae20d"
+    },
+    "qa/case-anchors.json": {
+      "bytes": 4103,
+      "contentType": "application/json",
+      "sha256": "c0a77807c6224ee92a965a8bab99f399b6556d0d70d43f90048b3dd983ba54da"
+    },
+    "qa/perturbations.json": {
+      "bytes": 18711,
+      "contentType": "application/json",
+      "sha256": "9db20b255941de5e0f4373351bcbdce2029895de386af0dadb585b536627d364"
+    },
+    "revised-records.json": {
+      "bytes": 26493,
+      "contentType": "application/json",
+      "sha256": "6ef20e3cac1160f7ac6942048be7c6ebbf1872c7aa2cd340d297fd324f3fd81f"
+    },
+    "social-profiles.json": {
+      "bytes": 4983,
+      "contentType": "application/json",
+      "sha256": "555d0ef1176cd0fad028d60774d7ab503196863285c41a954955f0341580a13d"
+    },
+    "social/ravi-creates-v2.html": {
+      "bytes": 1248,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "b073837ee0afeccb0802e128eb0e99e26701c6c27fd473cf410a8b8ec3982e00"
+    },
+    "social/ravi-creates.html": {
+      "bytes": 1142,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "e0e2e92c12407657a457e51cd31e9e723d85a8afed442797f92ceedf3f7088ff"
+    },
+    "social/ravi-learns.html": {
+      "bytes": 870,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "6c4182dd4607d48bef85517ad7f68d60061f5721a48de8c21e487054e50d1540"
+    },
+    "social/ravi-photo.html": {
+      "bytes": 837,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "467592baf823951bf0951b7321a66d8cd029e7a39d6acb5a22a9b1e200cd6373"
+    },
+    "sops.json": {
+      "bytes": 13568,
+      "contentType": "application/json",
+      "sha256": "e13b2b3c995c96df5ef743251f06ca84fafbf86beb52e35535ee6eb06661d0cf"
+    },
+    "transactions.json": {
+      "bytes": 253711,
+      "contentType": "application/json",
+      "sha256": "3752425c41c3c771d197dd7712a8cd500c70c35c32c4a1c53467cbfa4e366e67"
+    }
+  },
+  "releaseId": "retail4-v1",
+  "releaseStatus": "approved",
+  "schemaCompatibility": {
+    "maxContractVersion": "retail4-1.0",
+    "minContractVersion": "retail4-1.0",
+    "sessionSchemaVersion": "retail4-session-v1"
+  },
+  "schemaVersion": "retail4-seed-v1",
+  "seed": {
+    "deterministicSeed": 20260913,
+    "personaIds": [
+      "nivedita",
+      "rhea",
+      "ravi"
+    ],
+    "productIds": [
+      "CB-CARD-CLASSIC",
+      "CB-CARD-DEBIT",
+      "CB-CARD-FAMILY-CASHBACK",
+      "CB-CARD-FOREX-PREPAID",
+      "CB-CARD-STARTER-SECURED",
+      "CB-CARD-TRAVEL-DEBIT",
+      "CB-CARD-TRAVEL-REWARDS",
+      "CB-FD-SENIOR-FLEX",
+      "CB-FD-SENIOR-INCOME",
+      "CB-FD-SHORT-LIQUID",
+      "CB-FD-STANDARD",
+      "CB-HEALTH-BASE",
+      "CB-HEALTH-TOPUP",
+      "CB-HL-FIXED",
+      "CB-HL-FLEX",
+      "CB-HL-STANDARD",
+      "CB-RD-GOAL",
+      "CB-RD-STARTER",
+      "CB-SAV-CLASSIC",
+      "CB-SAV-SALARY",
+      "CB-SAV-SALARY-PLUS",
+      "CB-SAV-SENIOR",
+      "CB-SWEEP-FLEX",
+      "CB-SWEEP-MICRO"
+    ]
+  }
+}

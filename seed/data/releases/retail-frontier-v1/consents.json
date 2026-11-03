@@ -1,0 +1,50 @@
+[
+  {
+    "consentId": "consent-household-view",
+    "expiresAt": "2027-03-31T23:59:59+05:30",
+    "grantedAt": "2026-04-01T10:00:00+05:30",
+    "ownerId": "rhea",
+    "purpose": "view_household_goals_and_obligations",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "status": "granted",
+    "subjectRef": "member-vivek",
+    "synthetic": true
+  },
+  {
+    "consentId": "consent-dependent-care",
+    "expiresAt": "2027-03-31T23:59:59+05:30",
+    "grantedAt": "2026-04-01T10:05:00+05:30",
+    "ownerId": "rhea",
+    "purpose": "care_schedule_visibility",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "status": "granted",
+    "subjectRef": "member-savitri",
+    "synthetic": true
+  },
+  {
+    "consentId": "consent-agent-read",
+    "expiresAt": "2026-12-31T23:59:59+05:30",
+    "grantedAt": "2026-07-01T11:00:00+05:30",
+    "ownerId": "rhea",
+    "purpose": "read_financial_health_and_goals",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "status": "granted",
+    "subjectRef": "agent-rhea-001",
+    "synthetic": true
+  },
+  {
+    "consentId": "consent-mandate-001",
+    "grantedAt": "2026-08-01T09:00:00+05:30",
+    "ownerId": "rhea",
+    "purpose": "bounded_surplus_to_emergency_goal",
+    "releaseId": "retail-frontier-v1",
+    "revokedAt": "2026-09-10T18:30:00+05:30",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "status": "revoked",
+    "subjectRef": "mandate-surplus-001",
+    "synthetic": true
+  }
+]

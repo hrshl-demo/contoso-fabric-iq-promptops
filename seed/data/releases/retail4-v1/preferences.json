@@ -1,0 +1,53 @@
+[
+  {
+    "field": "communicationStyle",
+    "ownerId": "nivedita",
+    "preferenceId": "pref-niv-01",
+    "recordedOn": "2026-09-13",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "statedIn": "DOC-N-RETIREMENT-NOTE",
+    "value": "plain_language_larger_text"
+  },
+  {
+    "field": "liquidityPreference",
+    "note": "She named both steady income and easy access without ranking them.",
+    "ownerId": "nivedita",
+    "preferenceId": "pref-niv-02",
+    "recordedOn": "2026-09-13",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "statedIn": null,
+    "value": "unstated"
+  },
+  {
+    "field": "annualFeeTolerance",
+    "ownerId": "rhea",
+    "preferenceId": "pref-rhe-01",
+    "recordedOn": "2026-09-13",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "statedIn": null,
+    "value": "unstated"
+  },
+  {
+    "field": "contactWindow",
+    "ownerId": "rhea",
+    "preferenceId": "pref-rhe-02",
+    "recordedOn": "2026-09-13",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "statedIn": "DOC-R-FAMILY-NOTE",
+    "value": "weekday_evenings"
+  },
+  {
+    "field": "learningPreference",
+    "ownerId": "ravi",
+    "preferenceId": "pref-rav-01",
+    "recordedOn": "2026-09-13",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "statedIn": "DOC-V-CREDIT-QUESTION",
+    "value": "explain_before_offering"
+  }
+]

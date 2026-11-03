@@ -1,0 +1,124 @@
+{
+  "version": "relationship-risk-v2-proposed",
+  "packageVersion": "relationship-v2-proposed",
+  "schemaVersion": "relationship-policy-v1",
+  "demoOnly": true,
+  "status": "proposed",
+  "authority": {
+    "kind": "proposed_synthetic_demo_risk_policy",
+    "baseReleaseId": "retail4-v1",
+    "previouslyApproved": false,
+    "productionAuthority": false,
+    "activation": "Requires an external exact content-hash pin AND an explicit relationship rollout flag. Loading data alone grants no execution authority.",
+    "disclosure": "These new demo constraints and products were not included in the approved retail4-v1 catalogue and are not production or regulatory credit policy."
+  },
+  "clock": {
+    "baseBusinessDate": "2026-09-13",
+    "basis": "Start at the immutable seed business date. Only explicit presenter events advance the owner business date; login, restart, wall-clock time and model prose do not.",
+    "ownerField": "relationshipBusinessDate",
+    "eventOrdering": "Use the maximum of the current and event business dates. Late delivery never makes old evidence fresh.",
+    "calendarEffects": "Advancing the demo clock does not invent intervening income, repayments, interest, deposit maturity proceeds or renewals."
+  },
+  "money": {
+    "currency": "INR",
+    "recordUnit": "integer_minor",
+    "productParameterUnit": "INR_major_unless_explicitly_suffixed_Minor",
+    "availableCash": "Only owned posted available account balances, net of holds, protected cash, existing earmarks and committed plan debits.",
+    "excludedCash": ["unpaid_invoices", "promised_refunds", "offer_letter_gross", "annual_variable_targets", "unused_credit_limits", "unposted_deposit_maturity"],
+    "creditProceeds": "A posted loan disbursement has an equal new principal liability; it is not income, revenue or net wealth."
+  },
+  "freshness": {
+    "incomeDays": 45,
+    "obligationsDays": 30,
+    "collateralDays": 1,
+    "propertyDays": 90,
+    "healthDeclarationDays": 30,
+    "recipientDays": 90,
+    "sharedLedgerDays": 30,
+    "quoteMinutes": 15,
+    "decisionMinutes": 15,
+    "recordRule": "Evidence must name its owner, source, effective business date and version. Future or stale evidence needs refresh, not a fabricated value.",
+    "decisionRule": "A material balance, obligation, collateral, terms, plan, policy or evidence change invalidates the prior decision and confirmation."
+  },
+  "affordability": {
+    "maximumDebtServicePctOfNetIncome": 40,
+    "maximumNewCommitmentsPctOfDisposableIncome": 80,
+    "minimumMonthlyResidualMinor": 100000,
+    "minimumEmergencyMonths": 2,
+    "includeExistingDebt": true,
+    "includeAllProposedItems": true,
+    "includeRecurringDepositsAndPremiums": true,
+    "creditCardPaymentFloorPctOfLimit": 5,
+    "definition": "Disposable income is evidenced regular NET monthly income minus essential living costs, existing contractual debt payments and other recurring commitments. All new instalments, card repayment stress amounts, recurring deposits and premiums compete for the same remaining budget.",
+    "protectedCash": "Use the greater of the customer's stated floor and the evidenced emergency/near-term need; never pledge it or reuse another item's allocation.",
+    "irregularIncome": "Posted freelance receipts are cash, not automatically recurring monthly salary. A signed contract or unpaid invoice cannot establish spendable income."
+  },
+  "exposure": {
+    "maximumUnsecuredExposureMinor": 50000000,
+    "maximumUnsecuredMonthsOfNetIncome": 6,
+    "maximumTotalExposureMinor": 1000000000,
+    "basis": "Existing committed credit limits plus loan outstanding principal, external declared liabilities and every requested new facility; do not use only card outstanding or only the current item.",
+    "replacementRule": "A replacement facility counts alongside the existing limit unless closure or a limit reduction has actually completed.",
+    "unknownExternalDebt": "Request obligations evidence or refer. Do not assume zero external debt."
+  },
+  "collateral": {
+    "securedCardMaximumLtvPct": 90,
+    "depositLoanMaximumLtvPct": 75,
+    "homeLoanMaximumLtvPct": 80,
+    "maximumAggregatePledgedPct": 100,
+    "singleActiveFacilityPerDeposit": true,
+    "excludeProtectedReserves": true,
+    "requireOwnedActiveUnencumberedDeposit": true,
+    "requireMaturityOnOrAfterFinalRepayment": true,
+    "valuation": "Use the posted principal of an eligible owned deposit, not projected maturity interest. Apply the lower of product and policy LTV limits.",
+    "securedCardExample": "A principal of INR 25,000 supports at most INR 22,500 of limit at 90%; the limit is not available account cash."
+  },
+  "ageLimits": {
+    "minimumAdultAge": 18,
+    "defaultMaximumLoanMaturityAge": 65,
+    "depositBackedMaximumLoanMaturityAge": 80,
+    "healthMaximumEntryAge": 65,
+    "basis": "Use recorded date of birth and owner business date, including full tenor. Product-specific limits override defaults only where explicitly declared."
+  },
+  "futureCover": {
+    "version": "future-cover-policy-v1-proposed",
+    "authority": "New proposed demo contract wording, not previously approved insurance terms or a real insurer offer.",
+    "runtimeUnderwritingRequired": true,
+    "sourceVerificationIsNotUnderwritingAcceptance": true,
+    "currentEpisodeNeverRetroactivelyCovered": true,
+    "declaration": "A complete owner declaration states existing conditions, treatment, planned episodes and held cover. Verified means source/identity intake only; an independent runtime decision assesses the application.",
+    "terms": "Use the selected proposed product's exact 12-month term, fixed premium/cover, deductible, co-pay, exclusions and waiting periods. No implicit continuity waiver, renewal, current-claim payout or cancellation refund.",
+    "activation": "First premium and new policy are recorded only after independent current underwriting and exact customer confirmation. An event cannot carry insurer acceptance."
+  },
+  "purchaseFunding": {
+    "version": "purchase-funding-v1-proposed",
+    "contribution": "Count the verified purchase price minus actual requested financing, plus closing costs and quoted product fees, against existing unreserved posted funds; loan proceeds cannot fund their own down payment.",
+    "valuation": "The lower of verified value and purchase price determines LTV; the current seller's verified title is not yet the buyer's ownership.",
+    "completion": "A purchase quote is not a conveyance. Execute only the declared demo settlement/escrow steps with exact consent, trace the contribution and loan proceeds, and never claim real registry title transfer or a live external payment.",
+    "noNewMoney": "The reference purchase supplies documents and a cash trace only. No bonus, refund, grant or other cash credit is manufactured to make it affordable."
+  },
+  "sharedMoney": {
+    "version": "shared-money-v1-proposed",
+    "currency": "INR",
+    "maximumSettlementMinor": 5000000,
+    "recipient": "A separately source-verified, owner-scoped synthetic external recipient must have matching identity, routing, currency and party identity; registration is not payment consent.",
+    "ledger": "Recompute equal-share debt from distinct receipt entries and subtract actual prior settlements. Payment cannot exceed the remaining debt or occur twice under a new application identifier.",
+    "execution": "Only exact customer acceptance authorises a demo debit and recipient-bound settlement record. No other demo owner's account is read or changed; there is no real payment-rail invocation."
+  },
+  "decisionSemantics": {
+    "authority": "Only an independent current AI bank decision may approve, decline or refer a governed application. A recommendation, ready fixture, policy threshold or customer confirmation is not a bank decision.",
+    "approve": "Permits only the exact assessed amount and operation, while evidence and pricing remain current, conditions are fulfilled and the customer separately confirms. It is not a product selection or a standing approval.",
+    "refer": "Records a pending human/bank review and its evidence needs. It must not disburse, issue credit or activate insurance and must never be labelled approved or completed conversion.",
+    "decline": "Records the reason without financial execution; service or non-credit alternatives may remain available when independently suitable.",
+    "missingInformation": "Ask for the smallest missing legitimate input. Do not generate negative decisions solely because the demonstration omitted ordinary readiness evidence.",
+    "unresolvedRisk": "Unresolved fraud or financial distress permits only protective controls and bank service cases, with no sales, credit application or commercial conversion."
+  },
+  "outcomeAccounting": {
+    "conversion": "A customer-confirmed and durably completed new holding or facility; an application or decision alone is not conversion.",
+    "retention": "An explicit evidenced decision to keep an existing relationship; distinct from a new sale.",
+    "servicing": "Completed protection, a registered bank service case or an executed customer-authorised shared-money settlement with a receipt; not a sale or a promise of reimbursement.",
+    "internalAllocation": "Earmarking existing savings or moving owned money does not create wealth or new deposit revenue.",
+    "revenue": "No revenue is projected or recorded by this package. Product rates and credit limits are not earned revenue.",
+    "readinessEvents": "Presenter events only change declared evidence or post their exact predeclared transaction; they never grant customer product consent or bank approval."
+  }
+}

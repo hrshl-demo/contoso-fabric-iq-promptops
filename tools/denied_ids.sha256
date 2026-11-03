@@ -1,0 +1,7 @@
+# SHA-256 of lower-case tenant and subscription ids that must never appear in this repo (tools/pii_guard.py).
+# Hashes only, so this file does not leak the ids. Ids belong in GitHub Actions variables.
+3f4d114b3acee22c13ff1f2dba5157ce64e65cfb2278e3183d25a1a1ef0bd4cd # new demo tenant
+a97c0a7794a09296c507715c035f167cac6f51f9dd117f92454bf443f24f4467 # new demo subscription
+a2637abceeaf07cbc5caf2b803dab40245ca23838739d668004ad9e70f2772c9 # previous demo tenant
+4d0d33b503be4cd2e3f6468cc50f8abe8d12dbc348758ce55d273efe9dac1664 # previous demo subscription
+2ae8f8066baab9e36c122f5eb5425f33ab2f5ffbea767ea5a7d9f82de680faec # Microsoft corporate tenant

@@ -1,0 +1,38 @@
+[
+  {
+    "depositId": "dep-niv-fd-01",
+    "linkedAccountId": "acc-niv-sav-01",
+    "maturesOn": "2026-09-20",
+    "maturityInstruction": "renew_principal_and_interest",
+    "openedOn": "2024-09-20",
+    "ownerId": "nivedita",
+    "principal": {
+      "amountMinor": 60000000,
+      "currency": "INR"
+    },
+    "productId": "CB-FD-STANDARD",
+    "productVersion": "v1",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "status": "active",
+    "version": 1
+  },
+  {
+    "depositId": "dep-niv-fd-02",
+    "linkedAccountId": "acc-niv-sav-01",
+    "maturesOn": "2027-02-11",
+    "maturityInstruction": "renew_principal_and_interest",
+    "openedOn": "2025-02-11",
+    "ownerId": "nivedita",
+    "principal": {
+      "amountMinor": 35000000,
+      "currency": "INR"
+    },
+    "productId": "CB-FD-STANDARD",
+    "productVersion": "v1",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "status": "active",
+    "version": 1
+  }
+]

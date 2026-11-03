@@ -1,0 +1,5 @@
+# Installed by build.sh into its private environment as follows (the base requirements.txt is always there):
+#   deltalake     every build and `--helper load` (only this line, pinned here): the per-table fallback of the Load Table API; `--loader delta` makes it required
+#   azure-identity only with CONTOSO_ONTO_AUTH=default (the whole file is installed then)
+deltalake==1.6.2       # fallback loader: writes Delta tables straight into OneLake for a table the Load Table API refuses (about 100 MB)
+azure-identity==1.25.3 # only for CONTOSO_ONTO_AUTH=default (managed identity / service principal); the default uses the az login

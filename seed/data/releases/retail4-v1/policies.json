@@ -1,0 +1,39 @@
+[
+  {
+    "coPayPct": 0,
+    "coverType": "individual_health_indemnity",
+    "insurer": "Meridian Demo Assurance (fictional)",
+    "linkedAccountId": "acc-niv-sav-01",
+    "ownerId": "nivedita",
+    "policyId": "pol-niv-health-01",
+    "policyNumber": "CB/HLTH/SYN/2022/10744",
+    "premium": {
+      "amountMinor": 385000,
+      "currency": "INR"
+    },
+    "premiumDescriptor": "CONTOSO HEALTH BASE - PREMIUM",
+    "premiumFrequency": "monthly",
+    "productId": "CB-HEALTH-BASE",
+    "productVersion": "v1",
+    "releaseId": "retail4-v1",
+    "renewsOn": "2027-04-11",
+    "roomRentSubLimitPct": 1.0,
+    "schemaVersion": "retail4-seed-v1",
+    "sourceDocumentIds": [
+      "DOC-N-HEALTH-POLICY"
+    ],
+    "startedOn": "2022-04-12",
+    "status": "active",
+    "sumInsured": {
+      "amountMinor": 50000000,
+      "currency": "INR"
+    },
+    "version": 1,
+    "waitingPeriods": {
+      "initialDays": 30,
+      "postHospitalisationDays": 60,
+      "preExistingMonths": 24,
+      "preHospitalisationDays": 30
+    }
+  }
+]

@@ -1,0 +1,115 @@
+{
+  "journeyId": "J07",
+  "title": "Purchase and refund resolution",
+  "oneLiner": "Build the evidence timeline and get a stuck refund moving.",
+  "buId": "BU-SERVICE-COLLECTIONS",
+  "icon": "headset",
+  "accentHue": 188,
+  "salesPosture": "never_sell",
+  "goal": "Assemble a dated, evidenced timeline of a disputed purchase and refund, establish exactly what is outstanding, and register a case with the right evidence attached.",
+  "triggers": [
+    "refund not received",
+    "merchant promised a refund",
+    "i returned it",
+    "disputed transaction",
+    "charged twice",
+    "cancelled order",
+    "chargeback",
+    "money not credited back",
+    "dispute",
+    "dispute a charge",
+    "this charge is wrong",
+    "wrong amount charged",
+    "i want my money back"
+  ],
+  "antiTriggers": [
+    "is this message a scam"
+  ],
+  "sopIds": [
+    "SOP-UC07-REFUND-DISPUTE",
+    "SOP-SHARED-REQUEST-HANDLING",
+    "SOP-SHARED-DOCUMENT-REVIEW"
+  ],
+  "productIds": [],
+  "evidenceHints": [
+    "DOC-R-REFUND-RECEIPT",
+    "DOC-R-MERCHANT-CHAT",
+    "DOC-R-REFUND-TERMS",
+    "DOC-R-CARD-STATEMENT"
+  ],
+  "documentChoiceStages": [
+    "evidence"
+  ],
+  "toolHints": [
+    "transactions_query",
+    "document_analyze",
+    "document_read",
+    "crm_customer_view",
+    "knowledge_search"
+  ],
+  "stages": [
+    {
+      "id": "identify",
+      "goal": "Find the actual transaction in the ledger. Everything else hangs off it. If several could match, ask with `quick_replies` naming each by merchant in their words, plus `None of these`.",
+      "exitWhen": "The original transaction is located, or confirmed absent."
+    },
+    {
+      "id": "evidence",
+      "goal": "Gather what exists - receipt, merchant conversation, refund terms. Ask what they hold, with `quick_replies`: `I have the receipt`, `I have the chat`, `I have nothing`.",
+      "exitWhen": "Available evidence is read."
+    },
+    {
+      "id": "timeline",
+      "goal": "Build the dated sequence: purchase, return, promise, what has and has not posted. Show it, then hand back with `quick_replies`: `That is the sequence`, `Something is missing`.",
+      "exitWhen": "The timeline is shown."
+    },
+    {
+      "id": "gap",
+      "goal": "State precisely what is outstanding and what the merchant's own terms commit them to. Then ask whether that matches their record, with `quick_replies`: `That is right`, `Something is missing`.",
+      "exitWhen": "The outstanding amount and the applicable term are stated."
+    },
+    {
+      "id": "act",
+      "goal": "Register the case with the evidence attached, and say what happens next and when. A case reference is a record that we are chasing this, not a credit - say so in the same breath. Offer `quick_replies` naming the service step only - this journey sells nothing: `Raise the case`, `Not now`.",
+      "exitWhen": "A case is registered or declined."
+    }
+  ],
+  "mustEstablish": [
+    "The original transaction ID, amount and date, from the ledger.",
+    "Whether anything has already been credited back.",
+    "What the merchant actually committed to, and when.",
+    "Whether the card or the account was charged.",
+    "Whether an existing case already covers this exact transaction."
+  ],
+  "neverDo": [
+    "Never say money has been received until it appears as a posted credit. A merchant's promise is not a posting, and a receipt is not a refund.",
+    "Never infer a refund amount from a chat message. Read it from the ledger or the receipt.",
+    "Never sell anything in this journey. Someone chasing their own money back is not a prospect.",
+    "Never promise a resolution date the bank does not control.",
+    "Never attach this to an existing case because the amounts look alike. A case belongs to one verified transaction ID; if the existing case was raised for a different transaction, say which one and ask.",
+    "Never label a delayed refund as fraud. If they think someone else used the card, offer to move to the fraud check and carry the timeline over - never reroute them silently.",
+    "Never turn a vague period into a date. `within seven days` is not a deadline unless the terms say working days and what they count from. Quote what the merchant wrote and say the window is unknown."
+  ],
+  "objectionPaths": [
+    {
+      "signal": "angry at the bank",
+      "respondBy": "Do not defend. Get the timeline right and register the case. Accuracy calms this faster than reassurance."
+    },
+    {
+      "signal": "wants a guaranteed outcome",
+      "respondBy": "Say what is actually committed and what is not. A soft promise here becomes a second complaint later."
+    }
+  ],
+  "completion": {
+    "default": "The next action is service, not a sale: give the dated evidence timeline, state the outstanding amount exactly, and register the case or record that the customer declined it.",
+    "nivedita": "The next action is reassurance that the record is now held by the bank, with a four- or five-entry timeline she can follow.",
+    "rhea": "Her core journey. The next action is to raise the case quickly after naming exactly what posted and what did not.",
+    "ravi": "Likely a small amount or a travel booking. The next action is the same evidence-backed case route - a small refund is still his money."
+  },
+  "turnCap": 14,
+  "openers": [
+    "I returned something weeks ago and the refund still has not arrived",
+    "A payment went out twice and I want the second one back",
+    "There is a charge on my account I do not recognise"
+  ]
+}

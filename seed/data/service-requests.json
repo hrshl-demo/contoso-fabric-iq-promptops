@@ -1,0 +1,245 @@
+{
+  "schemaVersion": "retail4-service-requests-v1",
+  "note": "Service request types for the journeys that must never sell. These are DATA: adding a type here produces a working terminal with no code change, exactly as adding a product to the catalogue does. Fields use the same ApplicationField shape the product derivation produces, so the page, the prompt and the pre-fill do not need to know which family they are looking at.",
+  "serviceRequests": [
+    {
+      "serviceTypeId": "SR-CARD-FREEZE",
+      "title": "Freeze a card",
+      "summary": "Stop further spending on a card while we work out what happened.",
+      "journeyIds": ["J03"],
+      "buId": "BU-SERVICE-COLLECTIONS",
+      "priority": "high",
+      "sentiment": "negative",
+      "caseTitle": "Card freeze requested",
+      "stageLadder": ["in_progress", "awaiting_customer", "resolved"],
+      "openStage": "in_progress",
+      "submitStage": "in_progress",
+      "activationMode": "recorded_synthetic_instruction",
+      "recordedOutcome": "A freeze instruction was recorded against {subject} and a case was raised for a relationship manager to pick up.",
+      "neverClaim": [
+        "that the card has actually been blocked",
+        "that any transaction has been reversed",
+        "that a card network or issuer has been contacted"
+      ],
+      "fields": [
+        {
+          "key": "cardId",
+          "label": "Which card",
+          "kind": "choice",
+          "prompt": "Which card did the contact refer to?",
+          "optionsFrom": "cards",
+          "blocks": true,
+          "rank": 100
+        },
+        {
+          "key": "codeShared",
+          "label": "A code, PIN or password was shared",
+          "kind": "boolean",
+          "prompt": "Was a one-time code, PIN, CVV or password shared with them?",
+          "blocks": true,
+          "rank": 110
+        },
+        {
+          "key": "moneyMoved",
+          "label": "Money has already moved",
+          "kind": "boolean",
+          "prompt": "Has any money already left the account?",
+          "blocks": true,
+          "rank": 120
+        },
+        {
+          "key": "linkOpened",
+          "label": "A link was opened or an app installed",
+          "kind": "boolean",
+          "prompt": "Was a link opened, or anything installed on your phone?",
+          "rank": 130
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "serviceTypeId": "SR-FRAUD-REPORT",
+      "title": "Raise a fraud report",
+      "summary": "Put the suspicious contact on record so it can be investigated and others can be warned.",
+      "journeyIds": ["J03"],
+      "buId": "BU-SERVICE-COLLECTIONS",
+      "priority": "high",
+      "sentiment": "negative",
+      "caseTitle": "Suspected fraud reported",
+      "stageLadder": ["in_progress", "awaiting_customer", "resolved"],
+      "openStage": "in_progress",
+      "submitStage": "in_progress",
+      "activationMode": "recorded_synthetic_instruction",
+      "recordedOutcome": "A fraud report was recorded for {subject}, with everything this conversation established attached to it.",
+      "neverClaim": [
+        "that law enforcement or a regulator has been notified",
+        "that any money will be returned",
+        "that the sender has been identified or blocked"
+      ],
+      "fields": [
+        {
+          "key": "contactChannel",
+          "label": "How they made contact",
+          "kind": "choice",
+          "prompt": "How did they get in touch?",
+          "options": ["Phone call", "SMS", "WhatsApp", "Email", "Something else"],
+          "blocks": true,
+          "rank": 100
+        },
+        {
+          "key": "whatWasAsked",
+          "label": "What they asked for",
+          "kind": "text",
+          "prompt": "What did they ask you to do or share?",
+          "blocks": true,
+          "rank": 110
+        },
+        {
+          "key": "moneyMoved",
+          "label": "Money has already moved",
+          "kind": "boolean",
+          "prompt": "Has any money already left the account?",
+          "blocks": true,
+          "rank": 120
+        },
+        {
+          "key": "whenItHappened",
+          "label": "When it happened",
+          "kind": "text",
+          "prompt": "Roughly when did this happen?",
+          "rank": 130
+        }
+      ],
+      "evidence": [
+        {
+          "key": "ev-scam-message",
+          "label": "The message or screenshot",
+          "requirement": "A screenshot or forward of the message, if you still have it. Not required to raise the report."
+        }
+      ]
+    },
+    {
+      "serviceTypeId": "SR-TXN-DISPUTE",
+      "title": "Raise a dispute",
+      "summary": "Put a disputed payment on record with the evidence already gathered, and track it to an outcome.",
+      "journeyIds": ["J07"],
+      "buId": "BU-SERVICE-COLLECTIONS",
+      "priority": "medium",
+      "sentiment": "negative",
+      "caseTitle": "Payment disputed",
+      "stageLadder": ["in_progress", "awaiting_customer", "resolved"],
+      "openStage": "in_progress",
+      "submitStage": "awaiting_customer",
+      "activationMode": "recorded_synthetic_instruction",
+      "recordedOutcome": "A dispute record was created for {subject}, with the evidence timeline from this conversation attached.",
+      "neverClaim": [
+        "that a chargeback has been raised with a card network",
+        "that the merchant has been contacted",
+        "that a refund has been issued or is guaranteed",
+        "that any money has been credited back"
+      ],
+      "fields": [
+        {
+          "key": "transactionId",
+          "label": "The transaction",
+          "kind": "choice",
+          "prompt": "Which payment is this about?",
+          "optionsFrom": "transactions",
+          "blocks": true,
+          "rank": 100
+        },
+        {
+          "key": "disputeReason",
+          "label": "What went wrong",
+          "kind": "choice",
+          "prompt": "What is the problem with this payment?",
+          "options": [
+            "Goods or service never arrived",
+            "Refund promised but not received",
+            "Charged more than agreed",
+            "Charged twice",
+            "I did not authorise this"
+          ],
+          "blocks": true,
+          "rank": 110
+        },
+        {
+          "key": "merchantCommitment",
+          "label": "What the merchant promised",
+          "kind": "text",
+          "prompt": "What did the merchant actually commit to, and when?",
+          "rank": 120
+        },
+        {
+          "key": "partiallyCredited",
+          "label": "Something has already been credited back",
+          "kind": "boolean",
+          "prompt": "Has any part of it already come back to you?",
+          "rank": 130
+        }
+      ],
+      "evidence": [
+        {
+          "key": "ev-merchant-correspondence",
+          "label": "Correspondence with the merchant",
+          "requirement": "The order confirmation, refund receipt or chat with the merchant, if you have it."
+        }
+      ]
+    },
+    {
+      "serviceTypeId": "SR-PREAUTH-ESTIMATE",
+      "title": "Request a pre-authorisation check",
+      "summary": "Ask the insurer to confirm, before treatment, which lines on an estimate are covered.",
+      "journeyIds": ["J02"],
+      "buId": "BU-BANCASSURANCE",
+      "priority": "high",
+      "sentiment": "neutral",
+      "caseTitle": "Pre-authorisation check requested",
+      "stageLadder": ["in_progress", "awaiting_customer", "resolved"],
+      "openStage": "in_progress",
+      "submitStage": "awaiting_customer",
+      "activationMode": "recorded_synthetic_instruction",
+      "recordedOutcome": "A pre-authorisation request was recorded against {subject}. It records the lines you asked about so a relationship manager can take it to the insurer.",
+      "neverClaim": [
+        "that the insurer has approved or declined anything",
+        "that any amount is covered or will be paid",
+        "that a hospital or insurer has been contacted",
+        "that treatment can go ahead"
+      ],
+      "fields": [
+        {
+          "key": "policyId",
+          "label": "The policy",
+          "kind": "choice",
+          "prompt": "Which policy should this be checked against?",
+          "optionsFrom": "policies",
+          "blocks": true,
+          "rank": 100
+        },
+        {
+          "key": "unclearLines",
+          "label": "The lines you want checked",
+          "kind": "text",
+          "prompt": "Which specific line items on the estimate are unclear?",
+          "blocks": true,
+          "rank": 110
+        },
+        {
+          "key": "treatmentImminent",
+          "label": "Treatment is imminent",
+          "kind": "boolean",
+          "prompt": "Is the treatment booked or about to happen?",
+          "blocks": true,
+          "rank": 120
+        }
+      ],
+      "evidence": [
+        {
+          "key": "ev-medical-estimate",
+          "label": "The hospital estimate",
+          "requirement": "The estimate document itself, so the specific line items can be quoted to the insurer."
+        }
+      ]
+    }
+  ]
+}

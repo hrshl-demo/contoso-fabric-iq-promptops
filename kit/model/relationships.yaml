@@ -1,0 +1,101 @@
+# 'from' holds the foreign key (many side); 'to' holds the key (one side).
+# semantic: false   -> kept in the ontology (graph traversal) but not in the Direct Lake semantic model, where a second
+#                      path between two tables would be ambiguous for DAX filter propagation.
+# ontology: false   -> semantic model only (date dimension).
+relationships:
+  # --- Party ---
+  - {name: Customer Belongs To Household, from: customer.household_id, to: household.household_id, desc: "A Frontier customer belongs to one household."}
+  - {name: Household Member Belongs To Household, from: household_member.household_id, to: household.household_id, desc: "A household member belongs to one household."}
+  - {name: Household Owned By Customer, from: household.primary_customer_id, to: customer.customer_id, semantic: false, desc: "A household is owned by its primary customer."}
+  - {name: Household Member Of Customer, from: household_member.primary_customer_id, to: customer.customer_id, semantic: false, desc: "A household member is linked to the primary customer."}
+  # --- Holdings ---
+  - {name: Account Held By Customer, from: account.customer_id, to: customer.customer_id, desc: "An account is held by one customer."}
+  - {name: Account Opened Under Product, from: account.product_id, to: product.product_id, desc: "An account is opened under one catalogue product."}
+  - {name: Card Linked To Account, from: card.account_id, to: account.account_id, desc: "A card draws on one account."}
+  - {name: Card Issued To Customer, from: card.customer_id, to: customer.customer_id, semantic: false, desc: "A card is issued to one customer."}
+  - {name: Card Of Product, from: card.product_id, to: product.product_id, semantic: false, desc: "A card is issued under one catalogue product."}
+  - {name: Deposit Held By Customer, from: deposit.customer_id, to: customer.customer_id, desc: "A deposit is held by one customer."}
+  - {name: Deposit Of Product, from: deposit.product_id, to: product.product_id, desc: "A deposit is placed under one catalogue product."}
+  - {name: Deposit Linked To Account, from: deposit.linked_account_id, to: account.account_id, semantic: false, desc: "A deposit is linked to a savings account (legacy)."}
+  - {name: Loan Granted To Customer, from: loan.customer_id, to: customer.customer_id, desc: "A loan is granted to one customer."}
+  - {name: Loan Of Product, from: loan.product_id, to: product.product_id, desc: "A loan is taken under one catalogue product."}
+  - {name: Installment Of Loan, from: loan_installment.loan_id, to: loan.loan_id, desc: "An instalment belongs to one loan."}
+  - {name: Policy Held By Customer, from: insurance_policy.customer_id, to: customer.customer_id, desc: "An insurance policy is held by one customer."}
+  - {name: Policy Of Product, from: insurance_policy.product_id, to: product.product_id, desc: "A policy is bought under one catalogue product."}
+  - {name: Policy Premium Paid From Account, from: insurance_policy.linked_account_id, to: account.account_id, semantic: false, desc: "A policy premium is paid from one account (legacy)."}
+  - {name: Protection Gap Of Customer, from: protection_gap.customer_id, to: customer.customer_id, desc: "A protection gap is computed for one customer."}
+  - {name: Investment Held By Customer, from: investment.customer_id, to: customer.customer_id, desc: "An investment is held by one customer."}
+  - {name: Investment Of Product, from: investment.product_id, to: product.product_id, desc: "An investment is made under one catalogue product."}
+  - {name: Investment Link Of Investment, from: investment_goal.investment_id, to: investment.investment_id, desc: "An investment-goal link belongs to one investment."}
+  - {name: Investment Link To Goal, from: investment_goal.goal_id, to: goal.goal_id, semantic: false, desc: "An investment-goal link points to the goal the investment funds."}
+  # --- Money ---
+  - {name: Transaction Posted To Account, from: transaction.account_id, to: account.account_id, desc: "A transaction posts to one account."}
+  - {name: Transaction Of Customer, from: transaction.customer_id, to: customer.customer_id, semantic: false, desc: "A transaction belongs to one customer."}
+  - {name: Transaction Paid By Card, from: transaction.card_id, to: card.card_id, semantic: false, desc: "A card transaction is paid with one card."}
+  - {name: Transaction Disputed In Incident, from: transaction.dispute_incident_id, to: incident.incident_id, semantic: false, desc: "A transaction may be part of one dispute or scam incident."}
+  - {name: Evidence Supports Transaction, from: transaction_evidence.transaction_id, to: transaction.transaction_id, desc: "An evidence link supports one transaction."}
+  - {name: Evidence Is Document, from: transaction_evidence.document_id, to: document.document_id, semantic: false, desc: "Evidence may be a document."}
+  - {name: Evidence Is Incident, from: transaction_evidence.incident_id, to: incident.incident_id, semantic: false, desc: "Evidence may be an incident or case."}
+  - {name: Obligation Paid From Account, from: scheduled_obligation.source_account_id, to: account.account_id, desc: "A scheduled obligation is paid from one account."}
+  - {name: Obligation Owed By Customer, from: scheduled_obligation.customer_id, to: customer.customer_id, semantic: false, desc: "A scheduled obligation is owed by one customer."}
+  - {name: Income Earned By Customer, from: income_record.customer_id, to: customer.customer_id, desc: "An income record belongs to one customer."}
+  - {name: Income Evidenced By Document, from: income_record.evidence_document_id, to: document.document_id, semantic: false, desc: "An income record is evidenced by a salary slip or other document."}
+  - {name: Income Contributed By Member, from: income_record.contributor_member_id, to: household_member.member_id, semantic: false, desc: "A household contribution comes from one household member."}
+  # --- Goals ---
+  - {name: Goal Owned By Customer, from: goal.customer_id, to: customer.customer_id, desc: "A goal belongs to one customer."}
+  - {name: Preference Stated By Customer, from: preference.customer_id, to: customer.customer_id, desc: "A preference is stated by one customer."}
+  # --- Authority ---
+  - {name: Consent Given By Customer, from: consent.customer_id, to: customer.customer_id, desc: "A consent is given by one customer."}
+  - {name: Consent About Household Member, from: consent.subject_member_id, to: household_member.member_id, semantic: false, desc: "A consent can be about one household member."}
+  - {name: Consent Resource Of Consent, from: consent_resource.consent_id, to: consent.consent_id, desc: "A consent resource belongs to one consent."}
+  - {name: Consent Resource Is Document, from: consent_resource.document_id, to: document.document_id, semantic: false, desc: "A consent resource is one document."}
+  - {name: Access Grant Of Customer, from: access_grant.customer_id, to: customer.customer_id, desc: "An access grant is given by one owner customer."}
+  - {name: Access Grant Backed By Consent, from: access_grant.consent_id, to: consent.consent_id, semantic: false, desc: "An access grant is backed by one consent."}
+  - {name: Access Grant For Household Member, from: access_grant.subject_member_id, to: household_member.member_id, semantic: false, desc: "An access grant is held by one household member."}
+  - {name: Access Grant In Household, from: access_grant.household_id, to: household.household_id, semantic: false, desc: "An access grant belongs to one household."}
+  - {name: Grant Permission Of Grant, from: grant_permission.grant_id, to: access_grant.grant_id, desc: "A permission line belongs to one access grant."}
+  - {name: Agent Registered For Customer, from: registered_agent.customer_id, to: customer.customer_id, desc: "An agent is registered for one customer."}
+  - {name: Agent Authorised By Consent, from: registered_agent.consent_id, to: consent.consent_id, semantic: false, desc: "An agent reads data under one consent."}
+  - {name: Agent Scope Of Agent, from: agent_scope.agent_id, to: registered_agent.agent_id, desc: "A scope line belongs to one agent."}
+  - {name: Mandate Granted By Customer, from: mandate.customer_id, to: customer.customer_id, desc: "A mandate is granted by one customer."}
+  - {name: Mandate Bound To Agent, from: mandate.agent_id, to: registered_agent.agent_id, semantic: false, desc: "A mandate is bound to one registered agent."}
+  - {name: Mandate Backed By Consent, from: mandate.consent_id, to: consent.consent_id, semantic: false, desc: "A mandate is backed by its own consent."}
+  - {name: Mandate Draws On Account, from: mandate.source_account_id, to: account.account_id, semantic: false, desc: "A mandate moves money out of one source account."}
+  - {name: Mandate Funds Account, from: mandate.destination_account_id, to: account.account_id, semantic: false, desc: "A mandate moves money into one destination account."}
+  - {name: Mandate Funds Goal, from: mandate.goal_id, to: goal.goal_id, semantic: false, desc: "A mandate funds one goal."}
+  - {name: Event Of Mandate, from: mandate_event.mandate_id, to: mandate.mandate_id, desc: "A mandate event belongs to one mandate."}
+  # --- Servicing ---
+  - {name: Incident Affects Customer, from: incident.customer_id, to: customer.customer_id, desc: "An incident affects one customer."}
+  - {name: Service Record For Customer, from: service_record.customer_id, to: customer.customer_id, desc: "A service record is for one customer."}
+  - {name: Service Record About Incident, from: service_record.incident_id, to: incident.incident_id, semantic: false, desc: "A service record may relate to one incident."}
+  - {name: Document Owned By Customer, from: document.customer_id, to: customer.customer_id, desc: "A document belongs to one customer."}
+  - {name: Case Opened For Customer, from: crm_case.customer_id, to: customer.customer_id, desc: "A CRM case is about one customer."}
+  - {name: Case Follows Journey, from: crm_case.journey_id, to: journey.journey_id, desc: "A CRM case came from one conversation journey."}
+  - {name: Case Owned By Manager, from: crm_case.owner_rm_id, to: relationship_manager.rm_id, desc: "A CRM case is owned by one relationship manager."}
+  - {name: Case In Business Unit, from: crm_case.bu_id, to: business_unit.bu_id, semantic: false, desc: "A CRM case is handled by one business unit."}
+  - {name: Service Type Of Business Unit, from: service_request_type.bu_id, to: business_unit.bu_id, desc: "A service request type is owned by one business unit."}
+  # --- Catalogue and policy ---
+  - {name: Journey Link Of Journey, from: journey_sop.journey_id, to: journey.journey_id, desc: "A journey-SOP link belongs to one journey."}
+  - {name: Journey Link To Sop, from: journey_sop.sop_id, to: sop.sop_id, desc: "A journey-SOP link points to one SOP."}
+  - {name: Product Link Of Journey, from: journey_product.journey_id, to: journey.journey_id, desc: "A journey-product link belongs to one journey."}
+  - {name: Product Link To Product, from: journey_product.product_id, to: product.product_id, desc: "A journey-product link points to one product."}
+  - {name: Journey Owned By Business Unit, from: journey.bu_id, to: business_unit.bu_id, semantic: false, desc: "A legacy journey is owned by one business unit."}
+  - {name: Requirement Delivered By Journey, from: frontier_requirement.journey_id, to: journey.journey_id, desc: "A requirement is delivered by one Frontier journey."}
+  # --- Bank operations ---
+  - {name: Manager In Business Unit, from: relationship_manager.bu_id, to: business_unit.bu_id, desc: "A relationship manager works in one business unit."}
+  - {name: Manager In Region, from: relationship_manager.region_id, to: region.region_id, desc: "A relationship manager is based in one region."}
+  - {name: Campaign Run By Business Unit, from: campaign.bu_id, to: business_unit.bu_id, desc: "A campaign is run by one business unit."}
+  - {name: Metric Of Business Unit, from: monthly_metric.bu_id, to: business_unit.bu_id, desc: "A monthly metric belongs to one business unit."}
+  - {name: Alert For Business Unit, from: risk_alert.bu_id, to: business_unit.bu_id, desc: "A risk alert is about one business unit."}
+  - {name: Ownership Of Business Unit, from: product_business_unit.bu_id, to: business_unit.bu_id, desc: "A product-ownership link belongs to one business unit."}
+  - {name: Ownership Of Product, from: product_business_unit.product_id, to: product.product_id, desc: "A product-ownership link points to one product."}
+  # --- Date dimension (semantic model only) ---
+  - {name: Transaction Posted On Date, from: transaction.posted_date_ist, to: calendar.date, ontology: false, desc: "A transaction posts on one calendar date (India time)."}
+  - {name: Installment Due On Date, from: loan_installment.due_on, to: calendar.date, ontology: false, desc: "An instalment falls due on one calendar date."}
+  - {name: Case Opened On Date, from: crm_case.opened_date_ist, to: calendar.date, ontology: false, desc: "A CRM case opens on one calendar date."}
+  - {name: Mandate Event On Date, from: mandate_event.occurred_date_ist, to: calendar.date, ontology: false, desc: "A mandate event occurs on one calendar date."}
+  - {name: Incident Detected On Date, from: incident.detected_date_ist, to: calendar.date, ontology: false, desc: "An incident is detected on one calendar date."}
+  # Added with the star: the two other facts that carry a `date` column. Each hangs on its one business date (neither fact has a second date column), so the
+  # choice is not a judgement between roles; facts with no `date` column (protection gap, obligation, income, monthly metric, risk alert, fraud signal) get none.
+  - {name: Service Case Opened On Date, from: service_record.opened_date_ist, to: calendar.date, ontology: false, desc: "A service case opens on one calendar date (India time). Date role: opened_date_ist, the IST date the contact was opened; the case has no other date column."}
+  - {name: Proactive Candidate Evaluated On Date, from: proactive_event.as_of_date, to: calendar.date, ontology: false, desc: "A proactive candidate is evaluated as of one calendar date. Date role: as_of_date, the business date the fixture is evaluated as of; the candidate has no other date column."}

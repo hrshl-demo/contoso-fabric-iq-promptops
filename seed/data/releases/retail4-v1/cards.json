@@ -1,0 +1,113 @@
+[
+  {
+    "cardId": "card-niv-dbt-01",
+    "cardType": "debit",
+    "controls": {
+      "contactless": true,
+      "internationalTransactions": false,
+      "onlineTransactions": true
+    },
+    "expiry": "12/29",
+    "linkedAccountId": "acc-niv-sav-01",
+    "maskedNumber": "XXXX XXXX XXXX 4551",
+    "ownerId": "nivedita",
+    "productId": "CB-CARD-DEBIT",
+    "productVersion": "v1",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "statementPeriod": {
+      "from": "2026-08-14",
+      "to": "2026-09-13"
+    },
+    "status": "active",
+    "version": 1
+  },
+  {
+    "availableCredit": {
+      "amountMinor": 12931000,
+      "currency": "INR"
+    },
+    "cardId": "card-rhe-cc-01",
+    "cardType": "credit",
+    "controls": {
+      "contactless": true,
+      "internationalTransactions": true,
+      "onlineTransactions": true
+    },
+    "creditLimit": {
+      "amountMinor": 25000000,
+      "currency": "INR"
+    },
+    "currentOutstanding": {
+      "amountMinor": 12069000,
+      "currency": "INR"
+    },
+    "expiry": "12/29",
+    "ledgerFrom": "2026-03-01",
+    "linkedAccountId": "acc-rhe-sal-01",
+    "maskedNumber": "XXXX XXXX XXXX 3381",
+    "minimumDue": {
+      "amountMinor": 603450,
+      "currency": "INR"
+    },
+    "openingPosition": {
+      "amountMinor": 0,
+      "currency": "INR"
+    },
+    "outstandingIncludesPostingsAfterStatement": false,
+    "ownerId": "rhea",
+    "paymentDueDate": "2026-10-03",
+    "productId": "CB-CARD-CLASSIC",
+    "productVersion": "v1",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "statementPeriod": {
+      "from": "2026-08-14",
+      "to": "2026-09-13"
+    },
+    "statementSummary": {
+      "closingBalance": {
+        "amountMinor": 12069000,
+        "currency": "INR"
+      },
+      "derivation": "openingPosition + purchases - paymentsAndCredits = closingBalance",
+      "openingPosition": {
+        "amountMinor": 11612700,
+        "currency": "INR"
+      },
+      "paymentsAndCredits": {
+        "amountMinor": 5363300,
+        "currency": "INR"
+      },
+      "purchases": {
+        "amountMinor": 5819600,
+        "currency": "INR"
+      }
+    },
+    "status": "active",
+    "version": 1
+  },
+  {
+    "cardId": "card-rav-dbt-01",
+    "cardType": "debit",
+    "controls": {
+      "contactless": true,
+      "internationalTransactions": false,
+      "onlineTransactions": true
+    },
+    "expiry": "12/29",
+    "linkedAccountId": "acc-rav-sav-01",
+    "maskedNumber": "XXXX XXXX XXXX 3789",
+    "ownerId": "ravi",
+    "productId": "CB-CARD-DEBIT",
+    "productVersion": "v1",
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "statementPeriod": {
+      "from": "2026-08-14",
+      "to": "2026-09-13"
+    },
+    "status": "active",
+    "version": 1
+  }
+]

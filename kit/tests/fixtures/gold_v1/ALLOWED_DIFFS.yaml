@@ -1,0 +1,7 @@
+# Differences between the frozen v1 gold (the other files in this folder) and the gold built from silver that are allowed, each with its
+# reason. Default and current content: none, the two are identical (tests/test_gold_equivalence.py).
+#
+# An entry names the table by its logical id and may narrow itself to a column and a key value:
+#   - {table: customer, column: age, key: rhea, reason: "why the silver-based value is right and the v1 value is not"}
+# A difference that no entry covers fails the test, and so does an entry that covers nothing or has no reason.
+allowed: []

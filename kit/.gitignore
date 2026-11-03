@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.deepeval/
+.venv/
+venv/
+.cache/
+out/
+*.log
+config/local.json
+.DS_Store

@@ -1,0 +1,66 @@
+[
+  {
+    "dataRole": "reference_only",
+    "productId": "CB-SAV-SALARY",
+    "productType": "salary_account",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  },
+  {
+    "dataRole": "reference_only",
+    "productId": "CB-SAV-RESERVE",
+    "productType": "savings_account",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  },
+  {
+    "dataRole": "reference_only",
+    "productId": "CB-CARD-FRONTIER",
+    "productType": "credit_card",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  },
+  {
+    "dataRole": "reference_only",
+    "productId": "CB-HL-FLOATING",
+    "productType": "home_loan",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  },
+  {
+    "dataRole": "reference_only",
+    "productId": "CB-EDU-TERM",
+    "productType": "education_loan",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  },
+  {
+    "dataRole": "reference_only",
+    "productId": "CB-FD-LIQUID",
+    "productType": "fixed_deposit",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  },
+  {
+    "dataRole": "reference_only",
+    "productId": "CB-MF-INDEX",
+    "productType": "mutual_fund",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  },
+  {
+    "dataRole": "reference_only",
+    "productId": "CB-TERM-LIFE",
+    "productType": "term_insurance",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  }
+]

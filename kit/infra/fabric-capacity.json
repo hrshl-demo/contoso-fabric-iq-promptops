@@ -1,0 +1,86 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.47.16.16243",
+      "templateHash": "4567100868741239972"
+    }
+  },
+  "parameters": {
+    "capacityName": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 63,
+      "metadata": {
+        "description": "Capacity name: 3-63 lowercase letters and digits, starting with a letter."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Azure region that supports Fabric capacities (southindia, centralindia, ...)."
+      }
+    },
+    "sku": {
+      "type": "string",
+      "defaultValue": "F4",
+      "allowedValues": [
+        "F2",
+        "F4",
+        "F8",
+        "F16",
+        "F32",
+        "F64"
+      ],
+      "metadata": {
+        "description": "Fabric capacity SKU."
+      }
+    },
+    "adminMembers": {
+      "type": "array",
+      "minLength": 1,
+      "metadata": {
+        "description": "Capacity administrators: user principal names or object ids."
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {}
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Fabric/capacities",
+      "apiVersion": "2023-11-01",
+      "name": "[parameters('capacityName')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "sku": {
+        "name": "[parameters('sku')]",
+        "tier": "Fabric"
+      },
+      "properties": {
+        "administration": {
+          "members": "[parameters('adminMembers')]"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "capacityId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Fabric/capacities', parameters('capacityName'))]"
+    },
+    "capacityName": {
+      "type": "string",
+      "value": "[parameters('capacityName')]"
+    },
+    "capacitySku": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Fabric/capacities', parameters('capacityName')), '2023-11-01', 'full').sku.name]"
+    }
+  }
+}

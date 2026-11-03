@@ -1,0 +1,154 @@
+[
+  {
+    "age": 62,
+    "city": "Bengaluru",
+    "cohort": "retirement",
+    "contact": {
+      "email": "nivedita@demo.contoso.invalid",
+      "phoneMasked": "+91 XXXXX X2564"
+    },
+    "displayName": "Nivedita Rao",
+    "employmentStatus": "retired",
+    "kyc": {
+      "address": "Indiranagar, Bengaluru, Karnataka",
+      "dateOfBirth": "1964-04-12",
+      "photograph": "Synthetic profile photograph on the customer record"
+    },
+    "factualContext": [
+      {
+        "fact": "Monthly pension credit of INR 48,500 on the 3rd.",
+        "source": "DOC-N-PENSION"
+      },
+      {
+        "fact": "Fixed deposit dep-niv-fd-01 matures on 2026-09-20.",
+        "source": "dep-niv-fd-01"
+      },
+      {
+        "fact": "Health cover pol-niv-health-01 is active, premium INR 3,850 monthly.",
+        "source": "pol-niv-health-01"
+      }
+    ],
+    "memberships": [],
+    "narrative": "Retired teacher in Bengaluru living on a monthly pension credit. Holds a classic savings account, two fixed deposits and a health cover policy. One deposit matures shortly and the renewal notice does not state the rate that would apply.",
+    "ownerId": "nivedita",
+    "priorityRankingStated": false,
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "statedPriorities": [
+      {
+        "priority": "A steady monthly amount to cover household costs.",
+        "rank": null,
+        "statedIn": "DOC-N-RETIREMENT-NOTE"
+      },
+      {
+        "priority": "Keeping some money reachable for hospital costs.",
+        "rank": null,
+        "statedIn": "DOC-N-RETIREMENT-NOTE"
+      }
+    ],
+    "syntheticLabel": "Synthetic Contoso demo customer - not a real person."
+  },
+  {
+    "age": 41,
+    "city": "Pune",
+    "cohort": "millennial",
+    "contact": {
+      "email": "rhea@demo.contoso.invalid",
+      "phoneMasked": "+91 XXXXX X5932"
+    },
+    "displayName": "Rhea Bansal",
+    "employmentStatus": "salaried",
+    "kyc": {
+      "address": "Kalyani Nagar, Pune, Maharashtra",
+      "dateOfBirth": "1985-01-24",
+      "photograph": "Synthetic profile photograph on the customer record"
+    },
+    "factualContext": [
+      {
+        "fact": "Monthly salary credit of INR 1,85,000 on the 1st.",
+        "source": "acc-rhe-sal-01"
+      },
+      {
+        "fact": "Card card-rhe-cc-01 carries an outstanding balance that is folded from its own ledger, not asserted.",
+        "source": "card-rhe-cc-01"
+      },
+      {
+        "fact": "A merchant promised a refund on pur-rhe-refund-01 that has not posted.",
+        "source": "DOC-R-MERCHANT-CHAT"
+      }
+    ],
+    "memberships": [],
+    "narrative": "Salaried technology manager in Pune supporting a school-age child. Runs most discretionary spending through a classic credit card and is comparing two home-loan offers while a possible relocation and a revised school fee compete for the same income.",
+    "ownerId": "rhea",
+    "priorityRankingStated": false,
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "statedPriorities": [
+      {
+        "priority": "Building a down payment for a home.",
+        "rank": null,
+        "statedIn": "DOC-R-HOME-OFFER-A"
+      },
+      {
+        "priority": "Meeting the revised school term fee from monthly income.",
+        "rank": null,
+        "statedIn": "DOC-R-SCHOOL-CIRCULAR"
+      },
+      {
+        "priority": "Possibly supporting a parent; nothing decided.",
+        "rank": null,
+        "statedIn": "DOC-R-FAMILY-NOTE"
+      }
+    ],
+    "syntheticLabel": "Synthetic Contoso demo customer - not a real person."
+  },
+  {
+    "age": 25,
+    "city": "Hyderabad",
+    "cohort": "gen-z",
+    "contact": {
+      "email": "ravi@demo.contoso.invalid",
+      "phoneMasked": "+91 XXXXX X6136"
+    },
+    "displayName": "Ravi Mehta",
+    "employmentStatus": "starting_first_job",
+    "kyc": {
+      "address": "Madhapur, Hyderabad, Telangana",
+      "dateOfBirth": "2001-06-18",
+      "photograph": "Synthetic profile photograph on the customer record"
+    },
+    "factualContext": [
+      {
+        "fact": "No salary credit has posted to acc-rav-sav-01.",
+        "source": "acc-rav-sav-01"
+      },
+      {
+        "fact": "Holds no credit card; a BNPL commitment has one instalment left.",
+        "source": "DOC-V-BNPL-OFFER"
+      },
+      {
+        "fact": "Freelance receipts are irregular and one invoice is unpaid.",
+        "source": "DOC-V-INVOICE-DRAFT"
+      }
+    ],
+    "memberships": [],
+    "narrative": "Graduate starting his first job in Hyderabad, with freelance photography income that arrives irregularly. Has no credit card and no salary credit yet, so his questions about credit are about understanding rather than applying.",
+    "ownerId": "ravi",
+    "priorityRankingStated": false,
+    "releaseId": "retail4-v1",
+    "schemaVersion": "retail4-seed-v1",
+    "statedPriorities": [
+      {
+        "priority": "Have a plan before the first salary arrives.",
+        "rank": null,
+        "statedIn": "DOC-V-OFFER-LETTER"
+      },
+      {
+        "priority": "Understand how credit works before considering any product.",
+        "rank": null,
+        "statedIn": "DOC-V-CREDIT-QUESTION"
+      }
+    ],
+    "syntheticLabel": "Synthetic Contoso demo customer - not a real person."
+  }
+]

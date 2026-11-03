@@ -1,0 +1,76 @@
+{
+  "_warning": "QA ONLY. Maps each case to the ledger records it depends on, and holds the commentary explaining why each anchor exists. This commentary used to sit on the transaction records themselves, where it would have reached model context and Search and let the demo cheat.",
+  "anchorNotes": {
+    "txn-niv-9001": "UC02: the consult that led to the procedure estimate.",
+    "txn-niv-9002": "UC02: pre-procedure tests. Whether these fall inside the policy is exactly what the estimate does not make clear.",
+    "txn-niv-9003": "UC01: an unplanned medical outflow. This is the lived reason easy access competes with a higher payout rate.",
+    "txn-niv-9004": "UC01/UC02: recurring but uneven health spending.",
+    "txn-niv-9005": "UC03: a mandate request that was NOT authorised. Zero amount and reversed status on purpose - the safe outcome is that nothing happened, and the case must work without a loss to point at.",
+    "txn-rav-9020": "UC09: a real BNPL instalment. 'No cost' is the claim; the offer document carries the conditions he has not read.",
+    "txn-rav-9021": "UC09: second instalment. A third is still outstanding, so this is a live commitment rather than a closed one.",
+    "txn-rav-9022": "UC10: Ravi paid for the whole group. What each person owes is a language question, not a ledger fact.",
+    "txn-rav-9023": "UC10: the dinner. Perturbation ravi-dinner-only turns on whether one participant joined for this only.",
+    "txn-rav-9024": "UC10: who actually paid the cab is disputed in the chat.",
+    "txn-rav-9025": "UC10: original ticket.",
+    "txn-rav-9026": "UC10: a REAL posted refund, matched to its purchase. Contrast with UC07, where the refund is only promised.",
+    "txn-rav-9027": "UC11: a client payment that DID arrive.",
+    "txn-rav-9028": "UC11: smaller and later than the first. Irregular timing is the planning problem, not a headline number.",
+    "txn-rav-9029": "UC11: equipment bought against expected work. Real money out before the receivable came in.",
+    "txn-rhe-9010": "UC06: unreadable descriptor. The receipt resolves it to a school uniform supplier, which changes which benefit category applies.",
+    "txn-rhe-9011": "UC06: second opaque charge, and only PART of the purchase. The receipt shows the bill was split across two instruments, so the card amount is smaller than what she actually spent.",
+    "txn-rhe-9012": "UC06: a SINGLE large trip. Deliberately one-off so a travel-card upgrade is NOT automatically justified - one holiday is not a travel pattern, and the case must be able to say so.",
+    "txn-rhe-9013": "UC06: same single trip, so it must not be counted as a second travel occasion.",
+    "txn-rhe-9014": "UC07: the original purchase. The merchant chat promises a refund and the ledger has none. That gap IS the case; the rhea-refund-posted scenario later adds the real credit.",
+    "txn-rhe-9015": "UC05: money deliberately set aside. Makes the loan conversation concrete without implying any offer was sanctioned.",
+    "txn-rhe-9016": "UC04: the revised fee, higher than the recurring 18,500. Education, relocation and family support now genuinely compete.",
+    "txn-rhe-9017": "UC06: the non-card portion of pur-rhe-uc06-b. Card portion plus this equals the receipt's bill total exactly."
+  },
+  "caseAnchors": {
+    "UC01": [
+      "txn-niv-9003",
+      "txn-niv-9004"
+    ],
+    "UC02": [
+      "txn-niv-9001",
+      "txn-niv-9002"
+    ],
+    "UC03": [
+      "txn-niv-9005"
+    ],
+    "UC04": [
+      "txn-rhe-9016"
+    ],
+    "UC05": [
+      "txn-rhe-9015"
+    ],
+    "UC06": [
+      "txn-rhe-9010",
+      "txn-rhe-9011",
+      "txn-rhe-9017",
+      "txn-rhe-9012",
+      "txn-rhe-9013"
+    ],
+    "UC07": [
+      "txn-rhe-9014"
+    ],
+    "UC08": [],
+    "UC09": [
+      "txn-rav-9020",
+      "txn-rav-9021"
+    ],
+    "UC10": [
+      "txn-rav-9022",
+      "txn-rav-9023",
+      "txn-rav-9024",
+      "txn-rav-9025",
+      "txn-rav-9026"
+    ],
+    "UC11": [
+      "txn-rav-9027",
+      "txn-rav-9028",
+      "txn-rav-9029"
+    ]
+  },
+  "releaseId": "retail4-v1",
+  "schemaVersion": "retail4-seed-v1"
+}

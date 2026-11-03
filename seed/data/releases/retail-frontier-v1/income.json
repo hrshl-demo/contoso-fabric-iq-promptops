@@ -1,0 +1,236 @@
+[
+  {
+    "evidenceRef": "doc-salary-2026-04",
+    "gross": {
+      "amountMinor": 34200000,
+      "currency": "INR"
+    },
+    "incomeId": "income-salary-2026-04",
+    "incomeType": "salary",
+    "net": {
+      "amountMinor": 28500000,
+      "currency": "INR"
+    },
+    "ownerId": "rhea",
+    "period": "2026-04",
+    "recurring": true,
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true,
+    "transactionDescription": "SALARY CREDIT - NORTHWIND TECHNOLOGY INDIA"
+  },
+  {
+    "evidenceRef": "doc-salary-2026-05",
+    "gross": {
+      "amountMinor": 34200000,
+      "currency": "INR"
+    },
+    "incomeId": "income-salary-2026-05",
+    "incomeType": "salary",
+    "net": {
+      "amountMinor": 28500000,
+      "currency": "INR"
+    },
+    "ownerId": "rhea",
+    "period": "2026-05",
+    "recurring": true,
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true,
+    "transactionDescription": "SALARY CREDIT - NORTHWIND TECHNOLOGY INDIA"
+  },
+  {
+    "evidenceRef": "doc-salary-2026-06",
+    "gross": {
+      "amountMinor": 34200000,
+      "currency": "INR"
+    },
+    "incomeId": "income-salary-2026-06",
+    "incomeType": "salary",
+    "net": {
+      "amountMinor": 28500000,
+      "currency": "INR"
+    },
+    "ownerId": "rhea",
+    "period": "2026-06",
+    "recurring": true,
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true,
+    "transactionDescription": "SALARY CREDIT - NORTHWIND TECHNOLOGY INDIA"
+  },
+  {
+    "evidenceRef": "doc-salary-2026-07",
+    "gross": {
+      "amountMinor": 34200000,
+      "currency": "INR"
+    },
+    "incomeId": "income-salary-2026-07",
+    "incomeType": "salary",
+    "net": {
+      "amountMinor": 28500000,
+      "currency": "INR"
+    },
+    "ownerId": "rhea",
+    "period": "2026-07",
+    "recurring": true,
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true,
+    "transactionDescription": "SALARY CREDIT - NORTHWIND TECHNOLOGY INDIA"
+  },
+  {
+    "evidenceRef": "doc-salary-2026-08",
+    "gross": {
+      "amountMinor": 34200000,
+      "currency": "INR"
+    },
+    "incomeId": "income-salary-2026-08",
+    "incomeType": "salary",
+    "net": {
+      "amountMinor": 28500000,
+      "currency": "INR"
+    },
+    "ownerId": "rhea",
+    "period": "2026-08",
+    "recurring": true,
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true,
+    "transactionDescription": "SALARY CREDIT - NORTHWIND TECHNOLOGY INDIA"
+  },
+  {
+    "evidenceRef": "doc-salary-2026-09",
+    "gross": {
+      "amountMinor": 34200000,
+      "currency": "INR"
+    },
+    "incomeId": "income-salary-2026-09",
+    "incomeType": "salary",
+    "net": {
+      "amountMinor": 28500000,
+      "currency": "INR"
+    },
+    "ownerId": "rhea",
+    "period": "2026-09",
+    "recurring": true,
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true,
+    "transactionDescription": "SALARY CREDIT - NORTHWIND TECHNOLOGY INDIA"
+  },
+  {
+    "contributorRef": "member-vivek",
+    "gross": {
+      "amountMinor": 4000000,
+      "currency": "INR"
+    },
+    "incomeId": "income-household-2026-04",
+    "incomeType": "household_contribution",
+    "net": {
+      "amountMinor": 4000000,
+      "currency": "INR"
+    },
+    "ownerId": "rhea",
+    "period": "2026-04",
+    "recurring": true,
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  },
+  {
+    "contributorRef": "member-vivek",
+    "gross": {
+      "amountMinor": 4000000,
+      "currency": "INR"
+    },
+    "incomeId": "income-household-2026-05",
+    "incomeType": "household_contribution",
+    "net": {
+      "amountMinor": 4000000,
+      "currency": "INR"
+    },
+    "ownerId": "rhea",
+    "period": "2026-05",
+    "recurring": true,
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  },
+  {
+    "contributorRef": "member-vivek",
+    "gross": {
+      "amountMinor": 4000000,
+      "currency": "INR"
+    },
+    "incomeId": "income-household-2026-06",
+    "incomeType": "household_contribution",
+    "net": {
+      "amountMinor": 4000000,
+      "currency": "INR"
+    },
+    "ownerId": "rhea",
+    "period": "2026-06",
+    "recurring": true,
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  },
+  {
+    "contributorRef": "member-vivek",
+    "gross": {
+      "amountMinor": 4000000,
+      "currency": "INR"
+    },
+    "incomeId": "income-household-2026-07",
+    "incomeType": "household_contribution",
+    "net": {
+      "amountMinor": 4000000,
+      "currency": "INR"
+    },
+    "ownerId": "rhea",
+    "period": "2026-07",
+    "recurring": true,
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  },
+  {
+    "contributorRef": "member-vivek",
+    "gross": {
+      "amountMinor": 4000000,
+      "currency": "INR"
+    },
+    "incomeId": "income-household-2026-08",
+    "incomeType": "household_contribution",
+    "net": {
+      "amountMinor": 4000000,
+      "currency": "INR"
+    },
+    "ownerId": "rhea",
+    "period": "2026-08",
+    "recurring": true,
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  },
+  {
+    "contributorRef": "member-vivek",
+    "gross": {
+      "amountMinor": 4000000,
+      "currency": "INR"
+    },
+    "incomeId": "income-household-2026-09",
+    "incomeType": "household_contribution",
+    "net": {
+      "amountMinor": 4000000,
+      "currency": "INR"
+    },
+    "ownerId": "rhea",
+    "period": "2026-09",
+    "recurring": true,
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true
+  }
+]

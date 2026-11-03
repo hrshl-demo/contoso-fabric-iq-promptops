@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "retail4-bank-v1",
+  "releaseId": "retail4-v1",
+  "syntheticLabel": "Synthetic demonstration data. Not a real bank.",
+  "generatedFor": "businessDate 2026-09-15",
+  "_units": {
+    "amountMinor": "Exact transactional money, if present, is integer paise. This CRM seed file contains no exact money amounts.",
+    "counts": "Case, customer, branch, interaction, and account counts are integers."
+  },
+  "relationshipManagers": [
+    {
+      "rmId": "rm-001",
+      "name": "Aditi Narayan",
+      "role": "Senior Relationship Manager",
+      "buId": "BU-RETAIL-DEPOSITS",
+      "regionId": "REG-BENGALURU",
+      "avatarInitials": "AN",
+      "portfolioCustomers": 1850,
+      "openCases": 6,
+      "slaBreaches": 0,
+      "csatScore": 4.72,
+      "specialisations": [
+        "retirement income",
+        "salary onboarding",
+        "family banking",
+        "demo persona ownership"
+      ]
+    },
+    {
+      "rmId": "rm-002",
+      "name": "Rohan Khanna",
+      "role": "Cards Portfolio Manager",
+      "buId": "BU-CARDS",
+      "regionId": "REG-MUMBAI",
+      "avatarInitials": "RK",
+      "portfolioCustomers": 4200,
+      "openCases": 4,
+      "slaBreaches": 1,
+      "csatScore": 4.38,
+      "specialisations": [
+        "cashback cards",
+        "secured cards",
+        "merchant disputes"
+      ]
+    },
+    {
+      "rmId": "rm-003",
+      "name": "Farah Siddiqui",
+      "role": "Home Loan Specialist",
+      "buId": "BU-LENDING",
+      "regionId": "REG-PUNE",
+      "avatarInitials": "FS",
+      "portfolioCustomers": 960,
+      "openCases": 4,
+      "slaBreaches": 1,
+      "csatScore": 4.31,
+      "specialisations": [
+        "home loan comparison",
+        "property document review",
+        "prepayment clauses"
+      ]
+    },
+    {
+      "rmId": "rm-004",
+      "name": "Neeraj Bhatia",
+      "role": "Insurance Service Lead",
+      "buId": "BU-BANCASSURANCE",
+      "regionId": "REG-DELHI-NCR",
+      "avatarInitials": "NB",
+      "portfolioCustomers": 2350,
+      "openCases": 4,
+      "slaBreaches": 2,
+      "csatScore": 4.02,
+      "specialisations": [
+        "health cover renewals",
+        "medical declarations",
+        "premium objections"
+      ]
+    },
+    {
+      "rmId": "rm-005",
+      "name": "Kavya Raman",
+      "role": "Digital Service Manager",
+      "buId": "BU-SERVICE-COLLECTIONS",
+      "regionId": "REG-HYDERABAD",
+      "avatarInitials": "KR",
+      "portfolioCustomers": 5100,
+      "openCases": 6,
+      "slaBreaches": 1,
+      "csatScore": 4.24,
+      "specialisations": [
+        "AI assistant handoff",
+        "refund tracking",
+        "early collections",
+        "digital payments"
+      ]
+    }
+  ]
+}

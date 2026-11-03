@@ -1,0 +1,106 @@
+[
+  {
+    "asOf": "2026-09-30",
+    "changes": [],
+    "deterministicFixtureHash": "26c13fdeb953696e933cbbc7b695a831f82966bd05e9f11d55eb0806ae8083fd",
+    "disclosure": "Evidence fixture only; no recommendation or runtime action is asserted.",
+    "eventType": "monthly_financial_health_check",
+    "evidenceRefs": [
+      "acc-rhea-primary",
+      "acc-rhea-reserve",
+      "goal-emergency"
+    ],
+    "releaseId": "retail-frontier-v1",
+    "runtimeOutcome": null,
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true,
+    "variantId": "proactive-baseline"
+  },
+  {
+    "asOf": "2026-09-30",
+    "changes": [
+      {
+        "from": 7,
+        "path": "obl-school-fee.dayOfMonth",
+        "to": 3
+      }
+    ],
+    "deterministicFixtureHash": "3d14ce09e2cd5e444fb5ed2e09ed0f4723a1ba7e37236e93913068343313f491",
+    "disclosure": "Evidence fixture only; no recommendation or runtime action is asserted.",
+    "eventType": "obligation_date_change",
+    "evidenceRefs": [
+      "obl-school-fee",
+      "doc-school-fee"
+    ],
+    "releaseId": "retail-frontier-v1",
+    "runtimeOutcome": null,
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true,
+    "variantId": "proactive-school-fee-advanced"
+  },
+  {
+    "asOf": "2026-09-30",
+    "changes": [
+      {
+        "from": 0,
+        "path": "projectedUnexpectedExpense.amountMinor",
+        "to": 35000000
+      }
+    ],
+    "deterministicFixtureHash": "1f91cae4c4b516cbab8894bdb60c58c86da1cdcafe2a163a6356b4b545e61b4d",
+    "disclosure": "Evidence fixture only; no recommendation or runtime action is asserted.",
+    "eventType": "projected_liquidity_threshold",
+    "evidenceRefs": [
+      "acc-rhea-primary",
+      "obl-card"
+    ],
+    "releaseId": "retail-frontier-v1",
+    "runtimeOutcome": null,
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true,
+    "variantId": "proactive-liquidity-drop"
+  },
+  {
+    "asOf": "2026-09-30",
+    "changes": [
+      {
+        "from": null,
+        "path": "followupDueOn",
+        "to": "2026-10-02"
+      }
+    ],
+    "deterministicFixtureHash": "613f0c56fbb45ae7f14791505475345047a29905cd43f6694e844ea07a5f23b0",
+    "disclosure": "Evidence fixture only; no recommendation or runtime action is asserted.",
+    "eventType": "case_followup_due",
+    "evidenceRefs": [
+      "case-scam-001",
+      "svc-scam-001"
+    ],
+    "releaseId": "retail-frontier-v1",
+    "runtimeOutcome": null,
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true,
+    "variantId": "proactive-scam-followup"
+  },
+  {
+    "asOf": "2026-09-30",
+    "changes": [
+      {
+        "from": "active",
+        "path": "mandate-surplus-001.status",
+        "to": "revoked"
+      }
+    ],
+    "deterministicFixtureHash": "dad3bdc5a2b6cd63d5a488ef3a50034c75c1d581982bfbd23af5c7375472a1bd",
+    "disclosure": "Evidence fixture only; no recommendation or runtime action is asserted.",
+    "eventType": "mandate_state_change",
+    "evidenceRefs": [
+      "mandate-surplus-001"
+    ],
+    "releaseId": "retail-frontier-v1",
+    "runtimeOutcome": null,
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true,
+    "variantId": "proactive-mandate-revoked"
+  }
+]

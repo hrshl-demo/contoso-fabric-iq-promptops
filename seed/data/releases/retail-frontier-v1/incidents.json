@@ -1,0 +1,52 @@
+[
+  {
+    "amount": {
+      "amountMinor": 7499900,
+      "currency": "INR"
+    },
+    "detectedAt": "2026-08-27T16:30:00+05:30",
+    "evidenceRefs": [
+      "doc-scam-message",
+      "doc-suspicious-payment"
+    ],
+    "incidentId": "case-scam-001",
+    "incidentType": "authorised_payment_scam",
+    "ownerId": "rhea",
+    "recoveryAmount": {
+      "amountMinor": 7499900,
+      "currency": "INR"
+    },
+    "recoveryEvidenceRef": "doc-recovery-confirmation",
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "status": "recovery_credit_posted",
+    "synthetic": true,
+    "transactionDescriptions": [
+      "UPI TRANSFER - KYC SUPPORT DESK"
+    ]
+  },
+  {
+    "amount": {
+      "amountMinor": 1249900,
+      "currency": "INR"
+    },
+    "detectedAt": "2026-09-18T08:45:00+05:30",
+    "evidenceRefs": [
+      "doc-card-dispute-evidence"
+    ],
+    "incidentId": "case-card-dispute-001",
+    "incidentType": "duplicate_card_charge",
+    "ownerId": "rhea",
+    "provisionalCredit": {
+      "amountMinor": 1249900,
+      "currency": "INR"
+    },
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "status": "human_review_open_provisional_credit_posted",
+    "synthetic": true,
+    "transactionDescriptions": [
+      "ELECTRONICS HUB PUNE - DUPLICATE"
+    ]
+  }
+]

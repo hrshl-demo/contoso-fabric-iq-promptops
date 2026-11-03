@@ -1,0 +1,150 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+
+jobs:
+  repo-checks:
+    name: Prompts, manifest and guards
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-ci.txt
+      - run: python -m pip install -r requirements-ci.txt
+      - name: Detect Power BI reports
+        id: reports
+        run: |
+          if find fabric -path '*.Report/definition.pbir' 2>/dev/null | grep -q .; then echo "any=true" >> "$GITHUB_OUTPUT"; else echo "any=false" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        if: steps.reports.outputs.any == 'true'
+        with:
+          node-version: "22"
+      - name: Install the PBIR validator
+        if: steps.reports.outputs.any == 'true'
+        run: npm install --global @microsoft/powerbi-report-authoring-cli@0.5.0
+      - name: Lint prompts, wrappers, manifest, PII guard and Fabric items
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          if [ -n "$BASE_REF" ]; then
+            python -m tools.check --base "origin/$BASE_REF"
+          else
+            python -m tools.check
+          fi
+      - name: Tooling tests
+        run: python -m pytest -q
+      - name: Job summary
+        if: always()
+        run: python -m tools.summary >> "$GITHUB_STEP_SUMMARY"
+
+  secrets:
+    name: Secret scan (gitleaks)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Install gitleaks 8.30.1 (checksum verified)
+        run: |
+          curl -sSfL -o gitleaks.tar.gz "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz"
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  gitleaks.tar.gz" | sha256sum -c -
+          tar -xzf gitleaks.tar.gz gitleaks
+      - name: Scan history and working tree
+        run: ./gitleaks git --config .gitleaks.toml --redact --no-banner --verbose .
+
+  kit-tests:
+    name: Kit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      CONTOSO_REPO: ${{ github.workspace }}/seed
+      CONTOSO_REQUIRE_REPO: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: kit/requirements*.txt
+      - name: Install the kit requirements
+        working-directory: kit
+        run: python -m pip install -r requirements-dev.txt
+      - name: Choose the suite
+        id: suite
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          suite=fast
+          if [ "$EVENT" = "workflow_dispatch" ]; then suite=full; fi
+          if [ "$EVENT" = "pull_request" ] && git diff --name-only "origin/$BASE_REF...HEAD" | grep -Eq '^kit/(contoso_onto|scripts|infra|tests)/'; then suite=full; fi
+          echo "suite=$suite" >> "$GITHUB_OUTPUT"
+          echo "Kit test suite: **$suite** (full when the engine changes, on manual runs and on release)" >> "$GITHUB_STEP_SUMMARY"
+      - name: Run the kit tests
+        working-directory: kit
+        env:
+          SUITE: ${{ steps.suite.outputs.suite }}
+        run: |
+          if [ "$SUITE" = "full" ]; then
+            python -m pytest -q
+          else
+            python -m pytest -q -m "not slow"
+          fi
+
+  offline-build:
+    name: Build the ontology and semantic model offline
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: kit/requirements.txt
+      - name: Install the kit requirements
+        working-directory: kit
+        run: python -m pip install -r requirements.txt
+      - name: Build bronze, silver, gold, semantic model and ontology from the seed
+        working-directory: kit
+        shell: bash
+        run: |
+          python -m contoso_onto.cli build --repo ../seed --tier core --out ../out | tee ../build.log
+          {
+            echo "### Offline build (core tier)"
+            echo '```'
+            grep -E '^(layers|gold:|silver:|bronze:|  core:)' ../build.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ontology-and-semantic-model
+          path: |
+            out/core/ontology
+            out/core/semantic_model
+            out/core/agents
+          if-no-files-found: error
+          retention-days: 14

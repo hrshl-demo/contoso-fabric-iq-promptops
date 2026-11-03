@@ -1,0 +1,147 @@
+{
+  "schemaVersion": "retail4-seed-v1",
+  "releaseId": "retail4-v1",
+  "note": "The approved asset registry. An `image` block names an assetId and nothing else - there is no URL field anywhere in app/chat/blocks.py - so this file is the complete set of images the assistant is able to show. `path` is served read-only by the /release/ handler in app/main.py. NO ASSET CONTAINS A FIGURE: no rate, amount, percentage or date is drawn into any of these, because an approved image showing an invented number would be the exact failure the block contract exists to prevent, and it would survive every check that polices model text. They illustrate how a thing works; the numbers stay in the catalogue and in tool results, where they can be sourced. `alt` is read aloud AND is what the model sees when it picks one, so it describes what the picture shows rather than naming the file.",
+  "assets": [
+    {
+      "assetId": "EXP-FD-LADDER",
+      "path": "/release/assets/exp-fd-ladder.svg",
+      "alt": "A deposit ladder: one sum split across four deposits of increasing term, drawn as four bars that end at different points on a timeline, so money comes back in stages instead of all at once and each maturing deposit can be spent or renewed.",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "assetId": "EXP-HEALTH-LAYERS",
+      "path": "/release/assets/exp-health-layers.svg",
+      "alt": "Three stacked bands showing how a top-up health cover layers above a base cover: the customer pays the first slice of a claim, the base cover pays the next, and the top-up only begins once the base cover is used up. A top-up is not a second policy.",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "assetId": "EXP-FRAUD-NEVER-SHARE",
+      "path": "/release/assets/exp-fraud-never-share.svg",
+      "alt": "A checklist of the things the bank will never ask for, each crossed out: a one-time code, a card PIN, a CVV or full card number, and a password. Beside it a shield with a tick. Anyone asking for these is not the bank.",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "assetId": "EXP-SWEEP-FLOW",
+      "path": "/release/assets/exp-sweep-flow.svg",
+      "alt": "How a sweep works: a current account and a linked deposit joined by two arrows. Balance above a buffer the customer chooses sweeps out into the deposit, and returns automatically when a payment needs it. Breaking a sweep early has a cost.",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "assetId": "EXP-CREDIT-UTILISATION",
+      "path": "/release/assets/exp-credit-utilisation.svg",
+      "alt": "Two limit bars comparing credit utilisation: the same balance fills a small share of one limit and most of another, marked comfortable and strained. Utilisation is a share of the limit rather than an amount spent, and clearing the balance before the statement closes keeps it low.",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "assetId": "EXP-HOME-LOAN-RATES",
+      "path": "/release/assets/exp-home-loan-rates.svg",
+      "alt": "Fixed and floating home loan rates over time: a flat solid line for a fixed rate and a dashed line that rises and falls around it for a floating one. Fixed buys predictability; floating can fall and can rise. Neither is the safe one.",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "assetId": "EXP-DISPUTE-STAGES",
+      "path": "/release/assets/exp-dispute-stages.svg",
+      "alt": "The four stages of a card dispute shown as a stepper: raised, acknowledged, under review with the merchant and the network, and the outcome. A warning notes that a provisional credit during the review is not the outcome and is taken back if the dispute is declined.",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "assetId": "EXP-COMMITMENT-ORDER",
+      "path": "/release/assets/exp-commitment-order.svg",
+      "alt": "Several competing commitments placed into an order: four unordered chips funnel into nearest, next and later. Only the nearest is funded now; the others are drawn as deliberately deferred, because a plan that does not name what is waiting is not a plan.",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "assetId": "EXP-SPEND-MIX",
+      "path": "/release/assets/exp-spend-mix.svg",
+      "alt": "Whether a card fits a spending pattern: where the money actually goes listed on the left against what the card rewards on the right, joined by solid lines where they line up and dashed lines where they do not. A reward for something you rarely buy is not a benefit.",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "assetId": "EXP-SALARY-SPLIT",
+      "path": "/release/assets/exp-salary-split.svg",
+      "alt": "A salary credit split three ways on the day it lands: bills that leave on their own, saving that moves first, and spending as what is genuinely left. Saving last means saving whatever survives the month, which is usually nothing.",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "assetId": "EXP-GROUP-SPLIT",
+      "path": "/release/assets/exp-group-split.svg",
+      "alt": "Settling a shared expense: four bars of different heights for what each person paid, a dashed fair-share line across them, and arrows from whoever is under the line to whoever is over it. Only the difference moves.",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "assetId": "EXP-IRREGULAR-INCOME",
+      "path": "/release/assets/exp-irregular-income.svg",
+      "alt": "Income that arrives unevenly: tall months, small months and one with nothing at all. A hatched slice at the top of every payment is held back because it is owed elsewhere, and a dashed line marks what a month costs to live, which the reserve has to cover.",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "assetId": "OFFER-SAVINGS",
+      "path": "/release/assets/offer-savings.svg",
+      "alt": "Artwork for a savings account: widening rings on a blue field, captioned as money you can reach whenever you need it.",
+      "width": 640,
+      "height": 280
+    },
+    {
+      "assetId": "OFFER-FIXED-DEPOSIT",
+      "path": "/release/assets/offer-fixed-deposit.svg",
+      "alt": "Artwork for a fixed deposit: a stack of coins on a teal field, captioned as money set aside for an agreed term that then matures.",
+      "width": 640,
+      "height": 280
+    },
+    {
+      "assetId": "OFFER-RECURRING-DEPOSIT",
+      "path": "/release/assets/offer-recurring-deposit.svg",
+      "alt": "Artwork for a recurring deposit: bars rising month by month on a green field, captioned as the same amount every month towards a goal.",
+      "width": 640,
+      "height": 280
+    },
+    {
+      "assetId": "OFFER-CREDIT-CARD",
+      "path": "/release/assets/offer-credit-card.svg",
+      "alt": "Artwork for a credit card: a tilted card face with a chip and a stripe on a violet to magenta field, captioned as the bank's money first and yours when the statement lands.",
+      "width": 640,
+      "height": 280
+    },
+    {
+      "assetId": "OFFER-DEBIT-CARD",
+      "path": "/release/assets/offer-debit-card.svg",
+      "alt": "Artwork for a debit card: a tilted card face with a chip and a contactless mark on a graphite field, captioned as spending from your own account straight away.",
+      "width": 640,
+      "height": 280
+    },
+    {
+      "assetId": "OFFER-HOME-LOAN",
+      "path": "/release/assets/offer-home-loan.svg",
+      "alt": "Artwork for a home loan: a roofline and doorway drawn in outline on an amber field, captioned as a long commitment where the clauses matter as much as the rate.",
+      "width": 640,
+      "height": 280
+    },
+    {
+      "assetId": "OFFER-HEALTH-COVER",
+      "path": "/release/assets/offer-health-cover.svg",
+      "alt": "Artwork for health cover: a shield carrying a medical cross on a teal to emerald field, captioned that what it pays for matters more than what it costs.",
+      "width": 640,
+      "height": 280
+    },
+    {
+      "assetId": "OFFER-SWEEP",
+      "path": "/release/assets/offer-sweep.svg",
+      "alt": "Artwork for a sweep account: an arrow circling between two points on a violet field, captioned as idle balance working and coming back when you spend.",
+      "width": 640,
+      "height": 280
+    }
+  ]
+}

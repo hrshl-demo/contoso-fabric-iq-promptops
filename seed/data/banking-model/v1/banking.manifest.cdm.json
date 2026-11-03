@@ -1,0 +1,2414 @@
+{
+  "$schema": "vendor/cdm/schema.manifest.cdm.json",
+  "jsonSchemaSemanticVersion": "1.5.0",
+  "manifestName": "contosoBanking",
+  "documentVersion": "contoso-banking-v1",
+  "imports": [
+    {
+      "corpusPath": "banking.cdm.json"
+    }
+  ],
+  "entities": [
+    {
+      "type": "LocalEntity",
+      "entityName": "Customer",
+      "entityPath": "banking.cdm.json/Customer",
+      "explanation": "Selected synthetic customer, not a global customer directory.",
+      "dataPartitions": [
+        {
+          "name": "Customer",
+          "location": "partitions/Customer.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "PartyRelationship",
+      "entityPath": "banking.cdm.json/PartyRelationship",
+      "explanation": "Explicit permitted recipient relationship; names do not establish family or ownership.",
+      "dataPartitions": [
+        {
+          "name": "PartyRelationship",
+          "location": "partitions/PartyRelationship.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "Product",
+      "entityPath": "banking.cdm.json/Product",
+      "explanation": "Reviewed ProductPackage catalogue entry; not an owned financial holding.",
+      "dataPartitions": [
+        {
+          "name": "Product",
+          "location": "partitions/Product.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "Account",
+      "entityPath": "banking.cdm.json/Account",
+      "explanation": "One current owner savings account; balances and holds remain distinct.",
+      "dataPartitions": [
+        {
+          "name": "Account",
+          "location": "partitions/Account.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "Card",
+      "entityPath": "banking.cdm.json/Card",
+      "explanation": "One credit, debit or prepaid card; only credit cards map to the Credit Card facility domain.",
+      "dataPartitions": [
+        {
+          "name": "Card",
+          "location": "partitions/Card.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "Deposit",
+      "entityPath": "banking.cdm.json/Deposit",
+      "explanation": "One fixed or recurring deposit, including explicitly historical closed deposits without double-counting principal.",
+      "dataPartitions": [
+        {
+          "name": "Deposit",
+          "location": "partitions/Deposit.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "Loan",
+      "entityPath": "banking.cdm.json/Loan",
+      "explanation": "One actual loan liability; disbursement, repayment schedules and purchase escrow are not free cash.",
+      "dataPartitions": [
+        {
+          "name": "Loan",
+          "location": "partitions/Loan.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "ProtectionPolicy",
+      "entityPath": "banking.cdm.json/ProtectionPolicy",
+      "explanation": "Synthetic future health/protection coverage; not automatically a P&C Policy or an approved reimbursement.",
+      "dataPartitions": [
+        {
+          "name": "ProtectionPolicy",
+          "location": "partitions/ProtectionPolicy.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "Transaction",
+      "entityPath": "banking.cdm.json/Transaction",
+      "explanation": "Actual bank ledger entry with separate amount and debit/credit direction.",
+      "dataPartitions": [
+        {
+          "name": "Transaction",
+          "location": "partitions/Transaction.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "Goal",
+      "entityPath": "banking.cdm.json/Goal",
+      "explanation": "Current customer goal or pocket, not a CDM LifeEvent and not an additional bank balance.",
+      "dataPartitions": [
+        {
+          "name": "Goal",
+          "location": "partitions/Goal.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "Preference",
+      "entityPath": "banking.cdm.json/Preference",
+      "explanation": "Current explicitly recorded customer preference; never restored from old seed values.",
+      "dataPartitions": [
+        {
+          "name": "Preference",
+          "location": "partitions/Preference.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "Document",
+      "entityPath": "banking.cdm.json/Document",
+      "explanation": "Available owner document descriptor only; availability does not authorize reading its contents.",
+      "dataPartitions": [
+        {
+          "name": "Document",
+          "location": "partitions/Document.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "EvidenceSelection",
+      "entityPath": "banking.cdm.json/EvidenceSelection",
+      "explanation": "Customer's actual source selection; distinct from assessment and exact execution consent.",
+      "dataPartitions": [
+        {
+          "name": "EvidenceSelection",
+          "location": "partitions/EvidenceSelection.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "EvidenceReading",
+      "entityPath": "banking.cdm.json/EvidenceReading",
+      "explanation": "Persisted extraction identity and metadata; historical or unselected content is withheld.",
+      "dataPartitions": [
+        {
+          "name": "EvidenceReading",
+          "location": "partitions/EvidenceReading.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "Fact",
+      "entityPath": "banking.cdm.json/Fact",
+      "explanation": "Allowlisted selected-read fact, explicit statement or retained correction, never a hidden answer key.",
+      "dataPartitions": [
+        {
+          "name": "Fact",
+          "location": "partitions/Fact.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "Calculation",
+      "entityPath": "banking.cdm.json/Calculation",
+      "explanation": "Already stored calculation result and provenance, not a newly run analysis or quote.",
+      "dataPartitions": [
+        {
+          "name": "Calculation",
+          "location": "partitions/Calculation.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "CalculationValue",
+      "entityPath": "banking.cdm.json/CalculationValue",
+      "explanation": "One explicitly typed persisted worksheet result, kept separate from a bank posting.",
+      "dataPartitions": [
+        {
+          "name": "CalculationValue",
+          "location": "partitions/CalculationValue.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "RelationshipPlan",
+      "entityPath": "banking.cdm.json/RelationshipPlan",
+      "explanation": "Current or explicitly retained plan, not bank authority or an execution receipt.",
+      "dataPartitions": [
+        {
+          "name": "RelationshipPlan",
+          "location": "partitions/RelationshipPlan.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "Application",
+      "entityPath": "banking.cdm.json/Application",
+      "explanation": "Requested operation with distinct current, archived and compatibility lifecycles; a proposal is not execution.",
+      "dataPartitions": [
+        {
+          "name": "Application",
+          "location": "partitions/Application.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "ApplicationReview",
+      "entityPath": "banking.cdm.json/ApplicationReview",
+      "explanation": "Saved filled-review projection; no refresh, requote or independent eligibility decision.",
+      "dataPartitions": [
+        {
+          "name": "ApplicationReview",
+          "location": "partitions/ApplicationReview.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "ReviewField",
+      "entityPath": "banking.cdm.json/ReviewField",
+      "explanation": "One allowlisted scalar review field; nested provider, health and source payloads are excluded.",
+      "dataPartitions": [
+        {
+          "name": "ReviewField",
+          "location": "partitions/ReviewField.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "Quote",
+      "entityPath": "banking.cdm.json/Quote",
+      "explanation": "Persisted quote under its original policy/evidence identities; inspection never renews it.",
+      "dataPartitions": [
+        {
+          "name": "Quote",
+          "location": "partitions/Quote.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "BankDecision",
+      "entityPath": "banking.cdm.json/BankDecision",
+      "explanation": "Independent persisted approve/decline/refer assessment, not a quote or an eligibility finding.",
+      "dataPartitions": [
+        {
+          "name": "BankDecision",
+          "location": "partitions/BankDecision.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "Consent",
+      "entityPath": "banking.cdm.json/Consent",
+      "explanation": "A specific evidence, assessment or execution consent; these purposes are not interchangeable.",
+      "dataPartitions": [
+        {
+          "name": "Consent",
+          "location": "partitions/Consent.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "ExecutionReceipt",
+      "entityPath": "banking.cdm.json/ExecutionReceipt",
+      "explanation": "Retained relationship-bank effect receipt; submitted compatibility instructions and saved reviews are LifecycleEvent records, not execution receipts.",
+      "dataPartitions": [
+        {
+          "name": "ExecutionReceipt",
+          "location": "partitions/ExecutionReceipt.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "ServiceCase",
+      "entityPath": "banking.cdm.json/ServiceCase",
+      "explanation": "Tracked servicing request, including pending investigation; no inferred resolution or reimbursement.",
+      "dataPartitions": [
+        {
+          "name": "ServiceCase",
+          "location": "partitions/ServiceCase.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "Commitment",
+      "entityPath": "banking.cdm.json/Commitment",
+      "explanation": "Actual mandate or repayment-schedule row, not a posted payment or duplicate liability.",
+      "dataPartitions": [
+        {
+          "name": "Commitment",
+          "location": "partitions/Commitment.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "SweepRule",
+      "entityPath": "banking.cdm.json/SweepRule",
+      "explanation": "Persisted protected-cash configuration; rule activation does not imply that a deposit was opened.",
+      "dataPartitions": [
+        {
+          "name": "SweepRule",
+          "location": "partitions/SweepRule.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "CollateralPledge",
+      "entityPath": "banking.cdm.json/CollateralPledge",
+      "explanation": "Actual nested deposit pledge; pledged principal is not counted again as owned wealth.",
+      "dataPartitions": [
+        {
+          "name": "CollateralPledge",
+          "location": "partitions/CollateralPledge.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "Allocation",
+      "entityPath": "banking.cdm.json/Allocation",
+      "explanation": "Actual account hold allocated to a goal; a junction record, not an extra deposit.",
+      "dataPartitions": [
+        {
+          "name": "Allocation",
+          "location": "partitions/Allocation.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "Settlement",
+      "entityPath": "banking.cdm.json/Settlement",
+      "explanation": "Recorded shared payment or purchase escrow; neither proves external rail execution nor completed conveyance.",
+      "dataPartitions": [
+        {
+          "name": "Settlement",
+          "location": "partitions/Settlement.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "LifecycleEvent",
+      "entityPath": "banking.cdm.json/LifecycleEvent",
+      "explanation": "Actually persisted relationship/effect event or explicitly instruction-only compatibility receipt, never an unapplied readiness fixture or inferred banking effect.",
+      "dataPartitions": [
+        {
+          "name": "LifecycleEvent",
+          "location": "partitions/LifecycleEvent.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "CRMContinuity",
+      "entityPath": "banking.cdm.json/CRMContinuity",
+      "explanation": "Pure continuity view derived from the same authorized snapshot, never a global CRM cache read or synchronization.",
+      "dataPartitions": [
+        {
+          "name": "CRMContinuity",
+          "location": "partitions/CRMContinuity.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "FrontierJourney",
+      "entityPath": "banking.cdm.json/FrontierJourney",
+      "explanation": "Owner-scoped Frontier journey state, separate from its calculations, actions and outcomes.",
+      "dataPartitions": [
+        {
+          "name": "FrontierJourney",
+          "location": "partitions/FrontierJourney.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "ProactiveCandidate",
+      "entityPath": "banking.cdm.json/ProactiveCandidate",
+      "explanation": "Deterministically detected candidate, not an outcome or executed action.",
+      "dataPartitions": [
+        {
+          "name": "ProactiveCandidate",
+          "location": "partitions/ProactiveCandidate.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "HouseholdAccessGrant",
+      "entityPath": "banking.cdm.json/HouseholdAccessGrant",
+      "explanation": "Recorded owner-scoped delegation; it is authority metadata, not another customer's record.",
+      "dataPartitions": [
+        {
+          "name": "HouseholdAccessGrant",
+          "location": "partitions/HouseholdAccessGrant.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "FrontierConsent",
+      "entityPath": "banking.cdm.json/FrontierConsent",
+      "explanation": "Consent for Frontier data or action access, kept distinct from legacy application consent.",
+      "dataPartitions": [
+        {
+          "name": "FrontierConsent",
+          "location": "partitions/FrontierConsent.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "RegisteredAgent",
+      "entityPath": "banking.cdm.json/RegisteredAgent",
+      "explanation": "Know-your-agent registration and bounded permissions; no bearer scopes or credentials.",
+      "dataPartitions": [
+        {
+          "name": "RegisteredAgent",
+          "location": "partitions/RegisteredAgent.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "FrontierMandate",
+      "entityPath": "banking.cdm.json/FrontierMandate",
+      "explanation": "Bounded surplus-to-goal mandate with explicit agent, consent and money limits.",
+      "dataPartitions": [
+        {
+          "name": "FrontierMandate",
+          "location": "partitions/FrontierMandate.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "PreparedAction",
+      "entityPath": "banking.cdm.json/PreparedAction",
+      "explanation": "A prepared but not necessarily approved or executed Frontier action.",
+      "dataPartitions": [
+        {
+          "name": "PreparedAction",
+          "location": "partitions/PreparedAction.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "MandateAction",
+      "entityPath": "banking.cdm.json/MandateAction",
+      "explanation": "Revalidated mandate execution, refusal or referral with before/after authority values.",
+      "dataPartitions": [
+        {
+          "name": "MandateAction",
+          "location": "partitions/MandateAction.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "HumanHandoff",
+      "entityPath": "banking.cdm.json/HumanHandoff",
+      "explanation": "Consent-bound transfer to a human specialist without private context payloads.",
+      "dataPartitions": [
+        {
+          "name": "HumanHandoff",
+          "location": "partitions/HumanHandoff.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "HumanDecision",
+      "entityPath": "banking.cdm.json/HumanDecision",
+      "explanation": "Attributable specialist disposition; explanation and private modifications are withheld.",
+      "dataPartitions": [
+        {
+          "name": "HumanDecision",
+          "location": "partitions/HumanDecision.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "FrontierOutcome",
+      "entityPath": "banking.cdm.json/FrontierOutcome",
+      "explanation": "Evidence-bound Frontier outcome; proactive fixtures cannot create it.",
+      "dataPartitions": [
+        {
+          "name": "FrontierOutcome",
+          "location": "partitions/FrontierOutcome.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "AgentAction",
+      "entityPath": "banking.cdm.json/AgentAction",
+      "explanation": "Sanitized attributable Frontier agent command or gateway-tool record.",
+      "dataPartitions": [
+        {
+          "name": "AgentAction",
+          "location": "partitions/AgentAction.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "RecordIndex",
+      "entityPath": "banking.cdm.json/RecordIndex",
+      "explanation": "Export identity/type index only, not an additional bank product.",
+      "dataPartitions": [
+        {
+          "name": "RecordIndex",
+          "location": "partitions/RecordIndex.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "RecordLink",
+      "entityPath": "banking.cdm.json/RecordLink",
+      "explanation": "Export edge junction only; endpoints must be real selected RecordIndex rows.",
+      "dataPartitions": [
+        {
+          "name": "RecordLink",
+          "location": "partitions/RecordLink.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                },
+                {
+                  "name": "encoding",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "quoteStyle",
+                  "value": "QuoteStyle.Csv"
+                }
+              ]
+            },
+            {
+              "traitReference": "contosoBanking.has.csvNullConvention",
+              "arguments": [
+                {
+                  "name": "nullToken",
+                  "value": "\\N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "name": "Customer_index",
+      "fromEntity": "banking.cdm.json/Customer",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "PartyRelationship_index",
+      "fromEntity": "banking.cdm.json/PartyRelationship",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "Product_index",
+      "fromEntity": "banking.cdm.json/Product",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "Account_index",
+      "fromEntity": "banking.cdm.json/Account",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "Card_index",
+      "fromEntity": "banking.cdm.json/Card",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "Deposit_index",
+      "fromEntity": "banking.cdm.json/Deposit",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "Loan_index",
+      "fromEntity": "banking.cdm.json/Loan",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "ProtectionPolicy_index",
+      "fromEntity": "banking.cdm.json/ProtectionPolicy",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "Transaction_index",
+      "fromEntity": "banking.cdm.json/Transaction",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "Goal_index",
+      "fromEntity": "banking.cdm.json/Goal",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "Preference_index",
+      "fromEntity": "banking.cdm.json/Preference",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "Document_index",
+      "fromEntity": "banking.cdm.json/Document",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "EvidenceSelection_index",
+      "fromEntity": "banking.cdm.json/EvidenceSelection",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "EvidenceReading_index",
+      "fromEntity": "banking.cdm.json/EvidenceReading",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "Fact_index",
+      "fromEntity": "banking.cdm.json/Fact",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "Calculation_index",
+      "fromEntity": "banking.cdm.json/Calculation",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "CalculationValue_index",
+      "fromEntity": "banking.cdm.json/CalculationValue",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "RelationshipPlan_index",
+      "fromEntity": "banking.cdm.json/RelationshipPlan",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "Application_index",
+      "fromEntity": "banking.cdm.json/Application",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "ApplicationReview_index",
+      "fromEntity": "banking.cdm.json/ApplicationReview",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "ReviewField_index",
+      "fromEntity": "banking.cdm.json/ReviewField",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "Quote_index",
+      "fromEntity": "banking.cdm.json/Quote",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "BankDecision_index",
+      "fromEntity": "banking.cdm.json/BankDecision",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "Consent_index",
+      "fromEntity": "banking.cdm.json/Consent",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "ExecutionReceipt_index",
+      "fromEntity": "banking.cdm.json/ExecutionReceipt",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "ServiceCase_index",
+      "fromEntity": "banking.cdm.json/ServiceCase",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "Commitment_index",
+      "fromEntity": "banking.cdm.json/Commitment",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "SweepRule_index",
+      "fromEntity": "banking.cdm.json/SweepRule",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "CollateralPledge_index",
+      "fromEntity": "banking.cdm.json/CollateralPledge",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "Allocation_index",
+      "fromEntity": "banking.cdm.json/Allocation",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "Settlement_index",
+      "fromEntity": "banking.cdm.json/Settlement",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "LifecycleEvent_index",
+      "fromEntity": "banking.cdm.json/LifecycleEvent",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "CRMContinuity_index",
+      "fromEntity": "banking.cdm.json/CRMContinuity",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "FrontierJourney_index",
+      "fromEntity": "banking.cdm.json/FrontierJourney",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "ProactiveCandidate_index",
+      "fromEntity": "banking.cdm.json/ProactiveCandidate",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "HouseholdAccessGrant_index",
+      "fromEntity": "banking.cdm.json/HouseholdAccessGrant",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "FrontierConsent_index",
+      "fromEntity": "banking.cdm.json/FrontierConsent",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "RegisteredAgent_index",
+      "fromEntity": "banking.cdm.json/RegisteredAgent",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "FrontierMandate_index",
+      "fromEntity": "banking.cdm.json/FrontierMandate",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "PreparedAction_index",
+      "fromEntity": "banking.cdm.json/PreparedAction",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "MandateAction_index",
+      "fromEntity": "banking.cdm.json/MandateAction",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "HumanHandoff_index",
+      "fromEntity": "banking.cdm.json/HumanHandoff",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "HumanDecision_index",
+      "fromEntity": "banking.cdm.json/HumanDecision",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "FrontierOutcome_index",
+      "fromEntity": "banking.cdm.json/FrontierOutcome",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "AgentAction_index",
+      "fromEntity": "banking.cdm.json/AgentAction",
+      "fromEntityAttribute": "id",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "RecordLink_sourceRecordId",
+      "fromEntity": "banking.cdm.json/RecordLink",
+      "fromEntityAttribute": "sourceRecordId",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    },
+    {
+      "name": "RecordLink_targetRecordId",
+      "fromEntity": "banking.cdm.json/RecordLink",
+      "fromEntityAttribute": "targetRecordId",
+      "toEntity": "banking.cdm.json/RecordIndex",
+      "toEntityAttribute": "id"
+    }
+  ],
+  "subManifests": [],
+  "explanation": "Snapshot-bound export layout, not shipped customer partitions. CSV rows are generated and separately validated at export."
+}

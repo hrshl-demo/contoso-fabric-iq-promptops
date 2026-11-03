@@ -1,0 +1,81 @@
+# Natural-language business rules. The ontology stores them as context for agents (Fabric does not execute them and
+# ask_ontology ignores them): enforce every hard rule again in the banking gateway. Laws L1-L11 come from the bank's own
+# Frontier PRD; the rest are the invariants and honesty rules the conversational spine already enforces.
+rules:
+  - name: NoFigureWithoutAuthority
+    statement: "Law L1. A balance, rate, forecast, affordability result or executable amount that did not come from the bank's own records or a registered deterministic calculation must not be presented as banking truth. Quote money only from the Inr properties, with the date they are valid for (Account.BalanceAsOn)."
+    properties: [Account.PostedBalanceInr, Account.AvailableBalanceInr, Account.BalanceAsOn, Loan.CurrentPrincipalInr, Loan.EmiInr]
+  - name: NoInvisibleSourceUse
+    statement: "Law L2. Customer documents may be used as evidence only after the customer selected them and consented to their reading. Cite the Document and the Consent that covers it; a document the customer did not select is not a source."
+    properties: [Document.DocumentId, Consent.Status, Consent.ExpiresAt]
+    relationships: [Document Owned By Customer, Consent Given By Customer]
+  - name: NoConsentByImplication
+    statement: "Law L3. A conversation, upload, recommendation, earlier consent or personal-agent request never creates a new permission. A household role (spouse, child, parent) gives no access by itself: only an active HouseholdAccessGrant that lists the permission, backed by a granted Consent, does."
+    properties: [HouseholdAccessGrant.Permissions, HouseholdAccessGrant.DeniedPermissions, HouseholdAccessGrant.Status, Consent.Status]
+    relationships: [Access Grant Of Customer, Access Grant Backed By Consent]
+  - name: NoExecutionByLanguage
+    statement: "Law L4. Saying 'do it', an agent tool call or a specialist recommendation is not authority to execute. Only the deterministic bank, on the current revision and with a customer decision or an active FrontierMandate, can execute. The assistant may analyse and prepare only; see AuthorityRule for who may do what."
+    properties: [AuthorityRule.Capability, AuthorityRule.Actor, AuthorityRule.PermissionClass, FrontierMandate.Status]
+  - name: NoDoubleAllocation
+    statement: "Law L5. Cash, collateral, commitments and goal balances must never be counted twice across plans or goals. A deposit that also appears as an Investment is one asset, not two: do not add Account balances, Deposit principal and Investment value together without removing the overlap."
+    properties: [Deposit.PrincipalInr, Investment.CurrentValueInr, Account.PostedBalanceInr, Goal.CurrentInr]
+  - name: NoFutureMoneyAsCash
+    statement: "Law L6. Forecast income, offers, unpaid invoices, promised refunds, unused credit limits, unposted deposit maturities and loan proceeds are not spendable cash. Available cash is the posted, available balance of owned accounts, less protected cash and committed obligations."
+    properties: [Card.CreditLimitInr, Card.AvailableCreditInr, Deposit.MaturesOn, Account.AvailableBalanceInr, ScheduledObligation.AmountInr]
+  - name: NoStaleAuthority
+    statement: "Law L7. Revalidate when sources, balances, policy, consent or mandate changed. A FrontierMandate that is revoked, paused or past ValidUntil cannot execute; a Consent that is revoked or past ExpiresAt gives no access."
+    properties: [FrontierMandate.Status, FrontierMandate.ValidUntil, Consent.Status, Consent.ExpiresAt, Consent.RevokedAt]
+  - name: NoSelfExpandingAgent
+    statement: "Law L8. A RegisteredAgent cannot register itself, widen its scopes, grant consent, create a mandate or approve its own prepared action. Anything listed in DeniedScopes is denied even if a scope seems to allow it. KYA registration is not consent and not a mandate."
+    properties: [RegisteredAgent.Scopes, RegisteredAgent.DeniedScopes, RegisteredAgent.Status]
+    relationships: [Agent Registered For Customer, Agent Authorised By Consent]
+  - name: NoSalesDuringHarm
+    statement: "Law L9. While a customer has an unresolved Incident (fraud, scam, dispute, coercion or vulnerability) do not sell or recommend new products. Stay service-first, explain next steps and offer a human handoff."
+    properties: [Incident.Status, Incident.IncidentType, ServiceCase.HandoffTeam]
+    relationships: [Incident Affects Customer, Service Record For Customer]
+  - name: NoSyntheticToLive
+    statement: "Law L10. Every record is synthetic demo data. Never present it as live bank data, as production evidence or as a real provider's response, and keep the disclosure when asked what the data is."
+    properties: [Customer.IsSynthetic, Product.Disclosure]
+  - name: NoCrossHouseholdLeakage
+    statement: "Law L11. Keep owner, household, release, document access and CRM context aligned. Never reveal one customer's or household's data to another person, and never combine records across ReleaseId."
+    properties: [Customer.ReleaseId, Customer.HouseholdId, HouseholdAccessGrant.HouseholdId]
+    relationships: [Customer Belongs To Household, Access Grant In Household]
+  - name: DefaultToFrontierRelease
+    statement: "Unless a persona is named otherwise, answer from ReleaseId retail-frontier-v1 (the Rhea Bansal household). Customer rhea~legacy is an older, non-reconciled copy of the same person from retail4-v1: it is superseded and must never be merged with rhea or added to rhea's totals."
+    properties: [Customer.ReleaseId, Customer.SupersededByCustomerId, Customer.CustomerId]
+  - name: HonestRecording
+    statement: "Recording a service instruction is not executing it. Never say a card is blocked, a transaction reversed, an issuer or network contacted, or money returned unless the ServiceCase or Incident shows it. Use ServiceRequestType.NeverClaim for the statements that must not be made."
+    properties: [ServiceRequestType.NeverClaim, ServiceRequestType.RecordedOutcome, ServiceRequestType.ActivationMode, Card.Status]
+  - name: SelectionIsNotApplication
+    statement: "Selecting a product is not applying, applying is not approval, approval is not acceptance and acceptance is not execution. A recorded 'no' closes the case: do not re-offer the same product."
+    properties: [Product.SupportedActions, Product.UnderwritingRequired]
+  - name: CreditLimitIsNotCash
+    statement: "A card's CreditLimitInr and AvailableCreditInr are borrowing capacity, not an asset or a cash balance. Never add them to account balances or net position."
+    properties: [Card.CreditLimitInr, Card.AvailableCreditInr, Card.OutstandingBalanceInr]
+  - name: LoanProceedsAreLiability
+    statement: "A loan disbursement creates an equal liability. It is not income and not net wealth: Loan.CurrentPrincipalInr is what is still owed."
+    properties: [Loan.CurrentPrincipalInr, Loan.OpeningPrincipalInr]
+  - name: UnitsAndCurrency
+    statement: "Properties ending Inr are rupees. Properties ending Paise are exact integer paise (100 paise = 1 rupee) and are for reconciliation only. 'Crore' means 10,000,000 rupees. Properties ending Pct are percentages (8.5 = 8.5%). Product rupee parameters such as AnnualFeeInr are whole rupees."
+    properties: [Account.PostedBalanceInr, Product.InterestRatePct, Product.AnnualFeeInr, Loan.AnnualRatePct, BusinessUnit.PortfolioCroreInr]
+  - name: MaskSensitiveIdentifiers
+    statement: "Never speak or write masked card numbers, mobile numbers, policy numbers, addresses or KYA fingerprints in full. Reveal at most the last four characters, and in voice never read an identifier digit by digit unless the customer is verifying it."
+    properties: [Card.MaskedNumber, Customer.PhoneMasked, Customer.DisplayName, RegisteredAgent.KyaRegistrationId]
+  - name: HonourHumanReviewPreference
+    statement: "Honour the customer's stated preferences. When Preference field humanReviewFor lists new_credit, insurance_purchase, mandate_change or household_access, those decisions always need a human specialist."
+    properties: [Preference.Field, Preference.PreferenceValue]
+    relationships: [Preference Stated By Customer]
+  - name: PrepareOnlyByDefault
+    statement: "Agents act prepare-only by default. The only delegated money movement is a bounded surplus_to_goal FrontierMandate, valid only if the current balance, protected cash, per-action cap, monthly cap, minimum source balance, validity dates and consent all still pass at execution time."
+    properties: [FrontierMandate.PerActionLimitInr, FrontierMandate.MonthlyLimitInr, FrontierMandate.MinimumSourceBalanceInr, FrontierMandate.ValidFrom, FrontierMandate.ValidUntil, FrontierMandate.Status]
+    relationships: [Mandate Granted By Customer, Mandate Bound To Agent]
+  - name: HouseholdAccessIsAsymmetric
+    statement: "Household access is resource-specific. A spouse's view grant does not allow transactions, mandate changes or access changes; a minor has no inferred access; a dependent parent sees the care schedule only. Private messages, accounts and transactions stay outside spouse and dependant grants unless explicitly added."
+    properties: [HouseholdAccessGrant.Permissions, HouseholdAccessGrant.DeniedPermissions, HouseholdMember.RelationToOwner, HouseholdMember.AgeBand]
+    relationships: [Access Grant For Household Member]
+  - name: ProtectEmergencyReserveFirst
+    statement: "Protect the emergency reserve before suggesting prepayment, investment or a mandate transfer. The reserve target is the customer's emergencyReserveMonths preference applied to essential outgoings; a goal gap is not a reason to spend the reserve."
+    properties: [Goal.Name, Goal.TargetInr, Goal.CurrentInr, Preference.PreferenceValue]
+  - name: SpeakMoneyAndDatesForVoice
+    statement: "In voice, say amounts in rupees with Indian grouping (lakh, crore), round only for speech and never in the source figure, state the date a balance is valid for, and read dates as day, month, year in India time."
+    properties: [Account.PostedBalanceInr, Account.BalanceAsOn, Transaction.PostedDateIst]

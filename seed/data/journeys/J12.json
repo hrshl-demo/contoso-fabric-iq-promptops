@@ -1,0 +1,139 @@
+{
+  "journeyId": "J12",
+  "title": "Trip planning and travel money",
+  "oneLiner": "Plan the trip inside the chat, then sort the money before you go.",
+  "buId": "BU-CARDS",
+  "icon": "plane",
+  "accentHue": 88,
+  "goal": "Get from a vague idea of a trip to a specific, priced itinerary and an honest answer about how it gets paid for - what it costs, whether they can afford it yet, and what the card in their pocket actually charges abroad.",
+  "triggers": [
+    "planning a trip",
+    "book a flight",
+    "flight and hotel",
+    "going abroad",
+    "travel money",
+    "forex card",
+    "currency for my trip",
+    "holiday budget",
+    "trip budget",
+    "travel insurance",
+    "book a holiday",
+    "spending abroad",
+    "international trip",
+    "card to use abroad",
+    "foreign transaction fee",
+    "where should i stay",
+    "how much will the trip cost",
+    "pay for things abroad"
+  ],
+  "antiTriggers": [
+    "who owes what",
+    "split the bill",
+    "settle up"
+  ],
+  "sopIds": [
+    "SOP-SHARED-PRODUCT-SUITABILITY",
+    "SOP-SHARED-CATALOGUE-USE",
+    "SOP-SHARED-CARD-CONTROLS"
+  ],
+  "productIds": [
+    "CB-CARD-TRAVEL-REWARDS",
+    "CB-CARD-TRAVEL-DEBIT",
+    "CB-CARD-FOREX-PREPAID",
+    "CB-CARD-DEBIT",
+    "CB-RD-GOAL"
+  ],
+  "evidenceHints": [
+    "DOC-R-TRAVEL-RECEIPT"
+  ],
+  "documentChoiceStages": [
+    "money"
+  ],
+  "toolHints": [
+    "travel_search",
+    "travel_itinerary",
+    "travel_book",
+    "holdings",
+    "projection",
+    "catalogue_lookup",
+    "transactions_query"
+  ],
+  "stages": [
+    {
+      "id": "trip",
+      "goal": "Get to a search FAST. Ask for the destination, roughly when, trip length and number of travellers in ONE question - those are the facts travel_search cannot work without. Do not collect budget one turn at a time: a customer who says 'I have no idea what it would cost' is asking for numbers, not a form. Offer no `quick_replies` here: a destination and a date are not a small set of likely answers, and a chip row that fits no answer is worse than none. Trailwind flies to Bengaluru, Hyderabad, Pune, Mumbai, Delhi, Chennai, Kolkata, Goa, Kochi, Jaipur, Leh, Dubai, Abu Dhabi, Singapore, Bangkok, Phuket, Kuala Lumpur, Colombo, Kathmandu, Male and London, and nowhere else. The moment they name somewhere not on that list, say so and say what you can do instead - before asking for anything else.",
+      "exitWhen": "You know where they want to go, roughly when, for how long and for how many travellers - or the destination is one Trailwind does not serve and you have said so. That is enough - search, then refine."
+    },
+    {
+      "id": "options",
+      "goal": "Run the Trailwind search and put a short list of flights and hotels in front of them. Offer `quick_replies` naming what you showed in their words and never a price: one chip per option, plus `Show me something else`.",
+      "exitWhen": "Options have been shown and they have reacted to them."
+    },
+    {
+      "id": "itinerary",
+      "goal": "Price the flight and hotel they chose as one itinerary, so there is a real total to talk about. Hand back with `quick_replies` that never carry the price: `Price this one`, `Try a different flight`.",
+      "exitWhen": "An itinerary with a total exists."
+    },
+    {
+      "id": "money",
+      "goal": "Put that total against what they actually hold, and against what paying abroad really costs on the catalogue terms - not on reputation. Hand back with `quick_replies`: `What would paying abroad cost?`, `I need to save first`.",
+      "exitWhen": "The trip cost has been compared with their real position."
+    },
+    {
+      "id": "decide",
+      "goal": "Reach a decision: a product, a plan to save for it, or a recorded no. All three are finishes, so put all three on screen as `quick_replies`: `Go ahead`, `Save it as a plan`, `Not this time`.",
+      "exitWhen": "They have said yes to a specific priced itinerary, a proposal is on screen, a plan is saved, or an objection is logged."
+    },
+    {
+      "id": "confirm",
+      "goal": "ONLY after the customer says yes to that specific priced itinerary: call travel_book and close with the returned reference and the total. Offer no `quick_replies` here: the journey is over and the honest ending is the reference, not another question.",
+      "exitWhen": "The returned reference and total have been given."
+    }
+  ],
+  "mustEstablish": [
+    "Destination, dates, length and number of travellers - before searching. A search on guesses prices somebody else's holiday.",
+    "Whether the trip is actually happening or is still being imagined. Both are fine; they need different conversations.",
+    "What they already hold, read from holdings. Somebody who already has a travel debit card does not need to be sold one.",
+    "What they can realistically put towards it, before recommending anything that assumes they can."
+  ],
+  "neverDo": [
+    "Never collect dates, trip length or traveller numbers for a destination Trailwind does not fly to. Check the destination against the served list the moment it is named. Asking somebody for the timing of a trip that can never be priced spends their turn and then tells them it was wasted - which is exactly what happened on a recorded Kedarnath conversation, four facts deep.",
+    "Never call Trailwind options or itineraries an airline booking, reservation, ticket, hold or PNR. The only allowed final travel confirmation is the reference returned by travel_book. Do not claim airline or hotel systems were contacted, a seat or room was held, or a payment step completed.",
+    "The prices are planning figures, never quotes and never fares that can be bought. Do not tell a customer they can get that flight for that money.",
+    "Contoso does not sell travel insurance. If they ask, say so plainly and do not offer the health cover as a substitute - it is not one.",
+    "Do not quote a foreign-exchange markup, a cross-border fee, a lounge benefit or a reward rate you have not read from the catalogue this turn.",
+    "Do not propose a credit card to somebody whose income has not started. Wanting a holiday is not evidence of being able to repay one.",
+    "Do not turn a trip into a reason to borrow. If the money is not there, the honest answer is a date and a monthly amount, not a limit."
+  ],
+  "objectionPaths": [
+    {
+      "signal": "just looking, nothing booked",
+      "respondBy": "Good - then keep it a plan. Save the itinerary and the monthly figure, and do not raise a product at all. A saved plan is a complete outcome."
+    },
+    {
+      "signal": "already has a card that works abroad",
+      "respondBy": "Read what they hold and what it actually charges abroad from the catalogue. If it is fine, say so and stop. Confirming somebody already has the right product is a good answer."
+    },
+    {
+      "signal": "asks about travel insurance",
+      "respondBy": "Say plainly that Contoso does not offer travel insurance, so you cannot compare or arrange one. Do not substitute the health cover, and do not leave them thinking they are covered."
+    },
+    {
+      "signal": "the trip costs more than they expected",
+      "respondBy": "Do the arithmetic rather than softening it. Show what a cheaper itinerary or a later date does to the number, and let them choose which one they would rather change."
+    }
+  ],
+  "completion": {
+    "default": "The next action is explicit: if they say yes to the chosen priced itinerary, call travel_book and give the returned reference and total; otherwise prepare the travel-money proposal, save the monthly saving plan, or record the no.",
+    "nivedita": "Likely a family visit or a pilgrimage rather than a holiday, and likely one trip rather than a habit. Keep it small and slow. If she confirms the itinerary, end on the returned reference and total. A rewards credit card is the wrong product for somebody living on a pension - if anything fits, it is the travel debit card or a prepaid forex card she loads once, and only if she travels again.",
+    "rhea": "Her strongest fit. A family holiday with a real budget, and she already has a card - so read it first. The next action is either the travel confirmation for the itinerary she accepted, or the exact card/school-fee/deposit tradeoff she has to choose before confirming anything.",
+    "ravi": "Careful here. No salary has posted and he holds no credit card, so a travel rewards credit card is not an honest recommendation however much he wants the trip. Price the trip, work out the monthly amount with projection, and finish on a goal recurring deposit and a date - not a card - unless he explicitly confirms an affordable itinerary, in which case give only the returned reference and total. A prepaid forex card is the one travel product that does not require credit, if he asks."
+  },
+  "turnCap": 14,
+  "salesPosture": "advise",
+  "openers": [
+    "I am thinking about a trip and I have no idea what it would cost",
+    "Find me a flight and a hotel, then tell me how I should pay for it",
+    "What is the cheapest way to pay for things abroad?"
+  ]
+}

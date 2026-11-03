@@ -1,0 +1,110 @@
+[
+  {
+    "current": {
+      "amountMinor": 43500000,
+      "currency": "INR"
+    },
+    "goalId": "goal-emergency",
+    "name": "Six-month emergency reserve",
+    "ownerId": "rhea",
+    "priority": 1,
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true,
+    "target": {
+      "amountMinor": 90000000,
+      "currency": "INR"
+    },
+    "targetDate": "2027-09-30"
+  },
+  {
+    "current": {
+      "amountMinor": 60000000,
+      "currency": "INR"
+    },
+    "goalId": "goal-home",
+    "name": "Home upgrade and repairs",
+    "ownerId": "rhea",
+    "priority": 3,
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true,
+    "target": {
+      "amountMinor": 250000000,
+      "currency": "INR"
+    },
+    "targetDate": "2029-06-30"
+  },
+  {
+    "current": {
+      "amountMinor": 19800000,
+      "currency": "INR"
+    },
+    "goalId": "goal-education",
+    "name": "Anika secondary education",
+    "ownerId": "rhea",
+    "priority": 2,
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true,
+    "target": {
+      "amountMinor": 120000000,
+      "currency": "INR"
+    },
+    "targetDate": "2030-04-01"
+  },
+  {
+    "current": {
+      "amountMinor": 12000000,
+      "currency": "INR"
+    },
+    "goalId": "goal-parent-care",
+    "name": "Parent care reserve",
+    "ownerId": "rhea",
+    "priority": 2,
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true,
+    "target": {
+      "amountMinor": 30000000,
+      "currency": "INR"
+    },
+    "targetDate": "2027-03-31"
+  },
+  {
+    "current": {
+      "amountMinor": 77800000,
+      "currency": "INR"
+    },
+    "goalId": "goal-retirement",
+    "name": "Retirement corpus",
+    "ownerId": "rhea",
+    "priority": 4,
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true,
+    "target": {
+      "amountMinor": 800000000,
+      "currency": "INR"
+    },
+    "targetDate": "2045-03-31"
+  },
+  {
+    "current": {
+      "amountMinor": 25000000,
+      "currency": "INR"
+    },
+    "goalId": "goal-major-purchase",
+    "name": "Family vehicle replacement",
+    "ownerId": "rhea",
+    "priority": 5,
+    "releaseId": "retail-frontier-v1",
+    "schemaVersion": "retail-frontier-seed-v1",
+    "synthetic": true,
+    "target": {
+      "amountMinor": 180000000,
+      "currency": "INR"
+    },
+    "targetDate": "2028-12-31"
+  }
+]

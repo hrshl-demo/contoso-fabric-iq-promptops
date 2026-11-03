@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "retail4-bank-v1",
+  "releaseId": "retail4-v1",
+  "syntheticLabel": "Synthetic demonstration data. Not a real bank.",
+  "generatedFor": "businessDate 2026-09-15",
+  "_units": {
+    "counts": "Monthly active users, transactions, and conversations are integer aggregate counts. No money amounts are stored in this file."
+  },
+  "channels": [
+    {
+      "channelId": "mobileapp",
+      "label": "Mobile app",
+      "monthlyActiveUsers": 1720000,
+      "transactionsPerMonth": 38400000,
+      "sharePercent": 58.2,
+      "yoyGrowthPercent": 18.4,
+      "avgSessionMinutes": 5.8,
+      "aiAssistedPercent": 24.5,
+      "csatScore": 4.42
+    },
+    {
+      "channelId": "website",
+      "label": "Website",
+      "monthlyActiveUsers": 620000,
+      "transactionsPerMonth": 7200000,
+      "sharePercent": 10.9,
+      "yoyGrowthPercent": 6.7,
+      "avgSessionMinutes": 6.4,
+      "aiAssistedPercent": 18.2,
+      "csatScore": 4.11
+    },
+    {
+      "channelId": "whatsappchatbot",
+      "label": "WhatsApp chatbot",
+      "monthlyActiveUsers": 480000,
+      "transactionsPerMonth": 4100000,
+      "sharePercent": 6.2,
+      "yoyGrowthPercent": 42.5,
+      "avgSessionMinutes": 4.2,
+      "aiAssistedPercent": 76.0,
+      "csatScore": 4.28
+    },
+    {
+      "channelId": "branch",
+      "label": "Branch",
+      "monthlyActiveUsers": 310000,
+      "transactionsPerMonth": 1650000,
+      "sharePercent": 2.5,
+      "yoyGrowthPercent": -3.2,
+      "avgSessionMinutes": 18.0,
+      "aiAssistedPercent": 8.5,
+      "csatScore": 4.05
+    },
+    {
+      "channelId": "atm",
+      "label": "ATM",
+      "monthlyActiveUsers": 690000,
+      "transactionsPerMonth": 11400000,
+      "sharePercent": 17.3,
+      "yoyGrowthPercent": -1.8,
+      "avgSessionMinutes": 2.1,
+      "aiAssistedPercent": 0.0,
+      "csatScore": 3.98
+    },
+    {
+      "channelId": "phonebanking",
+      "label": "Phone banking",
+      "monthlyActiveUsers": 215000,
+      "transactionsPerMonth": 3250000,
+      "sharePercent": 4.9,
+      "yoyGrowthPercent": 2.4,
+      "avgSessionMinutes": 8.7,
+      "aiAssistedPercent": 32.0,
+      "csatScore": 4.02
+    }
+  ],
+  "aiAssistTrend": {
+    "months": [
+      "2025-10",
+      "2025-11",
+      "2025-12",
+      "2026-01",
+      "2026-02",
+      "2026-03",
+      "2026-04",
+      "2026-05",
+      "2026-06",
+      "2026-07",
+      "2026-08",
+      "2026-09"
+    ],
+    "conversationsHandled": [
+      0,
+      0,
+      0,
+      18500,
+      26400,
+      35800,
+      47200,
+      58800,
+      71300,
+      83500,
+      96400,
+      108500
+    ],
+    "containedPercent": [
+      0,
+      0,
+      0,
+      38.0,
+      43.5,
+      48.2,
+      53.0,
+      57.6,
+      61.4,
+      65.1,
+      68.3,
+      71.0
+    ],
+    "handoffPercent": [
+      0,
+      0,
+      0,
+      62.0,
+      56.5,
+      51.8,
+      47.0,
+      42.4,
+      38.6,
+      34.9,
+      31.7,
+      29.0
+    ]
+  }
+}

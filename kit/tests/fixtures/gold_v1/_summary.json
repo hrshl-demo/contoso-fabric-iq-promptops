@@ -1,0 +1,2641 @@
+{
+ "baseline_commit": "c421458",
+ "tables": {
+  "access_grant": {
+   "columns": [
+    {
+     "name": "grant_id",
+     "type": "string"
+    },
+    {
+     "name": "customer_id",
+     "type": "string"
+    },
+    {
+     "name": "household_id",
+     "type": "string"
+    },
+    {
+     "name": "consent_id",
+     "type": "string"
+    },
+    {
+     "name": "subject_ref",
+     "type": "string"
+    },
+    {
+     "name": "subject_member_id",
+     "type": "string"
+    },
+    {
+     "name": "status",
+     "type": "string"
+    },
+    {
+     "name": "permissions",
+     "type": "string"
+    },
+    {
+     "name": "denied_permissions",
+     "type": "string"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 4
+  },
+  "account": {
+   "columns": [
+    {
+     "name": "account_id",
+     "type": "string"
+    },
+    {
+     "name": "customer_id",
+     "type": "string"
+    },
+    {
+     "name": "product_id",
+     "type": "string"
+    },
+    {
+     "name": "account_type",
+     "type": "string"
+    },
+    {
+     "name": "status",
+     "type": "string"
+    },
+    {
+     "name": "currency",
+     "type": "string"
+    },
+    {
+     "name": "opened_on",
+     "type": "date32[day]"
+    },
+    {
+     "name": "history_start_on",
+     "type": "date32[day]"
+    },
+    {
+     "name": "balance_as_on",
+     "type": "date32[day]"
+    },
+    {
+     "name": "opening_balance_inr",
+     "type": "double"
+    },
+    {
+     "name": "opening_balance_paise",
+     "type": "int64"
+    },
+    {
+     "name": "posted_balance_inr",
+     "type": "double"
+    },
+    {
+     "name": "posted_balance_paise",
+     "type": "int64"
+    },
+    {
+     "name": "available_balance_inr",
+     "type": "double"
+    },
+    {
+     "name": "available_balance_paise",
+     "type": "int64"
+    },
+    {
+     "name": "holds_amount_inr",
+     "type": "double"
+    },
+    {
+     "name": "holds_amount_paise",
+     "type": "int64"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 5
+  },
+  "agent_scope": {
+   "columns": [
+    {
+     "name": "agent_scope_id",
+     "type": "string"
+    },
+    {
+     "name": "agent_id",
+     "type": "string"
+    },
+    {
+     "name": "scope",
+     "type": "string"
+    },
+    {
+     "name": "action",
+     "type": "string"
+    },
+    {
+     "name": "resource",
+     "type": "string"
+    },
+    {
+     "name": "is_denied",
+     "type": "bool"
+    }
+   ],
+   "rows": 8
+  },
+  "authority_rule": {
+   "columns": [
+    {
+     "name": "rule_id",
+     "type": "string"
+    },
+    {
+     "name": "capability",
+     "type": "string"
+    },
+    {
+     "name": "actor",
+     "type": "string"
+    },
+    {
+     "name": "permission_class",
+     "type": "string"
+    },
+    {
+     "name": "permission_text",
+     "type": "string"
+    }
+   ],
+   "rows": 70
+  },
+  "bank_agent": {
+   "columns": [
+    {
+     "name": "agent_name",
+     "type": "string"
+    },
+    {
+     "name": "form",
+     "type": "string"
+    },
+    {
+     "name": "responsibility",
+     "type": "string"
+    },
+    {
+     "name": "direct_ledger_authority",
+     "type": "string"
+    }
+   ],
+   "rows": 8
+  },
+  "business_unit": {
+   "columns": [
+    {
+     "name": "bu_id",
+     "type": "string"
+    },
+    {
+     "name": "name",
+     "type": "string"
+    },
+    {
+     "name": "short_name",
+     "type": "string"
+    },
+    {
+     "name": "head_name",
+     "type": "string"
+    },
+    {
+     "name": "description",
+     "type": "string"
+    },
+    {
+     "name": "health_status",
+     "type": "string"
+    },
+    {
+     "name": "portfolio_crore_inr",
+     "type": "double"
+    },
+    {
+     "name": "customers",
+     "type": "int64"
+    },
+    {
+     "name": "nim_pct",
+     "type": "double"
+    },
+    {
+     "name": "yoy_growth_pct",
+     "type": "double"
+    },
+    {
+     "name": "target_attainment_pct",
+     "type": "double"
+    }
+   ],
+   "rows": 6
+  },
+  "calendar": {
+   "columns": [
+    {
+     "name": "date",
+     "type": "date32[day]"
+    },
+    {
+     "name": "year",
+     "type": "int64"
+    },
+    {
+     "name": "month_number",
+     "type": "int64"
+    },
+    {
+     "name": "month_name",
+     "type": "string"
+    },
+    {
+     "name": "year_month",
+     "type": "string"
+    },
+    {
+     "name": "quarter",
+     "type": "string"
+    },
+    {
+     "name": "weekday",
+     "type": "string"
+    },
+    {
+     "name": "is_weekend",
+     "type": "bool"
+    },
+    {
+     "name": "fiscal_year",
+     "type": "string"
+    }
+   ],
+   "rows": 822
+  },
+  "campaign": {
+   "columns": [
+    {
+     "name": "campaign_id",
+     "type": "string"
+    },
+    {
+     "name": "name",
+     "type": "string"
+    },
+    {
+     "name": "bu_id",
+     "type": "string"
+    },
+    {
+     "name": "status",
+     "type": "string"
+    },
+    {
+     "name": "start_date",
+     "type": "date32[day]"
+    },
+    {
+     "name": "end_date",
+     "type": "date32[day]"
+    },
+    {
+     "name": "channel",
+     "type": "string"
+    },
+    {
+     "name": "target_segment",
+     "type": "string"
+    },
+    {
+     "name": "reach",
+     "type": "int64"
+    },
+    {
+     "name": "engaged",
+     "type": "int64"
+    },
+    {
+     "name": "converted",
+     "type": "int64"
+    },
+    {
+     "name": "conversion_pct",
+     "type": "double"
+    },
+    {
+     "name": "revenue_attributed_crore_inr",
+     "type": "double"
+    },
+    {
+     "name": "product_ids",
+     "type": "string"
+    }
+   ],
+   "rows": 6
+  },
+  "card": {
+   "columns": [
+    {
+     "name": "card_id",
+     "type": "string"
+    },
+    {
+     "name": "customer_id",
+     "type": "string"
+    },
+    {
+     "name": "account_id",
+     "type": "string"
+    },
+    {
+     "name": "product_id",
+     "type": "string"
+    },
+    {
+     "name": "card_type",
+     "type": "string"
+    },
+    {
+     "name": "status",
+     "type": "string"
+    },
+    {
+     "name": "masked_number",
+     "type": "string"
+    },
+    {
+     "name": "expiry_mm_yy",
+     "type": "string"
+    },
+    {
+     "name": "credit_limit_inr",
+     "type": "double"
+    },
+    {
+     "name": "credit_limit_paise",
+     "type": "int64"
+    },
+    {
+     "name": "available_credit_inr",
+     "type": "double"
+    },
+    {
+     "name": "available_credit_paise",
+     "type": "int64"
+    },
+    {
+     "name": "outstanding_balance_inr",
+     "type": "double"
+    },
+    {
+     "name": "outstanding_balance_paise",
+     "type": "int64"
+    },
+    {
+     "name": "minimum_due_inr",
+     "type": "double"
+    },
+    {
+     "name": "minimum_due_paise",
+     "type": "int64"
+    },
+    {
+     "name": "annual_rate_pct",
+     "type": "double"
+    },
+    {
+     "name": "annual_rate_bps",
+     "type": "int64"
+    },
+    {
+     "name": "statement_day",
+     "type": "int64"
+    },
+    {
+     "name": "payment_due_day",
+     "type": "int64"
+    },
+    {
+     "name": "payment_due_on",
+     "type": "date32[day]"
+    },
+    {
+     "name": "statement_from",
+     "type": "date32[day]"
+    },
+    {
+     "name": "statement_to",
+     "type": "date32[day]"
+    },
+    {
+     "name": "international_enabled",
+     "type": "bool"
+    },
+    {
+     "name": "online_enabled",
+     "type": "bool"
+    },
+    {
+     "name": "contactless_enabled",
+     "type": "bool"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 4
+  },
+  "consent": {
+   "columns": [
+    {
+     "name": "consent_id",
+     "type": "string"
+    },
+    {
+     "name": "customer_id",
+     "type": "string"
+    },
+    {
+     "name": "purpose",
+     "type": "string"
+    },
+    {
+     "name": "status",
+     "type": "string"
+    },
+    {
+     "name": "granted_at",
+     "type": "timestamp[us, tz=UTC]"
+    },
+    {
+     "name": "expires_at",
+     "type": "timestamp[us, tz=UTC]"
+    },
+    {
+     "name": "revoked_at",
+     "type": "timestamp[us, tz=UTC]"
+    },
+    {
+     "name": "subject_ref",
+     "type": "string"
+    },
+    {
+     "name": "subject_type",
+     "type": "string"
+    },
+    {
+     "name": "subject_member_id",
+     "type": "string"
+    },
+    {
+     "name": "recipient_scope",
+     "type": "string"
+    },
+    {
+     "name": "revision",
+     "type": "int64"
+    },
+    {
+     "name": "resource_count",
+     "type": "int64"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 7
+  },
+  "consent_resource": {
+   "columns": [
+    {
+     "name": "link_id",
+     "type": "string"
+    },
+    {
+     "name": "consent_id",
+     "type": "string"
+    },
+    {
+     "name": "document_id",
+     "type": "string"
+    },
+    {
+     "name": "source_version",
+     "type": "int64"
+    }
+   ],
+   "rows": 7
+  },
+  "crm_case": {
+   "columns": [
+    {
+     "name": "case_id",
+     "type": "string"
+    },
+    {
+     "name": "customer_id",
+     "type": "string"
+    },
+    {
+     "name": "title",
+     "type": "string"
+    },
+    {
+     "name": "summary",
+     "type": "string"
+    },
+    {
+     "name": "stage",
+     "type": "string"
+    },
+    {
+     "name": "priority",
+     "type": "string"
+    },
+    {
+     "name": "sentiment",
+     "type": "string"
+    },
+    {
+     "name": "channel",
+     "type": "string"
+    },
+    {
+     "name": "origin",
+     "type": "string"
+    },
+    {
+     "name": "bu_id",
+     "type": "string"
+    },
+    {
+     "name": "journey_id",
+     "type": "string"
+    },
+    {
+     "name": "owner_rm_id",
+     "type": "string"
+    },
+    {
+     "name": "product_ids",
+     "type": "string"
+    },
+    {
+     "name": "interactions",
+     "type": "int64"
+    },
+    {
+     "name": "objection_reason",
+     "type": "string"
+    },
+    {
+     "name": "objection_product_id",
+     "type": "string"
+    },
+    {
+     "name": "opened_at",
+     "type": "timestamp[us, tz=UTC]"
+    },
+    {
+     "name": "opened_date_ist",
+     "type": "date32[day]"
+    },
+    {
+     "name": "updated_at",
+     "type": "timestamp[us, tz=UTC]"
+    },
+    {
+     "name": "sla_due_at",
+     "type": "timestamp[us, tz=UTC]"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 40
+  },
+  "customer": {
+   "columns": [
+    {
+     "name": "customer_id",
+     "type": "string"
+    },
+    {
+     "name": "display_name",
+     "type": "string"
+    },
+    {
+     "name": "age",
+     "type": "int64"
+    },
+    {
+     "name": "city",
+     "type": "string"
+    },
+    {
+     "name": "employment_status",
+     "type": "string"
+    },
+    {
+     "name": "segment",
+     "type": "string"
+    },
+    {
+     "name": "household_id",
+     "type": "string"
+    },
+    {
+     "name": "is_primary_owner",
+     "type": "bool"
+    },
+    {
+     "name": "phone_masked",
+     "type": "string"
+    },
+    {
+     "name": "profile_summary",
+     "type": "string"
+    },
+    {
+     "name": "source_kind",
+     "type": "string"
+    },
+    {
+     "name": "superseded_by_customer_id",
+     "type": "string"
+    },
+    {
+     "name": "is_synthetic",
+     "type": "bool"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    },
+    {
+     "name": "date_of_birth",
+     "type": "date32[day]"
+    },
+    {
+     "name": "kyc_address",
+     "type": "string"
+    },
+    {
+     "name": "email",
+     "type": "string"
+    }
+   ],
+   "rows": 38
+  },
+  "deposit": {
+   "columns": [
+    {
+     "name": "deposit_id",
+     "type": "string"
+    },
+    {
+     "name": "customer_id",
+     "type": "string"
+    },
+    {
+     "name": "product_id",
+     "type": "string"
+    },
+    {
+     "name": "linked_account_id",
+     "type": "string"
+    },
+    {
+     "name": "status",
+     "type": "string"
+    },
+    {
+     "name": "principal_inr",
+     "type": "double"
+    },
+    {
+     "name": "principal_paise",
+     "type": "int64"
+    },
+    {
+     "name": "annual_rate_pct",
+     "type": "double"
+    },
+    {
+     "name": "annual_rate_bps",
+     "type": "int64"
+    },
+    {
+     "name": "opened_on",
+     "type": "date32[day]"
+    },
+    {
+     "name": "matures_on",
+     "type": "date32[day]"
+    },
+    {
+     "name": "liquidity_class",
+     "type": "string"
+    },
+    {
+     "name": "maturity_instruction",
+     "type": "string"
+    },
+    {
+     "name": "premature_penalty_pct",
+     "type": "double"
+    },
+    {
+     "name": "premature_penalty_bps",
+     "type": "int64"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 3
+  },
+  "document": {
+   "columns": [
+    {
+     "name": "document_id",
+     "type": "string"
+    },
+    {
+     "name": "customer_id",
+     "type": "string"
+    },
+    {
+     "name": "title",
+     "type": "string"
+    },
+    {
+     "name": "document_type",
+     "type": "string"
+    },
+    {
+     "name": "issuer",
+     "type": "string"
+    },
+    {
+     "name": "issued_on",
+     "type": "date32[day]"
+    },
+    {
+     "name": "page_count",
+     "type": "int64"
+    },
+    {
+     "name": "purpose",
+     "type": "string"
+    },
+    {
+     "name": "visibility",
+     "type": "string"
+    },
+    {
+     "name": "source_version",
+     "type": "int64"
+    },
+    {
+     "name": "superseded_by_document_id",
+     "type": "string"
+    },
+    {
+     "name": "supersedes_document_id",
+     "type": "string"
+    },
+    {
+     "name": "facts_text",
+     "type": "string"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 53
+  },
+  "fraud_signal": {
+   "columns": [
+    {
+     "name": "signal_id",
+     "type": "string"
+    },
+    {
+     "name": "label",
+     "type": "string"
+    },
+    {
+     "name": "detected_last_30d",
+     "type": "int64"
+    },
+    {
+     "name": "blocked_last_30d",
+     "type": "int64"
+    },
+    {
+     "name": "trend",
+     "type": "string"
+    }
+   ],
+   "rows": 5
+  },
+  "frontier_requirement": {
+   "columns": [
+    {
+     "name": "requirement_id",
+     "type": "string"
+    },
+    {
+     "name": "retail_requirement",
+     "type": "string"
+    },
+    {
+     "name": "journey_id",
+     "type": "string"
+    },
+    {
+     "name": "deterministic_outcome",
+     "type": "string"
+    }
+   ],
+   "rows": 14
+  },
+  "goal": {
+   "columns": [
+    {
+     "name": "goal_id",
+     "type": "string"
+    },
+    {
+     "name": "customer_id",
+     "type": "string"
+    },
+    {
+     "name": "name",
+     "type": "string"
+    },
+    {
+     "name": "priority_rank",
+     "type": "int64"
+    },
+    {
+     "name": "stated_priority",
+     "type": "string"
+    },
+    {
+     "name": "status",
+     "type": "string"
+    },
+    {
+     "name": "target_inr",
+     "type": "double"
+    },
+    {
+     "name": "target_paise",
+     "type": "int64"
+    },
+    {
+     "name": "current_inr",
+     "type": "double"
+    },
+    {
+     "name": "current_paise",
+     "type": "int64"
+    },
+    {
+     "name": "progress_pct",
+     "type": "double"
+    },
+    {
+     "name": "target_date",
+     "type": "date32[day]"
+    },
+    {
+     "name": "target_frequency",
+     "type": "string"
+    },
+    {
+     "name": "intent_summary",
+     "type": "string"
+    },
+    {
+     "name": "funding_product_ids",
+     "type": "string"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 14
+  },
+  "grant_permission": {
+   "columns": [
+    {
+     "name": "grant_permission_id",
+     "type": "string"
+    },
+    {
+     "name": "grant_id",
+     "type": "string"
+    },
+    {
+     "name": "permission",
+     "type": "string"
+    },
+    {
+     "name": "action",
+     "type": "string"
+    },
+    {
+     "name": "resource",
+     "type": "string"
+    },
+    {
+     "name": "is_denied",
+     "type": "bool"
+    }
+   ],
+   "rows": 24
+  },
+  "household": {
+   "columns": [
+    {
+     "name": "household_id",
+     "type": "string"
+    },
+    {
+     "name": "display_name",
+     "type": "string"
+    },
+    {
+     "name": "primary_customer_id",
+     "type": "string"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 1
+  },
+  "household_member": {
+   "columns": [
+    {
+     "name": "member_id",
+     "type": "string"
+    },
+    {
+     "name": "household_id",
+     "type": "string"
+    },
+    {
+     "name": "primary_customer_id",
+     "type": "string"
+    },
+    {
+     "name": "display_name",
+     "type": "string"
+    },
+    {
+     "name": "relation_to_owner",
+     "type": "string"
+    },
+    {
+     "name": "age_band",
+     "type": "string"
+    },
+    {
+     "name": "is_dependent",
+     "type": "bool"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 3
+  },
+  "incident": {
+   "columns": [
+    {
+     "name": "incident_id",
+     "type": "string"
+    },
+    {
+     "name": "customer_id",
+     "type": "string"
+    },
+    {
+     "name": "incident_type",
+     "type": "string"
+    },
+    {
+     "name": "status",
+     "type": "string"
+    },
+    {
+     "name": "detected_at",
+     "type": "timestamp[us, tz=UTC]"
+    },
+    {
+     "name": "detected_date_ist",
+     "type": "date32[day]"
+    },
+    {
+     "name": "amount_inr",
+     "type": "double"
+    },
+    {
+     "name": "amount_paise",
+     "type": "int64"
+    },
+    {
+     "name": "recovery_amount_inr",
+     "type": "double"
+    },
+    {
+     "name": "recovery_amount_paise",
+     "type": "int64"
+    },
+    {
+     "name": "recovery_evidence_document_id",
+     "type": "string"
+    },
+    {
+     "name": "evidence_document_ids",
+     "type": "string"
+    },
+    {
+     "name": "narration",
+     "type": "string"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 2
+  },
+  "income_record": {
+   "columns": [
+    {
+     "name": "income_id",
+     "type": "string"
+    },
+    {
+     "name": "customer_id",
+     "type": "string"
+    },
+    {
+     "name": "income_type",
+     "type": "string"
+    },
+    {
+     "name": "period",
+     "type": "string"
+    },
+    {
+     "name": "gross_inr",
+     "type": "double"
+    },
+    {
+     "name": "gross_paise",
+     "type": "int64"
+    },
+    {
+     "name": "net_inr",
+     "type": "double"
+    },
+    {
+     "name": "net_paise",
+     "type": "int64"
+    },
+    {
+     "name": "is_recurring",
+     "type": "bool"
+    },
+    {
+     "name": "evidence_document_id",
+     "type": "string"
+    },
+    {
+     "name": "contributor_member_id",
+     "type": "string"
+    },
+    {
+     "name": "narration",
+     "type": "string"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 12
+  },
+  "insurance_policy": {
+   "columns": [
+    {
+     "name": "policy_id",
+     "type": "string"
+    },
+    {
+     "name": "customer_id",
+     "type": "string"
+    },
+    {
+     "name": "product_id",
+     "type": "string"
+    },
+    {
+     "name": "policy_type",
+     "type": "string"
+    },
+    {
+     "name": "status",
+     "type": "string"
+    },
+    {
+     "name": "insurer",
+     "type": "string"
+    },
+    {
+     "name": "premium_inr",
+     "type": "double"
+    },
+    {
+     "name": "premium_paise",
+     "type": "int64"
+    },
+    {
+     "name": "premium_cadence",
+     "type": "string"
+    },
+    {
+     "name": "sum_insured_inr",
+     "type": "double"
+    },
+    {
+     "name": "sum_insured_paise",
+     "type": "int64"
+    },
+    {
+     "name": "beneficiary_member_ids",
+     "type": "string"
+    },
+    {
+     "name": "covered_member_ids",
+     "type": "string"
+    },
+    {
+     "name": "started_on",
+     "type": "date32[day]"
+    },
+    {
+     "name": "renews_on",
+     "type": "date32[day]"
+    },
+    {
+     "name": "linked_account_id",
+     "type": "string"
+    },
+    {
+     "name": "co_pay_pct",
+     "type": "double"
+    },
+    {
+     "name": "initial_waiting_days",
+     "type": "int64"
+    },
+    {
+     "name": "pre_existing_waiting_months",
+     "type": "int64"
+    },
+    {
+     "name": "policy_number",
+     "type": "string"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 3
+  },
+  "investment": {
+   "columns": [
+    {
+     "name": "investment_id",
+     "type": "string"
+    },
+    {
+     "name": "customer_id",
+     "type": "string"
+    },
+    {
+     "name": "product_id",
+     "type": "string"
+    },
+    {
+     "name": "investment_type",
+     "type": "string"
+    },
+    {
+     "name": "liquidity",
+     "type": "string"
+    },
+    {
+     "name": "current_value_inr",
+     "type": "double"
+    },
+    {
+     "name": "current_value_paise",
+     "type": "int64"
+    },
+    {
+     "name": "goal_ids",
+     "type": "string"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 4
+  },
+  "investment_goal": {
+   "columns": [
+    {
+     "name": "link_id",
+     "type": "string"
+    },
+    {
+     "name": "investment_id",
+     "type": "string"
+    },
+    {
+     "name": "goal_id",
+     "type": "string"
+    }
+   ],
+   "rows": 4
+  },
+  "journey": {
+   "columns": [
+    {
+     "name": "journey_id",
+     "type": "string"
+    },
+    {
+     "name": "title",
+     "type": "string"
+    },
+    {
+     "name": "journey_kind",
+     "type": "string"
+    },
+    {
+     "name": "one_liner",
+     "type": "string"
+    },
+    {
+     "name": "goal",
+     "type": "string"
+    },
+    {
+     "name": "bu_id",
+     "type": "string"
+    },
+    {
+     "name": "sales_posture",
+     "type": "string"
+    },
+    {
+     "name": "turn_cap",
+     "type": "int64"
+    },
+    {
+     "name": "autonomy_ceiling",
+     "type": "int64"
+    },
+    {
+     "name": "primary_specialists",
+     "type": "string"
+    },
+    {
+     "name": "allowed_prepared_operations",
+     "type": "string"
+    },
+    {
+     "name": "triggers_text",
+     "type": "string"
+    },
+    {
+     "name": "must_establish_text",
+     "type": "string"
+    },
+    {
+     "name": "never_do_text",
+     "type": "string"
+    },
+    {
+     "name": "tool_hints",
+     "type": "string"
+    },
+    {
+     "name": "opener_examples",
+     "type": "string"
+    }
+   ],
+   "rows": 18
+  },
+  "journey_product": {
+   "columns": [
+    {
+     "name": "link_id",
+     "type": "string"
+    },
+    {
+     "name": "journey_id",
+     "type": "string"
+    },
+    {
+     "name": "product_id",
+     "type": "string"
+    }
+   ],
+   "rows": 45
+  },
+  "journey_sop": {
+   "columns": [
+    {
+     "name": "link_id",
+     "type": "string"
+    },
+    {
+     "name": "journey_id",
+     "type": "string"
+    },
+    {
+     "name": "sop_id",
+     "type": "string"
+    }
+   ],
+   "rows": 35
+  },
+  "law": {
+   "columns": [
+    {
+     "name": "law_id",
+     "type": "string"
+    },
+    {
+     "name": "name",
+     "type": "string"
+    },
+    {
+     "name": "required_behavior",
+     "type": "string"
+    }
+   ],
+   "rows": 12
+  },
+  "loan": {
+   "columns": [
+    {
+     "name": "loan_id",
+     "type": "string"
+    },
+    {
+     "name": "customer_id",
+     "type": "string"
+    },
+    {
+     "name": "product_id",
+     "type": "string"
+    },
+    {
+     "name": "purpose",
+     "type": "string"
+    },
+    {
+     "name": "rate_type",
+     "type": "string"
+    },
+    {
+     "name": "annual_rate_pct",
+     "type": "double"
+    },
+    {
+     "name": "annual_rate_bps",
+     "type": "int64"
+    },
+    {
+     "name": "opening_principal_inr",
+     "type": "double"
+    },
+    {
+     "name": "opening_principal_paise",
+     "type": "int64"
+    },
+    {
+     "name": "current_principal_inr",
+     "type": "double"
+    },
+    {
+     "name": "current_principal_paise",
+     "type": "int64"
+    },
+    {
+     "name": "emi_inr",
+     "type": "double"
+    },
+    {
+     "name": "emi_paise",
+     "type": "int64"
+    },
+    {
+     "name": "origination_fee_inr",
+     "type": "double"
+    },
+    {
+     "name": "origination_fee_paise",
+     "type": "int64"
+    },
+    {
+     "name": "prepayment_applies_to",
+     "type": "string"
+    },
+    {
+     "name": "prepayment_charge_pct",
+     "type": "double"
+    },
+    {
+     "name": "prepayment_charge_bps",
+     "type": "int64"
+    },
+    {
+     "name": "prepayment_minimum_inr",
+     "type": "double"
+    },
+    {
+     "name": "prepayment_minimum_paise",
+     "type": "int64"
+    },
+    {
+     "name": "prepayment_notice_days",
+     "type": "int64"
+    },
+    {
+     "name": "scheduled_installments",
+     "type": "int64"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 2
+  },
+  "loan_installment": {
+   "columns": [
+    {
+     "name": "installment_id",
+     "type": "string"
+    },
+    {
+     "name": "loan_id",
+     "type": "string"
+    },
+    {
+     "name": "installment_number",
+     "type": "int64"
+    },
+    {
+     "name": "due_on",
+     "type": "date32[day]"
+    },
+    {
+     "name": "status",
+     "type": "string"
+    },
+    {
+     "name": "opening_principal_inr",
+     "type": "double"
+    },
+    {
+     "name": "opening_principal_paise",
+     "type": "int64"
+    },
+    {
+     "name": "principal_paid_inr",
+     "type": "double"
+    },
+    {
+     "name": "principal_paid_paise",
+     "type": "int64"
+    },
+    {
+     "name": "interest_paid_inr",
+     "type": "double"
+    },
+    {
+     "name": "interest_paid_paise",
+     "type": "int64"
+    },
+    {
+     "name": "fees_paid_inr",
+     "type": "double"
+    },
+    {
+     "name": "fees_paid_paise",
+     "type": "int64"
+    },
+    {
+     "name": "total_paid_inr",
+     "type": "double"
+    },
+    {
+     "name": "total_paid_paise",
+     "type": "int64"
+    },
+    {
+     "name": "closing_principal_inr",
+     "type": "double"
+    },
+    {
+     "name": "closing_principal_paise",
+     "type": "int64"
+    },
+    {
+     "name": "payment_description",
+     "type": "string"
+    }
+   ],
+   "rows": 12
+  },
+  "mandate": {
+   "columns": [
+    {
+     "name": "mandate_id",
+     "type": "string"
+    },
+    {
+     "name": "customer_id",
+     "type": "string"
+    },
+    {
+     "name": "agent_id",
+     "type": "string"
+    },
+    {
+     "name": "consent_id",
+     "type": "string"
+    },
+    {
+     "name": "source_account_id",
+     "type": "string"
+    },
+    {
+     "name": "destination_account_id",
+     "type": "string"
+    },
+    {
+     "name": "goal_id",
+     "type": "string"
+    },
+    {
+     "name": "status",
+     "type": "string"
+    },
+    {
+     "name": "currency",
+     "type": "string"
+    },
+    {
+     "name": "per_action_limit_inr",
+     "type": "double"
+    },
+    {
+     "name": "per_action_limit_paise",
+     "type": "int64"
+    },
+    {
+     "name": "monthly_limit_inr",
+     "type": "double"
+    },
+    {
+     "name": "monthly_limit_paise",
+     "type": "int64"
+    },
+    {
+     "name": "minimum_source_balance_inr",
+     "type": "double"
+    },
+    {
+     "name": "minimum_source_balance_paise",
+     "type": "int64"
+    },
+    {
+     "name": "valid_from",
+     "type": "timestamp[us, tz=UTC]"
+    },
+    {
+     "name": "valid_from_date_ist",
+     "type": "date32[day]"
+    },
+    {
+     "name": "valid_until",
+     "type": "timestamp[us, tz=UTC]"
+    },
+    {
+     "name": "valid_until_date_ist",
+     "type": "date32[day]"
+    },
+    {
+     "name": "event_count",
+     "type": "int64"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 1
+  },
+  "mandate_event": {
+   "columns": [
+    {
+     "name": "event_id",
+     "type": "string"
+    },
+    {
+     "name": "mandate_id",
+     "type": "string"
+    },
+    {
+     "name": "event_type",
+     "type": "string"
+    },
+    {
+     "name": "occurred_at",
+     "type": "timestamp[us, tz=UTC]"
+    },
+    {
+     "name": "occurred_date_ist",
+     "type": "date32[day]"
+    },
+    {
+     "name": "actor_ref",
+     "type": "string"
+    },
+    {
+     "name": "actor_type",
+     "type": "string"
+    },
+    {
+     "name": "amount_inr",
+     "type": "double"
+    },
+    {
+     "name": "amount_paise",
+     "type": "int64"
+    },
+    {
+     "name": "source_balance_after_inr",
+     "type": "double"
+    },
+    {
+     "name": "source_balance_after_paise",
+     "type": "int64"
+    },
+    {
+     "name": "reason",
+     "type": "string"
+    },
+    {
+     "name": "narration",
+     "type": "string"
+    }
+   ],
+   "rows": 4
+  },
+  "monthly_metric": {
+   "columns": [
+    {
+     "name": "metric_id",
+     "type": "string"
+    },
+    {
+     "name": "bu_id",
+     "type": "string"
+    },
+    {
+     "name": "month",
+     "type": "string"
+    },
+    {
+     "name": "portfolio_crore_inr",
+     "type": "double"
+    },
+    {
+     "name": "revenue_crore_inr",
+     "type": "double"
+    },
+    {
+     "name": "new_customers",
+     "type": "int64"
+    },
+    {
+     "name": "cases_opened",
+     "type": "int64"
+    },
+    {
+     "name": "cases_resolved",
+     "type": "int64"
+    }
+   ],
+   "rows": 72
+  },
+  "preference": {
+   "columns": [
+    {
+     "name": "preference_id",
+     "type": "string"
+    },
+    {
+     "name": "customer_id",
+     "type": "string"
+    },
+    {
+     "name": "field",
+     "type": "string"
+    },
+    {
+     "name": "preference_value",
+     "type": "string"
+    },
+    {
+     "name": "recorded_on",
+     "type": "date32[day]"
+    },
+    {
+     "name": "stated_in",
+     "type": "string"
+    },
+    {
+     "name": "note",
+     "type": "string"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 9
+  },
+  "proactive_event": {
+   "columns": [
+    {
+     "name": "event_id",
+     "type": "string"
+    },
+    {
+     "name": "event_type",
+     "type": "string"
+    },
+    {
+     "name": "as_of_date",
+     "type": "date32[day]"
+    },
+    {
+     "name": "evidence_refs",
+     "type": "string"
+    },
+    {
+     "name": "disclosure",
+     "type": "string"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 5
+  },
+  "product": {
+   "columns": [
+    {
+     "name": "product_id",
+     "type": "string"
+    },
+    {
+     "name": "display_name",
+     "type": "string"
+    },
+    {
+     "name": "family",
+     "type": "string"
+    },
+    {
+     "name": "data_role",
+     "type": "string"
+    },
+    {
+     "name": "status",
+     "type": "string"
+    },
+    {
+     "name": "issuer",
+     "type": "string"
+    },
+    {
+     "name": "catalogue_version",
+     "type": "string"
+    },
+    {
+     "name": "effective_from",
+     "type": "date32[day]"
+    },
+    {
+     "name": "effective_to",
+     "type": "date32[day]"
+    },
+    {
+     "name": "audience",
+     "type": "string"
+    },
+    {
+     "name": "main_tradeoff",
+     "type": "string"
+    },
+    {
+     "name": "why_not_suitable",
+     "type": "string"
+    },
+    {
+     "name": "rate_terms",
+     "type": "string"
+    },
+    {
+     "name": "liquidity_terms",
+     "type": "string"
+    },
+    {
+     "name": "benefits_text",
+     "type": "string"
+    },
+    {
+     "name": "fees_text",
+     "type": "string"
+    },
+    {
+     "name": "limitations_text",
+     "type": "string"
+    },
+    {
+     "name": "required_evidence",
+     "type": "string"
+    },
+    {
+     "name": "supported_actions",
+     "type": "string"
+    },
+    {
+     "name": "underwriting_required",
+     "type": "bool"
+    },
+    {
+     "name": "min_age",
+     "type": "int64"
+    },
+    {
+     "name": "min_monthly_income_inr",
+     "type": "double"
+    },
+    {
+     "name": "min_principal_inr",
+     "type": "double"
+    },
+    {
+     "name": "max_principal_inr",
+     "type": "double"
+    },
+    {
+     "name": "interest_rate_pct",
+     "type": "double"
+    },
+    {
+     "name": "annual_fee_inr",
+     "type": "double"
+    },
+    {
+     "name": "monthly_fee_inr",
+     "type": "double"
+    },
+    {
+     "name": "minimum_balance_inr",
+     "type": "double"
+    },
+    {
+     "name": "processing_fee_pct",
+     "type": "double"
+    },
+    {
+     "name": "prepayment_charge_pct",
+     "type": "double"
+    },
+    {
+     "name": "early_withdrawal_penalty_pct",
+     "type": "double"
+    },
+    {
+     "name": "min_term_months",
+     "type": "int64"
+    },
+    {
+     "name": "max_term_months",
+     "type": "int64"
+    },
+    {
+     "name": "max_tenure_years",
+     "type": "int64"
+    },
+    {
+     "name": "max_ltv_pct",
+     "type": "double"
+    },
+    {
+     "name": "cashback_pct",
+     "type": "double"
+    },
+    {
+     "name": "forex_markup_pct",
+     "type": "double"
+    },
+    {
+     "name": "monthly_premium_inr",
+     "type": "double"
+    },
+    {
+     "name": "sum_insured_inr",
+     "type": "double"
+    },
+    {
+     "name": "rate_type",
+     "type": "string"
+    },
+    {
+     "name": "payout_mode",
+     "type": "string"
+    },
+    {
+     "name": "disclosure",
+     "type": "string"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 36
+  },
+  "product_business_unit": {
+   "columns": [
+    {
+     "name": "link_id",
+     "type": "string"
+    },
+    {
+     "name": "bu_id",
+     "type": "string"
+    },
+    {
+     "name": "product_id",
+     "type": "string"
+    }
+   ],
+   "rows": 20
+  },
+  "product_parameter": {
+   "columns": [
+    {
+     "name": "parameter_id",
+     "type": "string"
+    },
+    {
+     "name": "product_id",
+     "type": "string"
+    },
+    {
+     "name": "parameter_name",
+     "type": "string"
+    },
+    {
+     "name": "value_text",
+     "type": "string"
+    },
+    {
+     "name": "value_number",
+     "type": "double"
+    }
+   ],
+   "rows": 337
+  },
+  "protection_gap": {
+   "columns": [
+    {
+     "name": "protection_gap_id",
+     "type": "string"
+    },
+    {
+     "name": "customer_id",
+     "type": "string"
+    },
+    {
+     "name": "gap_type",
+     "type": "string"
+    },
+    {
+     "name": "existing_protection_inr",
+     "type": "double"
+    },
+    {
+     "name": "existing_protection_paise",
+     "type": "int64"
+    },
+    {
+     "name": "target_protection_inr",
+     "type": "double"
+    },
+    {
+     "name": "target_protection_paise",
+     "type": "int64"
+    },
+    {
+     "name": "gap_inr",
+     "type": "double"
+    },
+    {
+     "name": "gap_paise",
+     "type": "int64"
+    },
+    {
+     "name": "income_replacement_inr",
+     "type": "double"
+    },
+    {
+     "name": "income_replacement_paise",
+     "type": "int64"
+    },
+    {
+     "name": "loan_and_education_needs_inr",
+     "type": "double"
+    },
+    {
+     "name": "loan_and_education_needs_paise",
+     "type": "int64"
+    },
+    {
+     "name": "offset_liquid_assets_inr",
+     "type": "double"
+    },
+    {
+     "name": "offset_liquid_assets_paise",
+     "type": "int64"
+    },
+    {
+     "name": "disclosure",
+     "type": "string"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 1
+  },
+  "region": {
+   "columns": [
+    {
+     "name": "region_id",
+     "type": "string"
+    },
+    {
+     "name": "city",
+     "type": "string"
+    },
+    {
+     "name": "state",
+     "type": "string"
+    },
+    {
+     "name": "branches",
+     "type": "int64"
+    },
+    {
+     "name": "customers",
+     "type": "int64"
+    },
+    {
+     "name": "deposits_crore_inr",
+     "type": "double"
+    },
+    {
+     "name": "advances_crore_inr",
+     "type": "double"
+    },
+    {
+     "name": "yoy_growth_pct",
+     "type": "double"
+    },
+    {
+     "name": "nps_score",
+     "type": "int64"
+    },
+    {
+     "name": "digital_adoption_pct",
+     "type": "double"
+    }
+   ],
+   "rows": 8
+  },
+  "registered_agent": {
+   "columns": [
+    {
+     "name": "agent_id",
+     "type": "string"
+    },
+    {
+     "name": "customer_id",
+     "type": "string"
+    },
+    {
+     "name": "household_id",
+     "type": "string"
+    },
+    {
+     "name": "consent_id",
+     "type": "string"
+    },
+    {
+     "name": "registration_type",
+     "type": "string"
+    },
+    {
+     "name": "delegation_mode",
+     "type": "string"
+    },
+    {
+     "name": "status",
+     "type": "string"
+    },
+    {
+     "name": "scopes",
+     "type": "string"
+    },
+    {
+     "name": "denied_scopes",
+     "type": "string"
+    },
+    {
+     "name": "kya_provider_name",
+     "type": "string"
+    },
+    {
+     "name": "kya_registration_id",
+     "type": "string"
+    },
+    {
+     "name": "kya_verification_method",
+     "type": "string"
+    },
+    {
+     "name": "kya_verified_at",
+     "type": "timestamp[us, tz=UTC]"
+    },
+    {
+     "name": "kya_key_fingerprint",
+     "type": "string"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 1
+  },
+  "relationship_manager": {
+   "columns": [
+    {
+     "name": "rm_id",
+     "type": "string"
+    },
+    {
+     "name": "name",
+     "type": "string"
+    },
+    {
+     "name": "role",
+     "type": "string"
+    },
+    {
+     "name": "bu_id",
+     "type": "string"
+    },
+    {
+     "name": "region_id",
+     "type": "string"
+    },
+    {
+     "name": "portfolio_customers",
+     "type": "int64"
+    },
+    {
+     "name": "open_cases",
+     "type": "int64"
+    },
+    {
+     "name": "sla_breaches",
+     "type": "int64"
+    },
+    {
+     "name": "csat_score",
+     "type": "double"
+    },
+    {
+     "name": "specialisations",
+     "type": "string"
+    }
+   ],
+   "rows": 5
+  },
+  "risk_alert": {
+   "columns": [
+    {
+     "name": "alert_id",
+     "type": "string"
+    },
+    {
+     "name": "title",
+     "type": "string"
+    },
+    {
+     "name": "severity",
+     "type": "string"
+    },
+    {
+     "name": "detail",
+     "type": "string"
+    },
+    {
+     "name": "bu_id",
+     "type": "string"
+    },
+    {
+     "name": "raised_at",
+     "type": "timestamp[us, tz=UTC]"
+    }
+   ],
+   "rows": 4
+  },
+  "scheduled_obligation": {
+   "columns": [
+    {
+     "name": "obligation_id",
+     "type": "string"
+    },
+    {
+     "name": "customer_id",
+     "type": "string"
+    },
+    {
+     "name": "name",
+     "type": "string"
+    },
+    {
+     "name": "source_account_id",
+     "type": "string"
+    },
+    {
+     "name": "payee_ref",
+     "type": "string"
+    },
+    {
+     "name": "payee_type",
+     "type": "string"
+    },
+    {
+     "name": "cadence",
+     "type": "string"
+    },
+    {
+     "name": "day_of_month",
+     "type": "int64"
+    },
+    {
+     "name": "status",
+     "type": "string"
+    },
+    {
+     "name": "amount_inr",
+     "type": "double"
+    },
+    {
+     "name": "amount_paise",
+     "type": "int64"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 8
+  },
+  "service_record": {
+   "columns": [
+    {
+     "name": "service_record_id",
+     "type": "string"
+    },
+    {
+     "name": "customer_id",
+     "type": "string"
+    },
+    {
+     "name": "incident_id",
+     "type": "string"
+    },
+    {
+     "name": "channel",
+     "type": "string"
+    },
+    {
+     "name": "opened_at",
+     "type": "timestamp[us, tz=UTC]"
+    },
+    {
+     "name": "opened_date_ist",
+     "type": "date32[day]"
+    },
+    {
+     "name": "actions",
+     "type": "string"
+    },
+    {
+     "name": "handoff_team",
+     "type": "string"
+    },
+    {
+     "name": "handoff_reason",
+     "type": "string"
+    },
+    {
+     "name": "handoff_at",
+     "type": "timestamp[us, tz=UTC]"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 3
+  },
+  "service_request_type": {
+   "columns": [
+    {
+     "name": "service_type_id",
+     "type": "string"
+    },
+    {
+     "name": "title",
+     "type": "string"
+    },
+    {
+     "name": "summary",
+     "type": "string"
+    },
+    {
+     "name": "bu_id",
+     "type": "string"
+    },
+    {
+     "name": "journey_ids",
+     "type": "string"
+    },
+    {
+     "name": "priority",
+     "type": "string"
+    },
+    {
+     "name": "case_title",
+     "type": "string"
+    },
+    {
+     "name": "stage_ladder",
+     "type": "string"
+    },
+    {
+     "name": "activation_mode",
+     "type": "string"
+    },
+    {
+     "name": "recorded_outcome",
+     "type": "string"
+    },
+    {
+     "name": "never_claim",
+     "type": "string"
+    }
+   ],
+   "rows": 4
+  },
+  "sop": {
+   "columns": [
+    {
+     "name": "sop_id",
+     "type": "string"
+    },
+    {
+     "name": "title",
+     "type": "string"
+    },
+    {
+     "name": "scope",
+     "type": "string"
+    },
+    {
+     "name": "audience",
+     "type": "string"
+    },
+    {
+     "name": "applies_to_case",
+     "type": "string"
+    },
+    {
+     "name": "knowledge_path",
+     "type": "string"
+    },
+    {
+     "name": "source_version",
+     "type": "int64"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 17
+  },
+  "transaction": {
+   "columns": [
+    {
+     "name": "transaction_id",
+     "type": "string"
+    },
+    {
+     "name": "customer_id",
+     "type": "string"
+    },
+    {
+     "name": "account_id",
+     "type": "string"
+    },
+    {
+     "name": "card_id",
+     "type": "string"
+    },
+    {
+     "name": "description",
+     "type": "string"
+    },
+    {
+     "name": "direction",
+     "type": "string"
+    },
+    {
+     "name": "category",
+     "type": "string"
+    },
+    {
+     "name": "instrument",
+     "type": "string"
+    },
+    {
+     "name": "status",
+     "type": "string"
+    },
+    {
+     "name": "amount_inr",
+     "type": "double"
+    },
+    {
+     "name": "amount_paise",
+     "type": "int64"
+    },
+    {
+     "name": "signed_amount_inr",
+     "type": "double"
+    },
+    {
+     "name": "posted_at",
+     "type": "timestamp[us, tz=UTC]"
+    },
+    {
+     "name": "posted_date_ist",
+     "type": "date32[day]"
+    },
+    {
+     "name": "value_date",
+     "type": "date32[day]"
+    },
+    {
+     "name": "counterparty_ref",
+     "type": "string"
+    },
+    {
+     "name": "counterparty_type",
+     "type": "string"
+    },
+    {
+     "name": "dispute_incident_id",
+     "type": "string"
+    },
+    {
+     "name": "purchase_reference",
+     "type": "string"
+    },
+    {
+     "name": "settlement_reference",
+     "type": "string"
+    },
+    {
+     "name": "evidence_refs",
+     "type": "string"
+    },
+    {
+     "name": "evidence_count",
+     "type": "int64"
+    },
+    {
+     "name": "release_id",
+     "type": "string"
+    }
+   ],
+   "rows": 634
+  },
+  "transaction_evidence": {
+   "columns": [
+    {
+     "name": "evidence_id",
+     "type": "string"
+    },
+    {
+     "name": "transaction_id",
+     "type": "string"
+    },
+    {
+     "name": "source_ref",
+     "type": "string"
+    },
+    {
+     "name": "source_type",
+     "type": "string"
+    },
+    {
+     "name": "document_id",
+     "type": "string"
+    },
+    {
+     "name": "incident_id",
+     "type": "string"
+    }
+   ],
+   "rows": 41
+  }
+ },
+ "tier": "full"
+}

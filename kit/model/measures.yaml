@@ -1,0 +1,54 @@
+# DAX measures for the Direct Lake semantic model. References use semantic-model names: Entity[Column label] and [Measure].
+# Column labels are generated from the property name: ...Inr -> (INR), ...Pct -> (%), Id -> ID.
+# Money measures are in rupees. Measures are not release-aware: filter ReleaseId (retail-frontier-v1 is the default story).
+measures:
+  # --- customers ---
+  - {table: customer, name: Customers, expr: "DISTINCTCOUNT(Customer[Customer ID])", format: "#,0", folder: Customers, desc: "Number of customers and parties."}
+  - {table: customer, name: Frontier Customers, expr: "CALCULATE(DISTINCTCOUNT(Customer[Customer ID]), Customer[Release ID] = \"retail-frontier-v1\")", format: "#,0", folder: Customers, desc: "Customers in the current Frontier release."}
+  # --- balances and net position ---
+  - {table: account, name: Total Posted Balance (INR), expr: "SUM(Account[Posted Balance (INR)])", format: "#,0.00", folder: Balances, desc: "Sum of posted account balances in rupees. Filter ReleaseId before adding customers."}
+  - {table: account, name: Total Available Balance (INR), expr: "SUM(Account[Available Balance (INR)])", format: "#,0.00", folder: Balances, desc: "Sum of balances available after holds, in rupees."}
+  - {table: deposit, name: Total Deposits (INR), expr: "SUM(Deposit[Principal (INR)])", format: "#,0.00", folder: Balances, desc: "Sum of fixed deposit principal in rupees. A Frontier deposit also appears as an investment: do not add both."}
+  - {table: investment, name: Total Investments (INR), expr: "SUM(Investment[Current Value (INR)])", format: "#,0.00", folder: Balances, desc: "Sum of current investment value in rupees, including the liquid fixed deposit."}
+  - {table: loan, name: Loan Principal Outstanding (INR), expr: "SUM(Loan[Current Principal (INR)])", format: "#,0.00", folder: Liabilities, desc: "Principal still owed on loans, in rupees."}
+  - {table: card, name: Card Outstanding (INR), expr: "SUM(Card[Outstanding Balance (INR)])", format: "#,0.00", folder: Liabilities, desc: "Amount currently owed on cards, in rupees."}
+  - {table: card, name: Card Credit Limit (INR), expr: "SUM(Card[Credit Limit (INR)])", format: "#,0.00", folder: Liabilities, desc: "Approved card credit limits in rupees. A limit is borrowing capacity, not cash."}
+  - {table: card, name: Credit Utilisation, expr: "DIVIDE([Card Outstanding (INR)], [Card Credit Limit (INR)])", format: "0.0%", folder: Liabilities, desc: "Card outstanding as a share of credit limit."}
+  - {table: loan, name: Total Liabilities (INR), expr: "[Loan Principal Outstanding (INR)] + [Card Outstanding (INR)]", format: "#,0.00", folder: Liabilities, desc: "Loan principal plus card outstanding, in rupees."}
+  - {table: account, name: Total Assets (INR), expr: "[Total Posted Balance (INR)] + [Total Investments (INR)]", format: "#,0.00", folder: Balances, desc: "Posted balances plus investments in rupees. Deposits are inside investments for Frontier, so they are not added again."}
+  - {table: account, name: Net Position (INR), expr: "[Total Assets (INR)] - [Total Liabilities (INR)]", format: "#,0.00", folder: Balances, desc: "Assets minus liabilities in rupees. Excludes the home's market value: the seed holds no property valuation, so it is negative while a home loan is outstanding."}
+  # --- cash flow and obligations ---
+  - {table: transaction, name: Transaction Count, expr: "COUNTROWS(Transaction)", format: "#,0", folder: Cash Flow, desc: "Number of transactions."}
+  - {table: transaction, name: Total Debits (INR), expr: "CALCULATE(SUM(Transaction[Amount (INR)]), Transaction[Direction] = \"debit\")", format: "#,0.00", folder: Cash Flow, desc: "Money out in rupees."}
+  - {table: transaction, name: Total Credits (INR), expr: "CALCULATE(SUM(Transaction[Amount (INR)]), Transaction[Direction] = \"credit\")", format: "#,0.00", folder: Cash Flow, desc: "Money in in rupees."}
+  - {table: transaction, name: Net Cash Flow (INR), expr: "SUM(Transaction[Signed Amount (INR)])", format: "#,0.00", folder: Cash Flow, desc: "Credits minus debits in rupees."}
+  - {table: transaction, name: Disputed Transactions, expr: "CALCULATE(COUNTROWS(Transaction), NOT(ISBLANK(Transaction[Dispute Incident ID])))", format: "#,0", folder: Cash Flow, desc: "Transactions tied to a dispute or scam incident."}
+  - {table: scheduled_obligation, name: Monthly Obligations (INR), expr: "CALCULATE(SUM(ScheduledObligation[Amount (INR)]), ScheduledObligation[Cadence] = \"monthly\", ScheduledObligation[Status] = \"active\")", format: "#,0.00", folder: Cash Flow, desc: "Active monthly commitments in rupees."}
+  - {table: loan, name: Monthly EMI (INR), expr: "SUM(Loan[EMI (INR)])", format: "#,0.00", folder: Liabilities, desc: "Monthly loan instalments in rupees."}
+  - {table: loan_installment, name: Interest Paid To Date (INR), expr: "CALCULATE(SUM(LoanInstallment[Interest Paid (INR)]), LoanInstallment[Status] = \"paid\")", format: "#,0.00", folder: Liabilities, desc: "Interest paid in instalments already paid, in rupees."}
+  - {table: income_record, name: Average Monthly Net Salary (INR), expr: "CALCULATE(AVERAGE(IncomeRecord[Net Income (INR)]), IncomeRecord[Income Type] = \"salary\")", format: "#,0.00", folder: Income, desc: "Average net salary credit per month, in rupees."}
+  - {table: income_record, name: Debt Service To Income, expr: "DIVIDE([Monthly EMI (INR)], [Average Monthly Net Salary (INR)])", format: "0.0%", folder: Income, desc: "Monthly EMI as a share of average net salary."}
+  # --- goals ---
+  - {table: goal, name: Lump Sum Goal Target (INR), expr: "CALCULATE(SUM(Goal[Target Amount (INR)]), ISBLANK(Goal[Target Frequency]))", format: "#,0.00", folder: Goals, desc: "Targets of goals with a lump-sum target, in rupees."}
+  - {table: goal, name: Goal Current (INR), expr: "SUM(Goal[Current Amount (INR)])", format: "#,0.00", folder: Goals, desc: "Amount set aside across goals, in rupees."}
+  - {table: goal, name: Goal Funding, expr: "DIVIDE([Goal Current (INR)], [Lump Sum Goal Target (INR)])", format: "0.0%", folder: Goals, desc: "Amount set aside as a share of lump-sum targets."}
+  # --- authority ---
+  - {table: consent, name: Active Consents, expr: "CALCULATE(COUNTROWS(Consent), Consent[Status] = \"granted\")", format: "#,0", folder: Authority, desc: "Consents that are granted and not revoked."}
+  - {table: access_grant, name: Active Access Grants, expr: "CALCULATE(COUNTROWS(HouseholdAccessGrant), HouseholdAccessGrant[Status] = \"active\")", format: "#,0", folder: Authority, desc: "Household access grants that are active."}
+  - {table: mandate, name: Revoked Mandates, expr: "CALCULATE(COUNTROWS(FrontierMandate), FrontierMandate[Status] = \"revoked\")", format: "#,0", folder: Authority, desc: "Mandates that were revoked."}
+  - {table: mandate_event, name: Mandate Executed (INR), expr: "CALCULATE(SUM(MandateAction[Amount (INR)]), MandateAction[Event Type] = \"action_executed\")", format: "#,0.00", folder: Authority, desc: "Total moved by executed mandate actions, in rupees."}
+  - {table: mandate_event, name: Mandate Skipped Actions, expr: "CALCULATE(COUNTROWS(MandateAction), MandateAction[Event Type] = \"action_skipped\")", format: "#,0", folder: Authority, desc: "Mandate actions skipped to protect obligations."}
+  # --- servicing ---
+  - {table: incident, name: Incidents, expr: "COUNTROWS(Incident)", format: "#,0", folder: Servicing, desc: "Fraud, scam and dispute incidents."}
+  - {table: incident, name: Recovered Amount (INR), expr: "SUM(Incident[Recovery Amount (INR)])", format: "#,0.00", folder: Servicing, desc: "Amount recovered across incidents, in rupees."}
+  - {table: crm_case, name: CRM Cases, expr: "COUNTROWS(CrmCase)", format: "#,0", folder: Servicing, desc: "Number of CRM cases."}
+  - {table: crm_case, name: Open CRM Cases, expr: "CALCULATE(COUNTROWS(CrmCase), CrmCase[Stage] IN {\"new\", \"in_progress\", \"awaiting_customer\"})", format: "#,0", folder: Servicing, desc: "CRM cases not yet resolved or declined."}
+  - {table: crm_case, name: Average Interactions Per Case, expr: "AVERAGE(CrmCase[Interactions])", format: "0.0", folder: Servicing, desc: "Mean interactions per CRM case."}
+  - {table: document, name: Documents, expr: "COUNTROWS(Document)", format: "#,0", folder: Servicing, desc: "Number of customer documents."}
+  # --- catalogue ---
+  - {table: product, name: Catalogue Products, expr: "CALCULATE(COUNTROWS(Product), Product[Data Role] = \"catalogue\")", format: "#,0", folder: Catalogue, desc: "Products with full approved terms."}
+  - {table: product, name: Highest Fixed Deposit Rate (%), expr: "CALCULATE(MAX(Product[Interest Rate (%)]), Product[Family] = \"fixed_deposit\")", format: "0.00", folder: Catalogue, desc: "Highest fixed deposit interest rate in the catalogue, percent."}
+  # --- bank operations (extended tier) ---
+  - {table: business_unit, name: Portfolio (Crore INR), expr: "SUM(BusinessUnit[Portfolio Crore (INR)])", format: "#,0.0", folder: Bank, desc: "Business unit portfolios in crore INR (1 crore = 10,000,000 rupees)."}
+  - {table: monthly_metric, name: Revenue (Crore INR), expr: "SUM(MonthlyMetric[Revenue Crore (INR)])", format: "#,0.0", folder: Bank, desc: "Revenue in crore INR over the selected months."}
+  - {table: campaign, name: Campaign Conversion, expr: "DIVIDE(SUM(Campaign[Converted]), SUM(Campaign[Reach]))", format: "0.0%", folder: Bank, desc: "Converted share of reach across campaigns."}

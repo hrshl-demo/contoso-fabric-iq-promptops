@@ -1,0 +1,515 @@
+[
+ {
+  "id": "G01",
+  "question": "What is the most Rhea's agent mandate may move in a single action?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp"
+  ],
+  "tags": [
+   "authority",
+   "money",
+   "smoke"
+  ],
+  "expected": 20000.0
+ },
+ {
+  "id": "G02",
+  "question": "What is the monthly cap on Rhea's surplus-to-goal mandate?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp"
+  ],
+  "tags": [
+   "authority",
+   "money"
+  ],
+  "expected": 40000.0
+ },
+ {
+  "id": "G03",
+  "question": "How much must stay in the source account after Rhea's surplus-to-goal mandate acts?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp"
+  ],
+  "tags": [
+   "authority",
+   "money"
+  ],
+  "expected": 750000.0
+ },
+ {
+  "id": "G04",
+  "question": "Is Rhea's mandate still active, and if not when was it revoked?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp",
+   "voice"
+  ],
+  "tags": [
+   "authority"
+  ],
+  "must_include": [
+   "revoked"
+  ],
+  "expected": {
+   "status": "revoked",
+   "revoked_on": "2026-09-10"
+  }
+ },
+ {
+  "id": "G05",
+  "question": "How much money has the mandate actually moved so far?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp"
+  ],
+  "tags": [
+   "authority",
+   "money"
+  ],
+  "expected": 15000.0
+ },
+ {
+  "id": "G06",
+  "question": "What is the balance in Rhea's primary account and as of which date?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp",
+   "voice"
+  ],
+  "tags": [
+   "balances",
+   "voice",
+   "smoke"
+  ],
+  "expected": {
+   "balance_inr": 1008300.0,
+   "as_on": "2026-09-30"
+  }
+ },
+ {
+  "id": "G07",
+  "question": "What is the total posted balance across Rhea's accounts?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp"
+  ],
+  "tags": [
+   "balances"
+  ],
+  "expected": 1443300.0
+ },
+ {
+  "id": "G08",
+  "question": "How much does Rhea owe on her credit card, what is the limit and is the card usable?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp",
+   "voice"
+  ],
+  "tags": [
+   "cards",
+   "servicing"
+  ],
+  "expected": {
+   "outstanding_inr": 42000.0,
+   "limit_inr": 250000.0,
+   "status": [
+    "locked",
+    "dispute"
+   ]
+  }
+ },
+ {
+  "id": "G09",
+  "question": "What is Rhea's home loan EMI, outstanding principal and interest rate?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp",
+   "voice"
+  ],
+  "tags": [
+   "loans",
+   "smoke"
+  ],
+  "expected": {
+   "emi_inr": 48500.0,
+   "principal_inr": 5533177.88,
+   "rate_pct": 8.5
+  }
+ },
+ {
+  "id": "G10",
+  "question": "What are Rhea's fixed monthly obligations in total?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp"
+  ],
+  "tags": [
+   "obligations"
+  ],
+  "expected": 133250.0
+ },
+ {
+  "id": "G11",
+  "question": "How far along is Rhea's emergency reserve goal?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp",
+   "voice"
+  ],
+  "tags": [
+   "goals"
+  ],
+  "expected": {
+   "current_inr": 435000.0,
+   "target_inr": 900000.0,
+   "progress_pct": 48.33
+  }
+ },
+ {
+  "id": "G12",
+  "question": "How many transactions does Rhea have, and how much went out and came in?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent"
+  ],
+  "tags": [
+   "transactions"
+  ],
+  "expected": {
+   "count": 114,
+   "debits": 87,
+   "debit_total_inr": 1836198.0,
+   "credit_total_inr": 2529498.0
+  }
+ },
+ {
+  "id": "G13",
+  "question": "How much was lost in Rhea's scam case and how much has been recovered?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp",
+   "voice"
+  ],
+  "tags": [
+   "servicing",
+   "fraud"
+  ],
+  "expected": {
+   "amount_inr": 74999.0,
+   "recovered_inr": 74999.0
+  }
+ },
+ {
+  "id": "G14",
+  "question": "Which of Rhea's goals has the largest target?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp"
+  ],
+  "tags": [
+   "goals"
+  ],
+  "expected": {
+   "goal": "Retirement corpus",
+   "target_inr": 8000000.0
+  }
+ },
+ {
+  "id": "G15",
+  "question": "Who is in Rhea's household?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp"
+  ],
+  "tags": [
+   "household"
+  ],
+  "expected": [
+   "Anika Bansal",
+   "Savitri Bansal",
+   "Vivek Bansal"
+  ]
+ },
+ {
+  "id": "G16",
+  "question": "What may Vivek see and what is he explicitly not allowed to do?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp"
+  ],
+  "tags": [
+   "authority",
+   "household"
+  ],
+  "expected": {
+   "permissions": [
+    "goals",
+    "household budget",
+    "scheduled obligations"
+   ],
+   "denied": [
+    "change access",
+    "change mandates",
+    "private messages",
+    "transact"
+   ]
+  }
+ },
+ {
+  "id": "G17",
+  "question": "What can Rhea's personal agent do and what is it denied?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp",
+   "foundry_iq"
+  ],
+  "tags": [
+   "authority"
+  ],
+  "expected": {
+   "scopes": [
+    "notify:obligations",
+    "propose:goal_transfer",
+    "read:financial_health",
+    "read:goals"
+   ],
+   "denied": [
+    "change:household_access",
+    "execute:unmandated_transfer",
+    "open:credit",
+    "purchase:insurance"
+   ]
+  }
+ },
+ {
+  "id": "G18",
+  "question": "Which fixed deposit in the catalogue pays the highest interest rate?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp",
+   "foundry_iq"
+  ],
+  "tags": [
+   "catalogue",
+   "smoke"
+  ],
+  "expected": {
+   "product": "CB-FD-SENIOR-INCOME",
+   "rate_pct": 7.75
+  }
+ },
+ {
+  "id": "G19",
+  "question": "What is the autonomy ceiling of the scam shield journey and which actions may it prepare?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp"
+  ],
+  "tags": [
+   "journeys",
+   "authority"
+  ],
+  "expected": {
+   "autonomy_ceiling": 6,
+   "operations": [
+    "card_lock",
+    "card_replacement",
+    "dispute_open",
+    "service_escalation",
+    "temporary_payment_hold"
+   ]
+  }
+ },
+ {
+  "id": "G20",
+  "question": "What does the bank's law L9 say?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp",
+   "foundry_iq"
+  ],
+  "tags": [
+   "policy"
+  ],
+  "expected": "No sales during harm"
+ },
+ {
+  "id": "G21",
+  "question": "Who is allowed to approve a customer action?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp",
+   "voice"
+  ],
+  "tags": [
+   "authority",
+   "policy"
+  ],
+  "expected": [
+   "Customer"
+  ]
+ },
+ {
+  "id": "G22",
+  "question": "Which customer records are named Rhea Bansal and how do they relate?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp"
+  ],
+  "tags": [
+   "identity"
+  ],
+  "must_include": [
+   "legacy"
+  ],
+  "expected": [
+   "rhea",
+   "rhea~legacy"
+  ]
+ },
+ {
+  "id": "G23",
+  "question": "What is the annual fee of the Contoso Classic Credit Card?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp",
+   "foundry_iq",
+   "voice"
+  ],
+  "tags": [
+   "catalogue",
+   "money",
+   "smoke"
+  ],
+  "expected": 499.0
+ },
+ {
+  "id": "G24",
+  "question": "What must never be claimed after recording a card freeze request?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp",
+   "foundry_iq"
+  ],
+  "tags": [
+   "servicing",
+   "honesty"
+  ],
+  "expected": [
+   "blocked",
+   "contacted",
+   "reversed"
+  ]
+ },
+ {
+  "id": "G25",
+  "question": "What is Rhea's net position: assets, liabilities and the difference? Mention anything that is not included.",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp"
+  ],
+  "tags": [
+   "balances",
+   "guardrail"
+  ],
+  "must_not_include": [
+   "goal balances added"
+  ],
+  "expected": {
+   "assets_inr": 2271300.0,
+   "liabilities_inr": 5981092.13,
+   "net_inr": -3709792.13
+  }
+ },
+ {
+  "id": "G26",
+  "question": "How much interest has Rhea paid on her home loan so far?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp"
+  ],
+  "tags": [
+   "loans"
+  ],
+  "expected": 24177.88
+ },
+ {
+  "id": "G27",
+  "question": "Is the older Rhea record the same person, and should its balances be added to Rhea's?",
+  "tier": "core",
+  "surfaces": [
+   "data_agent",
+   "mcp"
+  ],
+  "tags": [
+   "identity",
+   "guardrail"
+  ],
+  "judge": "manual",
+  "must_include": [
+   "superseded"
+  ],
+  "expected": {
+   "superseded_by": "rhea"
+  }
+ },
+ {
+  "id": "G28",
+  "question": "Which SOPs does the suspicious contact journey follow?",
+  "tier": "extended",
+  "surfaces": [
+   "data_agent",
+   "mcp",
+   "foundry_iq"
+  ],
+  "tags": [
+   "journeys"
+  ],
+  "expected": [
+   "SOP-SHARED-CARD-CONTROLS",
+   "SOP-SHARED-REQUEST-HANDLING",
+   "SOP-UC03-SUSPECTED-FRAUD"
+  ]
+ },
+ {
+  "id": "G29",
+  "question": "How many CRM cases are still open?",
+  "tier": "extended",
+  "surfaces": [
+   "data_agent"
+  ],
+  "tags": [
+   "crm"
+  ],
+  "expected": 24
+ }
+]

@@ -1,0 +1,125 @@
+silver:
+  - table: silver_product
+    entity: Product
+    profile: true
+    profile_entity: Product
+    ontology_entity: Product
+    domain: Catalogue
+    serves: [product]
+    grain: One catalogue, relationship-proposal or reference-stub product record.
+    description: One catalogue, relationship-proposal or reference-stub product record. Conformed to the CDM profile entity Product (realises the ontology entity Product). Attributes without a seed counterpart stay null; other seed fields the ontology needs are x columns.
+    notes: 'Both releases and the relationship package stay side by side: CB-SAV-SALARY is a catalogue row (retail4) and a reference stub (Frontier); gold keeps the catalogue row (precedence by source order).'
+    cdm: null
+    bian:
+      - {domain: Product Directory, control_record: ProductDirectoryEntry, custom: 15, provisional: 0}
+    sources:
+      - {release: retail4-v1, file: products.json, set: {data_role: catalogue}}
+      - {data: relationship/products.json, set: {data_role: relationship_proposal}}
+      - {release: retail-frontier-v1, file: products.json, set: {data_role: reference_only}}
+    key: [productId]
+    common:                                        # app/data_xray/projection.py 466-470 (bank_records: Product)
+      cite: app/data_xray/projection.py:466-470
+      source_kind: catalogue                       # 469 (not historical: the Product call passes no historical flag)
+      state: {from: status, default: catalogue}    # 469 row.get("status", "catalogue"): active, proposed, or catalogue when the record has none
+      label: {from: [displayName]}                 # 468 label=row.get("displayName"), else productId
+    version: productVersion
+    columns:
+      - {col: productId, origin: profile, type: string, from: productId}
+      - {col: productVersion, origin: profile, type: string, from: productVersion}
+      - {col: productFamily, origin: profile, type: string, from: family}
+      - {col: name, origin: profile, type: string, from: displayName}
+      - {col: currency, origin: profile, type: string, derive: product_currency, reads: [parameters.currency, parameters]}
+      - {col: ratePct, origin: profile, type: decimal, from: parameters.interestRatePct, t: decimal_text}
+      - {col: annualFeeMinor, origin: profile, type: minor, from: parameters.annualFee, t: rupees_to_paise}
+      - {col: monthlyFeeMinor, origin: profile, type: minor, from: parameters.monthlyFee, t: rupees_to_paise}
+      - {col: monthlyPremiumMinor, origin: profile, type: minor, from: parameters.monthlyPremium, t: rupees_to_paise}
+      - {col: sumInsuredMinor, origin: profile, type: minor, from: parameters.sumInsured, t: rupees_to_paise}
+      - {col: minimumPrincipalMinor, origin: profile, type: minor, from: parameters.minimumPrincipal, t: rupees_to_paise}
+      - {col: maximumPrincipalMinor, origin: profile, type: minor, from: parameters.maximumPrincipal, t: rupees_to_paise}
+      - {col: minimumTermMonths, origin: profile, type: integer, from: parameters.minimumTermMonths}
+      - {col: maximumTermMonths, origin: profile, type: integer, derive: product_max_term_months, reads: [parameters.maximumTermMonths, parameters.maximumTenureYears, family]}
+      - {col: requiresDecision, origin: profile, type: boolean, derive: product_requires_decision, reads: [family]}
+      - {col: xProductType, origin: extension, type: string, from: productType, desc: Product type of a Frontier reference stub (the stub carries no family or display name).}
+      - {col: xStatus, origin: extension, type: string, from: status, desc: Catalogue status such as active or proposed.}
+      - {col: xIssuer, origin: extension, type: string, from: issuer, desc: Issuer name (synthetic).}
+      - {col: xCatalogueVersion, origin: extension, type: string, from: catalogueVersion, desc: 'Catalogue version, for example catalogue-v1.'}
+      - {col: xEffectiveFrom, origin: extension, type: date, from: effectiveFrom, desc: Date the product terms take effect.}
+      - {col: xEffectiveTo, origin: extension, type: date, from: effectiveTo, desc: 'Date the product terms end; null while they are open (every catalogue record is open in the pinned seed).'}
+      - {col: xAudienceDescription, origin: extension, type: string, from: audienceDescription, t: join, desc: Who the product suits.}
+      - {col: xMainTradeoff, origin: extension, type: string, from: mainTradeoff, t: join, desc: The main trade-off of choosing the product.}
+      - {col: xWhyNotSuitable, origin: extension, type: string, from: whyNotSuitable, t: join, desc: Who the product does not suit.}
+      - {col: xRateTerms, origin: extension, type: string, from: rateTerms, t: join, desc: Plain-language rate or cashback terms.}
+      - {col: xLiquidityTerms, origin: extension, type: string, from: liquidityTerms, t: join, desc: Plain-language liquidity terms.}
+      - {col: xBenefits, origin: extension, type: string, from: benefits, t: join, desc: Benefits (semicolon separated).}
+      - {col: xFees, origin: extension, type: string, from: fees, t: join, desc: Fees (semicolon separated).}
+      - {col: xLimitations, origin: extension, type: string, from: limitations, t: join, desc: Limitations (semicolon separated).}
+      - {col: xRequiredEvidence, origin: extension, type: string, from: requiredEvidence, t: join, desc: Evidence needed to apply (semicolon separated).}
+      - {col: xSupportedActions, origin: extension, type: string, from: supportedActions, t: join, desc: 'What the assistant may do: prepare_application, keep_current, request_information.'}
+      - {col: xUnderwritingRequired, origin: extension, type: boolean, from: underwritingRequired, desc: True when the product needs underwriting.}
+      - {col: xEligibilityRulesMinimumAge, origin: extension, type: integer, from: eligibilityRules.minimumAge, desc: Minimum customer age in years.}
+      - {col: xEligibilityRulesMinimumMonthlyIncomeMinor, origin: extension, type: minor, from: eligibilityRules.minimumMonthlyIncome, t: rupees_to_paise, unit: 'currency minor units; INR paise, exponent 2', desc: Minimum monthly income in rupees.}
+      - {col: xEligibilityRulesMinimumPrincipalMinor, origin: extension, type: minor, from: eligibilityRules.minimumPrincipal, t: rupees_to_paise, unit: 'currency minor units; INR paise, exponent 2', desc: 'Minimum amount to place or borrow, in rupees.'}
+      - {col: xParametersMinimumBalanceMinor, origin: extension, type: minor, from: parameters.minimumBalance, t: rupees_to_paise, unit: 'currency minor units; INR paise, exponent 2', desc: 'Minimum balance to maintain, in rupees.'}
+      - {col: xParametersProcessingFeePct, origin: extension, type: decimal, from: parameters.processingFeePct, t: decimal_text, unit: percentage points, desc: Processing fee as a percentage of the amount.}
+      - {col: xParametersPrepaymentChargePct, origin: extension, type: decimal, from: parameters.prepaymentChargePct, t: decimal_text, unit: percentage points, desc: Prepayment charge as a percentage.}
+      - {col: xParametersPrematureWithdrawalPenaltyPct, origin: extension, type: decimal, from: parameters.prematureWithdrawalPenaltyPct, t: decimal_text, unit: percentage points, desc: Penalty percentage for withdrawing a deposit early.}
+      - {col: xParametersMaximumTermMonths, origin: extension, type: integer, from: parameters.maximumTermMonths, desc: Longest term in months.}
+      - {col: xParametersMaximumTenureYears, origin: extension, type: integer, from: parameters.maximumTenureYears, desc: Longest loan tenure in years.}
+      - {col: xParametersMaximumLtvPct, origin: extension, type: decimal, from: parameters.maximumLtvPct, t: decimal_text, unit: percentage points, desc: Maximum loan-to-value percentage.}
+      - {col: xParametersCashbackPct, origin: extension, type: decimal, from: parameters.cashbackPct, t: decimal_text, unit: percentage points, desc: Cashback percentage on spends.}
+      - {col: xParametersForexMarkupPct, origin: extension, type: decimal, from: parameters.forexMarkupPct, t: decimal_text, unit: percentage points, desc: Foreign exchange mark-up percentage.}
+      - {col: xParametersRateType, origin: extension, type: string, from: parameters.rateType, desc: 'Loan rate type: fixed or floating.'}
+      - {col: xParametersPayoutMode, origin: extension, type: string, from: parameters.payoutMode, desc: 'Deposit payout mode: monthly, quarterly, on_maturity.'}
+      - {col: xDisclosureText, origin: extension, type: string, from: disclosureText, desc: Mandatory demo disclosure.}
+      - {col: xReleaseId, origin: extension, type: string, from: releaseId, desc: Seed release the row comes from.}
+      - {col: xDataRole, origin: extension, type: string, from: [dataRole, $data_role], desc: 'Role of the record: catalogue (full terms), relationship_proposal (planner proposal, not an approved offer) or reference_only (stub with no terms). The Frontier stubs state it; the other two come from the file they were read from.'}
+  - table: silver_product_parameter
+    entity: ProductParameter
+    profile: false
+    ontology_entity: ProductParameter
+    domain: Catalogue
+    serves: [product_parameter]
+    grain: One scalar catalogue parameter of a product (nested names dotted).
+    description: 'One scalar catalogue parameter of a product (nested names dotted). Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    sources:
+      - {custom: product_parameter, files: [data/releases/retail4-v1/products.json, data/relationship/products.json]}
+    key: [productId, parameterName]
+    record_id: '{productId}.{name}'
+    common:                                        # extension entity, catalogue data: the app's Product kind (app/data_xray/projection.py 469) and put() defaults (322-338)
+      cite: [app/data_xray/projection.py:322-338, app/data_xray/projection.py:466-470]
+      source_kind: catalogue
+      state: {const: recorded}
+    columns:
+      - {col: productId, origin: extension, type: string, nullable: false, from: productId, desc: Product the parameter belongs to.}
+      - {col: parameterName, origin: extension, type: string, nullable: false, from: name, desc: Parameter name; nested names are dotted (eligibility.minimumAge).}
+      - {col: valueKind, origin: extension, type: string, from: value, t: value_kind, desc: 'What the seed holds: string, integer, decimal, boolean or list.'}
+      - {col: valueText, origin: extension, type: string, from: value, t: json_text, desc: 'The value as JSON writes it (true, 1.0, 9.5); lists are ''; '' joined.'}
+      - {col: valueInteger, origin: extension, type: integer, from: value, t: only_int, desc: The value when the seed holds an integer.}
+      - {col: valueDecimal, origin: extension, type: decimal, from: value, t: only_float|decimal_text, desc: The value when the seed holds a fractional number (canonical decimal text).}
+      - {col: valueBoolean, origin: extension, type: boolean, from: value, t: only_bool, desc: The value when the seed holds a boolean.}
+      - {col: ordinal, origin: extension, type: integer, from: $ordinal, desc: 1-based position of the parameter within the product's flattened parameters.}
+  - table: silver_sop
+    entity: Sop
+    profile: false
+    ontology_entity: Sop
+    domain: Catalogue
+    serves: [sop]
+    grain: One standard operating procedure record.
+    description: 'One standard operating procedure record. Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    sources:
+      - {release: retail4-v1, file: sops.json}
+    key: [sopId]
+    common:                                        # extension entity, catalogue data: the app's Product kind (app/data_xray/projection.py 469) and put() defaults (322-338)
+      cite: [app/data_xray/projection.py:322-338, app/data_xray/projection.py:466-470]
+      source_kind: catalogue
+      state: {const: recorded}
+      label: {from: [title]}
+    version: sourceVersion
+    columns:
+      - {col: sopId, origin: extension, type: string, from: sopId, desc: SOP identifier such as SOP-UC03-SUSPECTED-FRAUD., nullable: false}
+      - {col: title, origin: extension, type: string, from: title, desc: SOP title.}
+      - {col: scope, origin: extension, type: string, from: scope, desc: case (one use case) or shared (all cases).}
+      - {col: audience, origin: extension, type: string, from: audience, desc: 'Who the SOP is for, for example bank_global.'}
+      - {col: appliesToCase, origin: extension, type: string, from: appliesToCase, desc: 'Use case the SOP applies to, for example UC03.'}
+      - {col: knowledgePath, origin: extension, type: string, from: knowledgePath, desc: Path of the SOP text in the knowledge store.}
+      - {col: sopVersion, origin: extension, type: integer, from: sourceVersion, desc: SOP version number.}

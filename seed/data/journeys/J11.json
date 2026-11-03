@@ -1,0 +1,115 @@
+{
+  "journeyId": "J11",
+  "title": "Side-hustle income and savings",
+  "oneLiner": "Smooth irregular freelance income and keep the tax money separate.",
+  "buId": "BU-RETAIL-DEPOSITS",
+  "icon": "spark",
+  "accentHue": 138,
+  "goal": "Establish what the customer's irregular income actually looks like, set aside what is not theirs to spend, and build a reserve that survives a quiet month.",
+  "triggers": [
+    "freelance income",
+    "side hustle",
+    "irregular income",
+    "client payment",
+    "invoice",
+    "self employed savings",
+    "content creator",
+    "gig income",
+    "saving for equipment",
+    "set aside for tax"
+  ],
+  "antiTriggers": [
+    "my salary account"
+  ],
+  "sopIds": [
+    "SOP-UC11-IRREGULAR-INCOME",
+    "SOP-SHARED-PRODUCT-SUITABILITY",
+    "SOP-SHARED-DOCUMENT-REVIEW"
+  ],
+  "productIds": [
+    "CB-SWEEP-MICRO",
+    "CB-FD-SHORT-LIQUID",
+    "CB-RD-STARTER",
+    "CB-RD-GOAL",
+    "CB-SWEEP-FLEX",
+    "CB-SAV-SALARY-PLUS"
+  ],
+  "evidenceHints": [
+    "DOC-V-CLIENT-BRIEF",
+    "DOC-V-CLIENT-CHAT",
+    "DOC-V-INVOICE-DRAFT",
+    "DOC-V-SOCIAL-SNAPSHOT"
+  ],
+  "documentChoiceStages": [
+    "obligations"
+  ],
+  "toolHints": [
+    "transactions_query",
+    "spend_analysis",
+    "document_analyze",
+    "catalogue_lookup"
+  ],
+  "stages": [
+    {
+      "id": "shape",
+      "goal": "Establish the real rhythm of the income from transactions - how often, how variable, how reliable. Ask how to get at it with `quick_replies`: `Use my transactions`, `I will describe it`.",
+      "exitWhen": "The pattern is described from actual data."
+    },
+    {
+      "id": "obligations",
+      "goal": "Separate what is not theirs to spend: tax, costs, refundable advances. Ask them to agree the proportion with `quick_replies` carrying their words and never a figure you chose: `That proportion works`, `Make it smaller`, `Not sure yet`.",
+      "exitWhen": "The set-aside proportion is agreed."
+    },
+    {
+      "id": "floor",
+      "goal": "Establish the monthly floor they must cover even in a bad month. If they do not know it, offer `quick_replies`: `Work it out from my transactions`, `I will give you a figure`.",
+      "exitWhen": "The floor is stated."
+    },
+    {
+      "id": "structure",
+      "goal": "Propose a structure that holds the set-aside separately and stays reachable. Ask whether it fits with `quick_replies`: `That works`, `Keep more reachable`, `Not now`.",
+      "exitWhen": "A structure is shown."
+    },
+    {
+      "id": "act",
+      "goal": "Match to catalogue products and prepare one proposal, or save the plan.",
+      "exitWhen": "A proposal or saved plan exists."
+    }
+  ],
+  "mustEstablish": [
+    "The actual frequency and variability of income, from transactions.",
+    "The worst recent month - that is what the plan has to survive, not the average.",
+    "What proportion is owed onward as tax or costs.",
+    "Whether payments arrive late, because that is a different problem from irregular."
+  ],
+  "neverDo": [
+    "Never infer income, creditworthiness or business standing from follower counts, likes or engagement. Audience size is not revenue.",
+    "Do not plan against average income. Plan against the bad month.",
+    "Do not lock money away that a freelancer needs reachable. Liquidity beats yield here.",
+    "Do not treat an invoice as received money, or a client's promise as a payment.",
+    "Do not give tax advice. You can say 'set aside a proportion'; you cannot say what proportion the law requires."
+  ],
+  "objectionPaths": [
+    {
+      "signal": "income too unpredictable to commit",
+      "respondBy": "Then propose a percentage-of-what-arrives rule rather than a fixed monthly amount, and say why that is the safer shape."
+    },
+    {
+      "signal": "wants the highest return",
+      "respondBy": "Be honest that the highest return usually means locked away, which is the wrong shape for irregular income. State the tradeoff and let them choose."
+    }
+  ],
+  "completion": {
+    "default": "The next action is explicit: prepare the set-aside account or deposit proposal, or save the irregular-income rule and review date.",
+    "nivedita": "Unlikely. If it is a small pension-supplementing activity, the next action is a simple set-aside rule that protects her income security.",
+    "rhea": "Likely secondary income alongside salary. The next action is a separate set-aside structure so it does not disappear into the household plan.",
+    "ravi": "His core journey. The next action is the invoice-aware set-aside rule after resolving the extra revisions in the client chat. Never touch his follower counts as a signal of anything."
+  },
+  "turnCap": 14,
+  "salesPosture": "advise",
+  "openers": [
+    "My freelance income is different every month and I cannot budget",
+    "I need to keep the tax money separate from the money I can spend",
+    "How do I save when I do not know what I will earn?"
+  ]
+}

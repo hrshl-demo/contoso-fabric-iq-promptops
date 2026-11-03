@@ -1,0 +1,188 @@
+silver:
+  - table: silver_transaction
+    entity: Transaction
+    profile: true
+    profile_entity: Transaction
+    ontology_entity: Transaction
+    domain: Money
+    serves: [transaction]
+    grain: One ledger posting per seed release.
+    description: One ledger posting per seed release. Conformed to the CDM profile entity Transaction (realises the ontology entity Transaction). Attributes without a seed counterpart stay null; other seed fields the ontology needs are x columns.
+    cdm: null
+    bian:
+      - {domain: Payment Execution, control_record: PaymentExecutionProcedure, custom: 13, provisional: 0}
+      - {domain: Position Keeping, control_record: FinancialPositionLog, custom: 13, provisional: 0}
+    sources:
+      - {release: retail-frontier-v1, file: transactions.json}
+      - {release: retail4-v1, file: transactions.json}
+    key: [transactionId]
+    owner: ownerId
+    common:                                        # app/data_xray/projection.py 516-523 (bank_records: holdings loop); _INACTIVE at 66
+      cite: [app/data_xray/projection.py:516-523, app/data_xray/projection.py:66]
+      source_kind: bank_record                     # 522: "history" if historical else "bank_record"
+      state: {from: status, default: recorded}     # 516: row.get("status", "recorded") (posted, reversed)
+      historical: {state_in: inactive, source_kind: history}   # 517: state in _INACTIVE; a reversed entry stays an active record
+    columns:
+      - {col: transactionId, origin: profile, type: string, from: transactionId}
+      - {col: accountId, origin: profile, type: string, from: accountId}
+      - {col: cardId, origin: profile, type: string, from: cardId}
+      - {col: applicationId, origin: profile, type: string, none: not recorded in the seed}
+      - {col: currency, origin: profile, type: string, from: amount.currency}
+      - {col: amountMinor, origin: profile, type: minor, from: amount, t: paise}
+      - {col: direction, origin: profile, type: string, from: direction}
+      - {col: category, origin: profile, type: string, from: category}
+      - {col: description, origin: profile, type: string, from: description}
+      - {col: valueDate, origin: profile, type: date, from: valueDate}
+      - {col: postedAt, origin: profile, type: datetime, from: postedAt}
+      - {col: recordedAt, origin: profile, type: datetime, none: not recorded; never fabricated from valueDate}
+      - {col: transferId, origin: profile, type: string, none: not recorded in the seed}
+      - {col: xInstrument, origin: extension, type: string, from: instrument, desc: 'How it was paid: account, card or credit_card.'}
+      - {col: xStatus, origin: extension, type: string, from: status, desc: posted or reversed.}
+      - {col: xCounterpartyRef, origin: extension, type: string, from: counterpartyRef, desc: 'Reference of the other party: employer, household member, own account, card, case or external party (Frontier only).'}
+      - {col: xDisputeRef, origin: extension, type: string, from: disputeRef, desc: Incident id when the transaction is under dispute or part of a scam case (Frontier only).}
+      - {col: xPurchaseReference, origin: extension, type: string, from: purchaseReference, desc: Purchase document reference (legacy only).}
+      - {col: xSettlementReference, origin: extension, type: string, from: settlementReference, desc: Shared-expense settlement reference (legacy only).}
+      - {col: xSourceRefs, origin: extension, type: string, from: sourceRefs, t: join, desc: Documents or cases that evidence the transaction (semicolon separated).}
+      - {col: xSourceRefsCount, origin: extension, type: integer, from: sourceRefs, t: len, desc: Number of evidence references.}
+  - table: silver_transaction_evidence
+    entity: TransactionEvidence
+    profile: false
+    ontology_entity: TransactionEvidence
+    domain: Money
+    serves: [transaction_evidence]
+    grain: One document or case that evidences a transaction (element of sourceRefs).
+    description: 'One document or case that evidences a transaction (element of sourceRefs). Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    sources:
+      - {release: retail-frontier-v1, file: transactions.json, explode: sourceRefs}
+      - {release: retail4-v1, file: transactions.json, explode: sourceRefs}
+    key: [transactionId, sourceRef]
+    record_id: '{^.transactionId}>{@}'
+    owner: ^.ownerId
+    common:                                        # extension entity: the app's put() defaults (app/data_xray/projection.py 322-338)
+      cite: app/data_xray/projection.py:322-338
+      source_kind: bank_record
+      state: {const: recorded}
+    columns:
+      - {col: transactionId, origin: extension, type: string, from: ^.transactionId, nullable: false}
+      - {col: sourceRef, origin: extension, type: string, from: '@', nullable: false}
+      - {col: ordinal, origin: extension, type: integer, from: $index, nullable: false, desc: 1-based position within the array (the order the seed lists it).}
+  - table: silver_scheduled_obligation
+    entity: ScheduledObligation
+    profile: false
+    ontology_entity: ScheduledObligation
+    domain: Money
+    serves: [scheduled_obligation]
+    grain: One scheduled obligation.
+    description: 'One scheduled obligation. Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    notes: "The profile's Commitment is 'an actual mandate or repayment-schedule row' read from the app's mandates and liabilities.repaymentSchedule datasets. These Frontier obligations are recurring commitments (cadence, day of month, payee reference, amount rule), so mapping them would mislabel them: standards.ONTOLOGY_ENTITY does not map Commitment, and this is an extension entity that claims no profile or BIAN alignment."
+    sources:
+      - {release: retail-frontier-v1, file: scheduled-obligations.json}
+    key: [obligationId]
+    owner: ownerId
+    common:                                        # extension entity: the app's put() defaults (app/data_xray/projection.py 322-338)
+      cite: app/data_xray/projection.py:322-338
+      source_kind: bank_record
+      state: {from: status, default: recorded}     # the seed's own status (active)
+      label: {from: [name]}
+    columns:
+      - {col: obligationId, origin: extension, type: string, from: obligationId, desc: Obligation identifier such as obl-home-emi., nullable: false}
+      - {col: name, origin: extension, type: string, from: name, desc: Obligation name such as Home loan EMI.}
+      - {col: sourceAccountId, origin: extension, type: string, from: sourceAccountId, desc: Account the payment leaves.}
+      - {col: payeeRef, origin: extension, type: string, from: payeeRef, desc: 'What is being paid: loan, card, document or account reference.'}
+      - {col: cadence, origin: extension, type: string, from: cadence, desc: 'monthly, quarterly or annual.'}
+      - {col: dayOfMonth, origin: extension, type: integer, from: dayOfMonth, desc: Day of the month the payment is due.}
+      - {col: status, origin: extension, type: string, from: status, desc: Obligation status such as active.}
+      - {col: amountMinor, origin: extension, type: minor, from: amount, t: paise, unit: 'currency minor units; INR paise, exponent 2', desc: Amount per payment.}
+      - {col: currency, origin: extension, type: string, from: [amount.currency], desc: ISO currency of every money amount in the row (checked at build time).}
+  - table: silver_income_record
+    entity: IncomeRecord
+    profile: false
+    ontology_entity: IncomeRecord
+    domain: Money
+    serves: [income_record]
+    grain: One monthly income record.
+    description: 'One monthly income record. Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    sources:
+      - {release: retail-frontier-v1, file: income.json}
+    key: [incomeId]
+    owner: ownerId
+    common:                                        # extension entity: the app's put() defaults (app/data_xray/projection.py 322-338)
+      cite: app/data_xray/projection.py:322-338
+      source_kind: bank_record
+      state: {const: recorded}                     # the seed record carries no lifecycle field
+    columns:
+      - {col: incomeId, origin: extension, type: string, from: incomeId, desc: Income record identifier such as income-salary-2026-04., nullable: false}
+      - {col: incomeType, origin: extension, type: string, from: incomeType, desc: salary or household_contribution.}
+      - {col: period, origin: extension, type: string, from: period, desc: 'Month the income is for, as YYYY-MM.'}
+      - {col: grossMinor, origin: extension, type: minor, from: gross, t: paise, unit: 'currency minor units; INR paise, exponent 2', desc: Gross amount before deductions.}
+      - {col: netMinor, origin: extension, type: minor, from: net, t: paise, unit: 'currency minor units; INR paise, exponent 2', desc: Net amount credited.}
+      - {col: recurring, origin: extension, type: boolean, from: recurring, desc: True when the income repeats every month.}
+      - {col: evidenceRef, origin: extension, type: string, from: evidenceRef, desc: Document that evidences the income.}
+      - {col: contributorRef, origin: extension, type: string, from: contributorRef, desc: 'Household member who contributed, for household contributions.'}
+      - {col: transactionDescription, origin: extension, type: string, from: transactionDescription, desc: Bank narration of the credit.}
+      - {col: currency, origin: extension, type: string, from: [gross.currency, net.currency], desc: ISO currency of every money amount in the row (checked at build time).}
+  - table: silver_goal
+    entity: Goal
+    profile: true
+    profile_entity: Goal
+    ontology_entity: Goal
+    domain: Goals
+    serves: [goal]
+    grain: One goal record per seed release.
+    description: One goal record per seed release. Conformed to the CDM profile entity Goal (realises the ontology entity Goal). Attributes without a seed counterpart stay null; other seed fields the ontology needs are x columns.
+    cdm: null
+    bian:
+      - {domain: Customer Relationship Management, control_record: CustomerRelationshipManagementPlan, custom: 0, provisional: 7}
+    sources:
+      - {release: retail-frontier-v1, file: goals.json}
+      - {release: retail4-v1, file: goals.json}
+    key: [goalId]
+    owner: ownerId
+    common:                                        # app/data_xray/projection.py 516-523 (bank_records: holdings loop); _INACTIVE at 66
+      cite: [app/data_xray/projection.py:516-523, app/data_xray/projection.py:66]
+      source_kind: bank_record                     # 522: "history" if historical else "bank_record"
+      state: {from: status, default: recorded}     # 516: row.get("status", "recorded")
+      historical: {state_in: inactive, source_kind: history}   # 517: state in _INACTIVE
+      label: {from: [title, name]}                 # 521 label=row.get("title") else goalId; the Frontier seed names its goals `name`, which silver maps to the title
+    columns:
+      - {col: goalId, origin: profile, type: string, from: goalId}
+      - {col: title, origin: profile, type: string, from: [title, name]}
+      - {col: currency, origin: profile, type: string, from: [targetAmount.currency, target.currency, current.currency]}
+      - {col: targetAmountMinor, origin: profile, type: minor, from: [targetAmount, target], t: paise}
+      - {col: allocatedAmountMinor, origin: profile, type: minor, from: current, t: paise}
+      - {col: targetDate, origin: profile, type: date, from: targetDate}
+      - {col: priority, origin: profile, type: string, from: statedPriority}
+      - {col: xPriorityRank, origin: extension, type: integer, from: priority, desc: 'Priority rank, 1 = highest (Frontier only).'}
+      - {col: xStatus, origin: extension, type: string, from: status, desc: Goal status such as active (legacy only).}
+      - {col: xTargetFrequency, origin: extension, type: string, from: targetFrequency, desc: monthly when the target is a recurring amount (legacy only).}
+      - {col: xCustomerIntent, origin: extension, type: string, from: customerIntent, desc: What the customer said they want (legacy only).}
+      - {col: xFundingProductIds, origin: extension, type: string, from: fundingProductIds, t: join, desc: 'Products that could fund the goal (semicolon separated, legacy only).'}
+  - table: silver_preference
+    entity: Preference
+    profile: true
+    profile_entity: Preference
+    ontology_entity: Preference
+    domain: Goals
+    serves: [preference]
+    grain: One stated preference (field/value) per seed release.
+    description: One stated preference (field/value) per seed release. Conformed to the CDM profile entity Preference (realises the ontology entity Preference). Attributes without a seed counterpart stay null; other seed fields the ontology needs are x columns.
+    cdm: null
+    bian:
+      - {domain: Customer Relationship Management, control_record: CustomerRelationshipManagementPlan, custom: 4, provisional: 0}
+    sources:
+      - {custom: preference_unpivot, release: retail-frontier-v1, file: preferences.json}
+      - {release: retail4-v1, file: preferences.json}
+    key: [preferenceId]
+    owner: ownerId
+    common:                                        # app/data_xray/projection.py 550-554 (bank_records: preferences)
+      cite: app/data_xray/projection.py:550-554
+      source_kind: customer_stated                 # 553
+      state: {from: status, default: recorded}     # 553: row.get("status", "recorded"); the seed rows carry none
+      label: {from: [field]}                       # 553 label=row.get("field"), else preferenceId
+    columns:
+      - {col: preferenceId, origin: profile, type: string, from: preferenceId}
+      - {col: field, origin: profile, type: string, from: field}
+      - {col: value, origin: profile, type: string, from: value}
+      - {col: recordedOn, origin: profile, type: date, from: recordedOn}
+      - {col: xStatedIn, origin: extension, type: string, from: statedIn, desc: Document in which the customer stated it (legacy only).}
+      - {col: xNote, origin: extension, type: string, from: note, desc: Free-text note (legacy only).}

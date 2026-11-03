@@ -1,0 +1,178 @@
+silver:
+  - table: silver_incident
+    entity: Incident
+    profile: false
+    ontology_entity: Incident
+    domain: Servicing
+    serves: [incident]
+    grain: One fraud, scam or dispute case.
+    description: 'One fraud, scam or dispute case. Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    sources:
+      - {release: retail-frontier-v1, file: incidents.json}
+    key: [incidentId]
+    owner: ownerId
+    common:                                        # extension entity: the app's put() defaults (app/data_xray/projection.py 322-338)
+      cite: app/data_xray/projection.py:322-338
+      source_kind: bank_record
+      state: {from: status, default: recorded}     # the seed's own incident status
+    columns:
+      - {col: incidentId, origin: extension, type: string, from: incidentId, desc: Incident identifier such as case-scam-001., nullable: false}
+      - {col: incidentType, origin: extension, type: string, from: incidentType, desc: Type such as authorised_payment_scam or card_duplicate_charge.}
+      - {col: status, origin: extension, type: string, from: status, desc: Case state such as recovery_credit_posted.}
+      - {col: detectedAt, origin: extension, type: datetime, from: detectedAt, desc: When the incident was detected.}
+      - {col: amountMinor, origin: extension, type: minor, from: amount, t: paise, unit: 'currency minor units; INR paise, exponent 2', desc: Amount involved in the incident.}
+      - {col: recoveryAmountMinor, origin: extension, type: minor, from: recoveryAmount, t: paise, unit: 'currency minor units; INR paise, exponent 2', desc: Amount recovered and credited back.}
+      - {col: recoveryEvidenceRef, origin: extension, type: string, from: recoveryEvidenceRef, desc: Document that evidences the recovery credit.}
+      - {col: evidenceRefs, origin: extension, type: string, from: evidenceRefs, t: join, desc: Documents that evidence the incident (semicolon separated).}
+      - {col: transactionDescriptions, origin: extension, type: string, from: transactionDescriptions, t: join, desc: Bank narrations of the affected transactions.}
+      - {col: currency, origin: extension, type: string, from: [amount.currency, recoveryAmount.currency], desc: ISO currency of every money amount in the row (checked at build time).}
+  - table: silver_service_case
+    entity: ServiceCase
+    profile: true
+    profile_entity: ServiceCase
+    ontology_entity: ServiceCase
+    domain: Servicing
+    serves: [service_record]
+    grain: One servicing contact record.
+    description: One servicing contact record. Conformed to the CDM profile entity ServiceCase (realises the ontology entity of the same name). Attributes without a seed counterpart stay null; other seed fields the ontology needs are x columns.
+    notes: 'Mapped by standards.ONTOLOGY_ENTITY: the closest profile entity for a Frontier servicing contact. Most profile attributes have no seed counterpart and stay null.'
+    cdm: null
+    bian:
+      - {domain: Customer Case, control_record: CustomerCaseProcedure, custom: 10, provisional: 0}
+      - {domain: Servicing Order, control_record: ServicingOrderProcedure, custom: 0, provisional: 10}
+    sources:
+      - {release: retail-frontier-v1, file: service-records.json}
+    key: [serviceRequestId]
+    owner: ownerId
+    common:                                        # app/data_xray/projection.py 1683-1687 (service_case, not legacy)
+      cite: app/data_xray/projection.py:1683-1687
+      source_kind: bank_record                     # 1686
+      state: {from: status, default: pending}     # 1685 raw.get("status", "pending"); the seed records carry none
+    columns:
+      - {col: serviceRequestId, origin: profile, type: string, from: serviceRecordId}
+      - {col: caseId, origin: profile, type: string, from: caseRef}
+      - {col: applicationId, origin: profile, type: string, none: not recorded in the seed}
+      - {col: serviceRequestType, origin: profile, type: string, none: 'the seed records the contact channel, not a request type'}
+      - {col: subjectId, origin: profile, type: string, none: not recorded in the seed}
+      - {col: resolutionStatus, origin: profile, type: string, none: 'no resolution recorded: a recorded action is not a completed effect'}
+      - {col: createdAt, origin: profile, type: datetime, from: openedAt}
+      - {col: updatedAt, origin: profile, type: datetime, none: not recorded in the seed}
+      - {col: summary, origin: profile, type: string, none: not recorded in the seed}
+      - {col: legacy, origin: profile, type: boolean, none: not recorded in the seed}
+      - {col: xChannel, origin: extension, type: string, from: channel, desc: 'Channel used: phone, chat, app.'}
+      - {col: xActions, origin: extension, type: string, from: actions, t: join, desc: 'Actions recorded, such as beneficiary_freeze_requested (semicolon separated).'}
+      - {col: xHumanHandoffTeam, origin: extension, type: string, from: humanHandoff.team, desc: 'Human team the case was handed to, such as fraud_operations.'}
+      - {col: xHumanHandoffReason, origin: extension, type: string, from: humanHandoff.reason, desc: Why the case was handed to a human.}
+      - {col: xHumanHandoffOccurredAt, origin: extension, type: datetime, from: humanHandoff.occurredAt, desc: When the handoff happened.}
+  - table: silver_proactive_candidate
+    entity: ProactiveCandidate
+    profile: true
+    profile_entity: ProactiveCandidate
+    ontology_entity: ProactiveCandidate
+    domain: Servicing
+    serves: [proactive_event]
+    grain: One proactive-event fixture.
+    description: One proactive-event fixture. Conformed to the CDM profile entity ProactiveCandidate (realises the ontology entity of the same name). Attributes without a seed counterpart stay null; other seed fields the ontology needs are x columns.
+    cdm: null
+    bian: []
+    sources:
+      - {release: retail-frontier-v1, file: proactive-events.json}
+    key: [candidateId]
+    common:                                        # app/data_xray/projection.py 1985-1994 (frontier_records adapters); app/frontier/contracts.py 166-180
+      cite: [app/data_xray/projection.py:1985-1994, app/frontier/contracts.py:166-180]
+      source_kind: frontier                        # 1993
+      state: {from: status, default: recorded}     # 1992 str(getattr(row, "status", "recorded")); ProactiveCandidate.status (contracts.py 178), the fixtures record no outcome
+    columns:
+      - {col: candidateId, origin: profile, type: string, from: variantId}
+      - {col: journeyId, origin: profile, type: string, none: not recorded in the seed}
+      - {col: kind, origin: profile, type: string, from: eventType}
+      - {col: riskLevel, origin: profile, type: string, none: not recorded in the seed}
+      - {col: priorityScore, origin: profile, type: integer, none: not recorded in the seed}
+      - {col: sourceRefs, origin: profile, type: string, from: evidenceRefs, t: join}
+      - {col: calculationRefs, origin: profile, type: string, none: not recorded in the seed}
+      - {col: detectedAt, origin: profile, type: datetime, none: 'the seed has a business date (xAsOf), not a detection instant'}
+      - {col: expiresAt, origin: profile, type: datetime, none: not recorded (the fixtures carry no runtime outcome)}
+      - {col: status, origin: profile, type: string, none: not recorded (the fixtures carry no runtime outcome)}
+      - {col: suppressionReason, origin: profile, type: string, none: not recorded (the fixtures carry no runtime outcome)}
+      - {col: xAsOf, origin: extension, type: date, from: asOf, desc: Business date the fixture is evaluated as of.}
+      - {col: xDisclosure, origin: extension, type: string, from: disclosure, desc: Disclosure that the fixture asserts no recommendation or runtime action.}
+  - table: silver_document
+    entity: Document
+    profile: true
+    profile_entity: Document
+    ontology_entity: Document
+    domain: Servicing
+    serves: [document]
+    grain: One document descriptor per seed release.
+    description: One document descriptor per seed release. Conformed to the CDM profile entity Document (realises the ontology entity Document; official reference CustomDocument (semantic reference only)). Attributes without a seed counterpart stay null; other seed fields the ontology needs are x columns.
+    notes: The profile's sourceVersion attribute and the common sourceVersion column are one column (the profile's shared-column rule). contentType and sourceSha256 come from the document's asset only when it has exactly one distinct value (12 retail4 documents carry a PDF and a PNG), otherwise they stay null. The nested facts object is flattened to readable text in xFactsText (money as 'INR 12,500.00').
+    cdm: {entity: CustomDocument, status: custom, reference: verified-reference}
+    bian:
+      - {domain: Document Directory, control_record: DocumentDirectoryEntry, custom: 10, provisional: 0}
+    sources:
+      - {release: retail-frontier-v1, file: documents.json}
+      - {release: retail4-v1, file: documents.json}
+    key: [documentId]
+    owner: ownerId
+    common:                                        # app/data_xray/projection.py 681-695 (document())
+      cite: app/data_xray/projection.py:681-695
+      source_kind: document_metadata               # 693 (catalogue only for a product's source documents, which are not seed files)
+      state: {const: available}                    # 692 (retained_source only for a retained historical reading)
+      label: {from: [title], default: Source document}   # 682 title or the literal "Source document"; 692 label=values["title"]
+    columns:
+      - {col: documentId, origin: profile, type: string, from: documentId}
+      - {col: title, origin: profile, type: string, from: title}
+      - {col: documentKind, origin: profile, type: string, from: [documentKind, documentType]}
+      - {col: contentType, origin: profile, type: string, derive: document_content_type, reads: [assets, contentType]}
+      - {col: sourceVersion, origin: profile, type: string, from: sourceVersion, shared: common, t: version_text}
+      - {col: sourceSha256, origin: profile, type: string, derive: document_source_sha256, reads: [assets, sourceSha256]}
+      - {col: pageCount, origin: profile, type: integer, from: pageCount}
+      - {col: pageCountBasis, origin: profile, type: string, derive: document_page_count_basis, reads: [pageCount]}
+      - {col: issuedOn, origin: profile, type: date, from: issuedOn}
+      - {col: previewable, origin: profile, type: boolean, none: viewer capability is not recorded in the seed}
+      - {col: xIssuer, origin: extension, type: string, from: issuer, desc: Issuer of the document (retail4 release).}
+      - {col: xSource, origin: extension, type: string, from: source, desc: Source or issuer text of the document (Frontier release).}
+      - {col: xPurpose, origin: extension, type: string, from: purpose, desc: 'Why the document exists in the seed, for example evidence_analysis.'}
+      - {col: xVisibility, origin: extension, type: string, from: visibility, desc: 'Who may see it, for example owner_seed (legacy only).'}
+      - {col: xSupersededByDocumentId, origin: extension, type: string, from: supersededBy.documentId, desc: Newer document that supersedes this one.}
+      - {col: xSupersedesDocumentId, origin: extension, type: string, from: supersedes.documentId, desc: Older document this one supersedes.}
+      - {col: xFactsText, origin: extension, type: string, from: [facts, declaredFacts], t: facts_text, desc: 'Key facts stated in the document as readable text: amounts in INR, lists comma separated.'}
+  - table: silver_crm_case
+    entity: CrmCase
+    profile: false
+    ontology_entity: CrmCase
+    domain: Servicing
+    serves: [crm_case, customer]
+    grain: One CRM case (also the source of CRM-only customer parties).
+    description: 'One CRM case (also the source of CRM-only customer parties). Contoso extension entity: no CDM profile entity, BIAN status unmapped; every column is an extension column.'
+    notes: The profile's CRMContinuity is a derived continuity view of the app's CRM state, not a CRM case record, so the seed's CRM cases stay an extension entity. customerId and customerName also feed gold's customer table.
+    sources:
+      - {release: retail4-v1, file: bank/crm-cases.json, list: cases}
+    key: [caseId]
+    owner: customerId
+    common:                                        # extension entity: the app's put() defaults (app/data_xray/projection.py 322-338)
+      cite: app/data_xray/projection.py:322-338
+      source_kind: bank_record
+      state: {from: stage, default: recorded}     # the seed's own lifecycle field (new, in_progress, awaiting_customer, resolved, declined)
+      label: {from: [title]}
+    columns:
+      - {col: caseId, origin: extension, type: string, from: caseId, desc: Case identifier such as CASE-2026-0001., nullable: false}
+      - {col: customerId, origin: extension, type: string, from: customerId, desc: Customer the case is about.}
+      - {col: title, origin: extension, type: string, from: title, desc: Case title.}
+      - {col: summary, origin: extension, type: string, from: summary, desc: One-sentence case summary.}
+      - {col: stage, origin: extension, type: string, from: stage, desc: 'new, in_progress, awaiting_customer, resolved or declined.'}
+      - {col: priority, origin: extension, type: string, from: priority, desc: 'low, medium or high.'}
+      - {col: sentiment, origin: extension, type: string, from: sentiment, desc: 'Customer sentiment: positive, neutral or negative.'}
+      - {col: channel, origin: extension, type: string, from: channel, desc: 'Channel: mobileapp, website, whatsappchatbot, branch, email, phonebanking, inbound_call.'}
+      - {col: origin, origin: extension, type: string, from: origin, desc: 'How the case started, for example ai_assistant.'}
+      - {col: buId, origin: extension, type: string, from: buId, desc: Business unit handling the case.}
+      - {col: journeyId, origin: extension, type: string, from: journeyId, desc: 'Conversation journey that led to the case, for example J01.'}
+      - {col: ownerRmId, origin: extension, type: string, from: ownerRmId, desc: Relationship manager who owns the case.}
+      - {col: productIds, origin: extension, type: string, from: productIds, t: join, desc: Products discussed (semicolon separated).}
+      - {col: interactions, origin: extension, type: integer, from: interactions, desc: Number of interactions on the case.}
+      - {col: objectionReason, origin: extension, type: string, from: objection.reason, desc: 'Customer objection, when one was raised.'}
+      - {col: objectionProductId, origin: extension, type: string, from: objection.productId, desc: Product the objection is about.}
+      - {col: openedAt, origin: extension, type: datetime, from: openedAt, desc: When the case was opened.}
+      - {col: updatedAt, origin: extension, type: datetime, from: updatedAt, desc: When the case was last updated.}
+      - {col: slaDueAt, origin: extension, type: datetime, from: slaDueAt, desc: When the case SLA falls due.}
+      - {col: customerName, origin: extension, type: string, from: customerName, pii: true, desc: Customer name written on the case; the CRM-only customer parties come from it.}

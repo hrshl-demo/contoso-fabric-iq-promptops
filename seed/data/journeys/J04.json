@@ -1,0 +1,120 @@
+{
+  "journeyId": "J04",
+  "title": "Competing family commitments",
+  "oneLiner": "Sequence the things your household is trying to fund at once.",
+  "buId": "BU-RETAIL-DEPOSITS",
+  "icon": "home",
+  "accentHue": 268,
+  "goal": "Turn several competing commitments into an ordered plan with a funding route for the nearest one, and an honest statement of what is being deferred.",
+  "triggers": [
+    "school fees",
+    "saving for two things",
+    "family expenses",
+    "relocation",
+    "cannot afford both",
+    "which should i do first",
+    "household budget",
+    "parents support"
+  ],
+  "antiTriggers": [
+    "compare home loan offers"
+  ],
+  "sopIds": [
+    "SOP-UC04-FAMILY-DECISIONS",
+    "SOP-SHARED-PRODUCT-SUITABILITY"
+  ],
+  "productIds": [
+    "CB-RD-GOAL",
+    "CB-RD-STARTER",
+    "CB-HL-STANDARD",
+    "CB-HL-FLEX",
+    "CB-FD-SHORT-LIQUID",
+    "CB-SWEEP-FLEX"
+  ],
+  "evidenceHints": [
+    "DOC-R-FAMILY-NOTE",
+    "DOC-R-SCHOOL-CIRCULAR",
+    "DOC-R-RELOCATION-LETTER"
+  ],
+  "documentChoiceStages": [
+    "shape"
+  ],
+  "toolHints": [
+    "goals_and_prefs",
+    "holdings",
+    "spend_analysis",
+    "catalogue_lookup",
+    "document_read"
+  ],
+  "stages": [
+    {
+      "id": "surface",
+      "goal": "Get all the commitments on the table, including the one they mentioned last and quietly. Close with `quick_replies`: `That is all of them`, `There is one more`.",
+      "exitWhen": "The full list exists."
+    },
+    {
+      "id": "shape",
+      "goal": "For each, establish amount, deadline and whether it is fixed or movable. Ask the movable question with `quick_replies`: `That date is fixed`, `It could move`, `Not sure yet`.",
+      "exitWhen": "Each commitment has a rough size and a date."
+    },
+    {
+      "id": "conflict",
+      "goal": "Name the actual conflict - what genuinely cannot be funded at the same time - using their real cash flow. Say the monthly shortfall before offering any way around it. Ask them to confirm it with `quick_replies`: `That is the conflict`, `Not quite`.",
+      "exitWhen": "The conflict is stated and acknowledged."
+    },
+    {
+      "id": "sequence",
+      "goal": "Propose an order and say what the deferred item costs. Offer `quick_replies` so reacting is one tap: `That order works`, `Swap the first two`, `Not now`.",
+      "exitWhen": "They have reacted to the ordering."
+    },
+    {
+      "id": "fund",
+      "goal": "Attach a funding route to the nearest commitment only, and offer `quick_replies`: the route you named, `Save it for later`, `No thank you`.",
+      "exitWhen": "One funding route is chosen or declined."
+    }
+  ],
+  "mustEstablish": [
+    "Every commitment, not just the first one mentioned.",
+    "Which deadlines are genuinely fixed.",
+    "Actual monthly surplus, from transactions - not what they estimate it to be.",
+    "Who else is part of the decision.",
+    "When their surplus actually lands - month end, or a particular day of the month. Every date in the plan is counted from it."
+  ],
+  "neverDo": [
+    "Do not fund the most profitable commitment. Fund the nearest deadline.",
+    "Do not pretend everything fits. If it does not fit, say so and say what gives.",
+    "Do not propose more than one product. A household juggling three commitments does not need a fourth.",
+    "Do not use a stated monthly surplus without checking it against real transactions.",
+    "Do not restate a combined shortfall as a smaller figure without saying which commitment stopped being counted. A total that shrinks between one answer and the next needs the difference named in the same breath.",
+    "Do not move when their money arrives. If they are paid at month end, every date follows month end - never shift to the first of the month because it is easier to describe.",
+    "Do not count money that arrives after the bill it is meant to pay. Say the deposit matures too late and ask whether it can be broken, rather than treating it as already available.",
+    "Do not treat 'no new borrowing' as an objection to work around. It is a finished answer: save the plan, say plainly what it does not do, and stop offering products."
+  ],
+  "objectionPaths": [
+    {
+      "signal": "the numbers do not work at all",
+      "respondBy": "Say so directly. Show what changes if a deadline moves. Do not paper over it with a product."
+    },
+    {
+      "signal": "decision is joint",
+      "respondBy": "Produce something shareable and stop. Pressing someone who has told you they cannot decide alone just loses the conversation."
+    },
+    {
+      "signal": "they do not want to borrow or open anything new",
+      "respondBy": "Take it as the decision it is, not as a hesitation. Save the ordered plan, name the monthly amounts they move themselves, and say what was not set up. Do not come back with a different product."
+    }
+  ],
+  "completion": {
+    "default": "The next action is explicit: confirm the funding route for the nearest commitment, or save the ordered plan on its own. A plan with no product in it is a complete ending - say what is deferred, what that costs, and what was not set up.",
+    "nivedita": "Likely supporting family rather than funding her own goals. The next action is a shareable plan that keeps her income security in the frame and does not spend it implicitly.",
+    "rhea": "This is her core journey. Expect three commitments and a real conflict. The next action is the ordered tradeoff she can confirm, with the first funding route named.",
+    "ravi": "Likely one or two small commitments. The next action should be a single recurring deposit proposal with a realistic monthly figure, or a saved plan if he is not ready."
+  },
+  "turnCap": 14,
+  "salesPosture": "advise",
+  "openers": [
+    "There are school fees and a car this year and I cannot fund both at once",
+    "Too many things need money at the same time - help me put them in order",
+    "How do I decide which of these to pay for first?"
+  ]
+}

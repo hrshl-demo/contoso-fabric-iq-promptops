@@ -1,0 +1,103 @@
+{
+  "$schema": "vendor/cdm/schema.cdm.json",
+  "jsonSchemaSemanticVersion": "1.5.0",
+  "documentVersion": "contoso-banking-v1",
+  "imports": [
+    {
+      "corpusPath": "vendor/cdm/foundations.cdm.json"
+    }
+  ],
+  "definitions": [
+    {
+      "traitName": "contosoBanking.is.profile",
+      "extendsTrait": "is",
+      "hasParameters": [
+        {
+          "name": "version",
+          "dataType": "string",
+          "required": true
+        }
+      ],
+      "explanation": "Explicit custom Contoso application profile, not an official Microsoft banking entity."
+    },
+    {
+      "traitName": "contosoBanking.has.semanticReference",
+      "extendsTrait": "means",
+      "hasParameters": [
+        {
+          "name": "entity",
+          "dataType": "string",
+          "required": true
+        },
+        {
+          "name": "url",
+          "dataType": "string",
+          "required": true
+        }
+      ],
+      "explanation": "Verified official semantic counterpart only; does not inherit or instantiate its full contract."
+    },
+    {
+      "traitName": "contosoBanking.is.minorAmount",
+      "extendsTrait": "means",
+      "hasParameters": [
+        {
+          "name": "currencyAttribute",
+          "dataType": "string",
+          "required": true
+        },
+        {
+          "name": "exponent",
+          "dataType": "integer",
+          "required": true
+        }
+      ],
+      "explanation": "Signed 64-bit minor amount; INR paise, exponent 2. Lossless integer-text transport, no binary float conversion."
+    },
+    {
+      "traitName": "contosoBanking.has.csvNullConvention",
+      "extendsTrait": "has",
+      "hasParameters": [
+        {
+          "name": "nullToken",
+          "dataType": "string",
+          "required": true
+        }
+      ],
+      "explanation": "CSV null is \\N; empty text is distinct. Prefix literal leading backslash/apostrophe with backslash. Prefix formula-leading text after Unicode whitespace/control/format characters, or leading tab/newline, with apostrophe. Decode text prefixes once; numeric cells are not formula-escaped."
+    },
+    {
+      "dataTypeName": "contosoBanking.stringIdentifier",
+      "extendsDataType": "string",
+      "explanation": "Arbitrary nonempty business/opaque string identifier; deliberately NOT entityId or GUID.",
+      "exhibitsTraits": [
+        "means.identity"
+      ]
+    },
+    {
+      "dataTypeName": "contosoBanking.minorAmount",
+      "extendsDataType": "bigInteger",
+      "explanation": "Exact signed 64-bit integer in [-9223372036854775808,9223372036854775807]; transport as canonical integer text. No rounding.",
+      "exhibitsTraits": [
+        {
+          "traitReference": "is.constrained",
+          "arguments": [
+            {
+              "name": "minimumValue",
+              "value": "-9223372036854775808"
+            },
+            {
+              "name": "maximumValue",
+              "value": "9223372036854775807"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "dataTypeName": "contosoBanking.exactDecimal",
+      "extendsDataType": "decimal",
+      "explanation": "Finite exact decimal rendered as plain decimal text, with no implicit precision/scale truncation or float arithmetic."
+    }
+  ]
+}

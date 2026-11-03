@@ -1,0 +1,21 @@
+# Pins the Microsoft skills bundle the prompts were written and tested against.
+# Bump it deliberately, in its own pull request, then re-run the prompt checks.
+marketplace:
+  name: fabric-collection
+  repo: microsoft/skills-for-fabric
+  ref: v0.3.20
+  commit: 4c3986d2e5b498ce2d6e6025533b94b5e5bb2ccd
+  released: "2026-10-29"
+install:
+  - copilot plugin marketplace add microsoft/skills-for-fabric#v0.3.20
+  - copilot plugin install fabric-skills@fabric-collection
+  - copilot plugin install powerbi-authoring@fabric-collection
+# Skills the prompts in prompts/ may rely on (tools/lint_prompts.py checks every prompt against this list).
+skills_used:
+  - fabriciq-ontology-cli
+  - fabriciq
+  - onelake-catalog-cli
+  - e2e-medallion-architecture
+  - e2e-fabric-cost-estimation
+  - semantic-model-authoring
+  - powerbi-report-cli
