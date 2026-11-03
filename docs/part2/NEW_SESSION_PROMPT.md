@@ -27,7 +27,7 @@ The infrastructure already exists (or will, see "The platform"). **You do not cr
 
 ## The platform you deploy into (Part 1)
 
-Repository: **`hrshl-demo/contoso-fabric-iq-promptops`** (private). Read it, do not change it. Its pull requests are stacked and unmerged, so read the **head of the stack, branch `copilot/platform`**, for example `gh repo clone hrshl-demo/contoso-fabric-iq-promptops <scratch folder> -- --branch copilot/platform`. Read these first, in this order:
+Repository: **`hrshl-demo/contoso-fabric-iq-promptops`** (private). Read it, do not change it. Everything is merged into **`main`**, so read that, for example `gh repo clone hrshl-demo/contoso-fabric-iq-promptops <scratch folder>`. Read these first, in this order:
 
 1. `README.md`, `AGENTS.md`, `docs/DECISIONS.md`
 2. `docs/PLATFORM.md` (what the platform builds and how it keeps the capacity from billing unseen) and **`docs/CONSUMING.md` (the contract you must follow)**
@@ -36,9 +36,9 @@ Repository: **`hrshl-demo/contoso-fabric-iq-promptops`** (private). Read it, do 
 5. `prompts/` (the seven prompts of the earlier iteration: `ontology.inspect`, `ontology.build`, `ontology.enrich`, `ontology.consume`, `reports.executive-overview`, `reports.customer-financial-health`, `reports.monthly-brief`), `kit/` (the deterministic engine and the ontology spec in `kit/model/`), `fabric/` (generated Fabric item folders), `analysis/monthly_brief/`
 6. `.github/workflows/` (`ci.yml`, `cd-dev.yml`, `release.yml`, `capacity.yml`, `platform.yml`)
 
-What the platform gives you: a resource group, an F4 capacity that is **paused** unless something runs, a **dev** and a **prod** workspace, a lakehouse `ContosoBankLH` with the **32 gold tables of the core tier** loaded as managed Delta tables, and its SQL endpoint. Your repository's identity is a capacity administrator and a workspace Contributor, and has a custom role **on the capacity itself** that can read, write, suspend and resume it, nothing else (it cannot create or delete a capacity; it could technically resize that one, so never do).
+What the platform gives you: a resource group, an F4 capacity that is **paused** unless something runs, the **dev** workspace (`platform` > `build` with target `prod` makes the prod one the same way), a lakehouse `ContosoBankLH` with **63 managed Delta tables** (core tier: bronze 1, silver 30, gold 32, plus the 37 bronze files under `Files/bronze`), and its SQL endpoint. Your repository's identity is a capacity administrator and a workspace Contributor, and has a custom role **on the capacity itself** that can read, write, suspend and resume it, nothing else (it cannot create or delete a capacity; it could technically resize that one, so never do).
 
-**The platform has not run against a live tenant yet.** It is a draft, tested with fakes and a Fabric mock. So your CD must also be developed and tested offline first, with fakes and the kit's Fabric mock (`kit/tests/mock_fabric.py`), and the first live deployment happens only when the user says go and the platform has been built (its `platform-outputs.json` says the ontology gate is open).
+**The platform ran live on 4 Nov 2026 and is built up to the ontology gate.** The F4 exists (in the region of `CD_LOCATION`) and is paused, and the dev workspace holds the lakehouse with all 63 tables. A build takes about 8 minutes and about USD 0.07 of F4 time when the capacity already exists. This tenant did not let the pipeline's identity create workspaces, so the dev workspace was made by hand with the pipeline's identity as Admin (`docs/BOOTSTRAP.md`, section 5). **The ontology gate (two capacity-level settings that a capacity admin switches on while the F4 runs) was still closed at the last build:** read `ontologyGate.status` in `platform-outputs.json` before anything live. Your CD is still developed and tested offline first, with fakes and the kit's Fabric mock (`kit/tests/mock_fabric.py`), and your first live deployment happens only when the user says go and the gate is open.
 
 ## What you build: the content repository
 
