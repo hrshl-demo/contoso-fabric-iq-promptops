@@ -1,0 +1,111 @@
+/// A fraud, scam or dispute case on a customer's money, for example an authorised-payment scam and its recovery. Service first: while an incident is unresolved, no product is sold to the customer. Recovery amount is what was credited back. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: fact; grain: one incident. Lakehouse: fact_incident <- silver_incident <- incidents.json.
+table Incident
+
+	/// Fraud, scam and dispute incidents.
+	measure Incidents = COUNTROWS(Incident)
+		formatString: #,0
+		displayFolder: Servicing
+
+	/// Amount recovered across incidents, in rupees.
+	measure 'Recovered Amount (INR)' = SUM(Incident[Recovery Amount (INR)])
+		formatString: #,0.00
+		displayFolder: Servicing
+
+	/// Incident identifier such as case-scam-001.
+	column 'Incident ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: incident_id
+
+	/// Customer affected.
+	column 'Customer ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	/// Type such as authorised_payment_scam or card_duplicate_charge.
+	column 'Incident Type'
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: incident_type
+
+	/// Case state such as recovery_credit_posted.
+	column Status
+		dataType: string
+		summarizeBy: none
+		sourceColumn: status
+
+	/// When the incident was detected. Instant in UTC.
+	column 'Detected At'
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: detected_at
+
+	/// When the incident was detected. Calendar date in India time (IST), for 'today', 'this month' questions.
+	column 'Detected Date IST'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: detected_date_ist
+
+	/// Amount involved in the incident. In rupees (INR).
+	column 'Amount (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: amount_inr
+
+	/// Amount involved in the incident. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Amount (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: amount_paise
+
+	/// Amount recovered and credited back. In rupees (INR).
+	column 'Recovery Amount (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: recovery_amount_inr
+
+	/// Amount recovered and credited back. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Recovery Amount (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: recovery_amount_paise
+
+	/// Document that evidences the recovery credit.
+	column 'Recovery Evidence Document ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: recovery_evidence_document_id
+
+	/// Documents that evidence the incident (semicolon separated).
+	column 'Evidence Document Ids'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: evidence_document_ids
+
+	/// Bank narrations of the affected transactions.
+	column Narration
+		dataType: string
+		summarizeBy: none
+		sourceColumn: narration
+
+	/// Seed release the row comes from.
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	partition Incident = entity
+		mode: directLake
+		source
+			entityName: fact_incident
+			expressionSource: 'DirectLake - ContosoBankModel'

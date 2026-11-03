@@ -1,0 +1,37 @@
+model Model
+	culture: en-IN
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+
+ref table Customer
+ref table Household
+ref table HouseholdMember
+ref table Account
+ref table Card
+ref table Deposit
+ref table Loan
+ref table LoanInstallment
+ref table ProtectionPolicy
+ref table ProtectionGap
+ref table Investment
+ref table Transaction
+ref table ScheduledObligation
+ref table IncomeRecord
+ref table Goal
+ref table Preference
+ref table Consent
+ref table HouseholdAccessGrant
+ref table RegisteredAgent
+ref table FrontierMandate
+ref table MandateAction
+ref table Incident
+ref table ServiceCase
+ref table ServiceRequestType
+ref table Document
+ref table CrmCase
+ref table Product
+ref table Journey
+ref table Sop
+ref table Law
+ref table AuthorityRule
+ref table Calendar

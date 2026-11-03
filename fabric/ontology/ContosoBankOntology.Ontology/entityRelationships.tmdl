@@ -1,0 +1,423 @@
+entityRelationship 'Customer Belongs To Household'
+	lineageTag: fd95dd13-8d3c-506c-9c9e-4fb2a1cb5347
+	fromEntity: Customer
+	toEntity: Household
+
+	backingConfiguration
+		relationship: rel_customer_belongs_to_household
+
+entityRelationship 'Household Member Belongs To Household'
+	lineageTag: 812a526d-16a4-5054-947a-69be28929874
+	fromEntity: HouseholdMember
+	toEntity: Household
+
+	backingConfiguration
+		relationship: rel_household_member_belongs_to_household
+
+entityRelationship 'Household Owned By Customer'
+	lineageTag: 7f83c6f4-1ce2-5a6e-b2e4-991e7e4cefd7
+	fromEntity: Household
+	toEntity: Customer
+
+	backingConfiguration
+		relationship: rel_household_owned_by_customer
+
+entityRelationship 'Household Member Of Customer'
+	lineageTag: b6d7da5a-7dbe-505a-af2e-096e92a52f9b
+	fromEntity: HouseholdMember
+	toEntity: Customer
+
+	backingConfiguration
+		relationship: rel_household_member_of_customer
+
+entityRelationship 'Account Held By Customer'
+	lineageTag: a956e79f-5c78-5d09-b2d4-247fe96cd9d6
+	fromEntity: Account
+	toEntity: Customer
+
+	backingConfiguration
+		relationship: rel_account_held_by_customer
+
+entityRelationship 'Account Opened Under Product'
+	lineageTag: c1f5f04d-930e-5f28-910f-561021ded224
+	fromEntity: Account
+	toEntity: Product
+
+	backingConfiguration
+		relationship: rel_account_opened_under_product
+
+entityRelationship 'Card Linked To Account'
+	lineageTag: ea835ac3-90f4-5ee9-9c85-ad3f945b41a1
+	fromEntity: Card
+	toEntity: Account
+
+	backingConfiguration
+		relationship: rel_card_linked_to_account
+
+entityRelationship 'Card Issued To Customer'
+	lineageTag: 5e38f667-8654-5694-88a8-103f90aa03d3
+	fromEntity: Card
+	toEntity: Customer
+
+	backingConfiguration
+		relationship: rel_card_issued_to_customer
+
+entityRelationship 'Card Of Product'
+	lineageTag: 34fbad8a-fe40-588f-90fe-831af29467a3
+	fromEntity: Card
+	toEntity: Product
+
+	backingConfiguration
+		relationship: rel_card_of_product
+
+entityRelationship 'Deposit Held By Customer'
+	lineageTag: 408030e2-e7d5-508d-aecd-58bc64d621ec
+	fromEntity: Deposit
+	toEntity: Customer
+
+	backingConfiguration
+		relationship: rel_deposit_held_by_customer
+
+entityRelationship 'Deposit Of Product'
+	lineageTag: 98a8fcac-37b9-5a28-99bb-1619ccb44209
+	fromEntity: Deposit
+	toEntity: Product
+
+	backingConfiguration
+		relationship: rel_deposit_of_product
+
+entityRelationship 'Deposit Linked To Account'
+	lineageTag: f4737ad9-e8f7-5086-ac63-297683e0a1bc
+	fromEntity: Deposit
+	toEntity: Account
+
+	backingConfiguration
+		relationship: rel_deposit_linked_to_account
+
+entityRelationship 'Loan Granted To Customer'
+	lineageTag: c5eef833-a3a8-52db-b9b0-f966bf987664
+	fromEntity: Loan
+	toEntity: Customer
+
+	backingConfiguration
+		relationship: rel_loan_granted_to_customer
+
+entityRelationship 'Loan Of Product'
+	lineageTag: ab87b5b6-c18c-5dfe-919e-d1a743359011
+	fromEntity: Loan
+	toEntity: Product
+
+	backingConfiguration
+		relationship: rel_loan_of_product
+
+entityRelationship 'Installment Of Loan'
+	lineageTag: 72c7c715-59e9-509e-9994-43dc6ffa62cb
+	fromEntity: LoanInstallment
+	toEntity: Loan
+
+	backingConfiguration
+		relationship: rel_installment_of_loan
+
+entityRelationship 'Policy Held By Customer'
+	lineageTag: e69be200-4f98-5dda-8109-eb1641385815
+	fromEntity: ProtectionPolicy
+	toEntity: Customer
+
+	backingConfiguration
+		relationship: rel_policy_held_by_customer
+
+entityRelationship 'Policy Of Product'
+	lineageTag: 343ef327-cbac-5acf-b40a-d65d9bb1c840
+	fromEntity: ProtectionPolicy
+	toEntity: Product
+
+	backingConfiguration
+		relationship: rel_policy_of_product
+
+entityRelationship 'Policy Premium Paid From Account'
+	lineageTag: cfdc79c4-1373-52a4-ba07-765edaf9d659
+	fromEntity: ProtectionPolicy
+	toEntity: Account
+
+	backingConfiguration
+		relationship: rel_policy_premium_paid_from_account
+
+entityRelationship 'Protection Gap Of Customer'
+	lineageTag: e1c55ac6-f241-5158-aad2-faa6db7b46d9
+	fromEntity: ProtectionGap
+	toEntity: Customer
+
+	backingConfiguration
+		relationship: rel_protection_gap_of_customer
+
+entityRelationship 'Investment Held By Customer'
+	lineageTag: 5d0a473c-27b4-5cd9-86aa-1e6c0e1a39d6
+	fromEntity: Investment
+	toEntity: Customer
+
+	backingConfiguration
+		relationship: rel_investment_held_by_customer
+
+entityRelationship 'Investment Of Product'
+	lineageTag: 6e10fd1f-6574-57b2-96ad-9a18e1f4324e
+	fromEntity: Investment
+	toEntity: Product
+
+	backingConfiguration
+		relationship: rel_investment_of_product
+
+entityRelationship 'Transaction Posted To Account'
+	lineageTag: 15cb07b5-c2aa-5508-964f-7f4051593361
+	fromEntity: Transaction
+	toEntity: Account
+
+	backingConfiguration
+		relationship: rel_transaction_posted_to_account
+
+entityRelationship 'Transaction Of Customer'
+	lineageTag: 78308c0c-694f-5004-9872-ec3e108cc1b9
+	fromEntity: Transaction
+	toEntity: Customer
+
+	backingConfiguration
+		relationship: rel_transaction_of_customer
+
+entityRelationship 'Transaction Paid By Card'
+	lineageTag: 267b0f17-84cd-5da3-9aba-9917cad4ac8b
+	fromEntity: Transaction
+	toEntity: Card
+
+	backingConfiguration
+		relationship: rel_transaction_paid_by_card
+
+entityRelationship 'Transaction Disputed In Incident'
+	lineageTag: 2ebb68f0-c69e-54bc-b788-69c64c4bfaf8
+	fromEntity: Transaction
+	toEntity: Incident
+
+	backingConfiguration
+		relationship: rel_transaction_disputed_in_incident
+
+entityRelationship 'Obligation Paid From Account'
+	lineageTag: a0266e41-82a8-5a2f-b6dc-35c56f1df17a
+	fromEntity: ScheduledObligation
+	toEntity: Account
+
+	backingConfiguration
+		relationship: rel_obligation_paid_from_account
+
+entityRelationship 'Obligation Owed By Customer'
+	lineageTag: 25790ec3-13ce-586a-9a03-2278e55a3598
+	fromEntity: ScheduledObligation
+	toEntity: Customer
+
+	backingConfiguration
+		relationship: rel_obligation_owed_by_customer
+
+entityRelationship 'Income Earned By Customer'
+	lineageTag: 09295eda-b8ad-533a-ad59-7a22c3b8b6aa
+	fromEntity: IncomeRecord
+	toEntity: Customer
+
+	backingConfiguration
+		relationship: rel_income_earned_by_customer
+
+entityRelationship 'Income Evidenced By Document'
+	lineageTag: dda25994-0640-5626-9b61-39e81f314f92
+	fromEntity: IncomeRecord
+	toEntity: Document
+
+	backingConfiguration
+		relationship: rel_income_evidenced_by_document
+
+entityRelationship 'Income Contributed By Member'
+	lineageTag: 93652f69-09fc-5875-ab98-914b2037ca04
+	fromEntity: IncomeRecord
+	toEntity: HouseholdMember
+
+	backingConfiguration
+		relationship: rel_income_contributed_by_member
+
+entityRelationship 'Goal Owned By Customer'
+	lineageTag: 51f8ed64-f20a-5672-b00e-e584a367c594
+	fromEntity: Goal
+	toEntity: Customer
+
+	backingConfiguration
+		relationship: rel_goal_owned_by_customer
+
+entityRelationship 'Preference Stated By Customer'
+	lineageTag: de85f3e4-39e4-5311-a6a7-666540c612ba
+	fromEntity: Preference
+	toEntity: Customer
+
+	backingConfiguration
+		relationship: rel_preference_stated_by_customer
+
+entityRelationship 'Consent Given By Customer'
+	lineageTag: 9ab9ca26-4ae8-5997-836e-333634469749
+	fromEntity: Consent
+	toEntity: Customer
+
+	backingConfiguration
+		relationship: rel_consent_given_by_customer
+
+entityRelationship 'Consent About Household Member'
+	lineageTag: c4654312-45d0-5c01-9bd9-53931eacd5a4
+	fromEntity: Consent
+	toEntity: HouseholdMember
+
+	backingConfiguration
+		relationship: rel_consent_about_household_member
+
+entityRelationship 'Access Grant Of Customer'
+	lineageTag: 919d6e46-31ba-5dd5-a9d2-8ce14f1ee65f
+	fromEntity: HouseholdAccessGrant
+	toEntity: Customer
+
+	backingConfiguration
+		relationship: rel_access_grant_of_customer
+
+entityRelationship 'Access Grant Backed By Consent'
+	lineageTag: 5666852a-d295-50e3-866d-fab6eeffde4c
+	fromEntity: HouseholdAccessGrant
+	toEntity: Consent
+
+	backingConfiguration
+		relationship: rel_access_grant_backed_by_consent
+
+entityRelationship 'Access Grant For Household Member'
+	lineageTag: c4ff844d-5716-5297-8317-9948278f18d7
+	fromEntity: HouseholdAccessGrant
+	toEntity: HouseholdMember
+
+	backingConfiguration
+		relationship: rel_access_grant_for_household_member
+
+entityRelationship 'Access Grant In Household'
+	lineageTag: 1e69b18f-0fef-56df-8f93-5c9c0cb7a9fa
+	fromEntity: HouseholdAccessGrant
+	toEntity: Household
+
+	backingConfiguration
+		relationship: rel_access_grant_in_household
+
+entityRelationship 'Agent Registered For Customer'
+	lineageTag: 48511324-35af-5b5b-8d4f-c5ef7be24b16
+	fromEntity: RegisteredAgent
+	toEntity: Customer
+
+	backingConfiguration
+		relationship: rel_agent_registered_for_customer
+
+entityRelationship 'Agent Authorised By Consent'
+	lineageTag: 3aa2825e-0b9d-5626-81f2-b443010afc85
+	fromEntity: RegisteredAgent
+	toEntity: Consent
+
+	backingConfiguration
+		relationship: rel_agent_authorised_by_consent
+
+entityRelationship 'Mandate Granted By Customer'
+	lineageTag: 16ee23ad-13e4-5d5c-9324-ba49da9b3d18
+	fromEntity: FrontierMandate
+	toEntity: Customer
+
+	backingConfiguration
+		relationship: rel_mandate_granted_by_customer
+
+entityRelationship 'Mandate Bound To Agent'
+	lineageTag: 7c3275d0-f3ec-5040-af7b-12c011a3a276
+	fromEntity: FrontierMandate
+	toEntity: RegisteredAgent
+
+	backingConfiguration
+		relationship: rel_mandate_bound_to_agent
+
+entityRelationship 'Mandate Backed By Consent'
+	lineageTag: b75ebc73-61a0-56fb-b83f-08aa9d4e6993
+	fromEntity: FrontierMandate
+	toEntity: Consent
+
+	backingConfiguration
+		relationship: rel_mandate_backed_by_consent
+
+entityRelationship 'Mandate Draws On Account'
+	lineageTag: 6a12c0bf-7e51-52e2-b01a-f213f810305c
+	fromEntity: FrontierMandate
+	toEntity: Account
+
+	backingConfiguration
+		relationship: rel_mandate_draws_on_account
+
+entityRelationship 'Mandate Funds Account'
+	lineageTag: dc1ae432-4111-588e-9e47-0301d811239b
+	fromEntity: FrontierMandate
+	toEntity: Account
+
+	backingConfiguration
+		relationship: rel_mandate_funds_account
+
+entityRelationship 'Mandate Funds Goal'
+	lineageTag: 770696ba-6590-506b-b463-2257d87656e1
+	fromEntity: FrontierMandate
+	toEntity: Goal
+
+	backingConfiguration
+		relationship: rel_mandate_funds_goal
+
+entityRelationship 'Event Of Mandate'
+	lineageTag: 3eb376fd-9699-53f8-9d5e-2743917ea826
+	fromEntity: MandateAction
+	toEntity: FrontierMandate
+
+	backingConfiguration
+		relationship: rel_event_of_mandate
+
+entityRelationship 'Incident Affects Customer'
+	lineageTag: 0c4e55d1-6b6b-58aa-97ed-fa3458619027
+	fromEntity: Incident
+	toEntity: Customer
+
+	backingConfiguration
+		relationship: rel_incident_affects_customer
+
+entityRelationship 'Service Record For Customer'
+	lineageTag: 5c9e1956-55a2-585b-bc92-b8cbc8cbca56
+	fromEntity: ServiceCase
+	toEntity: Customer
+
+	backingConfiguration
+		relationship: rel_service_record_for_customer
+
+entityRelationship 'Service Record About Incident'
+	lineageTag: 28befc57-06ba-58b2-8c65-d700c35fd3ce
+	fromEntity: ServiceCase
+	toEntity: Incident
+
+	backingConfiguration
+		relationship: rel_service_record_about_incident
+
+entityRelationship 'Document Owned By Customer'
+	lineageTag: 37d531e4-00c8-5a90-89bf-bded6d567769
+	fromEntity: Document
+	toEntity: Customer
+
+	backingConfiguration
+		relationship: rel_document_owned_by_customer
+
+entityRelationship 'Case Opened For Customer'
+	lineageTag: 01ce27b8-2077-5f9d-bed6-17082e062451
+	fromEntity: CrmCase
+	toEntity: Customer
+
+	backingConfiguration
+		relationship: rel_case_opened_for_customer
+
+entityRelationship 'Case Follows Journey'
+	lineageTag: 279ca426-bd98-5f36-b32c-984ae18b2b09
+	fromEntity: CrmCase
+	toEntity: Journey
+
+	backingConfiguration
+		relationship: rel_case_follows_journey

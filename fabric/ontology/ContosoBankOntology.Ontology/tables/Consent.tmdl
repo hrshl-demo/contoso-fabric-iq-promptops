@@ -1,0 +1,84 @@
+table Consent
+	lineageTag: 93a8b418-09ff-59dc-bf36-bada59ac8804
+
+	column ConsentId
+		dataType: string
+		lineageTag: 9c07dcd7-48b5-5897-82bd-5367a6580ac0
+		sourceColumn: consent_id
+
+	column CustomerId
+		dataType: string
+		lineageTag: 1d065cce-189e-5f70-af39-558753cc3e66
+		sourceColumn: customer_id
+
+	column Purpose
+		dataType: string
+		lineageTag: c912a83e-c965-50c6-8602-489bea8418ad
+		sourceColumn: purpose
+
+	column Status
+		dataType: string
+		lineageTag: 83dbd1b1-d0d2-5cd4-84cb-9a80c9e52271
+		sourceColumn: status
+
+	column GrantedAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: b549ac53-9934-58f5-a47d-476ad84b3655
+		sourceColumn: granted_at
+
+	column ExpiresAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 908c3289-a506-5842-b43b-927be007e783
+		sourceColumn: expires_at
+
+	column RevokedAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 3a286468-2020-5fda-adc7-d75c3c234fad
+		sourceColumn: revoked_at
+
+	column SubjectRef
+		dataType: string
+		lineageTag: 03b108d5-cc5a-5080-9fa2-567f7d0cd877
+		sourceColumn: subject_ref
+
+	column SubjectType
+		dataType: string
+		lineageTag: 45eae6e5-fa14-55ba-9839-fac10aec9d56
+		sourceColumn: subject_type
+
+	column SubjectMemberId
+		dataType: string
+		lineageTag: 4f74bb57-cec1-50e2-b1ed-f69a09cb2df0
+		sourceColumn: subject_member_id
+
+	column RecipientScope
+		dataType: string
+		lineageTag: 3f7ef702-d08b-5682-b2b6-78e08b43e72a
+		sourceColumn: recipient_scope
+
+	column Revision
+		dataType: int64
+		formatString: 0
+		lineageTag: b893b4a3-d9aa-5471-bb55-444b716ffc72
+		sourceColumn: revision
+
+	column ResourceCount
+		dataType: int64
+		formatString: 0
+		lineageTag: 6af07040-a5cf-5e71-b197-cbe9c83a9ebc
+		sourceColumn: resource_count
+
+	column ReleaseId
+		dataType: string
+		lineageTag: 1566763d-490d-5181-908e-b822c35a3af1
+		sourceColumn: release_id
+
+	partition Consent = entity
+		mode: directLake
+		source
+			entityName: dim_consent
+			schemaName: dbo
+			expressionSource: DatabaseQuery

@@ -1,0 +1,109 @@
+/// [Holdings] A fixed deposit. Frontier Rhea holds dep-rhea-liquid-001 (liquid, withdrawable with a penalty). Maturity proceeds are not spendable cash until a maturity posting exists. The same money can also be an Investment: for net position or total assets count it once, through Investment (Law L5). Standards: BIAN 13.0.0 Customer Product and Service Directory (custom), Term Deposit (custom, partly provisional); Microsoft CDM FHSaving (semantic reference only). Demo mapping, not certification. Star role: dimension; grain: one deposit. Lakehouse: dim_deposit <- silver_deposit <- deposits.json. Official CDM name aliases: FHSaving.integrationKey, FHSaving.maturitydate, FHSaving.interestrate (semantic reference only).
+entity Deposit
+	lineageTag: 7deac48a-0e94-5f08-95eb-23c2cb555742
+	backingTable: Deposit
+	keyProperty: DepositId
+
+	/// Deposit identifier such as dep-rhea-liquid-001.
+	property DepositId
+		dataType: string
+		lineageTag: 9d93a262-d63e-5bd2-b92a-29f76e459119
+
+		backingConfiguration
+			valueColumn: Deposit.DepositId
+
+	/// Depositor.
+	property CustomerId
+		dataType: string
+		lineageTag: 6b78835c-d140-5959-899d-7fb66a82f945
+
+		backingConfiguration
+			valueColumn: Deposit.CustomerId
+
+	/// Catalogue product of the deposit.
+	property ProductId
+		dataType: string
+		lineageTag: 06c4ecd3-3c8a-5fb3-8633-36bf05875b60
+
+		backingConfiguration
+			valueColumn: Deposit.ProductId
+
+	/// Account the deposit is linked to (legacy only).
+	property LinkedAccountId
+		dataType: string
+		lineageTag: 3b30f656-c416-572e-b449-1cc67f772caa
+
+		backingConfiguration
+			valueColumn: Deposit.LinkedAccountId
+
+	/// Deposit status such as active (legacy only).
+	property Status
+		dataType: string
+		lineageTag: 0552665e-dfb5-5dcd-a87e-07b7301c53af
+
+		backingConfiguration
+			valueColumn: Deposit.Status
+
+	/// Amount placed in the deposit. In rupees (INR).
+	property PrincipalInr
+		dataType: double
+		lineageTag: e48fcca8-0105-5fac-a947-7db95159a4c0
+
+		backingConfiguration
+			valueColumn: Deposit.PrincipalInr
+
+	/// Annual interest rate (Frontier only). As a percentage, for example 8.5 means 8.5%.
+	property AnnualRatePct
+		dataType: double
+		lineageTag: 0a641e94-3873-5967-8c3e-23fc7dc16055
+
+		backingConfiguration
+			valueColumn: Deposit.AnnualRatePct
+
+	/// Date the deposit was opened.
+	property OpenedOn
+		dataType: dateTime
+		lineageTag: aaac25b0-320e-50cd-8050-1473162e00a4
+
+		backingConfiguration
+			valueColumn: Deposit.OpenedOn
+
+	/// Maturity date. A date alone creates no interest or cash.
+	property MaturesOn
+		dataType: dateTime
+		lineageTag: 759de1bf-e33c-5e1e-a8b7-316349a438e0
+
+		backingConfiguration
+			valueColumn: Deposit.MaturesOn
+
+	/// How quickly the money can be reached, for example available_with_penalty (Frontier only).
+	property LiquidityClass
+		dataType: string
+		lineageTag: 4e65c1e9-43c0-5462-9e30-538e1bf6b8d8
+
+		backingConfiguration
+			valueColumn: Deposit.LiquidityClass
+
+	/// What happens at maturity, for example renew_principal_and_interest (legacy only).
+	property MaturityInstruction
+		dataType: string
+		lineageTag: 11727ecc-5939-51de-9c7b-98f51b6e0610
+
+		backingConfiguration
+			valueColumn: Deposit.MaturityInstruction
+
+	/// Penalty for withdrawing before maturity (Frontier only). As a percentage, for example 8.5 means 8.5%.
+	property PrematurePenaltyPct
+		dataType: double
+		lineageTag: 2bb61080-188a-507d-bce1-319e5b9f14f3
+
+		backingConfiguration
+			valueColumn: Deposit.PrematurePenaltyPct
+
+	/// Seed release the row comes from.
+	property ReleaseId
+		dataType: string
+		lineageTag: 96c510b9-67e3-5edb-a2fc-0e3b52438e9c
+
+		backingConfiguration
+			valueColumn: Deposit.ReleaseId

@@ -1,0 +1,105 @@
+/// A recorded mandate action (mandate event) in a mandate's life: created, action executed, action skipped (with the reason, for example obligations protected) or revoked. It is the audit trail of what a delegated agent actually did. Standards: no verified BIAN mapping (custom semantics); no Microsoft CDM reference. Demo mapping, not certification. Star role: fact; grain: one mandate action. Lakehouse: fact_mandate_action <- silver_mandate_action <- mandates.json.
+table MandateAction
+
+	/// Total moved by executed mandate actions, in rupees.
+	measure 'Mandate Executed (INR)' = CALCULATE(SUM(MandateAction[Amount (INR)]), MandateAction[Event Type] = "action_executed")
+		formatString: #,0.00
+		displayFolder: Authority
+
+	/// Mandate actions skipped to protect obligations.
+	measure 'Mandate Skipped Actions' = CALCULATE(COUNTROWS(MandateAction), MandateAction[Event Type] = "action_skipped")
+		formatString: #,0
+		displayFolder: Authority
+
+	/// Event identifier such as mandate-event-002.
+	column 'Event ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: event_id
+
+	/// Mandate the event belongs to.
+	column 'Mandate ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: mandate_id
+
+	/// created, action_executed, action_skipped or revoked.
+	column 'Event Type'
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: event_type
+
+	/// When the event happened. Instant in UTC.
+	column 'Occurred At'
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: occurred_at
+
+	/// When the event happened. Calendar date in India time (IST), for 'today', 'this month' questions.
+	column 'Occurred Date IST'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: occurred_date_ist
+
+	/// Who caused the event: the customer or the agent.
+	column 'Actor Ref'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: actor_ref
+
+	/// customer or agent.
+	column 'Actor Type'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: actor_type
+
+	/// Amount moved, for executed actions. In rupees (INR).
+	column 'Amount (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: amount_inr
+
+	/// Amount moved, for executed actions. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Amount (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: amount_paise
+
+	/// Source account balance after an executed action. In rupees (INR).
+	column 'Source Balance After (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: source_balance_after_inr
+
+	/// Source account balance after an executed action. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Source Balance After (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: source_balance_after_paise
+
+	/// Why the event happened, for example projected_school_and_card_obligations_protected.
+	column Reason
+		dataType: string
+		summarizeBy: none
+		sourceColumn: reason
+
+	/// Bank narration of the resulting transaction.
+	column Narration
+		dataType: string
+		summarizeBy: none
+		sourceColumn: narration
+
+	partition MandateAction = entity
+		mode: directLake
+		source
+			entityName: fact_mandate_action
+			expressionSource: 'DirectLake - ContosoBankModel'

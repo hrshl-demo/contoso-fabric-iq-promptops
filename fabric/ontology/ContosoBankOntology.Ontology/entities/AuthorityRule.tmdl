@@ -1,0 +1,45 @@
+/// [Policy] Who may do what: for each capability (ask, read, calculate, retrieve policy, prepare, approve, execute, review, expand consent) the permission of each actor (customer, Financial Companion, specialist, Rhea agent, active mandate, human specialist, deterministic bank). Analysis, preparation and effect are separate; the default agent mode is prepare-only. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: reference; grain: one authority rule: a capability and the actor's permission for it. Lakehouse: ref_authority_rule <- Curated reference data.
+entity AuthorityRule
+	lineageTag: 03fcd055-eee1-5378-ba94-f21bdaa08c5c
+	backingTable: AuthorityRule
+	keyProperty: RuleId
+
+	/// Identifier: capability / actor.
+	property RuleId
+		dataType: string
+		lineageTag: f4dd3016-570a-55b0-83d5-5e80473f07f5
+
+		backingConfiguration
+			valueColumn: AuthorityRule.RuleId
+
+	/// Capability such as Approve customer action or Execute bounded surplus action.
+	property Capability
+		dataType: string
+		lineageTag: be95834b-c897-5ade-974b-a2983498a138
+
+		backingConfiguration
+			valueColumn: AuthorityRule.Capability
+
+	/// Actor: Customer, Financial Companion, Specialist, Rhea agent, Active mandate, Human specialist, Deterministic bank.
+	property Actor
+		dataType: string
+		lineageTag: c051b42a-3fcc-582c-b66c-c05d9522b2e7
+
+		backingConfiguration
+			valueColumn: AuthorityRule.Actor
+
+	/// yes, no or qualified (read PermissionText for the condition).
+	property PermissionClass
+		dataType: string
+		lineageTag: 234fb088-0028-50d3-af0e-4ecaea9762fe
+
+		backingConfiguration
+			valueColumn: AuthorityRule.PermissionClass
+
+	/// What the actor may do for the capability, as written in the authority matrix.
+	property PermissionText
+		dataType: string
+		lineageTag: 940374cc-55ae-54d1-826a-54777170c2e2
+
+		backingConfiguration
+			valueColumn: AuthorityRule.PermissionText

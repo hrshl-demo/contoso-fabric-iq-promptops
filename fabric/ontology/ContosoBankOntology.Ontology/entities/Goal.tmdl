@@ -1,0 +1,117 @@
+/// [Goals] A financial goal (emergency reserve, school fee, home down payment, retirement income). Frontier goals carry target, current amount and a priority rank; legacy goals carry stated intent and priority. Goals compete for the same cash: never count one rupee twice. Standards: BIAN 13.0.0 Customer Relationship Management (provisional); no Microsoft CDM reference. Demo mapping, not certification. Star role: dimension; grain: one goal. Lakehouse: dim_goal <- silver_goal <- goals.json.
+entity Goal
+	lineageTag: c17442a5-8aeb-5e8b-8f74-2717b32b0b0a
+	backingTable: Goal
+	keyProperty: GoalId
+
+	/// Goal identifier such as goal-emergency.
+	property GoalId
+		dataType: string
+		lineageTag: f112103b-3f18-5aea-8804-cec088995b6b
+
+		backingConfiguration
+			valueColumn: Goal.GoalId
+
+	/// Customer who owns the goal.
+	property CustomerId
+		dataType: string
+		lineageTag: 2a2ccaca-0d60-5e28-9481-e698d7cba36e
+
+		backingConfiguration
+			valueColumn: Goal.CustomerId
+
+	/// Goal name such as Six-month emergency reserve.
+	property Name
+		dataType: string
+		lineageTag: 69a3d784-94f1-530b-bf5b-b9cc08652589
+
+		backingConfiguration
+			valueColumn: Goal.Name
+
+	/// Priority rank, 1 = highest (Frontier only).
+	property PriorityRank
+		dataType: int64
+		lineageTag: b2435d37-ac3a-5ac9-9050-649cf707666e
+
+		backingConfiguration
+			valueColumn: Goal.PriorityRank
+
+	/// Priority the customer stated: high, medium or low (legacy only).
+	property StatedPriority
+		dataType: string
+		lineageTag: 520123f1-651c-5d1b-bad3-18bb78525666
+
+		backingConfiguration
+			valueColumn: Goal.StatedPriority
+
+	/// Goal status such as active (legacy only).
+	property Status
+		dataType: string
+		lineageTag: 0844ebf4-02fd-5623-9683-bad5d04d38ad
+
+		backingConfiguration
+			valueColumn: Goal.Status
+
+	/// Target amount. When TargetFrequency is monthly it is a monthly amount, not a lump sum. In rupees (INR).
+	property TargetInr
+		dataType: double
+		lineageTag: ffa3b9cf-bca8-5932-ab3a-b9b0901bccdd
+
+		backingConfiguration
+			valueColumn: Goal.TargetInr
+
+	/// Amount set aside so far (Frontier only). It is an earmark on money already held in an account or investment, not additional money. In rupees (INR).
+	property CurrentInr
+		dataType: double
+		lineageTag: 45884392-4810-56e5-9f27-9839a9e67f19
+
+		backingConfiguration
+			valueColumn: Goal.CurrentInr
+
+	/// Current amount as a percentage of the target (Frontier lump-sum goals).
+	property ProgressPct
+		dataType: double
+		lineageTag: b6840f7a-3e17-5ae6-b3b1-eb490d63f1e6
+
+		backingConfiguration
+			valueColumn: Goal.ProgressPct
+
+	/// Date the goal should be met.
+	property TargetDate
+		dataType: dateTime
+		lineageTag: ad1fc1d9-dfb8-56d0-8187-ce137baf7edb
+
+		backingConfiguration
+			valueColumn: Goal.TargetDate
+
+	/// monthly when the target is a recurring amount (legacy only).
+	property TargetFrequency
+		dataType: string
+		lineageTag: d11d5104-323c-58df-b125-b1b2ba21fd6f
+
+		backingConfiguration
+			valueColumn: Goal.TargetFrequency
+
+	/// What the customer said they want (legacy only).
+	property IntentSummary
+		dataType: string
+		lineageTag: 76707f1d-b78f-53ec-bec1-6b9ca7fad6cb
+
+		backingConfiguration
+			valueColumn: Goal.IntentSummary
+
+	/// Products that could fund the goal (semicolon separated, legacy only).
+	property FundingProductIds
+		dataType: string
+		lineageTag: 1139c15f-4521-586a-87e3-6b5b5d735986
+
+		backingConfiguration
+			valueColumn: Goal.FundingProductIds
+
+	/// Seed release the row comes from.
+	property ReleaseId
+		dataType: string
+		lineageTag: 3d84eef6-f3af-5dc8-9781-3de6002240ea
+
+		backingConfiguration
+			valueColumn: Goal.ReleaseId

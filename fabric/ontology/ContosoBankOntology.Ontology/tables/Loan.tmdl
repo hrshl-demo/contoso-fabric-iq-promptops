@@ -1,0 +1,91 @@
+table Loan
+	lineageTag: 444d5a73-d58c-5a14-80ee-ff0fdcd49566
+
+	column LoanId
+		dataType: string
+		lineageTag: 7035ee4b-1407-5ee8-b5bd-2ed35c6b8565
+		sourceColumn: loan_id
+
+	column CustomerId
+		dataType: string
+		lineageTag: 634fa149-cb2c-5101-85fd-e396d6222ecb
+		sourceColumn: customer_id
+
+	column ProductId
+		dataType: string
+		lineageTag: 007dd5b4-0980-5aa2-9abe-00a25b19ec6a
+		sourceColumn: product_id
+
+	column Purpose
+		dataType: string
+		lineageTag: 79876c98-8983-5478-95f1-34b6cc3a0cdb
+		sourceColumn: purpose
+
+	column RateType
+		dataType: string
+		lineageTag: 14b51012-52ff-5341-81d4-1b800bfccad4
+		sourceColumn: rate_type
+
+	column AnnualRatePct
+		dataType: double
+		lineageTag: 66985115-11ee-599e-be03-01f79db962eb
+		sourceColumn: annual_rate_pct
+
+	column OpeningPrincipalInr
+		dataType: double
+		lineageTag: 01f91a36-fe50-535f-b90d-709c358cd7da
+		sourceColumn: opening_principal_inr
+
+	column CurrentPrincipalInr
+		dataType: double
+		lineageTag: f23b39da-185d-5fda-aa72-9c3cf38402ae
+		sourceColumn: current_principal_inr
+
+	column EmiInr
+		dataType: double
+		lineageTag: 37cb30dc-7c1f-5732-a7bf-4994b26ea17e
+		sourceColumn: emi_inr
+
+	column OriginationFeeInr
+		dataType: double
+		lineageTag: 8892ca99-bf01-59d4-bc91-1cb9185fe974
+		sourceColumn: origination_fee_inr
+
+	column PrepaymentAppliesTo
+		dataType: string
+		lineageTag: 79fa1a29-d92e-53ef-a365-f0b5fce1e107
+		sourceColumn: prepayment_applies_to
+
+	column PrepaymentChargePct
+		dataType: double
+		lineageTag: 6e3319f8-0805-5206-9042-f59d3ecf0f52
+		sourceColumn: prepayment_charge_pct
+
+	column PrepaymentMinimumInr
+		dataType: double
+		lineageTag: c4545677-68b0-53e4-94c2-c2ecc854f663
+		sourceColumn: prepayment_minimum_inr
+
+	column PrepaymentNoticeDays
+		dataType: int64
+		formatString: 0
+		lineageTag: ff57ba4e-0206-58b1-9b93-3967747baedd
+		sourceColumn: prepayment_notice_days
+
+	column ScheduledInstallments
+		dataType: int64
+		formatString: 0
+		lineageTag: 9cd3ed57-1370-5724-8ef6-54f03c6486b2
+		sourceColumn: scheduled_installments
+
+	column ReleaseId
+		dataType: string
+		lineageTag: b64b4783-9f19-5736-9e36-3315a2b2fd7f
+		sourceColumn: release_id
+
+	partition Loan = entity
+		mode: directLake
+		source
+			entityName: dim_loan
+			schemaName: dbo
+			expressionSource: DatabaseQuery

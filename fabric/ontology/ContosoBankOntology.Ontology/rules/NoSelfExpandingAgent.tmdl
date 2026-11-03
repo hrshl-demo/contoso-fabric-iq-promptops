@@ -1,0 +1,16 @@
+rule NoSelfExpandingAgent
+	statement: Law L8. A RegisteredAgent cannot register itself, widen its scopes, grant consent, create a mandate or approve its own prepared action. Anything listed in DeniedScopes is denied even if a scope seems to allow it. KYA registration is not consent and not a mandate.
+	lineageTag: 742d407b-8f0e-5a98-8539-c9a80cf70b09
+
+	ruleReferencedEntity RegisteredAgent
+		propertyScope: specific
+
+		ruleReferencedProperty Scopes
+
+		ruleReferencedProperty DeniedScopes
+
+		ruleReferencedProperty Status
+
+	ruleReferencedRelationship 'Agent Registered For Customer'
+
+	ruleReferencedRelationship 'Agent Authorised By Consent'

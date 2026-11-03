@@ -1,0 +1,10 @@
+rule SelectionIsNotApplication
+	statement: Selecting a product is not applying, applying is not approval, approval is not acceptance and acceptance is not execution. A recorded 'no' closes the case: do not re-offer the same product.
+	lineageTag: 14ab153b-153e-54b5-8c28-2ddc83d40ac7
+
+	ruleReferencedEntity Product
+		propertyScope: specific
+
+		ruleReferencedProperty SupportedActions
+
+		ruleReferencedProperty UnderwritingRequired

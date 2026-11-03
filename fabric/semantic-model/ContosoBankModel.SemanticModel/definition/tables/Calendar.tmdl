@@ -1,0 +1,65 @@
+/// Date dimension (2025-10-01 to 2027-12-31) with India fiscal year (April-March), month, quarter and weekday. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: dimension; grain: one calendar day (generated). Lakehouse: dim_date <- Curated reference data.
+table Calendar
+
+	/// Calendar date.
+	column Date
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: date
+
+	/// Calendar year.
+	column Year
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: year
+
+	/// Month number 1-12.
+	column 'Month Number'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: month_number
+
+	/// Month name.
+	column 'Month Name'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: month_name
+
+	/// Year and month as YYYY-MM.
+	column 'Year Month'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: year_month
+
+	/// Calendar quarter Q1-Q4.
+	column Quarter
+		dataType: string
+		summarizeBy: none
+		sourceColumn: quarter
+
+	/// Day of week.
+	column Weekday
+		dataType: string
+		summarizeBy: none
+		sourceColumn: weekday
+
+	/// True on Saturday and Sunday.
+	column 'Is Weekend'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: is_weekend
+
+	/// Indian fiscal year, April to March, for example FY2026-27.
+	column 'Fiscal Year'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: fiscal_year
+
+	partition Calendar = entity
+		mode: directLake
+		source
+			entityName: dim_date
+			expressionSource: 'DirectLake - ContosoBankModel'

@@ -1,0 +1,155 @@
+/// A CRM case that continues a conversation with a human relationship manager: stage, priority, sentiment, SLA, owning RM, journey and products discussed. Legacy release only. Cases belong to ReleaseId retail4-v1. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: fact; grain: one CRM case. Lakehouse: fact_crm_case <- silver_crm_case <- bank/crm-cases.json.
+table CrmCase
+
+	/// Number of CRM cases.
+	measure 'CRM Cases' = COUNTROWS(CrmCase)
+		formatString: #,0
+		displayFolder: Servicing
+
+	/// CRM cases not yet resolved or declined.
+	measure 'Open CRM Cases' = CALCULATE(COUNTROWS(CrmCase), CrmCase[Stage] IN {"new", "in_progress", "awaiting_customer"})
+		formatString: #,0
+		displayFolder: Servicing
+
+	/// Mean interactions per CRM case.
+	measure 'Average Interactions Per Case' = AVERAGE(CrmCase[Interactions])
+		formatString: 0.0
+		displayFolder: Servicing
+
+	/// Case identifier such as CASE-2026-0001.
+	column 'Case ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: case_id
+
+	/// Customer the case is about.
+	column 'Customer ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	/// Case title.
+	column Title
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: title
+
+	/// One-sentence case summary.
+	column Summary
+		dataType: string
+		summarizeBy: none
+		sourceColumn: summary
+
+	/// new, in_progress, awaiting_customer, resolved or declined.
+	column Stage
+		dataType: string
+		summarizeBy: none
+		sourceColumn: stage
+
+	/// low, medium or high.
+	column Priority
+		dataType: string
+		summarizeBy: none
+		sourceColumn: priority
+
+	/// Customer sentiment: positive, neutral or negative.
+	column Sentiment
+		dataType: string
+		summarizeBy: none
+		sourceColumn: sentiment
+
+	/// Channel: mobileapp, website, whatsappchatbot, branch, email, phonebanking, inbound_call.
+	column Channel
+		dataType: string
+		summarizeBy: none
+		sourceColumn: channel
+
+	/// How the case started, for example ai_assistant.
+	column Origin
+		dataType: string
+		summarizeBy: none
+		sourceColumn: origin
+
+	/// Business unit handling the case.
+	column 'BU ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: bu_id
+
+	/// Conversation journey that led to the case, for example J01.
+	column 'Journey ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: journey_id
+
+	/// Relationship manager who owns the case.
+	column 'Owner RM ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: owner_rm_id
+
+	/// Products discussed (semicolon separated).
+	column 'Product Ids'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: product_ids
+
+	/// Number of interactions on the case.
+	column Interactions
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: interactions
+
+	/// Customer objection, when one was raised.
+	column 'Objection Reason'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: objection_reason
+
+	/// Product the objection is about.
+	column 'Objection Product ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: objection_product_id
+
+	/// When the case was opened. Instant in UTC.
+	column 'Opened At'
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: opened_at
+
+	/// When the case was opened. Calendar date in India time (IST), for 'today', 'this month' questions.
+	column 'Opened Date IST'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: opened_date_ist
+
+	/// When the case was last updated. Instant in UTC.
+	column 'Updated At'
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: updated_at
+
+	/// When the case SLA falls due. Instant in UTC.
+	column 'SLA Due At'
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: sla_due_at
+
+	/// Seed release the row comes from.
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	partition CrmCase = entity
+		mode: directLake
+		source
+			entityName: fact_crm_case
+			expressionSource: 'DirectLake - ContosoBankModel'

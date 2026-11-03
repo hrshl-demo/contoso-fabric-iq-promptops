@@ -1,0 +1,67 @@
+table ServiceCase
+	lineageTag: 37f7b032-9b2f-5d0e-9813-e20643b4932a
+
+	column ServiceRecordId
+		dataType: string
+		lineageTag: bfcf2079-a7c9-5088-93d8-1c74866315af
+		sourceColumn: service_record_id
+
+	column CustomerId
+		dataType: string
+		lineageTag: f450fb81-b334-5d8d-8b51-3f3f04e11581
+		sourceColumn: customer_id
+
+	column IncidentId
+		dataType: string
+		lineageTag: 1ee618bf-5817-552d-b4be-eb646c4408b8
+		sourceColumn: incident_id
+
+	column Channel
+		dataType: string
+		lineageTag: f8553487-2844-545d-b63d-d1e73adf73f4
+		sourceColumn: channel
+
+	column OpenedAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 2d4f5316-e595-5c70-a308-dd1c4975925c
+		sourceColumn: opened_at
+
+	column OpenedDateIst
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: cfa495a5-9504-5be6-bae0-608be3574a7e
+		sourceColumn: opened_date_ist
+
+	column Actions
+		dataType: string
+		lineageTag: 939c6c6a-74dd-5e96-b331-5994bf1a2b71
+		sourceColumn: actions
+
+	column HandoffTeam
+		dataType: string
+		lineageTag: d3b1d838-ecba-5882-b4c0-9bfea04010ed
+		sourceColumn: handoff_team
+
+	column HandoffReason
+		dataType: string
+		lineageTag: 106d0046-3e7a-5016-bd6b-0a1ec3bf895c
+		sourceColumn: handoff_reason
+
+	column HandoffAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 792ff18b-b06e-51b3-add4-f76e542eceae
+		sourceColumn: handoff_at
+
+	column ReleaseId
+		dataType: string
+		lineageTag: 48eb48f1-3401-5d48-b57d-82fb30041fa2
+		sourceColumn: release_id
+
+	partition ServiceCase = entity
+		mode: directLake
+		source
+			entityName: fact_service_case
+			schemaName: dbo
+			expressionSource: DatabaseQuery

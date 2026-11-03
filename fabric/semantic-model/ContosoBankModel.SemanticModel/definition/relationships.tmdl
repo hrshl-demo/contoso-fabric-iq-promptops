@@ -1,0 +1,143 @@
+relationship rel_customer_belongs_to_household
+	fromColumn: Customer.'Household ID'
+	toColumn: Household.'Household ID'
+
+relationship rel_household_member_belongs_to_household
+	fromColumn: HouseholdMember.'Household ID'
+	toColumn: Household.'Household ID'
+
+relationship rel_account_held_by_customer
+	fromColumn: Account.'Customer ID'
+	toColumn: Customer.'Customer ID'
+
+relationship rel_account_opened_under_product
+	fromColumn: Account.'Product ID'
+	toColumn: Product.'Product ID'
+
+relationship rel_card_linked_to_account
+	fromColumn: Card.'Account ID'
+	toColumn: Account.'Account ID'
+
+relationship rel_deposit_held_by_customer
+	fromColumn: Deposit.'Customer ID'
+	toColumn: Customer.'Customer ID'
+
+relationship rel_deposit_of_product
+	fromColumn: Deposit.'Product ID'
+	toColumn: Product.'Product ID'
+
+relationship rel_loan_granted_to_customer
+	fromColumn: Loan.'Customer ID'
+	toColumn: Customer.'Customer ID'
+
+relationship rel_loan_of_product
+	fromColumn: Loan.'Product ID'
+	toColumn: Product.'Product ID'
+
+relationship rel_installment_of_loan
+	fromColumn: LoanInstallment.'Loan ID'
+	toColumn: Loan.'Loan ID'
+
+relationship rel_policy_held_by_customer
+	fromColumn: ProtectionPolicy.'Customer ID'
+	toColumn: Customer.'Customer ID'
+
+relationship rel_policy_of_product
+	fromColumn: ProtectionPolicy.'Product ID'
+	toColumn: Product.'Product ID'
+
+relationship rel_protection_gap_of_customer
+	fromColumn: ProtectionGap.'Customer ID'
+	toColumn: Customer.'Customer ID'
+
+relationship rel_investment_held_by_customer
+	fromColumn: Investment.'Customer ID'
+	toColumn: Customer.'Customer ID'
+
+relationship rel_investment_of_product
+	fromColumn: Investment.'Product ID'
+	toColumn: Product.'Product ID'
+
+relationship rel_transaction_posted_to_account
+	fromColumn: Transaction.'Account ID'
+	toColumn: Account.'Account ID'
+
+relationship rel_obligation_paid_from_account
+	fromColumn: ScheduledObligation.'Source Account ID'
+	toColumn: Account.'Account ID'
+
+relationship rel_income_earned_by_customer
+	fromColumn: IncomeRecord.'Customer ID'
+	toColumn: Customer.'Customer ID'
+
+relationship rel_goal_owned_by_customer
+	fromColumn: Goal.'Customer ID'
+	toColumn: Customer.'Customer ID'
+
+relationship rel_preference_stated_by_customer
+	fromColumn: Preference.'Customer ID'
+	toColumn: Customer.'Customer ID'
+
+relationship rel_consent_given_by_customer
+	fromColumn: Consent.'Customer ID'
+	toColumn: Customer.'Customer ID'
+
+relationship rel_access_grant_of_customer
+	fromColumn: HouseholdAccessGrant.'Customer ID'
+	toColumn: Customer.'Customer ID'
+
+relationship rel_agent_registered_for_customer
+	fromColumn: RegisteredAgent.'Customer ID'
+	toColumn: Customer.'Customer ID'
+
+relationship rel_mandate_granted_by_customer
+	fromColumn: FrontierMandate.'Customer ID'
+	toColumn: Customer.'Customer ID'
+
+relationship rel_event_of_mandate
+	fromColumn: MandateAction.'Mandate ID'
+	toColumn: FrontierMandate.'Mandate ID'
+
+relationship rel_incident_affects_customer
+	fromColumn: Incident.'Customer ID'
+	toColumn: Customer.'Customer ID'
+
+relationship rel_service_record_for_customer
+	fromColumn: ServiceCase.'Customer ID'
+	toColumn: Customer.'Customer ID'
+
+relationship rel_document_owned_by_customer
+	fromColumn: Document.'Customer ID'
+	toColumn: Customer.'Customer ID'
+
+relationship rel_case_opened_for_customer
+	fromColumn: CrmCase.'Customer ID'
+	toColumn: Customer.'Customer ID'
+
+relationship rel_case_follows_journey
+	fromColumn: CrmCase.'Journey ID'
+	toColumn: Journey.'Journey ID'
+
+relationship rel_transaction_posted_on_date
+	fromColumn: Transaction.'Posted Date IST'
+	toColumn: Calendar.Date
+
+relationship rel_installment_due_on_date
+	fromColumn: LoanInstallment.'Due On'
+	toColumn: Calendar.Date
+
+relationship rel_case_opened_on_date
+	fromColumn: CrmCase.'Opened Date IST'
+	toColumn: Calendar.Date
+
+relationship rel_mandate_event_on_date
+	fromColumn: MandateAction.'Occurred Date IST'
+	toColumn: Calendar.Date
+
+relationship rel_incident_detected_on_date
+	fromColumn: Incident.'Detected Date IST'
+	toColumn: Calendar.Date
+
+relationship rel_service_case_opened_on_date
+	fromColumn: ServiceCase.'Opened Date IST'
+	toColumn: Calendar.Date

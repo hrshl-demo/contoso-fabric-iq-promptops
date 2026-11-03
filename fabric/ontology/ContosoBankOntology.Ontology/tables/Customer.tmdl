@@ -1,0 +1,80 @@
+table Customer
+	lineageTag: e6cc0054-575b-5ada-85e5-49d3242976ab
+
+	column CustomerId
+		dataType: string
+		lineageTag: c2b8f8b3-7634-534a-be75-485506644d98
+		sourceColumn: customer_id
+
+	column DisplayName
+		dataType: string
+		lineageTag: 8cc543df-6d7d-53e0-9ece-225ade8d5d09
+		sourceColumn: display_name
+
+	column Age
+		dataType: int64
+		formatString: 0
+		lineageTag: a83392cc-0d50-5fef-aae3-2b3e6e19ac70
+		sourceColumn: age
+
+	column City
+		dataType: string
+		lineageTag: 3cacc171-e2ed-5602-9b55-237192d5475a
+		sourceColumn: city
+
+	column EmploymentStatus
+		dataType: string
+		lineageTag: 77bfe699-57ec-5d23-8769-9b257296bab6
+		sourceColumn: employment_status
+
+	column Segment
+		dataType: string
+		lineageTag: 90af399d-f35f-564f-96d1-8dd282be4429
+		sourceColumn: segment
+
+	column HouseholdId
+		dataType: string
+		lineageTag: 9bb83aae-9b4e-5734-8edb-aebb3f37bf51
+		sourceColumn: household_id
+
+	column IsPrimaryOwner
+		dataType: boolean
+		lineageTag: c109e117-dfb5-51cd-a614-fbc4f7737068
+		sourceColumn: is_primary_owner
+
+	column PhoneMasked
+		dataType: string
+		lineageTag: 8e9c73e3-52bc-5ed4-ba6b-fc2e7f27b23f
+		sourceColumn: phone_masked
+
+	column ProfileSummary
+		dataType: string
+		lineageTag: 194760e3-e3c9-5cd2-b500-ec88bc1da3af
+		sourceColumn: profile_summary
+
+	column SourceKind
+		dataType: string
+		lineageTag: 09b7d73c-fdfd-5608-aeb7-73190f793b12
+		sourceColumn: source_kind
+
+	column SupersededByCustomerId
+		dataType: string
+		lineageTag: 9538953d-a74c-55a7-a4bf-60ae9f8caf57
+		sourceColumn: superseded_by_customer_id
+
+	column IsSynthetic
+		dataType: boolean
+		lineageTag: 4e485b03-d483-52cf-a3ea-800c410eceb9
+		sourceColumn: is_synthetic
+
+	column ReleaseId
+		dataType: string
+		lineageTag: de45e227-caf3-58c2-a47a-1a35fa98aa1e
+		sourceColumn: release_id
+
+	partition Customer = entity
+		mode: directLake
+		source
+			entityName: dim_customer
+			schemaName: dbo
+			expressionSource: DatabaseQuery

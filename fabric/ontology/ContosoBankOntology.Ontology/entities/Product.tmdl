@@ -1,0 +1,349 @@
+/// [Catalogue] A bank product: savings, fixed and recurring deposit, sweep, credit and debit card, home loan, health cover. 24 catalogue products carry full terms; products named only by Frontier records (card, floating home loan, education term cover, index fund) are reference stubs with no terms: do not quote their rates or fees. Rupee parameters are whole rupees, rates are percent. Standards: BIAN 13.0.0 Product Directory (custom); no Microsoft CDM reference. Demo mapping, not certification. Star role: dimension; grain: one catalogue product. Lakehouse: dim_product <- silver_product <- products.json, relationship/products.json.
+entity Product
+	lineageTag: 88492470-b71d-5ef2-968e-d5836f6efebe
+	backingTable: Product
+	keyProperty: ProductId
+
+	/// Product code such as CB-FD-STANDARD or CB-CARD-CLASSIC.
+	property ProductId
+		dataType: string
+		lineageTag: 1b96e08e-69fc-5f00-92c0-3aee04e5022e
+
+		backingConfiguration
+			valueColumn: Product.ProductId
+
+	/// Customer-facing product name. Reference stubs show their type only.
+	property DisplayName
+		dataType: string
+		lineageTag: 12a7e16b-e528-5faf-b7b1-33ab8b471862
+
+		backingConfiguration
+			valueColumn: Product.DisplayName
+
+	/// Product family: savings, fixed_deposit, recurring_deposit, sweep, credit_card, debit_card, prepaid_card, home_loan, health_cover, personal_loan, goal_pocket, or a Frontier product type.
+	property Family
+		dataType: string
+		lineageTag: e17293d3-7de2-5616-96ef-35b2628f01a4
+
+		backingConfiguration
+			valueColumn: Product.Family
+
+	/// catalogue (full terms), relationship_proposal (planner proposal, not an approved offer) or reference_only (stub with no terms).
+	property DataRole
+		dataType: string
+		lineageTag: 8162c7f0-49f8-59d4-b6d7-53fa24a77373
+
+		backingConfiguration
+			valueColumn: Product.DataRole
+
+	/// Catalogue status such as active or proposed.
+	property Status
+		dataType: string
+		lineageTag: 07b33e64-baa2-5c52-87fc-8216d98d2618
+
+		backingConfiguration
+			valueColumn: Product.Status
+
+	/// Issuer name (synthetic).
+	property Issuer
+		dataType: string
+		lineageTag: 76425809-fedc-5730-bffe-da1d097622b9
+
+		backingConfiguration
+			valueColumn: Product.Issuer
+
+	/// Catalogue version, for example catalogue-v1.
+	property CatalogueVersion
+		dataType: string
+		lineageTag: 12311d90-c8cb-5e37-8721-4c5efc3b2b7b
+
+		backingConfiguration
+			valueColumn: Product.CatalogueVersion
+
+	/// Date the product terms take effect.
+	property EffectiveFrom
+		dataType: dateTime
+		lineageTag: 91376cc8-dbf4-501c-b199-2b6e9a6e231c
+
+		backingConfiguration
+			valueColumn: Product.EffectiveFrom
+
+	/// Date the terms end; null while open.
+	property EffectiveTo
+		dataType: dateTime
+		lineageTag: 94f68c48-88e8-5806-9448-330b760f7a2d
+
+		backingConfiguration
+			valueColumn: Product.EffectiveTo
+
+	/// Who the product suits.
+	property Audience
+		dataType: string
+		lineageTag: adb37273-f944-56e2-bf11-96f1181e8535
+
+		backingConfiguration
+			valueColumn: Product.Audience
+
+	/// The main trade-off of choosing the product.
+	property MainTradeoff
+		dataType: string
+		lineageTag: 5f22a96b-92bb-57a8-9134-ad3eb63f2fa1
+
+		backingConfiguration
+			valueColumn: Product.MainTradeoff
+
+	/// Who the product does not suit.
+	property WhyNotSuitable
+		dataType: string
+		lineageTag: 0b7e9578-81d0-5b8d-904f-405c9460092b
+
+		backingConfiguration
+			valueColumn: Product.WhyNotSuitable
+
+	/// Plain-language rate or cashback terms.
+	property RateTerms
+		dataType: string
+		lineageTag: 0fa549ef-490b-5255-913e-dccce944f3e4
+
+		backingConfiguration
+			valueColumn: Product.RateTerms
+
+	/// Plain-language liquidity terms.
+	property LiquidityTerms
+		dataType: string
+		lineageTag: 2a95b484-dcc3-5078-a2ec-4b03a158bb8c
+
+		backingConfiguration
+			valueColumn: Product.LiquidityTerms
+
+	/// Benefits (semicolon separated).
+	property BenefitsText
+		dataType: string
+		lineageTag: 5561fb7a-e7c4-5f44-bdc4-a7bda93eb1ae
+
+		backingConfiguration
+			valueColumn: Product.BenefitsText
+
+	/// Fees (semicolon separated).
+	property FeesText
+		dataType: string
+		lineageTag: 58fd143d-efb9-5c52-b8f0-92fdd8c23081
+
+		backingConfiguration
+			valueColumn: Product.FeesText
+
+	/// Limitations (semicolon separated).
+	property LimitationsText
+		dataType: string
+		lineageTag: 76ecdb60-3255-528e-95db-916a66774618
+
+		backingConfiguration
+			valueColumn: Product.LimitationsText
+
+	/// Evidence needed to apply (semicolon separated).
+	property RequiredEvidence
+		dataType: string
+		lineageTag: 99a599b6-1ce1-59c6-bd34-9bfba6efb888
+
+		backingConfiguration
+			valueColumn: Product.RequiredEvidence
+
+	/// What the assistant may do: prepare_application, keep_current, request_information.
+	property SupportedActions
+		dataType: string
+		lineageTag: 6b378efc-183c-5d66-b43f-d5bdc18ca4ac
+
+		backingConfiguration
+			valueColumn: Product.SupportedActions
+
+	/// True when the product needs underwriting.
+	property UnderwritingRequired
+		dataType: boolean
+		lineageTag: d011238f-2fcd-593c-90ed-8ae0686eadfc
+
+		backingConfiguration
+			valueColumn: Product.UnderwritingRequired
+
+	/// Minimum customer age in years.
+	property MinAge
+		dataType: int64
+		lineageTag: fe9d9648-c8dd-51bc-b758-f54d50dae4c4
+
+		backingConfiguration
+			valueColumn: Product.MinAge
+
+	/// Minimum monthly income in rupees.
+	property MinMonthlyIncomeInr
+		dataType: double
+		lineageTag: d6b18aba-f233-5753-a3f4-5c5875459f19
+
+		backingConfiguration
+			valueColumn: Product.MinMonthlyIncomeInr
+
+	/// Minimum amount to place or borrow, in rupees.
+	property MinPrincipalInr
+		dataType: double
+		lineageTag: e8c32171-d349-5730-9223-38867ec8229f
+
+		backingConfiguration
+			valueColumn: Product.MinPrincipalInr
+
+	/// Maximum amount to place or borrow, in rupees.
+	property MaxPrincipalInr
+		dataType: double
+		lineageTag: 4d817a59-7c59-5f3c-b127-e75ad25e8de6
+
+		backingConfiguration
+			valueColumn: Product.MaxPrincipalInr
+
+	/// Annual interest rate of the product. As a percentage, for example 7.75 means 7.75%.
+	property InterestRatePct
+		dataType: double
+		lineageTag: dfa7655f-99ce-5931-8573-644896efad21
+
+		backingConfiguration
+			valueColumn: Product.InterestRatePct
+
+	/// Annual fee in rupees.
+	property AnnualFeeInr
+		dataType: double
+		lineageTag: dbe10748-ae0f-5c18-99b9-a0bdb39f1a09
+
+		backingConfiguration
+			valueColumn: Product.AnnualFeeInr
+
+	/// Monthly fee in rupees.
+	property MonthlyFeeInr
+		dataType: double
+		lineageTag: 2650dc8e-00d6-527a-95ec-377e49b2552e
+
+		backingConfiguration
+			valueColumn: Product.MonthlyFeeInr
+
+	/// Minimum balance to maintain, in rupees.
+	property MinimumBalanceInr
+		dataType: double
+		lineageTag: bb8089e5-494a-5795-83fb-6a1a65b10eef
+
+		backingConfiguration
+			valueColumn: Product.MinimumBalanceInr
+
+	/// Processing fee as a percentage of the amount.
+	property ProcessingFeePct
+		dataType: double
+		lineageTag: d7bee284-09a8-5858-8f44-e3c0fb1f2298
+
+		backingConfiguration
+			valueColumn: Product.ProcessingFeePct
+
+	/// Prepayment charge as a percentage.
+	property PrepaymentChargePct
+		dataType: double
+		lineageTag: 6b7d142b-6fad-53a3-8730-c89ec1f41cac
+
+		backingConfiguration
+			valueColumn: Product.PrepaymentChargePct
+
+	/// Penalty percentage for withdrawing a deposit early.
+	property EarlyWithdrawalPenaltyPct
+		dataType: double
+		lineageTag: 12c3edf0-12f3-5225-820a-1d38821f7535
+
+		backingConfiguration
+			valueColumn: Product.EarlyWithdrawalPenaltyPct
+
+	/// Shortest term in months.
+	property MinTermMonths
+		dataType: int64
+		lineageTag: 3add9b22-c159-5adb-9c0a-dce950540a41
+
+		backingConfiguration
+			valueColumn: Product.MinTermMonths
+
+	/// Longest term in months.
+	property MaxTermMonths
+		dataType: int64
+		lineageTag: c35c29ad-934b-509b-a048-2cce490b56e1
+
+		backingConfiguration
+			valueColumn: Product.MaxTermMonths
+
+	/// Longest loan tenure in years.
+	property MaxTenureYears
+		dataType: int64
+		lineageTag: 96e9cd21-813a-5a55-b878-57ccd7501dd0
+
+		backingConfiguration
+			valueColumn: Product.MaxTenureYears
+
+	/// Maximum loan-to-value percentage.
+	property MaxLtvPct
+		dataType: double
+		lineageTag: 606c3cfc-5811-5e08-b347-bc0fb8a37239
+
+		backingConfiguration
+			valueColumn: Product.MaxLtvPct
+
+	/// Cashback percentage on spends.
+	property CashbackPct
+		dataType: double
+		lineageTag: 0c882e0b-5558-5105-8d2f-b45ecbcfd163
+
+		backingConfiguration
+			valueColumn: Product.CashbackPct
+
+	/// Foreign exchange mark-up percentage.
+	property ForexMarkupPct
+		dataType: double
+		lineageTag: 928f66bb-9f59-5995-85e2-1de449d42a96
+
+		backingConfiguration
+			valueColumn: Product.ForexMarkupPct
+
+	/// Monthly premium in rupees.
+	property MonthlyPremiumInr
+		dataType: double
+		lineageTag: 1b89f22f-d100-5a7a-bab4-aecf3e16f5e4
+
+		backingConfiguration
+			valueColumn: Product.MonthlyPremiumInr
+
+	/// Sum insured in rupees.
+	property SumInsuredInr
+		dataType: double
+		lineageTag: 6cd03bab-abc6-5b6f-afbe-9d4d64a5e436
+
+		backingConfiguration
+			valueColumn: Product.SumInsuredInr
+
+	/// Loan rate type: fixed or floating.
+	property RateType
+		dataType: string
+		lineageTag: 8e94dbdc-3af9-50aa-8d3f-08d4f4703d8b
+
+		backingConfiguration
+			valueColumn: Product.RateType
+
+	/// Deposit payout mode: monthly, quarterly, on_maturity.
+	property PayoutMode
+		dataType: string
+		lineageTag: cb431b4d-c081-5562-be0b-ff572949c2cf
+
+		backingConfiguration
+			valueColumn: Product.PayoutMode
+
+	/// Mandatory demo disclosure.
+	property Disclosure
+		dataType: string
+		lineageTag: 595b7524-a7b0-5853-9e6b-d0eec3a25c12
+
+		backingConfiguration
+			valueColumn: Product.Disclosure
+
+	/// Seed release the row comes from.
+	property ReleaseId
+		dataType: string
+		lineageTag: 547f351f-25f7-581a-ae78-8c8809087dc8
+
+		backingConfiguration
+			valueColumn: Product.ReleaseId

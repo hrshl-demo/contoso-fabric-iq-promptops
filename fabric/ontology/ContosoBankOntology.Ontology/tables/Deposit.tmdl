@@ -1,0 +1,76 @@
+table Deposit
+	lineageTag: cbd9b0a6-5e4c-5547-934f-4bdd7dfa05d5
+
+	column DepositId
+		dataType: string
+		lineageTag: 0c6e5757-2b90-5bbc-9236-619dfa643c5f
+		sourceColumn: deposit_id
+
+	column CustomerId
+		dataType: string
+		lineageTag: 5939bb27-2012-57cf-ac3b-7a682ee534cc
+		sourceColumn: customer_id
+
+	column ProductId
+		dataType: string
+		lineageTag: e4ed987a-e45a-5c08-afe0-170a5df0b85b
+		sourceColumn: product_id
+
+	column LinkedAccountId
+		dataType: string
+		lineageTag: bc8c388a-97aa-5333-b3db-2d81e817d260
+		sourceColumn: linked_account_id
+
+	column Status
+		dataType: string
+		lineageTag: ff28d94d-965d-5bc4-994b-b382d986d457
+		sourceColumn: status
+
+	column PrincipalInr
+		dataType: double
+		lineageTag: 1ff87165-3909-54a2-bb14-e4ab98f19f1e
+		sourceColumn: principal_inr
+
+	column AnnualRatePct
+		dataType: double
+		lineageTag: 1fb2b50e-555d-52db-9f2f-fe23c72b346f
+		sourceColumn: annual_rate_pct
+
+	column OpenedOn
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 16237391-508c-58d4-a268-6d141c66a8b9
+		sourceColumn: opened_on
+
+	column MaturesOn
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: ad55e80f-60a0-5edf-9819-172deadc5699
+		sourceColumn: matures_on
+
+	column LiquidityClass
+		dataType: string
+		lineageTag: cab33dce-fd2f-5646-a978-55dae6640f91
+		sourceColumn: liquidity_class
+
+	column MaturityInstruction
+		dataType: string
+		lineageTag: e8ba3bef-35fe-52e4-bbcd-91230b32c2e6
+		sourceColumn: maturity_instruction
+
+	column PrematurePenaltyPct
+		dataType: double
+		lineageTag: 3b148673-1677-5dbb-87eb-3339a04af275
+		sourceColumn: premature_penalty_pct
+
+	column ReleaseId
+		dataType: string
+		lineageTag: 045c5e38-e5d6-5670-9fd6-6870e855ac4b
+		sourceColumn: release_id
+
+	partition Deposit = entity
+		mode: directLake
+		source
+			entityName: dim_deposit
+			schemaName: dbo
+			expressionSource: DatabaseQuery

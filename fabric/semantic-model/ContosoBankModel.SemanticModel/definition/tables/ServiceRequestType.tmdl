@@ -1,0 +1,75 @@
+/// A kind of service request the bank can record (card freeze, dispute, ...), with the honest outcome wording and the things that must never be claimed (card actually blocked, reversal done, issuer contacted). Recording an instruction is not executing it. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: dimension; grain: one service request type (curated reference source). Lakehouse: dim_service_request_type <- Curated reference data.
+table ServiceRequestType
+
+	/// Service request type identifier such as SR-CARD-FREEZE.
+	column 'Service Type ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: service_type_id
+
+	/// Request title such as Freeze a card.
+	column Title
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: title
+
+	/// What the request does.
+	column Summary
+		dataType: string
+		summarizeBy: none
+		sourceColumn: summary
+
+	/// Business unit that owns the request type.
+	column 'BU ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: bu_id
+
+	/// Journeys that use the request type (semicolon separated).
+	column 'Journey Ids'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: journey_ids
+
+	/// Default case priority.
+	column Priority
+		dataType: string
+		summarizeBy: none
+		sourceColumn: priority
+
+	/// Title given to the CRM case.
+	column 'Case Title'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: case_title
+
+	/// Case stages in order (semicolon separated).
+	column 'Stage Ladder'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: stage_ladder
+
+	/// recorded_synthetic_instruction: the instruction is recorded, not executed.
+	column 'Activation Mode'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: activation_mode
+
+	/// Honest wording for what was recorded.
+	column 'Recorded Outcome'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: recorded_outcome
+
+	/// Statements the assistant must never make about this request (semicolon separated).
+	column 'Never Claim'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: never_claim
+
+	partition ServiceRequestType = entity
+		mode: directLake
+		source
+			entityName: dim_service_request_type
+			expressionSource: 'DirectLake - ContosoBankModel'

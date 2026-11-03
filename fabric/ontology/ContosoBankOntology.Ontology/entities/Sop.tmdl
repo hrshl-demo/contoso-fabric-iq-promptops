@@ -1,0 +1,69 @@
+/// [Catalogue] A standard operating procedure the assistant follows (retirement income review, suspected fraud, card controls, request handling). The procedure text lives in Foundry IQ; this entity says which SOP exists, its scope and which case it applies to. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: dimension; grain: one standard operating procedure. Lakehouse: dim_sop <- silver_sop <- sops.json.
+entity Sop
+	lineageTag: 15910522-fb1d-5057-8e26-c3d52ff49138
+	backingTable: Sop
+	keyProperty: SopId
+
+	/// SOP identifier such as SOP-UC03-SUSPECTED-FRAUD.
+	property SopId
+		dataType: string
+		lineageTag: c09d32d2-b083-5987-a223-b0600385767f
+
+		backingConfiguration
+			valueColumn: Sop.SopId
+
+	/// SOP title.
+	property Title
+		dataType: string
+		lineageTag: e39bb687-a8c1-5c66-994e-1d97460e4be0
+
+		backingConfiguration
+			valueColumn: Sop.Title
+
+	/// case (one use case) or shared (all cases).
+	property Scope
+		dataType: string
+		lineageTag: 4e6d9cb4-321e-5cdf-9bc7-44c668a66b67
+
+		backingConfiguration
+			valueColumn: Sop.Scope
+
+	/// Who the SOP is for, for example bank_global.
+	property Audience
+		dataType: string
+		lineageTag: d7c91a90-dba5-5598-8131-0fb247d7b11a
+
+		backingConfiguration
+			valueColumn: Sop.Audience
+
+	/// Use case the SOP applies to, for example UC03.
+	property AppliesToCase
+		dataType: string
+		lineageTag: 1950eda7-6167-50c0-b231-6d07bd4d491c
+
+		backingConfiguration
+			valueColumn: Sop.AppliesToCase
+
+	/// Path of the SOP text in the knowledge store.
+	property KnowledgePath
+		dataType: string
+		lineageTag: 397524a6-8c0a-52e3-a6b4-b67c8b3f0729
+
+		backingConfiguration
+			valueColumn: Sop.KnowledgePath
+
+	/// SOP version number.
+	property SourceVersion
+		dataType: int64
+		lineageTag: 2159e573-aa56-54ce-920f-f7ddb94f8207
+
+		backingConfiguration
+			valueColumn: Sop.SourceVersion
+
+	/// Seed release the row comes from.
+	property ReleaseId
+		dataType: string
+		lineageTag: 95da6e06-a724-52bf-a279-4aae6ef6aa3d
+
+		backingConfiguration
+			valueColumn: Sop.ReleaseId

@@ -1,0 +1,101 @@
+/// A customer document: salary slip, school fee circular, scam message, card statement, FD renewal notice, loan offer. Documents are evidence only when the customer selected them and consented; FactsText holds the key facts in readable form. Content itself is in Foundry IQ, not here. Standards: BIAN 13.0.0 Document Directory (custom); Microsoft CDM CustomDocument (semantic reference only). Demo mapping, not certification. Star role: dimension; grain: one document. Lakehouse: dim_document <- silver_document <- documents.json.
+table Document
+
+	/// Number of customer documents.
+	measure Documents = COUNTROWS(Document)
+		formatString: #,0
+		displayFolder: Servicing
+
+	/// Document identifier such as doc-school-fee or DOC-N-PENSION.
+	column 'Document ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: document_id
+
+	/// Customer who owns the document.
+	column 'Customer ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	/// Document title (legacy only).
+	column Title
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: title
+
+	/// Kind of document such as salary_slip, school_fee_evidence, pension_advice, invoice.
+	column 'Document Type'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: document_type
+
+	/// Who issued the document.
+	column Issuer
+		dataType: string
+		summarizeBy: none
+		sourceColumn: issuer
+
+	/// Issue date (Frontier only).
+	column 'Issued On'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: issued_on
+
+	/// Number of pages (legacy only).
+	column 'Page Count'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: page_count
+
+	/// Why the document exists in the seed, for example evidence_analysis.
+	column Purpose
+		dataType: string
+		summarizeBy: none
+		sourceColumn: purpose
+
+	/// Who may see it, for example owner_seed (legacy only).
+	column Visibility
+		dataType: string
+		summarizeBy: none
+		sourceColumn: visibility
+
+	/// Document version number (legacy only).
+	column 'Source Version'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: source_version
+
+	/// Newer document that supersedes this one.
+	column 'Superseded By Document ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: superseded_by_document_id
+
+	/// Older document this one supersedes.
+	column 'Supersedes Document ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: supersedes_document_id
+
+	/// Key facts stated in the document as readable text: amounts in INR, lists comma separated.
+	column 'Facts Text'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: facts_text
+
+	/// Seed release the row comes from.
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	partition Document = entity
+		mode: directLake
+		source
+			entityName: dim_document
+			expressionSource: 'DirectLake - ContosoBankModel'

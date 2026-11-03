@@ -1,0 +1,91 @@
+table Journey
+	lineageTag: f248ab22-5fdd-5f11-a271-d01984fa8cc4
+
+	column JourneyId
+		dataType: string
+		lineageTag: 5ec15b6b-5cac-5a2c-b504-d2b4b8c7de0e
+		sourceColumn: journey_id
+
+	column Title
+		dataType: string
+		lineageTag: 6110e018-3b02-55b3-8d2b-e0413bdb8b52
+		sourceColumn: title
+
+	column JourneyKind
+		dataType: string
+		lineageTag: b00a3f67-b889-549f-bf5c-86c86611bec0
+		sourceColumn: journey_kind
+
+	column OneLiner
+		dataType: string
+		lineageTag: 065456e1-edc8-5933-a399-755fb0353401
+		sourceColumn: one_liner
+
+	column Goal
+		dataType: string
+		lineageTag: 02b65383-4d3f-53d3-b0a4-a8bac0c37f22
+		sourceColumn: goal
+
+	column BuId
+		dataType: string
+		lineageTag: 8f781b6b-7347-5c7a-80ea-24f38db713f1
+		sourceColumn: bu_id
+
+	column SalesPosture
+		dataType: string
+		lineageTag: 5c50b61b-7a15-559b-a12b-c62b2a6c6889
+		sourceColumn: sales_posture
+
+	column TurnCap
+		dataType: int64
+		formatString: 0
+		lineageTag: 49189df2-bd75-590d-9c9b-81456fd0f901
+		sourceColumn: turn_cap
+
+	column AutonomyCeiling
+		dataType: int64
+		formatString: 0
+		lineageTag: 95bde584-80b3-5fd3-b5ec-e2bd0a919958
+		sourceColumn: autonomy_ceiling
+
+	column PrimarySpecialists
+		dataType: string
+		lineageTag: 11ea0667-7c8a-59b3-9c10-bdc704272ddd
+		sourceColumn: primary_specialists
+
+	column AllowedPreparedOperations
+		dataType: string
+		lineageTag: 399b25ba-e76f-5e16-8ad9-5d2103a60bc7
+		sourceColumn: allowed_prepared_operations
+
+	column TriggersText
+		dataType: string
+		lineageTag: f45739be-21b1-54d4-8148-ced95a6117cf
+		sourceColumn: triggers_text
+
+	column MustEstablishText
+		dataType: string
+		lineageTag: 6855972a-83be-5a0a-98ec-b0e17e1ea015
+		sourceColumn: must_establish_text
+
+	column NeverDoText
+		dataType: string
+		lineageTag: fbef0124-a175-547d-b782-7933d1038ea1
+		sourceColumn: never_do_text
+
+	column ToolHints
+		dataType: string
+		lineageTag: 9ea9245b-6293-539a-8b7b-e8fe93d76599
+		sourceColumn: tool_hints
+
+	column OpenerExamples
+		dataType: string
+		lineageTag: 4d6e5810-754b-573b-b9b3-ded33ff2dbf0
+		sourceColumn: opener_examples
+
+	partition Journey = entity
+		mode: directLake
+		source
+			entityName: dim_journey
+			schemaName: dbo
+			expressionSource: DatabaseQuery

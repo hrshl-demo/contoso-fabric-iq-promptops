@@ -1,0 +1,22 @@
+rule PrepareOnlyByDefault
+	statement: Agents act prepare-only by default. The only delegated money movement is a bounded surplus_to_goal FrontierMandate, valid only if the current balance, protected cash, per-action cap, monthly cap, minimum source balance, validity dates and consent all still pass at execution time.
+	lineageTag: 6c7691c0-fb41-5ca5-9632-becc23399c76
+
+	ruleReferencedEntity FrontierMandate
+		propertyScope: specific
+
+		ruleReferencedProperty PerActionLimitInr
+
+		ruleReferencedProperty MonthlyLimitInr
+
+		ruleReferencedProperty MinimumSourceBalanceInr
+
+		ruleReferencedProperty ValidFrom
+
+		ruleReferencedProperty ValidUntil
+
+		ruleReferencedProperty Status
+
+	ruleReferencedRelationship 'Mandate Granted By Customer'
+
+	ruleReferencedRelationship 'Mandate Bound To Agent'

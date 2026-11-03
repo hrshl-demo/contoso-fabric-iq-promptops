@@ -2,6 +2,16 @@
 
 Newest first. Every prompt version has one line of the form `` - `<prompt id>` <version>: <what changed> ``; `python -m tools.lint_prompts` checks it.
 
+## Unreleased
+
+### Prompts
+- `ontology.build` 1.1.0: writes the generated Fabric items to `fabric/` and a readable brief to `docs/generated/` with `python -m tools.export_fabric --write` instead of leaving them in the kit's scratch folder.
+- `ontology.enrich` 1.1.0: same regeneration step; the synonyms and PII markers can be reviewed in `docs/generated/ontology-brief.md`.
+
+### Artifacts
+- `fabric/ontology/ContosoBankOntology.Ontology` and `fabric/semantic-model/ContosoBankModel.SemanticModel` (core tier), generated from `kit/model/`; CI fails if they drift from the spec.
+- `tools/deploy_preview.py`: an offline preview of which Fabric items a change would create, replace or remove, posted on every pull request.
+
 ## v1.0.0 (baseline, not yet released)
 
 ### Prompts

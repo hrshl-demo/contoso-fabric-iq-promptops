@@ -1,15 +1,27 @@
 """Run every repo check in one go: python -m tools.check [--base origin/main]
 
-Prompt lint, generated wrappers, manifest, PII/secret guard and Fabric artifact validation. The kit's own tests run separately
-(see AGENTS.md).
+Prompt lint, generated wrappers, manifest, PII/secret guard, Fabric artifact validation and, when the kit's requirements are
+installed, that the generated Fabric items still match the spec. The kit's own tests run separately (see AGENTS.md).
 """
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import sys
 from typing import Optional
 
-from . import lint_prompts, manifest, pii_guard, validate_fabric, wrappers
+from . import export_fabric, lint_prompts, manifest, pii_guard, validate_fabric, wrappers
+
+
+def kit_requirements_installed() -> bool:
+    return all(importlib.util.find_spec(m) is not None for m in ("pandas", "pyarrow", "requests"))
+
+
+def generated_in_sync() -> int:
+    if not kit_requirements_installed():
+        print("skipped: the kit's requirements are not installed (pip install -r kit/requirements.txt); CI runs this check in the offline build")
+        return 0
+    return export_fabric.main(["--check"])
 
 
 def main(argv: Optional[list[str]] = None) -> int:
@@ -22,6 +34,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         ("manifest", lambda: manifest.main(["--check"])),
         ("pii / secret guard", lambda: pii_guard.main([])),
         ("fabric items", lambda: validate_fabric.main([])),
+        ("generated files match the spec", generated_in_sync),
     ]
     failed = []
     for name, fn in steps:

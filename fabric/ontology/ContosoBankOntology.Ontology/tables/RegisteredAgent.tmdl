@@ -1,0 +1,80 @@
+table RegisteredAgent
+	lineageTag: ed837a4f-30e6-553c-a240-95ce15abdc14
+
+	column AgentId
+		dataType: string
+		lineageTag: cf78d2a2-61dc-59b6-9f26-265e96f28b98
+		sourceColumn: agent_id
+
+	column CustomerId
+		dataType: string
+		lineageTag: 0cf1bb10-1466-53c9-95b0-3f6c6064af2f
+		sourceColumn: customer_id
+
+	column HouseholdId
+		dataType: string
+		lineageTag: 77686e06-c340-5009-8947-7288294215de
+		sourceColumn: household_id
+
+	column ConsentId
+		dataType: string
+		lineageTag: 3307032f-3e60-5cfd-885e-e0cf9fed79b7
+		sourceColumn: consent_id
+
+	column RegistrationType
+		dataType: string
+		lineageTag: 236c6580-12ae-5fce-abdb-b2803c5849e5
+		sourceColumn: registration_type
+
+	column DelegationMode
+		dataType: string
+		lineageTag: 38562530-274e-5e9b-b5bf-c5ab4a846653
+		sourceColumn: delegation_mode
+
+	column Status
+		dataType: string
+		lineageTag: 730d5146-d34f-509d-a1e4-5e484e1bae47
+		sourceColumn: status
+
+	column Scopes
+		dataType: string
+		lineageTag: 85300404-ce3b-55b3-8587-295f9601f93e
+		sourceColumn: scopes
+
+	column DeniedScopes
+		dataType: string
+		lineageTag: a0e257db-ef8b-57b0-9d4b-d5e65a3e2d47
+		sourceColumn: denied_scopes
+
+	column KyaProviderName
+		dataType: string
+		lineageTag: f069231f-73a6-5a64-9982-98508390b6ad
+		sourceColumn: kya_provider_name
+
+	column KyaRegistrationId
+		dataType: string
+		lineageTag: 2344c49c-c488-568c-b2de-2e8e7074b39a
+		sourceColumn: kya_registration_id
+
+	column KyaVerificationMethod
+		dataType: string
+		lineageTag: b1193dc0-45af-5d8e-b308-8f2d731c580c
+		sourceColumn: kya_verification_method
+
+	column KyaVerifiedAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 208179ef-d6b8-5e51-ad4a-7476499c6da6
+		sourceColumn: kya_verified_at
+
+	column ReleaseId
+		dataType: string
+		lineageTag: b83a05dc-7d23-5f22-9458-53187fafb3de
+		sourceColumn: release_id
+
+	partition RegisteredAgent = entity
+		mode: directLake
+		source
+			entityName: dim_registered_agent
+			schemaName: dbo
+			expressionSource: DatabaseQuery

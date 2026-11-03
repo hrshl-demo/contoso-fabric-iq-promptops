@@ -1,0 +1,117 @@
+/// [Authority] A customer-side AI agent registered with the bank through Know Your Agent (KYA), for example Rhea's personal agent. KYA is registration, not consent or a mandate. An agent cannot register itself, widen its scopes or approve its own prepared action. Standards: no verified BIAN mapping (custom semantics); no Microsoft CDM reference. Demo mapping, not certification. Star role: dimension; grain: one registered agent. Lakehouse: dim_registered_agent <- silver_registered_agent <- agents.json.
+entity RegisteredAgent
+	lineageTag: e7756072-7522-5dc7-b96d-5b811886e2a0
+	backingTable: RegisteredAgent
+	keyProperty: AgentId
+
+	/// Agent identifier such as agent-rhea-001.
+	property AgentId
+		dataType: string
+		lineageTag: 1e79f604-a865-5f97-9d2f-9192b7b2fed2
+
+		backingConfiguration
+			valueColumn: RegisteredAgent.AgentId
+
+	/// Customer the agent acts for.
+	property CustomerId
+		dataType: string
+		lineageTag: b1e122bc-d444-5320-b9cc-fd80ff62a2ad
+
+		backingConfiguration
+			valueColumn: RegisteredAgent.CustomerId
+
+	/// Household the agent operates in.
+	property HouseholdId
+		dataType: string
+		lineageTag: a621998b-721d-5df1-a020-8757e504366c
+
+		backingConfiguration
+			valueColumn: RegisteredAgent.HouseholdId
+
+	/// Consent that lets the agent read the customer's data.
+	property ConsentId
+		dataType: string
+		lineageTag: 51f7f5bc-13ae-5ac0-8c2e-3eb1ba66b6fd
+
+		backingConfiguration
+			valueColumn: RegisteredAgent.ConsentId
+
+	/// Registration type such as personal_agent.
+	property RegistrationType
+		dataType: string
+		lineageTag: 632fba1e-6f7f-57c6-aff4-6a0bf5c89d6c
+
+		backingConfiguration
+			valueColumn: RegisteredAgent.RegistrationType
+
+	/// How authority is delegated, for example household_financial_assistant.
+	property DelegationMode
+		dataType: string
+		lineageTag: 0b6be22d-6680-5f48-b23d-8ae43d6d688b
+
+		backingConfiguration
+			valueColumn: RegisteredAgent.DelegationMode
+
+	/// registered, suspended or revoked.
+	property Status
+		dataType: string
+		lineageTag: afd5f993-81e8-51bc-9b62-6c73e7a4d2f1
+
+		backingConfiguration
+			valueColumn: RegisteredAgent.Status
+
+	/// Scopes the agent may use, such as read:goals or propose:goal_transfer (semicolon separated).
+	property Scopes
+		dataType: string
+		lineageTag: 5efc8b1c-72a7-5f13-9b0c-64cf16ec4240
+
+		backingConfiguration
+			valueColumn: RegisteredAgent.Scopes
+
+	/// Scopes the agent is explicitly denied, such as execute:unmandated_transfer (semicolon separated). Denied wins.
+	property DeniedScopes
+		dataType: string
+		lineageTag: 59320cc8-9588-58ff-9b2d-7dc1e4638065
+
+		backingConfiguration
+			valueColumn: RegisteredAgent.DeniedScopes
+
+	/// KYA provider name (synthetic registry fixture).
+	property KyaProviderName
+		dataType: string
+		lineageTag: eb5f493f-551c-5f79-9195-8539d43da8ec
+
+		backingConfiguration
+			valueColumn: RegisteredAgent.KyaProviderName
+
+	/// KYA registration id (synthetic).
+	property KyaRegistrationId
+		dataType: string
+		lineageTag: affc442f-fdd9-50e7-81f6-64e45706407e
+
+		backingConfiguration
+			valueColumn: RegisteredAgent.KyaRegistrationId
+
+	/// How the agent was verified: synthetic_registry_fixture. Not an external certification.
+	property KyaVerificationMethod
+		dataType: string
+		lineageTag: 895babf2-2dde-57de-a4c7-8b1be04f0486
+
+		backingConfiguration
+			valueColumn: RegisteredAgent.KyaVerificationMethod
+
+	/// When KYA verification was recorded. Instant in UTC.
+	property KyaVerifiedAt
+		dataType: dateTime
+		lineageTag: f0ace1a1-3171-5d90-8afc-8a9a7cd7ce50
+
+		backingConfiguration
+			valueColumn: RegisteredAgent.KyaVerifiedAt
+
+	/// Seed release the row comes from.
+	property ReleaseId
+		dataType: string
+		lineageTag: 108f0b60-1f3f-56a7-ab48-252b62ae15b8
+
+		backingConfiguration
+			valueColumn: RegisteredAgent.ReleaseId

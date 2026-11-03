@@ -1,0 +1,93 @@
+/// [Holdings] A planning gap between existing and target protection (for example life cover). It is a synthetic planning figure, not a recommendation, quote or underwriting outcome. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: fact; grain: one computed protection gap per customer and cover type at the business date (snapshot). Lakehouse: fact_protection_gap <- silver_protection_gap <- insurance.json.
+entity ProtectionGap
+	lineageTag: 8769891a-f6bd-546f-944c-d161aea6d228
+	backingTable: ProtectionGap
+	keyProperty: ProtectionGapId
+
+	/// Gap identifier such as gap-life-001.
+	property ProtectionGapId
+		dataType: string
+		lineageTag: ad53a7aa-3f74-5e87-b1d8-a14a3ffd1391
+
+		backingConfiguration
+			valueColumn: ProtectionGap.ProtectionGapId
+
+	/// Customer the gap was computed for.
+	property CustomerId
+		dataType: string
+		lineageTag: eac41b22-be46-574e-a700-5c29d0cafe10
+
+		backingConfiguration
+			valueColumn: ProtectionGap.CustomerId
+
+	/// Type of cover, for example life_cover.
+	property GapType
+		dataType: string
+		lineageTag: 1af39df0-d9b4-53bd-b7d8-4b8e2802945f
+
+		backingConfiguration
+			valueColumn: ProtectionGap.GapType
+
+	/// Cover already in force. In rupees (INR).
+	property ExistingProtectionInr
+		dataType: double
+		lineageTag: 7d5425ec-bd23-5fbd-b4bd-a249327f4b70
+
+		backingConfiguration
+			valueColumn: ProtectionGap.ExistingProtectionInr
+
+	/// Cover the household would need. In rupees (INR).
+	property TargetProtectionInr
+		dataType: double
+		lineageTag: 35234687-a0da-5acf-9e79-81e7250cfa1c
+
+		backingConfiguration
+			valueColumn: ProtectionGap.TargetProtectionInr
+
+	/// Target minus existing protection. In rupees (INR).
+	property GapInr
+		dataType: double
+		lineageTag: 729d53fb-946a-52d0-942f-6c25515bc8da
+
+		backingConfiguration
+			valueColumn: ProtectionGap.GapInr
+
+	/// Part of the target that replaces income. In rupees (INR).
+	property IncomeReplacementInr
+		dataType: double
+		lineageTag: 947bcaac-f787-5ec6-ab05-9b2f75e3db71
+
+		backingConfiguration
+			valueColumn: ProtectionGap.IncomeReplacementInr
+
+	/// Part of the target that covers loans and education. In rupees (INR).
+	property LoanAndEducationNeedsInr
+		dataType: double
+		lineageTag: 4b02ed2c-8364-520e-b193-147f1736bf6f
+
+		backingConfiguration
+			valueColumn: ProtectionGap.LoanAndEducationNeedsInr
+
+	/// Liquid assets deducted from the target. In rupees (INR).
+	property OffsetLiquidAssetsInr
+		dataType: double
+		lineageTag: a9bff387-90af-55bd-af4e-b7661bcf0e40
+
+		backingConfiguration
+			valueColumn: ProtectionGap.OffsetLiquidAssetsInr
+
+	/// Mandatory disclosure that this is a planning figure only.
+	property Disclosure
+		dataType: string
+		lineageTag: 3ed31a5c-05db-5531-a620-3221c22346ee
+
+		backingConfiguration
+			valueColumn: ProtectionGap.Disclosure
+
+	/// Seed release the row comes from.
+	property ReleaseId
+		dataType: string
+		lineageTag: b74db191-10b1-5a95-be19-8550597f7480
+
+		backingConfiguration
+			valueColumn: ProtectionGap.ReleaseId

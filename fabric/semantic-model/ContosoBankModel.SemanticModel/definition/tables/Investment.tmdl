@@ -1,0 +1,71 @@
+/// An investment holding (fixed deposit, index fund, reserve). Current value is a market-style figure from the seed, not a guaranteed return. Linked to the goals it funds. For net position or total assets use Investment value: a fixed deposit that is also an Investment is one asset, so never add Deposit principal on top of it (Law L5). Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: dimension; grain: one investment holding. Lakehouse: dim_investment <- silver_investment <- investments.json.
+table Investment
+
+	/// Sum of current investment value in rupees, including the liquid fixed deposit.
+	measure 'Total Investments (INR)' = SUM(Investment[Current Value (INR)])
+		formatString: #,0.00
+		displayFolder: Balances
+
+	/// Investment identifier such as inv-liquid-fd.
+	column 'Investment ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: investment_id
+
+	/// Investor.
+	column 'Customer ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	/// Catalogue product of the investment.
+	column 'Product ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: product_id
+
+	/// Type such as fixed_deposit or index_fund.
+	column 'Investment Type'
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: investment_type
+
+	/// How quickly the money can be reached.
+	column Liquidity
+		dataType: string
+		summarizeBy: none
+		sourceColumn: liquidity
+
+	/// Current value of the holding. In rupees (INR).
+	column 'Current Value (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: current_value_inr
+
+	/// Current value of the holding. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Current Value (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: current_value_paise
+
+	/// Goals the investment funds (semicolon separated).
+	column 'Goal Ids'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: goal_ids
+
+	/// Seed release the row comes from.
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	partition Investment = entity
+		mode: directLake
+		source
+			entityName: dim_investment
+			expressionSource: 'DirectLake - ContosoBankModel'

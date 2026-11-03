@@ -1,0 +1,50 @@
+table Sop
+	lineageTag: 4b6a927e-0f0e-5288-9435-4e2cfd40ce62
+
+	column SopId
+		dataType: string
+		lineageTag: 3f6464f4-00e1-543b-b6d1-d2a9d1dcb765
+		sourceColumn: sop_id
+
+	column Title
+		dataType: string
+		lineageTag: 56eef565-efe9-5369-9073-acb9e0544a2b
+		sourceColumn: title
+
+	column Scope
+		dataType: string
+		lineageTag: e6ccc707-786e-5c8c-bee0-8492caf7e2c1
+		sourceColumn: scope
+
+	column Audience
+		dataType: string
+		lineageTag: a63e3843-2141-58f2-b8e2-506ef6ab6a9c
+		sourceColumn: audience
+
+	column AppliesToCase
+		dataType: string
+		lineageTag: fc7d8793-8cf4-5e95-8df0-78e1e87b3bf0
+		sourceColumn: applies_to_case
+
+	column KnowledgePath
+		dataType: string
+		lineageTag: 23d8eac9-afe3-5a05-b4bc-b7113e590119
+		sourceColumn: knowledge_path
+
+	column SourceVersion
+		dataType: int64
+		formatString: 0
+		lineageTag: fe346586-2c65-585e-b736-1326129c6032
+		sourceColumn: source_version
+
+	column ReleaseId
+		dataType: string
+		lineageTag: 072042d5-230a-5f3d-9dd0-256c66d5e1ba
+		sourceColumn: release_id
+
+	partition Sop = entity
+		mode: directLake
+		source
+			entityName: dim_sop
+			schemaName: dbo
+			expressionSource: DatabaseQuery

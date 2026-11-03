@@ -1,0 +1,181 @@
+/// [Holdings] A debit or credit card linked to an account. Frontier Rhea's credit card card-rhea-frontier is temporarily locked after a dispute. Only masked numbers exist. Credit limit is not cash. Standards: BIAN 13.0.0 Credit Card (custom), Customer Product and Service Directory (custom); Microsoft CDM FICard (semantic reference only). Demo mapping, not certification. Star role: dimension; grain: one card. Lakehouse: dim_card <- silver_card <- cards.json. Official CDM name aliases: FICard.integrationKey, FICard.cardnumber, FICard.purchasingLimit (semantic reference only).
+entity Card
+	lineageTag: 39a1515c-66b3-5c56-bad5-203ed3c733d9
+	backingTable: Card
+	keyProperty: CardId
+
+	/// Card identifier such as card-rhea-frontier.
+	property CardId
+		dataType: string
+		lineageTag: 687aef9a-a130-54b1-9bf1-6e16e297a462
+
+		backingConfiguration
+			valueColumn: Card.CardId
+
+	/// Card holder.
+	property CustomerId
+		dataType: string
+		lineageTag: dafbf5ba-a388-5936-a8f8-563b4f395dc0
+
+		backingConfiguration
+			valueColumn: Card.CustomerId
+
+	/// Account the card is linked to.
+	property AccountId
+		dataType: string
+		lineageTag: f65ede9c-dbe0-5b71-ac2c-21faedb5ef32
+
+		backingConfiguration
+			valueColumn: Card.AccountId
+
+	/// Catalogue product of the card.
+	property ProductId
+		dataType: string
+		lineageTag: 41ce795f-5057-5207-8ccf-796819cdd97b
+
+		backingConfiguration
+			valueColumn: Card.ProductId
+
+	/// debit or credit.
+	property CardType
+		dataType: string
+		lineageTag: f401df15-51fa-524c-a8f1-64230b21fc28
+
+		backingConfiguration
+			valueColumn: Card.CardType
+
+	/// Card status such as active or temporarily_locked_after_dispute.
+	property Status
+		dataType: string
+		lineageTag: e91df63d-2346-5575-8b4a-7f046f8645c2
+
+		backingConfiguration
+			valueColumn: Card.Status
+
+	/// [PII] Masked card number showing only the last four digits (legacy only). Never read it aloud in full.
+	property MaskedNumber
+		dataType: string
+		lineageTag: 711152c1-53cf-5da7-bb89-846631043646
+
+		backingConfiguration
+			valueColumn: Card.MaskedNumber
+
+	/// Card expiry as MM/YY (legacy only).
+	property ExpiryMmYy
+		dataType: string
+		lineageTag: b12f7a55-cdf5-50b4-ba08-0268f069b31d
+
+		backingConfiguration
+			valueColumn: Card.ExpiryMmYy
+
+	/// Approved credit limit. A limit is not available cash. In rupees (INR).
+	property CreditLimitInr
+		dataType: double
+		lineageTag: 708f02d5-6511-5b59-b04b-84629de238a8
+
+		backingConfiguration
+			valueColumn: Card.CreditLimitInr
+
+	/// Credit still available to spend. In rupees (INR).
+	property AvailableCreditInr
+		dataType: double
+		lineageTag: 761bdce4-5967-576c-b5fd-41d9a11ad6d3
+
+		backingConfiguration
+			valueColumn: Card.AvailableCreditInr
+
+	/// Amount currently owed on the card. In rupees (INR).
+	property OutstandingBalanceInr
+		dataType: double
+		lineageTag: c645ea61-92b6-59f4-a6cc-0b238132d00c
+
+		backingConfiguration
+			valueColumn: Card.OutstandingBalanceInr
+
+	/// Minimum payment due on the latest statement (legacy only). In rupees (INR).
+	property MinimumDueInr
+		dataType: double
+		lineageTag: 79bff649-a247-502b-b1af-12e58be295c4
+
+		backingConfiguration
+			valueColumn: Card.MinimumDueInr
+
+	/// Annual interest rate on card balances (Frontier only). As a percentage, for example 8.5 means 8.5%.
+	property AnnualRatePct
+		dataType: double
+		lineageTag: cfddbd63-08c0-562f-ab3d-7ce7d3b2b961
+
+		backingConfiguration
+			valueColumn: Card.AnnualRatePct
+
+	/// Day of month the statement is generated (Frontier only).
+	property StatementDay
+		dataType: int64
+		lineageTag: 0516ad49-3e12-5ac4-94f9-5625c97d8bf5
+
+		backingConfiguration
+			valueColumn: Card.StatementDay
+
+	/// Day of month payment is due (Frontier only).
+	property PaymentDueDay
+		dataType: int64
+		lineageTag: cda1d340-4cb5-5428-84d0-fe6c4d51b260
+
+		backingConfiguration
+			valueColumn: Card.PaymentDueDay
+
+	/// Next payment due date (legacy only).
+	property PaymentDueOn
+		dataType: dateTime
+		lineageTag: 3bc7e413-ec51-55fe-a6b7-c6b01c8d48d2
+
+		backingConfiguration
+			valueColumn: Card.PaymentDueOn
+
+	/// Start of the current statement period (legacy only).
+	property StatementFrom
+		dataType: dateTime
+		lineageTag: 9205aaaf-b2cf-5f61-8f68-706f43314a87
+
+		backingConfiguration
+			valueColumn: Card.StatementFrom
+
+	/// End of the current statement period (legacy only).
+	property StatementTo
+		dataType: dateTime
+		lineageTag: 83374c18-dbb9-576b-ad07-6efe04f6c28b
+
+		backingConfiguration
+			valueColumn: Card.StatementTo
+
+	/// True when international use is switched on (legacy only).
+	property InternationalEnabled
+		dataType: boolean
+		lineageTag: c3c1e16f-8a44-52ea-ac50-26420eb5415f
+
+		backingConfiguration
+			valueColumn: Card.InternationalEnabled
+
+	/// True when online use is switched on (legacy only).
+	property OnlineEnabled
+		dataType: boolean
+		lineageTag: 74e3cba9-5879-5909-a3f5-211a804285c3
+
+		backingConfiguration
+			valueColumn: Card.OnlineEnabled
+
+	/// True when contactless use is switched on (legacy only).
+	property ContactlessEnabled
+		dataType: boolean
+		lineageTag: 52060603-0c45-56b1-ad3d-87f294db1017
+
+		backingConfiguration
+			valueColumn: Card.ContactlessEnabled
+
+	/// Seed release the row comes from.
+	property ReleaseId
+		dataType: string
+		lineageTag: 2cf5a50d-94b4-5951-8ffb-cb6f2181fc25
+
+		backingConfiguration
+			valueColumn: Card.ReleaseId

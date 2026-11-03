@@ -1,0 +1,25 @@
+rule NoFutureMoneyAsCash
+	statement: Law L6. Forecast income, offers, unpaid invoices, promised refunds, unused credit limits, unposted deposit maturities and loan proceeds are not spendable cash. Available cash is the posted, available balance of owned accounts, less protected cash and committed obligations.
+	lineageTag: 40dfa6f1-b887-5c1e-8800-59f593b06c56
+
+	ruleReferencedEntity Card
+		propertyScope: specific
+
+		ruleReferencedProperty CreditLimitInr
+
+		ruleReferencedProperty AvailableCreditInr
+
+	ruleReferencedEntity Deposit
+		propertyScope: specific
+
+		ruleReferencedProperty MaturesOn
+
+	ruleReferencedEntity Account
+		propertyScope: specific
+
+		ruleReferencedProperty AvailableBalanceInr
+
+	ruleReferencedEntity ScheduledObligation
+		propertyScope: specific
+
+		ruleReferencedProperty AmountInr

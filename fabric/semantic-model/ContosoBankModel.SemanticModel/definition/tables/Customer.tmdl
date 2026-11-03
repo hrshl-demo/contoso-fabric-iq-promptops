@@ -1,0 +1,123 @@
+/// A person the bank serves or tracks: Frontier primary customer Rhea Bansal (CustomerId rhea), legacy personas (Nivedita, Ravi, and the older copy of Rhea as rhea~legacy) and CRM-only parties. Never merge rows across ReleaseId; Frontier supersedes legacy. Standards: BIAN 13.0.0 Party Reference Data Directory (custom); Microsoft CDM Contact (semantic reference only). Demo mapping, not certification. Star role: dimension; grain: one customer identity per release. Lakehouse: dim_customer <- silver_customer + silver_crm_case <- personas.json, bank/crm-cases.json.
+table Customer
+
+	/// Number of customers and parties.
+	measure Customers = DISTINCTCOUNT(Customer[Customer ID])
+		formatString: #,0
+		displayFolder: Customers
+
+	/// Customers in the current Frontier release.
+	measure 'Frontier Customers' = CALCULATE(DISTINCTCOUNT(Customer[Customer ID]), Customer[Release ID] = "retail-frontier-v1")
+		formatString: #,0
+		displayFolder: Customers
+
+	/// Stable customer identifier, for example rhea or nivedita. Legacy copies of a Frontier customer end in ~legacy.
+	column 'Customer ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	/// [PII] Customer display name.
+	column 'Display Name'
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: display_name
+
+	/// [PII] Age in years at the seed business date.
+	column Age
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: age
+
+	/// [PII] City of residence.
+	column City
+		dataType: string
+		summarizeBy: none
+		sourceColumn: city
+
+	/// Employment status such as salaried or retired.
+	column 'Employment Status'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: employment_status
+
+	/// Customer cohort: household_primary_owner (Frontier), retirement, millennial or gen-z (legacy). Null for CRM-only parties.
+	column Segment
+		dataType: string
+		summarizeBy: none
+		sourceColumn: segment
+
+	/// Household the customer belongs to (Frontier only).
+	column 'Household ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: household_id
+
+	/// True when the customer is the only customer-visible primary owner of a household (Frontier only).
+	column 'Is Primary Owner'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: is_primary_owner
+
+	/// [PII] Registered mobile number, already masked. Never read digits aloud.
+	column 'Phone Masked'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: phone_masked
+
+	/// Short narrative of the persona's situation and goals (legacy personas only).
+	column 'Profile Summary'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: profile_summary
+
+	/// Where the row comes from: persona (full profile) or crm_case_party (name only, seen in CRM cases).
+	column 'Source Kind'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: source_kind
+
+	/// For a legacy copy of a Frontier customer: the CustomerId that supersedes it. Never combine the two.
+	column 'Superseded By Customer ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: superseded_by_customer_id
+
+	/// Always true: every record in this demo is synthetic and must never be presented as live bank data.
+	column 'Is Synthetic'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: is_synthetic
+
+	/// Seed release the row comes from: retail-frontier-v1 (current) or retail4-v1 (legacy).
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	/// [PII] Date of birth from KYC. Restricted: identity verification only.
+	column 'Date Of Birth'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: date_of_birth
+
+	/// [PII] Residential address from KYC. Restricted.
+	column 'Kyc Address'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: kyc_address
+
+	/// [PII] Registered email address. Restricted.
+	column Email
+		dataType: string
+		summarizeBy: none
+		sourceColumn: email
+
+	partition Customer = entity
+		mode: directLake
+		source
+			entityName: dim_customer
+			expressionSource: 'DirectLake - ContosoBankModel'

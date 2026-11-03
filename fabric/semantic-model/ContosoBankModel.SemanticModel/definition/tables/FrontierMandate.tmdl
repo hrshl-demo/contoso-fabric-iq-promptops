@@ -1,0 +1,154 @@
+/// A mandate: a bounded standing authority for an agent to move surplus cash into a goal (surplus_to_goal) within a per-action cap, a monthly cap and a minimum balance that must remain in the source account. Frontier mandate-surplus-001 has been revoked; a revoked, paused or expired mandate cannot execute. Standards: no verified BIAN mapping (custom semantics); no Microsoft CDM reference. Demo mapping, not certification. Star role: dimension; grain: one mandate. Lakehouse: dim_frontier_mandate <- silver_frontier_mandate <- mandates.json.
+table FrontierMandate
+
+	/// Mandates that were revoked.
+	measure 'Revoked Mandates' = CALCULATE(COUNTROWS(FrontierMandate), FrontierMandate[Status] = "revoked")
+		formatString: #,0
+		displayFolder: Authority
+
+	/// Mandate identifier such as mandate-surplus-001.
+	column 'Mandate ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: mandate_id
+
+	/// Customer who granted the mandate.
+	column 'Customer ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	/// Registered agent bound to the mandate.
+	column 'Agent ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: agent_id
+
+	/// Mandate consent, separate from the agent's read consent.
+	column 'Consent ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: consent_id
+
+	/// Account money may leave.
+	column 'Source Account ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: source_account_id
+
+	/// Account money may go to.
+	column 'Destination Account ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: destination_account_id
+
+	/// Goal the mandate funds.
+	column 'Goal ID'
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: goal_id
+
+	/// active, paused, revoked or expired. Only active may execute.
+	column Status
+		dataType: string
+		summarizeBy: none
+		sourceColumn: status
+
+	/// Currency of the limits; INR.
+	column Currency
+		dataType: string
+		summarizeBy: none
+		sourceColumn: currency
+
+	/// Largest amount allowed in one action. In rupees (INR).
+	column 'Per Action Limit (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: per_action_limit_inr
+
+	/// Largest amount allowed in one action. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Per Action Limit (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: per_action_limit_paise
+
+	/// Largest total allowed in one calendar month. In rupees (INR).
+	column 'Monthly Limit (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: monthly_limit_inr
+
+	/// Largest total allowed in one calendar month. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Monthly Limit (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: monthly_limit_paise
+
+	/// The source account must still hold at least this after an action. In rupees (INR).
+	column 'Minimum Source Balance (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: minimum_source_balance_inr
+
+	/// The source account must still hold at least this after an action. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Minimum Source Balance (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: minimum_source_balance_paise
+
+	/// Start of validity. Instant in UTC.
+	column 'Valid From'
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: valid_from
+
+	/// Start of validity. Calendar date in India time (IST), for 'today', 'this month' questions.
+	column 'Valid From Date IST'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: valid_from_date_ist
+
+	/// End of validity. Instant in UTC.
+	column 'Valid Until'
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: valid_until
+
+	/// End of validity. Calendar date in India time (IST), for 'today', 'this month' questions.
+	column 'Valid Until Date IST'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: valid_until_date_ist
+
+	/// Number of recorded mandate events.
+	column 'Event Count'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: event_count
+
+	/// Seed release the row comes from.
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	partition FrontierMandate = entity
+		mode: directLake
+		source
+			entityName: dim_frontier_mandate
+			expressionSource: 'DirectLake - ContosoBankModel'

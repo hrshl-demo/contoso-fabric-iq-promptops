@@ -1,0 +1,103 @@
+/// Monthly income evidence for a customer: gross and net, linked to the evidencing salary slip. Only posted, evidenced income counts; offers, refunds and variable targets are not income. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: fact; grain: one income record. Lakehouse: fact_income_record <- silver_income_record <- income.json.
+table IncomeRecord
+
+	/// Average net salary credit per month, in rupees.
+	measure 'Average Monthly Net Salary (INR)' = CALCULATE(AVERAGE(IncomeRecord[Net Income (INR)]), IncomeRecord[Income Type] = "salary")
+		formatString: #,0.00
+		displayFolder: Income
+
+	/// Monthly EMI as a share of average net salary.
+	measure 'Debt Service To Income' = DIVIDE([Monthly EMI (INR)], [Average Monthly Net Salary (INR)])
+		formatString: 0.0%
+		displayFolder: Income
+
+	/// Income record identifier such as income-salary-2026-04.
+	column 'Income ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: income_id
+
+	/// Customer the income belongs to.
+	column 'Customer ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	/// salary or household_contribution.
+	column 'Income Type'
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: income_type
+
+	/// Month the income is for, as YYYY-MM.
+	column Period
+		dataType: string
+		summarizeBy: none
+		sourceColumn: period
+
+	/// Gross amount before deductions. In rupees (INR).
+	column 'Gross Income (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: gross_inr
+
+	/// Gross amount before deductions. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Gross Income (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: gross_paise
+
+	/// Net amount credited. In rupees (INR).
+	column 'Net Income (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: net_inr
+
+	/// Net amount credited. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Net Income (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: net_paise
+
+	/// True when the income repeats every month.
+	column 'Is Recurring'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: is_recurring
+
+	/// Document that evidences the income.
+	column 'Evidence Document ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: evidence_document_id
+
+	/// Household member who contributed, for household contributions.
+	column 'Contributor Member ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: contributor_member_id
+
+	/// Bank narration of the credit.
+	column Narration
+		dataType: string
+		summarizeBy: none
+		sourceColumn: narration
+
+	/// Seed release the row comes from.
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	partition IncomeRecord = entity
+		mode: directLake
+		source
+			entityName: fact_income_record
+			expressionSource: 'DirectLake - ContosoBankModel'

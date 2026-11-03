@@ -1,0 +1,64 @@
+table ServiceRequestType
+	lineageTag: 372f4fcf-b79c-56ed-8fdb-db8c83490eb3
+
+	column ServiceTypeId
+		dataType: string
+		lineageTag: a41a03fd-8a48-5296-980a-f07013eeb7f8
+		sourceColumn: service_type_id
+
+	column Title
+		dataType: string
+		lineageTag: a3ab8981-5eb5-5359-bb00-135efdcaf1d5
+		sourceColumn: title
+
+	column Summary
+		dataType: string
+		lineageTag: bbb50de7-cc35-5843-95cf-9facc23f4173
+		sourceColumn: summary
+
+	column BuId
+		dataType: string
+		lineageTag: 72ba98db-63a3-5d1d-8012-ebc1cefde7d0
+		sourceColumn: bu_id
+
+	column JourneyIds
+		dataType: string
+		lineageTag: ce3baaa8-2752-5fef-9911-e11b2c2b05ca
+		sourceColumn: journey_ids
+
+	column Priority
+		dataType: string
+		lineageTag: 92dfedc2-be31-51aa-b9ac-96d22d42dbdc
+		sourceColumn: priority
+
+	column CaseTitle
+		dataType: string
+		lineageTag: e1c2f7f1-2c30-52b8-90fb-4d063b4d89df
+		sourceColumn: case_title
+
+	column StageLadder
+		dataType: string
+		lineageTag: 0b34c8c7-ca8c-5871-8a93-82d1ef9039cd
+		sourceColumn: stage_ladder
+
+	column ActivationMode
+		dataType: string
+		lineageTag: df1dc58e-d046-5ad8-86c5-f08d80f431c4
+		sourceColumn: activation_mode
+
+	column RecordedOutcome
+		dataType: string
+		lineageTag: 36f438c5-a95d-5c99-beba-fa372e20f0e2
+		sourceColumn: recorded_outcome
+
+	column NeverClaim
+		dataType: string
+		lineageTag: 030408d3-7f72-5cb5-9372-7c8106996af7
+		sourceColumn: never_claim
+
+	partition ServiceRequestType = entity
+		mode: directLake
+		source
+			entityName: dim_service_request_type
+			schemaName: dbo
+			expressionSource: DatabaseQuery

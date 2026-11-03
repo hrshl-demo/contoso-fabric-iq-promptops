@@ -1,0 +1,230 @@
+table Product
+	lineageTag: 281859a7-d220-54e8-be15-5ef9ffd69d41
+
+	column ProductId
+		dataType: string
+		lineageTag: 6ae17db2-5e18-591e-bb04-d5c16bb13cf1
+		sourceColumn: product_id
+
+	column DisplayName
+		dataType: string
+		lineageTag: 65872ab0-e28a-5b17-884f-7ded38114ff8
+		sourceColumn: display_name
+
+	column Family
+		dataType: string
+		lineageTag: ec5e3526-110d-5d6f-bc96-918e6784ced6
+		sourceColumn: family
+
+	column DataRole
+		dataType: string
+		lineageTag: 32ada27f-5eac-5a79-9245-a017797f23d5
+		sourceColumn: data_role
+
+	column Status
+		dataType: string
+		lineageTag: 48410195-f42b-5275-929a-aa6f6c6d2f9a
+		sourceColumn: status
+
+	column Issuer
+		dataType: string
+		lineageTag: 7e7ce8d5-2690-5612-88c5-9a1bba31e910
+		sourceColumn: issuer
+
+	column CatalogueVersion
+		dataType: string
+		lineageTag: 3b1b6923-6464-5d4f-aa02-8e2355b61b6f
+		sourceColumn: catalogue_version
+
+	column EffectiveFrom
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 4352fb0f-60fa-5462-ae87-11817532bf64
+		sourceColumn: effective_from
+
+	column EffectiveTo
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: e65fd114-b86d-51be-85f1-f16a9f830ea2
+		sourceColumn: effective_to
+
+	column Audience
+		dataType: string
+		lineageTag: 9cead911-4e15-5051-9d1a-122c4c09010e
+		sourceColumn: audience
+
+	column MainTradeoff
+		dataType: string
+		lineageTag: 4e52d3ce-c825-5fe1-ae74-24b2047285f4
+		sourceColumn: main_tradeoff
+
+	column WhyNotSuitable
+		dataType: string
+		lineageTag: 8b63a2d9-22fd-50e3-a195-931357a563e1
+		sourceColumn: why_not_suitable
+
+	column RateTerms
+		dataType: string
+		lineageTag: faa52da7-2cb8-5015-a515-9886438a254d
+		sourceColumn: rate_terms
+
+	column LiquidityTerms
+		dataType: string
+		lineageTag: fb0fd1df-eff1-5d9a-b18d-f290ad24749a
+		sourceColumn: liquidity_terms
+
+	column BenefitsText
+		dataType: string
+		lineageTag: 7a5d838f-b8e9-5fdc-a0d3-637f162200d5
+		sourceColumn: benefits_text
+
+	column FeesText
+		dataType: string
+		lineageTag: 594dccc3-791e-55b8-bcd9-bed56564e6b4
+		sourceColumn: fees_text
+
+	column LimitationsText
+		dataType: string
+		lineageTag: c42bd5de-9269-5c49-8f7e-baefcb2255cc
+		sourceColumn: limitations_text
+
+	column RequiredEvidence
+		dataType: string
+		lineageTag: dbc57950-6fd4-53c1-9e3e-6b91a405c744
+		sourceColumn: required_evidence
+
+	column SupportedActions
+		dataType: string
+		lineageTag: 923da9b2-5987-565a-b251-d42a08ce0345
+		sourceColumn: supported_actions
+
+	column UnderwritingRequired
+		dataType: boolean
+		lineageTag: 53f1fd8e-b5b2-513d-aeb4-f3483b4f578d
+		sourceColumn: underwriting_required
+
+	column MinAge
+		dataType: int64
+		formatString: 0
+		lineageTag: 7d5255f3-b4b5-5984-a2d9-bf44259079c7
+		sourceColumn: min_age
+
+	column MinMonthlyIncomeInr
+		dataType: double
+		lineageTag: 14134b7d-1d11-5024-9d7b-19ee9ee45413
+		sourceColumn: min_monthly_income_inr
+
+	column MinPrincipalInr
+		dataType: double
+		lineageTag: 58f4b0e8-93c5-5968-913f-849be959174d
+		sourceColumn: min_principal_inr
+
+	column MaxPrincipalInr
+		dataType: double
+		lineageTag: 27d2b2da-5e7f-5e1d-82c4-528afa24302b
+		sourceColumn: max_principal_inr
+
+	column InterestRatePct
+		dataType: double
+		lineageTag: 21686711-c69f-5d89-a827-7215929c3cfd
+		sourceColumn: interest_rate_pct
+
+	column AnnualFeeInr
+		dataType: double
+		lineageTag: 0b83ebbe-068e-50bb-9dd8-f118f20448a6
+		sourceColumn: annual_fee_inr
+
+	column MonthlyFeeInr
+		dataType: double
+		lineageTag: 6dd20d24-ebf1-5acb-8fd0-bb42d254b7ed
+		sourceColumn: monthly_fee_inr
+
+	column MinimumBalanceInr
+		dataType: double
+		lineageTag: 9e3e7f9b-3298-5d71-8b67-cf206f7c5150
+		sourceColumn: minimum_balance_inr
+
+	column ProcessingFeePct
+		dataType: double
+		lineageTag: 36e46f03-15c4-5495-af08-8d7001590fef
+		sourceColumn: processing_fee_pct
+
+	column PrepaymentChargePct
+		dataType: double
+		lineageTag: ba1e029b-b568-5986-8493-4e6954f78ac8
+		sourceColumn: prepayment_charge_pct
+
+	column EarlyWithdrawalPenaltyPct
+		dataType: double
+		lineageTag: 7b145186-1027-507d-ac68-1e4138e7fda9
+		sourceColumn: early_withdrawal_penalty_pct
+
+	column MinTermMonths
+		dataType: int64
+		formatString: 0
+		lineageTag: a3d54e37-c468-51a1-b0c6-56db4f6811f6
+		sourceColumn: min_term_months
+
+	column MaxTermMonths
+		dataType: int64
+		formatString: 0
+		lineageTag: 4b595fd8-fbc1-5e9b-b17a-40838074bb02
+		sourceColumn: max_term_months
+
+	column MaxTenureYears
+		dataType: int64
+		formatString: 0
+		lineageTag: b55e8a91-fde0-595d-9e78-c9ed13f1b03e
+		sourceColumn: max_tenure_years
+
+	column MaxLtvPct
+		dataType: double
+		lineageTag: 33ad94dc-fca6-5e1b-880b-1b1fe00a2334
+		sourceColumn: max_ltv_pct
+
+	column CashbackPct
+		dataType: double
+		lineageTag: baabe4ad-ba29-5692-93fe-90e47d2e0aac
+		sourceColumn: cashback_pct
+
+	column ForexMarkupPct
+		dataType: double
+		lineageTag: 381a84cf-e480-5427-bf73-013db7e6c580
+		sourceColumn: forex_markup_pct
+
+	column MonthlyPremiumInr
+		dataType: double
+		lineageTag: 165ac886-2586-5424-8851-852f2a3721b7
+		sourceColumn: monthly_premium_inr
+
+	column SumInsuredInr
+		dataType: double
+		lineageTag: e0883ab4-752b-5cb7-a799-062be72a3877
+		sourceColumn: sum_insured_inr
+
+	column RateType
+		dataType: string
+		lineageTag: 12e0fb8b-f9d0-51e9-94c8-f773d5b4046b
+		sourceColumn: rate_type
+
+	column PayoutMode
+		dataType: string
+		lineageTag: 0d4c17d8-c927-548a-b986-e8c9811df4d1
+		sourceColumn: payout_mode
+
+	column Disclosure
+		dataType: string
+		lineageTag: d7364c6d-f44f-5d82-82f0-271bf8721037
+		sourceColumn: disclosure
+
+	column ReleaseId
+		dataType: string
+		lineageTag: 9ba3a932-1e2f-5330-b441-3c959de54537
+		sourceColumn: release_id
+
+	partition Product = entity
+		mode: directLake
+		source
+			entityName: dim_product
+			schemaName: dbo
+			expressionSource: DatabaseQuery

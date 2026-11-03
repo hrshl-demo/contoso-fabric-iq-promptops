@@ -1,0 +1,66 @@
+table MandateAction
+	lineageTag: 7325223b-b7f6-5590-842c-33784e3e8149
+
+	column EventId
+		dataType: string
+		lineageTag: 71920d46-5f4b-55d4-8531-fc32cebe546b
+		sourceColumn: event_id
+
+	column MandateId
+		dataType: string
+		lineageTag: 30aae11a-f372-545d-b598-a14e48be3772
+		sourceColumn: mandate_id
+
+	column EventType
+		dataType: string
+		lineageTag: ef87d365-1076-54a5-b298-ff857dd4dffb
+		sourceColumn: event_type
+
+	column OccurredAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 66099b37-4c27-5d2d-a7cc-52dced564596
+		sourceColumn: occurred_at
+
+	column OccurredDateIst
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 28cc416d-4469-5b3f-867e-4c92c702161f
+		sourceColumn: occurred_date_ist
+
+	column ActorRef
+		dataType: string
+		lineageTag: 1e256009-05f9-5e7a-847a-a42dbbb665f5
+		sourceColumn: actor_ref
+
+	column ActorType
+		dataType: string
+		lineageTag: 28e4131e-8245-570e-a5d1-7086842b69e4
+		sourceColumn: actor_type
+
+	column AmountInr
+		dataType: double
+		lineageTag: 64c9b0b2-2cd2-59b2-bc4f-bbaf215f3ff6
+		sourceColumn: amount_inr
+
+	column SourceBalanceAfterInr
+		dataType: double
+		lineageTag: 2331d1d0-454c-5fd9-9572-39ec1e3c34a4
+		sourceColumn: source_balance_after_inr
+
+	column Reason
+		dataType: string
+		lineageTag: 646579c8-1dc0-534a-b1a1-1c7e1d4ec21a
+		sourceColumn: reason
+
+	column Narration
+		dataType: string
+		lineageTag: 1b123fbf-b89a-5da1-b092-d1689a0d6dcd
+		sourceColumn: narration
+
+	partition MandateAction = entity
+		mode: directLake
+		source
+			entityName: fact_mandate_action
+			schemaName: dbo
+			expressionSource: DatabaseQuery

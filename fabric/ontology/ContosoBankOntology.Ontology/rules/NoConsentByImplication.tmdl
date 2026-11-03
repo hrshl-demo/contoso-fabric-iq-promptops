@@ -1,0 +1,21 @@
+rule NoConsentByImplication
+	statement: Law L3. A conversation, upload, recommendation, earlier consent or personal-agent request never creates a new permission. A household role (spouse, child, parent) gives no access by itself: only an active HouseholdAccessGrant that lists the permission, backed by a granted Consent, does.
+	lineageTag: ff220d51-1dc6-548e-a05f-80ef1870610e
+
+	ruleReferencedEntity HouseholdAccessGrant
+		propertyScope: specific
+
+		ruleReferencedProperty Permissions
+
+		ruleReferencedProperty DeniedPermissions
+
+		ruleReferencedProperty Status
+
+	ruleReferencedEntity Consent
+		propertyScope: specific
+
+		ruleReferencedProperty Status
+
+	ruleReferencedRelationship 'Access Grant Of Customer'
+
+	ruleReferencedRelationship 'Access Grant Backed By Consent'

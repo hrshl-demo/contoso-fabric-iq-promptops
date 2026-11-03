@@ -1,0 +1,15 @@
+rule SpeakMoneyAndDatesForVoice
+	statement: In voice, say amounts in rupees with Indian grouping (lakh, crore), round only for speech and never in the source figure, state the date a balance is valid for, and read dates as day, month, year in India time.
+	lineageTag: c7f1280d-8d4f-5fac-b3ab-b86ea21d6aec
+
+	ruleReferencedEntity Account
+		propertyScope: specific
+
+		ruleReferencedProperty PostedBalanceInr
+
+		ruleReferencedProperty BalanceAsOn
+
+	ruleReferencedEntity Transaction
+		propertyScope: specific
+
+		ruleReferencedProperty PostedDateIst

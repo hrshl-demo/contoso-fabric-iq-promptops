@@ -1,0 +1,37 @@
+/// [Party] A household that shares goals, obligations and delegated access. Frontier has one: household-bansal (Rhea, spouse Vivek, child Anika, parent Savitri). Access inside a household is resource-specific and asymmetric. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: dimension; grain: one household. Lakehouse: dim_household <- silver_household <- personas.json.
+entity Household
+	lineageTag: bb2f59ce-a1bc-530e-8b13-5f84beb5b024
+	backingTable: Household
+	keyProperty: HouseholdId
+
+	/// Household identifier such as household-bansal.
+	property HouseholdId
+		dataType: string
+		lineageTag: 9f64028e-f8e4-5b8a-8899-d0fbee84d6ad
+
+		backingConfiguration
+			valueColumn: Household.HouseholdId
+
+	/// Household name derived from the primary owner.
+	property DisplayName
+		dataType: string
+		lineageTag: 52a6e371-586f-5bca-bb00-b51acc91f9e9
+
+		backingConfiguration
+			valueColumn: Household.DisplayName
+
+	/// The customer who owns the household relationship.
+	property PrimaryCustomerId
+		dataType: string
+		lineageTag: a1035985-1359-5edb-b682-c7cfd1f6ea9e
+
+		backingConfiguration
+			valueColumn: Household.PrimaryCustomerId
+
+	/// Seed release the row comes from.
+	property ReleaseId
+		dataType: string
+		lineageTag: dd88a98b-8b2c-5ede-beaf-e4b0c9e2864e
+
+		backingConfiguration
+			valueColumn: Household.ReleaseId

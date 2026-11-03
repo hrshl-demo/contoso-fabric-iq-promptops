@@ -1,0 +1,93 @@
+/// [Money] Monthly income evidence for a customer: gross and net, linked to the evidencing salary slip. Only posted, evidenced income counts; offers, refunds and variable targets are not income. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: fact; grain: one income record. Lakehouse: fact_income_record <- silver_income_record <- income.json.
+entity IncomeRecord
+	lineageTag: b535bef6-1235-594c-9b1c-3c60a063827e
+	backingTable: IncomeRecord
+	keyProperty: IncomeId
+
+	/// Income record identifier such as income-salary-2026-04.
+	property IncomeId
+		dataType: string
+		lineageTag: f7412e85-4ce7-5b04-81ce-860719e24dfe
+
+		backingConfiguration
+			valueColumn: IncomeRecord.IncomeId
+
+	/// Customer the income belongs to.
+	property CustomerId
+		dataType: string
+		lineageTag: c06b533f-36df-576f-8892-998d39c85e01
+
+		backingConfiguration
+			valueColumn: IncomeRecord.CustomerId
+
+	/// salary or household_contribution.
+	property IncomeType
+		dataType: string
+		lineageTag: aeeea049-827a-5ed5-90bf-b90138b6bf87
+
+		backingConfiguration
+			valueColumn: IncomeRecord.IncomeType
+
+	/// Month the income is for, as YYYY-MM.
+	property Period
+		dataType: string
+		lineageTag: f0ed9de1-5d5f-54e7-b336-1da54500b07d
+
+		backingConfiguration
+			valueColumn: IncomeRecord.Period
+
+	/// Gross amount before deductions. In rupees (INR).
+	property GrossInr
+		dataType: double
+		lineageTag: a0e8b287-122b-5901-8a72-63f3bc1f8aad
+
+		backingConfiguration
+			valueColumn: IncomeRecord.GrossInr
+
+	/// Net amount credited. In rupees (INR).
+	property NetInr
+		dataType: double
+		lineageTag: 83f93423-c03c-5272-bc66-398772ba7fcd
+
+		backingConfiguration
+			valueColumn: IncomeRecord.NetInr
+
+	/// True when the income repeats every month.
+	property IsRecurring
+		dataType: boolean
+		lineageTag: 0f8ff79e-e40f-528a-9a63-5cdaf997ac7d
+
+		backingConfiguration
+			valueColumn: IncomeRecord.IsRecurring
+
+	/// Document that evidences the income.
+	property EvidenceDocumentId
+		dataType: string
+		lineageTag: b3ae2631-7824-5dc4-972f-37eacb432391
+
+		backingConfiguration
+			valueColumn: IncomeRecord.EvidenceDocumentId
+
+	/// Household member who contributed, for household contributions.
+	property ContributorMemberId
+		dataType: string
+		lineageTag: 8a7cff34-2fa3-59fe-9387-763241f2c412
+
+		backingConfiguration
+			valueColumn: IncomeRecord.ContributorMemberId
+
+	/// Bank narration of the credit.
+	property Narration
+		dataType: string
+		lineageTag: 2d6ff580-beda-5b5f-9b6f-e5046ed42743
+
+		backingConfiguration
+			valueColumn: IncomeRecord.Narration
+
+	/// Seed release the row comes from.
+	property ReleaseId
+		dataType: string
+		lineageTag: 4db258ec-003b-53b9-acd3-c1c24bf2cffa
+
+		backingConfiguration
+			valueColumn: IncomeRecord.ReleaseId

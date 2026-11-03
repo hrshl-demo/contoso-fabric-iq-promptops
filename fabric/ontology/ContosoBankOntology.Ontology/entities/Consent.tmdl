@@ -1,0 +1,117 @@
+/// [Authority] A recorded customer consent: who may see or do what, for which purpose, until when. Consent is specific and revocable: a conversation, upload or earlier consent never creates a new permission. Agent read consent and mandate consent are separate consents. Standards: no verified BIAN mapping (custom semantics); no Microsoft CDM reference. Demo mapping, not certification. Star role: dimension; grain: one consent. Lakehouse: dim_consent <- silver_frontier_consent + silver_consent <- consents.json.
+entity Consent
+	lineageTag: 00aec499-66ef-5300-98b2-35c69ce760b3
+	backingTable: Consent
+	keyProperty: ConsentId
+
+	/// Consent identifier such as consent-household-view.
+	property ConsentId
+		dataType: string
+		lineageTag: f55417d2-fcb6-595e-8eeb-f262c86567be
+
+		backingConfiguration
+			valueColumn: Consent.ConsentId
+
+	/// Customer who gave the consent.
+	property CustomerId
+		dataType: string
+		lineageTag: 67fcf0e1-107f-5bb8-add5-b575596c4972
+
+		backingConfiguration
+			valueColumn: Consent.CustomerId
+
+	/// What the consent is for, for example view_household_goals_and_obligations or evidence_analysis.
+	property Purpose
+		dataType: string
+		lineageTag: 8e1de752-769b-51ec-8dc3-7ca33183e3df
+
+		backingConfiguration
+			valueColumn: Consent.Purpose
+
+	/// granted or revoked. Derived from RevokedAt when the seed has no status.
+	property Status
+		dataType: string
+		lineageTag: de15fad4-089e-569f-878a-52b6bf6d4248
+
+		backingConfiguration
+			valueColumn: Consent.Status
+
+	/// When consent was granted. Instant in UTC.
+	property GrantedAt
+		dataType: dateTime
+		lineageTag: fe70570a-a6a8-5b19-87d2-33685dad820d
+
+		backingConfiguration
+			valueColumn: Consent.GrantedAt
+
+	/// When consent expires. An expired consent gives no access. Instant in UTC.
+	property ExpiresAt
+		dataType: dateTime
+		lineageTag: 4f28a807-ec57-55d0-ba4e-1e1a652ecbda
+
+		backingConfiguration
+			valueColumn: Consent.ExpiresAt
+
+	/// When consent was revoked, if it was. Instant in UTC.
+	property RevokedAt
+		dataType: dateTime
+		lineageTag: 4fd9e917-b339-5fcf-882e-f7e76b5a34f8
+
+		backingConfiguration
+			valueColumn: Consent.RevokedAt
+
+	/// Who or what the consent is about: a household member, an agent or a mandate.
+	property SubjectRef
+		dataType: string
+		lineageTag: 1d126229-ec85-5919-8c48-fd7f90ebef11
+
+		backingConfiguration
+			valueColumn: Consent.SubjectRef
+
+	/// Kind of subject: household_member, agent or mandate.
+	property SubjectType
+		dataType: string
+		lineageTag: e50d9bf8-7fdf-5fb5-ae48-0539ed4ad98b
+
+		backingConfiguration
+			valueColumn: Consent.SubjectType
+
+	/// Household member id when the subject is a household member.
+	property SubjectMemberId
+		dataType: string
+		lineageTag: 6eca5452-9db7-56d2-91bd-89a6df63e5a0
+
+		backingConfiguration
+			valueColumn: Consent.SubjectMemberId
+
+	/// Who may receive the data, for example contoso_demo_assistant (legacy only).
+	property RecipientScope
+		dataType: string
+		lineageTag: 26204525-bee6-53b7-b88a-bc908ad85ab1
+
+		backingConfiguration
+			valueColumn: Consent.RecipientScope
+
+	/// Consent revision number (legacy only).
+	property Revision
+		dataType: int64
+		lineageTag: 6ba2505d-fcbf-52ca-82d1-956755313ee2
+
+		backingConfiguration
+			valueColumn: Consent.Revision
+
+	/// Number of documents the consent covers (legacy only).
+	property ResourceCount
+		dataType: int64
+		lineageTag: 89c8eb91-0b6b-591c-adf0-9eaa75622a87
+
+		backingConfiguration
+			valueColumn: Consent.ResourceCount
+
+	/// Seed release the row comes from.
+	property ReleaseId
+		dataType: string
+		lineageTag: 67dd9811-d4e7-5f86-8183-17a1753cb2e0
+
+		backingConfiguration
+			valueColumn: Consent.ReleaseId

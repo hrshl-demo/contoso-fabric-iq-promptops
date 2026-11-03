@@ -1,0 +1,20 @@
+rule UnitsAndCurrency
+	statement: Properties ending Inr are rupees. Properties ending Paise are exact integer paise (100 paise = 1 rupee) and are for reconciliation only. 'Crore' means 10,000,000 rupees. Properties ending Pct are percentages (8.5 = 8.5%). Product rupee parameters such as AnnualFeeInr are whole rupees.
+	lineageTag: 00656018-8c12-5186-b0bf-1acd6897c8ea
+
+	ruleReferencedEntity Account
+		propertyScope: specific
+
+		ruleReferencedProperty PostedBalanceInr
+
+	ruleReferencedEntity Product
+		propertyScope: specific
+
+		ruleReferencedProperty InterestRatePct
+
+		ruleReferencedProperty AnnualFeeInr
+
+	ruleReferencedEntity Loan
+		propertyScope: specific
+
+		ruleReferencedProperty AnnualRatePct

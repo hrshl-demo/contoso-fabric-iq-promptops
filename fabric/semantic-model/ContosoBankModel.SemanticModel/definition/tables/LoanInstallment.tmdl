@@ -1,0 +1,142 @@
+/// One scheduled or paid EMI of a loan, split into principal, interest and fees. Use it for questions about interest paid so far or the next instalment. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: fact; grain: one scheduled instalment of a loan. Lakehouse: fact_loan_installment <- silver_loan_installment <- loans.json.
+table LoanInstallment
+
+	/// Interest paid in instalments already paid, in rupees.
+	measure 'Interest Paid To Date (INR)' = CALCULATE(SUM(LoanInstallment[Interest Paid (INR)]), LoanInstallment[Status] = "paid")
+		formatString: #,0.00
+		displayFolder: Liabilities
+
+	/// Instalment identifier: loan id plus instalment number.
+	column 'Installment ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: installment_id
+
+	/// Loan the instalment belongs to.
+	column 'Loan ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: loan_id
+
+	/// Sequence number of the instalment (1 = first).
+	column 'Installment Number'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: installment_number
+
+	/// Due date of the instalment.
+	column 'Due On'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: due_on
+
+	/// paid or scheduled.
+	column Status
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: status
+
+	/// Principal at the start of the instalment. In rupees (INR).
+	column 'Opening Principal (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: opening_principal_inr
+
+	/// Principal at the start of the instalment. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Opening Principal (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: opening_principal_paise
+
+	/// Principal repaid by this instalment. In rupees (INR).
+	column 'Principal Paid (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: principal_paid_inr
+
+	/// Principal repaid by this instalment. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Principal Paid (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: principal_paid_paise
+
+	/// Interest paid in this instalment. In rupees (INR).
+	column 'Interest Paid (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: interest_paid_inr
+
+	/// Interest paid in this instalment. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Interest Paid (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: interest_paid_paise
+
+	/// Fees paid in this instalment. In rupees (INR).
+	column 'Fees Paid (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: fees_paid_inr
+
+	/// Fees paid in this instalment. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Fees Paid (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: fees_paid_paise
+
+	/// Total paid: principal + interest + fees. In rupees (INR).
+	column 'Total Paid (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: total_paid_inr
+
+	/// Total paid: principal + interest + fees. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Total Paid (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: total_paid_paise
+
+	/// Principal remaining after this instalment. In rupees (INR).
+	column 'Closing Principal (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: closing_principal_inr
+
+	/// Principal remaining after this instalment. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Closing Principal (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: closing_principal_paise
+
+	/// Bank statement narration of the payment, for example HOME LOAN EMI.
+	column 'Payment Description'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: payment_description
+
+	partition LoanInstallment = entity
+		mode: directLake
+		source
+			entityName: fact_loan_installment
+			expressionSource: 'DirectLake - ContosoBankModel'

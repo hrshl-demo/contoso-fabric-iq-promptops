@@ -1,0 +1,93 @@
+/// [Servicing] A kind of service request the bank can record (card freeze, dispute, ...), with the honest outcome wording and the things that must never be claimed (card actually blocked, reversal done, issuer contacted). Recording an instruction is not executing it. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: dimension; grain: one service request type (curated reference source). Lakehouse: dim_service_request_type <- Curated reference data.
+entity ServiceRequestType
+	lineageTag: fdff0d42-b77a-5892-a00b-69073d812952
+	backingTable: ServiceRequestType
+	keyProperty: ServiceTypeId
+
+	/// Service request type identifier such as SR-CARD-FREEZE.
+	property ServiceTypeId
+		dataType: string
+		lineageTag: 5d22d8fa-153d-5234-8f54-a3c4c239421e
+
+		backingConfiguration
+			valueColumn: ServiceRequestType.ServiceTypeId
+
+	/// Request title such as Freeze a card.
+	property Title
+		dataType: string
+		lineageTag: 2dc1430c-c7d8-54e9-9928-c97d1ddc366e
+
+		backingConfiguration
+			valueColumn: ServiceRequestType.Title
+
+	/// What the request does.
+	property Summary
+		dataType: string
+		lineageTag: 4544010a-22b6-50c5-a096-c2cf416ccfbe
+
+		backingConfiguration
+			valueColumn: ServiceRequestType.Summary
+
+	/// Business unit that owns the request type.
+	property BuId
+		dataType: string
+		lineageTag: aaf1a775-e6e9-54bc-81dd-fccbbefd9d85
+
+		backingConfiguration
+			valueColumn: ServiceRequestType.BuId
+
+	/// Journeys that use the request type (semicolon separated).
+	property JourneyIds
+		dataType: string
+		lineageTag: 9da5bc89-9ecc-5689-8cbd-d6e346d453d2
+
+		backingConfiguration
+			valueColumn: ServiceRequestType.JourneyIds
+
+	/// Default case priority.
+	property Priority
+		dataType: string
+		lineageTag: 070d6dc2-7e32-57a4-b0c5-fa39987617ff
+
+		backingConfiguration
+			valueColumn: ServiceRequestType.Priority
+
+	/// Title given to the CRM case.
+	property CaseTitle
+		dataType: string
+		lineageTag: 37c0b780-8578-52cc-b225-fee95fb02e25
+
+		backingConfiguration
+			valueColumn: ServiceRequestType.CaseTitle
+
+	/// Case stages in order (semicolon separated).
+	property StageLadder
+		dataType: string
+		lineageTag: dba51f3f-577e-5a3c-b4f6-35c98d2a6ad2
+
+		backingConfiguration
+			valueColumn: ServiceRequestType.StageLadder
+
+	/// recorded_synthetic_instruction: the instruction is recorded, not executed.
+	property ActivationMode
+		dataType: string
+		lineageTag: 7dbbb1e2-6669-54eb-8970-041bb8cd19fa
+
+		backingConfiguration
+			valueColumn: ServiceRequestType.ActivationMode
+
+	/// Honest wording for what was recorded.
+	property RecordedOutcome
+		dataType: string
+		lineageTag: 8a93effa-8bf7-5c94-bea6-a740df3e73a8
+
+		backingConfiguration
+			valueColumn: ServiceRequestType.RecordedOutcome
+
+	/// Statements the assistant must never make about this request (semicolon separated).
+	property NeverClaim
+		dataType: string
+		lineageTag: 3f3823ab-7abd-5b14-a14a-5d8a758c1418
+
+		backingConfiguration
+			valueColumn: ServiceRequestType.NeverClaim

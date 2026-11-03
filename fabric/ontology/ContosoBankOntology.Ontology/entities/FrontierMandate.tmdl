@@ -1,0 +1,149 @@
+/// [Authority] A mandate: a bounded standing authority for an agent to move surplus cash into a goal (surplus_to_goal) within a per-action cap, a monthly cap and a minimum balance that must remain in the source account. Frontier mandate-surplus-001 has been revoked; a revoked, paused or expired mandate cannot execute. Standards: no verified BIAN mapping (custom semantics); no Microsoft CDM reference. Demo mapping, not certification. Star role: dimension; grain: one mandate. Lakehouse: dim_frontier_mandate <- silver_frontier_mandate <- mandates.json.
+entity FrontierMandate
+	lineageTag: c98dc08e-54db-5fc0-8a75-f0ae566a6ebf
+	backingTable: FrontierMandate
+	keyProperty: MandateId
+
+	/// Mandate identifier such as mandate-surplus-001.
+	property MandateId
+		dataType: string
+		lineageTag: ae3a7afa-b004-5f15-a242-37f63d5a25dd
+
+		backingConfiguration
+			valueColumn: FrontierMandate.MandateId
+
+	/// Customer who granted the mandate.
+	property CustomerId
+		dataType: string
+		lineageTag: ddb8ff1c-809a-5761-9e0c-83460ccfe424
+
+		backingConfiguration
+			valueColumn: FrontierMandate.CustomerId
+
+	/// Registered agent bound to the mandate.
+	property AgentId
+		dataType: string
+		lineageTag: 34575164-48d0-53cc-b208-3a7ee60261da
+
+		backingConfiguration
+			valueColumn: FrontierMandate.AgentId
+
+	/// Mandate consent, separate from the agent's read consent.
+	property ConsentId
+		dataType: string
+		lineageTag: f472b952-aa45-5458-81d2-725f7aa58e74
+
+		backingConfiguration
+			valueColumn: FrontierMandate.ConsentId
+
+	/// Account money may leave.
+	property SourceAccountId
+		dataType: string
+		lineageTag: 90f580c0-ed5f-5212-b5a4-c69f19cf7ad9
+
+		backingConfiguration
+			valueColumn: FrontierMandate.SourceAccountId
+
+	/// Account money may go to.
+	property DestinationAccountId
+		dataType: string
+		lineageTag: 8ac3dbf0-2410-5acf-b102-efa58169427f
+
+		backingConfiguration
+			valueColumn: FrontierMandate.DestinationAccountId
+
+	/// Goal the mandate funds.
+	property GoalId
+		dataType: string
+		lineageTag: 830bc18d-8546-5055-9a21-3ae880c5afc4
+
+		backingConfiguration
+			valueColumn: FrontierMandate.GoalId
+
+	/// active, paused, revoked or expired. Only active may execute.
+	property Status
+		dataType: string
+		lineageTag: a7140afb-0151-5b51-bcf4-5e42ad2d82af
+
+		backingConfiguration
+			valueColumn: FrontierMandate.Status
+
+	/// Currency of the limits; INR.
+	property Currency
+		dataType: string
+		lineageTag: 2cb4f4dc-2722-5640-a026-300f79bf62d0
+
+		backingConfiguration
+			valueColumn: FrontierMandate.Currency
+
+	/// Largest amount allowed in one action. In rupees (INR).
+	property PerActionLimitInr
+		dataType: double
+		lineageTag: f48d2f3c-b01e-537f-8ff7-1b2df14344ed
+
+		backingConfiguration
+			valueColumn: FrontierMandate.PerActionLimitInr
+
+	/// Largest total allowed in one calendar month. In rupees (INR).
+	property MonthlyLimitInr
+		dataType: double
+		lineageTag: 3c30bb4d-25f7-5416-8c70-fadd95d89743
+
+		backingConfiguration
+			valueColumn: FrontierMandate.MonthlyLimitInr
+
+	/// The source account must still hold at least this after an action. In rupees (INR).
+	property MinimumSourceBalanceInr
+		dataType: double
+		lineageTag: 786e4dfe-08e4-5f4e-9cd7-e23fbcd1a01f
+
+		backingConfiguration
+			valueColumn: FrontierMandate.MinimumSourceBalanceInr
+
+	/// Start of validity. Instant in UTC.
+	property ValidFrom
+		dataType: dateTime
+		lineageTag: d075afef-cafd-52e4-9c14-1057fca475d2
+
+		backingConfiguration
+			valueColumn: FrontierMandate.ValidFrom
+
+	/// Start of validity. Calendar date in India time (IST), for 'today', 'this month' questions.
+	property ValidFromDateIst
+		dataType: dateTime
+		lineageTag: d6a7c32a-6c01-57ec-9542-69353f69054d
+
+		backingConfiguration
+			valueColumn: FrontierMandate.ValidFromDateIst
+
+	/// End of validity. Instant in UTC.
+	property ValidUntil
+		dataType: dateTime
+		lineageTag: d01d8e7d-e6b3-54d5-8077-59009a76b63d
+
+		backingConfiguration
+			valueColumn: FrontierMandate.ValidUntil
+
+	/// End of validity. Calendar date in India time (IST), for 'today', 'this month' questions.
+	property ValidUntilDateIst
+		dataType: dateTime
+		lineageTag: 9d366cbf-b9f6-5baa-8240-da9091d5d13a
+
+		backingConfiguration
+			valueColumn: FrontierMandate.ValidUntilDateIst
+
+	/// Number of recorded mandate events.
+	property EventCount
+		dataType: int64
+		lineageTag: b0b77c92-6e00-5efc-a11e-aeb3483da8fd
+
+		backingConfiguration
+			valueColumn: FrontierMandate.EventCount
+
+	/// Seed release the row comes from.
+	property ReleaseId
+		dataType: string
+		lineageTag: 0bf9c56d-1537-5a6c-b228-3cd8a12b4b4a
+
+		backingConfiguration
+			valueColumn: FrontierMandate.ReleaseId

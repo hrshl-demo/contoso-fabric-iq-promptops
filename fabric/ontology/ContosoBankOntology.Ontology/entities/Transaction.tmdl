@@ -1,0 +1,181 @@
+/// [Money] A posted account or card transaction. Amount is always positive; Direction says debit or credit and SignedAmountInr carries the sign. Frontier covers Apr-Sep 2026 for Rhea; legacy covers three personas. Do not add transactions across ReleaseId. Standards: BIAN 13.0.0 Payment Execution (custom), Position Keeping (custom); no Microsoft CDM reference. Demo mapping, not certification. Star role: fact; grain: one ledger posting. Lakehouse: fact_transaction <- silver_transaction <- transactions.json.
+entity Transaction
+	lineageTag: 879d6c37-4fb1-5e7b-b2e7-16eedd467dcf
+	backingTable: Transaction
+	keyProperty: TransactionId
+
+	/// Transaction identifier such as txn-frontier-0001.
+	property TransactionId
+		dataType: string
+		lineageTag: 4008b808-e6b8-5e35-ad88-39ce6d036d7b
+
+		backingConfiguration
+			valueColumn: Transaction.TransactionId
+
+	/// Customer the transaction belongs to.
+	property CustomerId
+		dataType: string
+		lineageTag: d232fa9a-977a-5e41-a455-15b15df6c763
+
+		backingConfiguration
+			valueColumn: Transaction.CustomerId
+
+	/// Account the transaction posted to.
+	property AccountId
+		dataType: string
+		lineageTag: e8c22c64-588e-5a38-8b0c-1b1a5b486ded
+
+		backingConfiguration
+			valueColumn: Transaction.AccountId
+
+	/// Card used, when the instrument is a card.
+	property CardId
+		dataType: string
+		lineageTag: 7da820eb-3b05-55a5-b43e-2dfb8bda144b
+
+		backingConfiguration
+			valueColumn: Transaction.CardId
+
+	/// Bank statement narration, for example SALARY CREDIT - NORTHWIND TECHNOLOGY INDIA.
+	property Description
+		dataType: string
+		lineageTag: 95b8d921-f07e-51a3-8617-6d31eb530795
+
+		backingConfiguration
+			valueColumn: Transaction.Description
+
+	/// debit (money out) or credit (money in).
+	property Direction
+		dataType: string
+		lineageTag: 8408b3b9-1026-5db4-aeb0-6bbd2ee47a7c
+
+		backingConfiguration
+			valueColumn: Transaction.Direction
+
+	/// Spend or income category such as groceries, salary, loan_repayment, dining. 'unclear' means the narration is ambiguous.
+	property Category
+		dataType: string
+		lineageTag: 600a0c62-f41e-55e5-b07a-78043bfb921a
+
+		backingConfiguration
+			valueColumn: Transaction.Category
+
+	/// How it was paid: account, card or credit_card.
+	property Instrument
+		dataType: string
+		lineageTag: e1bb926c-668c-5dce-afc2-375e4d47222d
+
+		backingConfiguration
+			valueColumn: Transaction.Instrument
+
+	/// posted or reversed.
+	property Status
+		dataType: string
+		lineageTag: ad558cd1-5ba1-5187-a1ee-0779fdd0a634
+
+		backingConfiguration
+			valueColumn: Transaction.Status
+
+	/// Transaction amount, always positive. In rupees (INR).
+	property AmountInr
+		dataType: double
+		lineageTag: da4ac3ad-f8ea-5264-86ab-5113822e1c5b
+
+		backingConfiguration
+			valueColumn: Transaction.AmountInr
+
+	/// Amount in INR with sign: credits positive, debits negative. Sum it for net cash flow.
+	property SignedAmountInr
+		dataType: double
+		lineageTag: 9b4dfa34-17a5-56b9-9ae9-72a9a53b310e
+
+		backingConfiguration
+			valueColumn: Transaction.SignedAmountInr
+
+	/// When the transaction posted. Instant in UTC.
+	property PostedAt
+		dataType: dateTime
+		lineageTag: c5ea658f-4ae2-5ca4-8064-71b78a2e877c
+
+		backingConfiguration
+			valueColumn: Transaction.PostedAt
+
+	/// When the transaction posted. Calendar date in India time (IST), for 'today', 'this month' questions.
+	property PostedDateIst
+		dataType: dateTime
+		lineageTag: 705504ed-65be-5556-820f-5aecf2d0cde1
+
+		backingConfiguration
+			valueColumn: Transaction.PostedDateIst
+
+	/// Value date of the transaction.
+	property ValueDate
+		dataType: dateTime
+		lineageTag: b0756c2b-24b8-5ce0-91a0-2890cc2e4a2b
+
+		backingConfiguration
+			valueColumn: Transaction.ValueDate
+
+	/// Reference of the other party: employer, household member, own account, card, case or external party (Frontier only).
+	property CounterpartyRef
+		dataType: string
+		lineageTag: 5d0d44af-81c8-5efb-8681-59f72398cbd3
+
+		backingConfiguration
+			valueColumn: Transaction.CounterpartyRef
+
+	/// Kind of counterparty: employer, household_member, account, card, incident, external_party or customer.
+	property CounterpartyType
+		dataType: string
+		lineageTag: 008e3a46-ec16-5031-8114-edb3d9b187e2
+
+		backingConfiguration
+			valueColumn: Transaction.CounterpartyType
+
+	/// Incident id when the transaction is under dispute or part of a scam case (Frontier only).
+	property DisputeIncidentId
+		dataType: string
+		lineageTag: f68aa283-b6af-5c8c-8935-5fc25cce4fc5
+
+		backingConfiguration
+			valueColumn: Transaction.DisputeIncidentId
+
+	/// Purchase document reference (legacy only).
+	property PurchaseReference
+		dataType: string
+		lineageTag: 43232b12-bbb9-5702-a4b6-371c274e0634
+
+		backingConfiguration
+			valueColumn: Transaction.PurchaseReference
+
+	/// Shared-expense settlement reference (legacy only).
+	property SettlementReference
+		dataType: string
+		lineageTag: f65aa6d9-e206-5270-b2f3-fac88414a949
+
+		backingConfiguration
+			valueColumn: Transaction.SettlementReference
+
+	/// Documents or cases that evidence the transaction (semicolon separated).
+	property EvidenceRefs
+		dataType: string
+		lineageTag: a6176ab3-478d-5694-872d-1949e4a3a107
+
+		backingConfiguration
+			valueColumn: Transaction.EvidenceRefs
+
+	/// Number of evidence references.
+	property EvidenceCount
+		dataType: int64
+		lineageTag: 6ec7548b-eaab-5522-bca1-0ad054891aeb
+
+		backingConfiguration
+			valueColumn: Transaction.EvidenceCount
+
+	/// Seed release the row comes from.
+	property ReleaseId
+		dataType: string
+		lineageTag: da1594d0-9711-5d5c-972b-d5c4ef5d0b80
+
+		backingConfiguration
+			valueColumn: Transaction.ReleaseId

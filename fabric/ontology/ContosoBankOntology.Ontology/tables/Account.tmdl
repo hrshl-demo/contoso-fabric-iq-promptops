@@ -1,0 +1,82 @@
+table Account
+	lineageTag: cd9fcb00-5d77-5ce6-9fb7-034397a23d97
+
+	column AccountId
+		dataType: string
+		lineageTag: b6157325-1c7c-5675-a3a1-fbaf63002afa
+		sourceColumn: account_id
+
+	column CustomerId
+		dataType: string
+		lineageTag: 1ef41487-4974-54a4-b5f9-7a530fcfdab9
+		sourceColumn: customer_id
+
+	column ProductId
+		dataType: string
+		lineageTag: ba70f6bd-8f33-59c8-81ba-0ed37f460904
+		sourceColumn: product_id
+
+	column AccountType
+		dataType: string
+		lineageTag: 4cdcbec2-2ec4-55a7-81e4-41852719cf9f
+		sourceColumn: account_type
+
+	column Status
+		dataType: string
+		lineageTag: 027123f2-4ae2-57d6-9732-1d3e221008eb
+		sourceColumn: status
+
+	column Currency
+		dataType: string
+		lineageTag: 9554c495-e66e-5099-bf4c-0929e1067824
+		sourceColumn: currency
+
+	column OpenedOn
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: dfe68319-60cf-53bd-b1c8-07aa64287685
+		sourceColumn: opened_on
+
+	column HistoryStartOn
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 121df304-ddde-5557-942a-bdd656f417f3
+		sourceColumn: history_start_on
+
+	column BalanceAsOn
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 316c40bd-12c5-5d93-9c29-abf1d403f290
+		sourceColumn: balance_as_on
+
+	column OpeningBalanceInr
+		dataType: double
+		lineageTag: ff01493b-f8da-5d7d-b7d6-9dbdd8c14550
+		sourceColumn: opening_balance_inr
+
+	column PostedBalanceInr
+		dataType: double
+		lineageTag: 10eaca22-ba94-5dfe-b281-a8e7d0fa2cac
+		sourceColumn: posted_balance_inr
+
+	column AvailableBalanceInr
+		dataType: double
+		lineageTag: dc09ac47-bbc6-5a98-828f-d524fca6fa1d
+		sourceColumn: available_balance_inr
+
+	column HoldsAmountInr
+		dataType: double
+		lineageTag: 70071b9a-fc2c-59f0-8b89-625436124d51
+		sourceColumn: holds_amount_inr
+
+	column ReleaseId
+		dataType: string
+		lineageTag: 6dcb398b-57bb-5b2e-8fcb-c863a1fbd4d7
+		sourceColumn: release_id
+
+	partition Account = entity
+		mode: directLake
+		source
+			entityName: dim_account
+			schemaName: dbo
+			expressionSource: DatabaseQuery

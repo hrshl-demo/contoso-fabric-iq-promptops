@@ -1,0 +1,124 @@
+table Card
+	lineageTag: 2ec03c58-d20a-53cc-8243-d304b8d100f4
+
+	column CardId
+		dataType: string
+		lineageTag: 94f67c03-83df-5812-8d39-cb483dc676b8
+		sourceColumn: card_id
+
+	column CustomerId
+		dataType: string
+		lineageTag: 383457e2-be21-54d0-bb58-f243691b2354
+		sourceColumn: customer_id
+
+	column AccountId
+		dataType: string
+		lineageTag: 4773705f-0ace-5a80-abd3-e85c7266021c
+		sourceColumn: account_id
+
+	column ProductId
+		dataType: string
+		lineageTag: 9e2828e0-662d-56a1-bfe0-cba8ef72ca78
+		sourceColumn: product_id
+
+	column CardType
+		dataType: string
+		lineageTag: 416afcca-1fa6-504a-a3e9-a06b105fd805
+		sourceColumn: card_type
+
+	column Status
+		dataType: string
+		lineageTag: ab929a94-7f8f-57b1-93af-f44097ac1727
+		sourceColumn: status
+
+	column MaskedNumber
+		dataType: string
+		lineageTag: 78fe6c18-1583-5fd5-8d2b-46ec79863880
+		sourceColumn: masked_number
+
+	column ExpiryMmYy
+		dataType: string
+		lineageTag: 9d150955-1c47-5d93-ab4a-861abc0c3432
+		sourceColumn: expiry_mm_yy
+
+	column CreditLimitInr
+		dataType: double
+		lineageTag: 5e7ebb7f-abd9-5424-a968-c076eea0573f
+		sourceColumn: credit_limit_inr
+
+	column AvailableCreditInr
+		dataType: double
+		lineageTag: 229642e6-0da6-5c36-89e3-a8361004c58d
+		sourceColumn: available_credit_inr
+
+	column OutstandingBalanceInr
+		dataType: double
+		lineageTag: ba44e1d1-0eed-569c-99a7-bcaf604ba907
+		sourceColumn: outstanding_balance_inr
+
+	column MinimumDueInr
+		dataType: double
+		lineageTag: aa57cae0-f5a9-51a7-83a1-09e18778786c
+		sourceColumn: minimum_due_inr
+
+	column AnnualRatePct
+		dataType: double
+		lineageTag: 0db4ec6a-135b-580a-96d9-fe06a18d3438
+		sourceColumn: annual_rate_pct
+
+	column StatementDay
+		dataType: int64
+		formatString: 0
+		lineageTag: b8b281b2-94cf-5424-89f4-e010bc428c82
+		sourceColumn: statement_day
+
+	column PaymentDueDay
+		dataType: int64
+		formatString: 0
+		lineageTag: e727c260-9990-549c-b134-6fc5bcbcaf55
+		sourceColumn: payment_due_day
+
+	column PaymentDueOn
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: cd0b9391-1ab5-5ae4-b67c-ffde88397c73
+		sourceColumn: payment_due_on
+
+	column StatementFrom
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: e7c9a29f-b6e3-583d-bec2-0d22e1ad4a57
+		sourceColumn: statement_from
+
+	column StatementTo
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: b7949a48-e59b-57c0-a3e4-70e223e8345f
+		sourceColumn: statement_to
+
+	column InternationalEnabled
+		dataType: boolean
+		lineageTag: 7f993a78-48d0-52e0-b955-a4cf618aec1b
+		sourceColumn: international_enabled
+
+	column OnlineEnabled
+		dataType: boolean
+		lineageTag: f61ef93e-3510-5e55-a5c4-5d195560c75b
+		sourceColumn: online_enabled
+
+	column ContactlessEnabled
+		dataType: boolean
+		lineageTag: 86f61742-d431-5d1e-a384-cb49e7ac6db2
+		sourceColumn: contactless_enabled
+
+	column ReleaseId
+		dataType: string
+		lineageTag: f24ee62d-f421-5539-a629-b011a56c3500
+		sourceColumn: release_id
+
+	partition Card = entity
+		mode: directLake
+		source
+			entityName: dim_card
+			schemaName: dbo
+			expressionSource: DatabaseQuery

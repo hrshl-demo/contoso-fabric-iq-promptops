@@ -1,0 +1,3 @@
+database ContosoBankModel
+	compatibilityLevel: 1702
+	compatibilityMode: powerBI

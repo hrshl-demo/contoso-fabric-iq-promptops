@@ -1,0 +1,57 @@
+/// A person in a customer's household (spouse, child, parent). Members are not customers: they only hold the access the owner explicitly granted. A minor has no inferred data access. Contoso extension entity: no CDM profile entity, BIAN status unmapped. Star role: dimension; grain: one household member. Lakehouse: dim_household_member <- silver_household_member <- household.json.
+table HouseholdMember
+
+	/// Household member identifier such as member-vivek.
+	column 'Member ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: member_id
+
+	/// Household the member belongs to.
+	column 'Household ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: household_id
+
+	/// Primary owner customer of the household.
+	column 'Primary Customer ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: primary_customer_id
+
+	/// [PII] Member name.
+	column 'Display Name'
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: display_name
+
+	/// Relationship to the primary owner: spouse, child or parent.
+	column 'Relation To Owner'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: relation_to_owner
+
+	/// [PII] Age band: adult, minor or elderly.
+	column 'Age Band'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: age_band
+
+	/// True when the member is financially dependent on the primary owner.
+	column 'Is Dependent'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: is_dependent
+
+	/// Seed release the row comes from.
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	partition HouseholdMember = entity
+		mode: directLake
+		source
+			entityName: dim_household_member
+			expressionSource: 'DirectLake - ContosoBankModel'

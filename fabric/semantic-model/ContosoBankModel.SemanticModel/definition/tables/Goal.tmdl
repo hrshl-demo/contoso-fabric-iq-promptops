@@ -1,0 +1,129 @@
+/// A financial goal (emergency reserve, school fee, home down payment, retirement income). Frontier goals carry target, current amount and a priority rank; legacy goals carry stated intent and priority. Goals compete for the same cash: never count one rupee twice. Standards: BIAN 13.0.0 Customer Relationship Management (provisional); no Microsoft CDM reference. Demo mapping, not certification. Star role: dimension; grain: one goal. Lakehouse: dim_goal <- silver_goal <- goals.json.
+table Goal
+
+	/// Targets of goals with a lump-sum target, in rupees.
+	measure 'Lump Sum Goal Target (INR)' = CALCULATE(SUM(Goal[Target Amount (INR)]), ISBLANK(Goal[Target Frequency]))
+		formatString: #,0.00
+		displayFolder: Goals
+
+	/// Amount set aside across goals, in rupees.
+	measure 'Goal Current (INR)' = SUM(Goal[Current Amount (INR)])
+		formatString: #,0.00
+		displayFolder: Goals
+
+	/// Amount set aside as a share of lump-sum targets.
+	measure 'Goal Funding' = DIVIDE([Goal Current (INR)], [Lump Sum Goal Target (INR)])
+		formatString: 0.0%
+		displayFolder: Goals
+
+	/// Goal identifier such as goal-emergency.
+	column 'Goal ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: goal_id
+
+	/// Customer who owns the goal.
+	column 'Customer ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	/// Goal name such as Six-month emergency reserve.
+	column Name
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: name
+
+	/// Priority rank, 1 = highest (Frontier only).
+	column 'Priority Rank'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: priority_rank
+
+	/// Priority the customer stated: high, medium or low (legacy only).
+	column 'Stated Priority'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: stated_priority
+
+	/// Goal status such as active (legacy only).
+	column Status
+		dataType: string
+		summarizeBy: none
+		sourceColumn: status
+
+	/// Target amount. When TargetFrequency is monthly it is a monthly amount, not a lump sum. In rupees (INR).
+	column 'Target Amount (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: target_inr
+
+	/// Target amount. When TargetFrequency is monthly it is a monthly amount, not a lump sum. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Target Amount (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: target_paise
+
+	/// Amount set aside so far (Frontier only). It is an earmark on money already held in an account or investment, not additional money. In rupees (INR).
+	column 'Current Amount (INR)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: current_inr
+
+	/// Amount set aside so far (Frontier only). It is an earmark on money already held in an account or investment, not additional money. Exact integer paise (1 INR = 100 paise); use for reconciliation only.
+	column 'Current Amount (paise)'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: current_paise
+
+	/// Current amount as a percentage of the target (Frontier lump-sum goals).
+	column 'Progress (%)'
+		dataType: double
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: progress_pct
+
+	/// Date the goal should be met.
+	column 'Target Date'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: target_date
+
+	/// monthly when the target is a recurring amount (legacy only).
+	column 'Target Frequency'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: target_frequency
+
+	/// What the customer said they want (legacy only).
+	column 'Intent Summary'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: intent_summary
+
+	/// Products that could fund the goal (semicolon separated, legacy only).
+	column 'Funding Product Ids'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: funding_product_ids
+
+	/// Seed release the row comes from.
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	partition Goal = entity
+		mode: directLake
+		source
+			entityName: dim_goal
+			expressionSource: 'DirectLake - ContosoBankModel'

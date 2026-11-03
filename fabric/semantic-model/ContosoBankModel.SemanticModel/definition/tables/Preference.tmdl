@@ -1,0 +1,58 @@
+/// A stated customer preference as a field/value pair: contact channel, debt preference, emergency reserve months, which decisions need a human, communication style. Honour them before suggesting anything. Standards: BIAN 13.0.0 Customer Relationship Management (custom); no Microsoft CDM reference. Demo mapping, not certification. Star role: dimension; grain: one preference key per customer. Lakehouse: dim_preference <- silver_preference <- preferences.json.
+table Preference
+
+	/// Preference identifier.
+	column 'Preference ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: preference_id
+
+	/// Customer who stated the preference.
+	column 'Customer ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	/// Preference name such as contactChannel, debtPreference, communicationStyle.
+	column Field
+		dataType: string
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: field
+
+	/// Preference value; lists are semicolon separated.
+	column 'Preference Value'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: preference_value
+
+	/// Date the preference was recorded (legacy only).
+	column 'Recorded On'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: recorded_on
+
+	/// Document in which the customer stated it (legacy only).
+	column 'Stated In'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: stated_in
+
+	/// Free-text note (legacy only).
+	column Note
+		dataType: string
+		summarizeBy: none
+		sourceColumn: note
+
+	/// Seed release the row comes from.
+	column 'Release ID'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_id
+
+	partition Preference = entity
+		mode: directLake
+		source
+			entityName: dim_preference
+			expressionSource: 'DirectLake - ContosoBankModel'

@@ -1,0 +1,12 @@
+rule DefaultToFrontierRelease
+	statement: Unless a persona is named otherwise, answer from ReleaseId retail-frontier-v1 (the Rhea Bansal household). Customer rhea~legacy is an older, non-reconciled copy of the same person from retail4-v1: it is superseded and must never be merged with rhea or added to rhea's totals.
+	lineageTag: 29ed1be2-c211-59bf-a787-e3912fccb346
+
+	ruleReferencedEntity Customer
+		propertyScope: specific
+
+		ruleReferencedProperty ReleaseId
+
+		ruleReferencedProperty SupersededByCustomerId
+
+		ruleReferencedProperty CustomerId

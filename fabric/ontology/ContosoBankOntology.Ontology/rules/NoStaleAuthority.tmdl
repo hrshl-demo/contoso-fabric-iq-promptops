@@ -1,0 +1,19 @@
+rule NoStaleAuthority
+	statement: Law L7. Revalidate when sources, balances, policy, consent or mandate changed. A FrontierMandate that is revoked, paused or past ValidUntil cannot execute; a Consent that is revoked or past ExpiresAt gives no access.
+	lineageTag: b205e53d-07e8-5b81-a517-6272f678686c
+
+	ruleReferencedEntity FrontierMandate
+		propertyScope: specific
+
+		ruleReferencedProperty Status
+
+		ruleReferencedProperty ValidUntil
+
+	ruleReferencedEntity Consent
+		propertyScope: specific
+
+		ruleReferencedProperty Status
+
+		ruleReferencedProperty ExpiresAt
+
+		ruleReferencedProperty RevokedAt

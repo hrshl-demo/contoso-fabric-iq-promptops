@@ -1,0 +1,19 @@
+rule NoCrossHouseholdLeakage
+	statement: Law L11. Keep owner, household, release, document access and CRM context aligned. Never reveal one customer's or household's data to another person, and never combine records across ReleaseId.
+	lineageTag: d1d68382-87c0-564d-b5d9-d32295895c24
+
+	ruleReferencedEntity Customer
+		propertyScope: specific
+
+		ruleReferencedProperty ReleaseId
+
+		ruleReferencedProperty HouseholdId
+
+	ruleReferencedEntity HouseholdAccessGrant
+		propertyScope: specific
+
+		ruleReferencedProperty HouseholdId
+
+	ruleReferencedRelationship 'Customer Belongs To Household'
+
+	ruleReferencedRelationship 'Access Grant In Household'

@@ -1,0 +1,119 @@
+table CrmCase
+	lineageTag: 7927f1b8-f7fd-5141-8ce4-f4d7c8ba104a
+
+	column CaseId
+		dataType: string
+		lineageTag: de503851-1e2c-5ba6-9429-3c9984414363
+		sourceColumn: case_id
+
+	column CustomerId
+		dataType: string
+		lineageTag: 759da22b-79d2-5689-a8f9-026786be4da4
+		sourceColumn: customer_id
+
+	column Title
+		dataType: string
+		lineageTag: 8d350275-7004-5bcc-b84c-d01ce74ad251
+		sourceColumn: title
+
+	column Summary
+		dataType: string
+		lineageTag: cf238a36-0198-5347-9e9e-10a810a7d0b7
+		sourceColumn: summary
+
+	column Stage
+		dataType: string
+		lineageTag: e76e93ff-c3eb-5863-a68d-2386404dd7b3
+		sourceColumn: stage
+
+	column Priority
+		dataType: string
+		lineageTag: ccaf1d0d-9b69-57c3-98d0-b0f27c49d635
+		sourceColumn: priority
+
+	column Sentiment
+		dataType: string
+		lineageTag: 729ebcac-22d8-5a7f-adad-2def054bf6b5
+		sourceColumn: sentiment
+
+	column Channel
+		dataType: string
+		lineageTag: 992455e3-ad2c-5573-9955-e3be1b83ecfd
+		sourceColumn: channel
+
+	column Origin
+		dataType: string
+		lineageTag: 740b7bb2-3ceb-52e9-93b3-d4d5590cc3ae
+		sourceColumn: origin
+
+	column BuId
+		dataType: string
+		lineageTag: 40af1995-3b25-537f-af36-bd9b41094fd1
+		sourceColumn: bu_id
+
+	column JourneyId
+		dataType: string
+		lineageTag: 6858e604-8b94-50ee-b5c6-4c72c31f8489
+		sourceColumn: journey_id
+
+	column OwnerRmId
+		dataType: string
+		lineageTag: 7615e441-c394-52f3-b28d-e049eea643af
+		sourceColumn: owner_rm_id
+
+	column ProductIds
+		dataType: string
+		lineageTag: 375a43c7-c54e-56c8-9fc0-25841448ac0c
+		sourceColumn: product_ids
+
+	column Interactions
+		dataType: int64
+		formatString: 0
+		lineageTag: 6b176400-ebcd-566b-915b-31f39aafeb3b
+		sourceColumn: interactions
+
+	column ObjectionReason
+		dataType: string
+		lineageTag: 75ec3f1a-ba21-578d-85d9-dfea20025e0e
+		sourceColumn: objection_reason
+
+	column ObjectionProductId
+		dataType: string
+		lineageTag: a0bbd615-14ff-510a-82ac-cc2827e7baf0
+		sourceColumn: objection_product_id
+
+	column OpenedAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 73416f69-31c9-57dd-955f-4368e605de0b
+		sourceColumn: opened_at
+
+	column OpenedDateIst
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: fde5195a-460b-51d5-b6cd-9e2de2c1104c
+		sourceColumn: opened_date_ist
+
+	column UpdatedAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 0e59ff54-63e1-51c9-8026-d36990c14a67
+		sourceColumn: updated_at
+
+	column SlaDueAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 582c2a80-9792-549a-89d0-2b0ece2d6d2a
+		sourceColumn: sla_due_at
+
+	column ReleaseId
+		dataType: string
+		lineageTag: ec69c8df-0bc3-50e9-9af3-5151c846bbbf
+		sourceColumn: release_id
+
+	partition CrmCase = entity
+		mode: directLake
+		source
+			entityName: fact_crm_case
+			schemaName: dbo
+			expressionSource: DatabaseQuery
