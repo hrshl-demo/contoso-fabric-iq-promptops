@@ -394,6 +394,13 @@ def test_missing_tables_or_a_reload_load_the_data_and_present_tables_do_not(tmp_
     assert "kit load" in io.calls
 
 
+def test_the_log_names_the_tables_that_made_the_run_load_the_data_again(tmp_path, capsys):
+    """The first live re-run reloaded everything because '6 planned tables are missing': the log must say which."""
+    run_build(FakeIo(missing=["dim_customer", "fact_transaction"]), tmp_path)
+    assert "data: 2 planned tables are missing (dim_customer, fact_transaction)" in capsys.readouterr().out
+    assert pf.describe_missing([f"t{i}" for i in range(10)]) == "10 planned tables are missing (t0, t1, t2, t3, t4, t5, t6, t7, ...)"
+
+
 # ---- an existing capacity: never redeployed blindly, never resized ----------------------------------------------
 
 def test_a_rerun_does_not_deploy_the_capacity_again_when_nothing_is_missing(tmp_path):

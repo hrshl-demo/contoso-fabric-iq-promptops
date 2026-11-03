@@ -650,6 +650,11 @@ class BuildReport:
     gate: Optional[GateState] = None
 
 
+def describe_missing(missing: list[str], shown: int = 8) -> str:
+    """The count and the first names, so that a log can show which tables made a run load the data again."""
+    return f"{len(missing)} planned tables are missing ({', '.join(missing[:shown])}{', ...' if len(missing) > shown else ''})"
+
+
 def ask_for_gate(s: PlatformSettings, io: Any, out: Path, say: Callable[[str], None], wait_min: float) -> GateState:
     """Is the ontology gate open? If not, show the admin what to click now. It does not wait: the settings need 7 to 11 minutes to apply, which is
     about how long the data load takes, so the admin clicks while the data loads."""
@@ -850,7 +855,7 @@ def build(s: PlatformSettings, io: Any, out: Path, *, reload_data: bool = False,
         br.gate = step("check the ontology gate and ask the admin to open it", lambda: ask_for_gate(s, io, out, say, gate_wait_min))
         missing = step("check which tables the lakehouse already has", lambda: io.missing_tables(out))
         if reload_data or missing:
-            say(f"data: {'reload requested' if reload_data else f'{len(missing)} planned tables are missing'}")
+            say(f"data: {'reload requested' if reload_data else describe_missing(missing)}")
             kit_step("load the data", "load", "--execute", "--out", out)
         else:
             say("data: every planned table is already in the lakehouse; load skipped (use --reload-data to load again)")
