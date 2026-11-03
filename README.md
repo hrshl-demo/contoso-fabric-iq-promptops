@@ -37,9 +37,9 @@ flowchart LR
 | `seed/` | Synthetic seed data, read-only ([provenance](seed/PROVENANCE.md)) |
 | `fabric/` | Fabric item folders generated from the spec (`python -m tools.export_fabric --write`): the Gen 2 ontology and the Direct Lake semantic model; reports go here too |
 | `analysis/` | Analyses run by prompts. `analysis/monthly_brief` builds the [Monthly Business Brief](docs/reports/monthly-brief.md) PDF offline from the gold layer |
-| `tools/` | Prompt lint, wrapper generation, manifest, PII guard, Fabric export, validation and deployment preview |
+| `tools/` | Prompt lint, wrapper generation, manifest, PII guard, Fabric export, validation, deployment preview and release preparation |
 | `.github/` | Workflows, Copilot instructions, a custom agent and generated prompt wrappers |
-| `docs/` | [Architecture](docs/ARCHITECTURE.md), [decisions](docs/DECISIONS.md), `docs/generated/ontology-brief.md` (a readable view of every entity, synonym and PII flag) |
+| `docs/` | [Architecture](docs/ARCHITECTURE.md), [decisions](docs/DECISIONS.md), [releasing](docs/RELEASING.md), `docs/generated/ontology-brief.md` (a readable view of every entity, synonym and PII flag) |
 | `AGENTS.md` | The rules every agent follows: propose, never deploy |
 
 ## Drive it
@@ -54,9 +54,9 @@ The flow follows Microsoft's Fabric skills demo: **Inspect, Build, Enrich, Consu
 
 | Workflow | Does | Status |
 |---|---|---|
-| `ci.yml` | Prompt lint, wrappers, manifest, PII and secret scan, tooling tests, kit tests, offline build, drift check of the generated Fabric items, a deployment preview comment on every pull request, and the Monthly Business Brief PDF as a build artifact | live |
+| `ci.yml` | Prompt lint, wrappers, manifest, CHANGELOG structure, PII and secret scan, tooling tests, kit tests, offline build, drift check of the generated Fabric items, a deployment preview comment on every pull request, the Monthly Business Brief PDF and a preview of the release files as build artifacts | live |
 | `cd-dev.yml` | Resume the F4, deploy to the dev workspace, verify, pause | after identity setup |
-| `release.yml` | Tag, manual approval, deploy to prod, attach PDFs and release notes | after identity setup |
+| `release.yml` | Run by hand: checks the rules, runs the full kit tests, rebuilds the files from the commit and publishes a GitHub release with the PDF brief, the ontology brief, the Fabric items, the prompt library and checksums. A dry run is the default ([how](docs/RELEASING.md)) | live |
 | `capacity.yml` | Status, resume and pause of the F4 | after identity setup |
 | `wipe.yml` | Manual teardown with an independent check | after identity setup |
 
