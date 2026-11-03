@@ -44,7 +44,7 @@ It reads and prints; it changes nothing. **Before it changes anything (and in th
 | An Entra app and service principal `contoso-promptops-platform` | The pipeline's identity. It has no password and no secret |
 | A trust (federated credential) for the **main** branch of this repository only | A pull request or another branch can never sign in |
 | An Entra group `contoso-promptops-fabric-apps` with the identity in it | The two Fabric tenant settings are scoped to this group, not to the whole tenant |
-| Two roles on the resource group: **Contributor** and **Storage Blob Data Contributor** | Create the storage account and the capacity there, and put the seed data in the storage. Nothing wider: no role on the subscription |
+| Two roles on the resource group: **Contributor** and **Storage Blob Data Contributor** | Create the capacity (and, with `CD_DATA_SOURCE=storage`, the storage account) there; the second role is used only for that storage account. Nothing wider: no role on the subscription |
 | Three GitHub secrets (`AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`) and the variables `CD_RESOURCE_GROUP`, `CD_CAPACITY`, `CD_LOCATION`, `CD_WORKSPACE_DEV`, `CD_WORKSPACE_PROD`, `CD_SP_GROUP_NAME`, `CD_ADMIN_OBJECT_IDS`, `CD_ADMIN_UPNS`, `CD_PIPELINE_OBJECT_ID` | The workflows read them. The ids go in through standard input, never on a command line. Your object id is used for the workspace role, your **user principal name** for the capacity (Fabric takes a UPN for a user and an object id for a service principal) |
 
 The names are defaults. Change any of them with `--resource-group`, `--capacity`, `--location`, `--workspace-dev`, `--workspace-prod`, `--group`, and add other administrators with `--admin <user principal name or object id>`. The platform **adds** capacity administrators and never removes one: someone you add by hand in the portal stays.
@@ -87,7 +87,7 @@ Same page: **action** `build`, target `dev`, and type `BUILD` in the confirm box
 | About | What happens |
 |---|---|
 | 0 min | Guards, then the free check again. If a door is closed the run stops here, before anything is created |
-| 3 min | A storage account (the data source) is created, the seed data is uploaded to it, downloaded again and the bronze, silver and gold layers are built from that copy |
+| 3 min | The bronze, silver and gold layers are built from the seed data in the repository (with `CD_DATA_SOURCE=storage`: first through a storage account, see [PLATFORM.md](PLATFORM.md)) |
 | 10 min | **The F4 capacity is created (or the one that exists is kept: it is never resized, and only missing administrators are added). It bills about USD 0.72 an hour from here until the pause** |
 | 14 min | The workspace and the lakehouse are created and the roles are given. **The run now checks the ontology gate. If it is closed it prints `ACTION NEEDED` with a link: that is your click** |
 | 14 to 22 min | The data is loaded into the lakehouse (while you click, see below) |
@@ -146,6 +146,7 @@ After a `destroy` with **everything** and a new build the capacity is a new reso
 | The build ends with **exit 4** or says *THE CAPACITY MAY STILL BE RUNNING* or *THE CAPACITY MAY STILL APPEAR AND BILL* | The pause failed, or a capacity deployment could not be stopped and no capacity exists yet. Run the `capacity` workflow with action `pause`, or look in the Azure portal (resource group, Deployments, `platform-capacity`: cancel it; then the capacity: pause or delete it), now |
 | A run was cancelled | The last step of the job (`platform rescue`) cancels a capacity deployment that may still be running, waits for it to end, and pauses the capacity. Check with the `capacity` workflow, action `status` |
 | The storage upload fails with an authorization error right after creation | The role needs a few minutes; the run already retries for about three minutes |
+| The upload says *The request may be blocked by network rules of storage account* (only with `CD_DATA_SOURCE=storage`) | A policy in the subscription turned off the storage account's public network access, so GitHub's runners cannot reach it (`az storage account show --query publicNetworkAccess` says `Disabled`). Leave `CD_DATA_SOURCE` unset (the default, `repository`): the seed data is loaded straight into the lakehouse. Found in the first live run; nothing was billed, the capacity did not exist yet |
 
 ## Tearing down
 

@@ -4,38 +4,46 @@ Part 1 of the demo: **one pipeline builds everything from blank**, from the data
 
 ```mermaid
 flowchart LR
-  S["Seed data (this repo)"] --> ST["Storage account, container 'source' (the data source)"]
-  ST --> B["Offline build: bronze, silver (CDM, BIAN), gold"]
+  S["Seed data (this repo, seed/)"] --> B["Offline build: bronze, silver (CDM, BIAN), gold"]
   B --> L["Lakehouse in the Fabric workspace (loaded with the kit)"]
   CAP["F4 capacity"] --> W["Workspace + lakehouse"]
   L --> G["Ontology gate check (a capacity admin clicks once)"]
   G --> O["platform-outputs.json: names, ids, gate"]
 ```
 
-DRAFT: it is written against the documented Azure and Fabric calls and tested with fakes and the kit's Fabric mock. It has not run against a live tenant. The first live run is the real test, and it needs your explicit go.
+DRAFT: it is written against the documented Azure and Fabric calls and tested with fakes and the kit's Fabric mock. The first live run (4 Nov 2026) is the real test, and it found the first real problem: see "The data source" below.
 
 ## What it creates
 
 | Thing | Created by | Lives in | Costs |
 |---|---|---|---|
 | Resource group (empty) | `bootstrap` | Azure | free |
-| Storage account (Data Lake Gen2, closed to the public, Entra sign-in only, TLS 1.2) with the container `source` | `platform build`, Bicep phase 1 | the resource group | cents a month |
+| Storage account (Data Lake Gen2, closed to the public, Entra sign-in only, TLS 1.2) with the container `source`. **Only with `CD_DATA_SOURCE=storage`** | `platform build`, Bicep phase 1 | the resource group | cents a month |
 | Fabric capacity F4, administrators: the people (by user principal name), the pipeline and the content repositories (by object id) | `platform build`, Bicep phase 2 | the resource group | USD 0.72 an hour while running, nothing while paused |
 | Workspace (dev, and prod when asked), with roles | `platform build` | Fabric | free (it bills through the capacity) |
 | Lakehouse `ContosoBankLH` and its tables (core tier: 32 gold tables) | `platform build`, the kit's `load` | the workspace | OneLake storage, negligible |
 
 The template is [infra/main.bicep](../infra/main.bicep). CI compiles and lints it on every pull request, and the build asks Azure for a what-if before it creates anything.
 
+## The data source
+
+`CD_DATA_SOURCE` (a repository variable) chooses how the seed data reaches the lakehouse:
+
+- **`repository` (the default):** the layers are built offline from the seed data in this repository (`seed/`) and loaded into the lakehouse as managed Delta tables. No storage account is created. This is the Fabric-native path the ontology needs anyway.
+- **`storage`:** a storage account (the data source) is created, the seed data is uploaded to it, downloaded again and the layers are built from that copy.
+
+Why `repository` is the default: the first live run (4 Nov 2026, a Microsoft demo subscription) created the storage account and Azure reported it with **public network access disabled**, although the template does not ask for that (it comes from the subscription's governance). GitHub-hosted runners reach a storage account only over its public endpoint, so the upload was refused (*"The request may be blocked by network rules of storage account"*) before the capacity existed, so nothing was billed. The pipeline does not override a tenant's network policy. Use `storage` only where the subscription leaves public network access on; the error text of a refused upload now names this variable.
+
 ## The order, and why
 
-The capacity is created **last among the Azure resources** and the storage account first, so that everything that can fail cheaply does so before the meter starts: sign-in, the Bicep what-if, the storage, the upload, the offline build. After the capacity exists the run is bounded by a deadline and ends with a pause.
+The capacity is created **last among the Azure resources** so that everything that can fail cheaply does so before the meter starts: sign-in, the Bicep what-if, (with `storage`: the storage account and the upload), the offline build. After the capacity exists the run is bounded by a deadline and ends with a pause.
 
 | # | Step | Notes |
 |---|---|---|
 | 1 to 2 | Sign-in and a token for every service, the subscription | Fails here if the identity is wrong |
-| 3 | Storage account | Bicep phase 1, cents |
-| 4 | Upload the seed data | Entra sign-in, three tries (a new account refuses its first calls for a short while) |
-| 5 | Download it again and build the layers from that copy | Proves the data source is the source |
+| 3 | Storage account | Only with `CD_DATA_SOURCE=storage`: Bicep phase 1, cents |
+| 4 | Upload the seed data | Only with `storage`: Entra sign-in, three tries (a new account refuses its first calls for a short while) |
+| 5 | Build the layers | `repository` (default): from the seed data in this repository. `storage`: download it again and build from that copy, which proves the data source is the source |
 | 6 | **Create the capacity, or keep the one that exists** | Bicep phase 2, only when it does not exist or an administrator is missing. A capacity of another size stops the build (see below). Not started with less than 15 minutes left before the deadline. From here a pause is owed, whatever happens |
 | 7 | Make sure it is running | The kit's `capacity resume` |
 | 8 | Workspace, lakehouse, roles | Refuses a workspace that is on another capacity: the pipeline pauses only the capacity it knows, so a workspace elsewhere would bill unseen |
@@ -60,7 +68,7 @@ The capacity is created **last among the Azure resources** and the storage accou
 
 ## Re-running
 
-`build` is idempotent. A second run finds the storage account, the capacity (kept as it is, or only its missing administrators added), the workspace and the lakehouse, sees the tables, skips the load and only resumes, checks the gate, writes the outputs and pauses. Use `reload_data` after the seed data or the layers changed.
+`build` is idempotent. A second run finds the capacity (kept as it is, or only its missing administrators added), the workspace and the lakehouse (and the storage account, with `CD_DATA_SOURCE=storage`), sees the tables, skips the load and only resumes, checks the gate, writes the outputs and pauses. Use `reload_data` after the seed data or the layers changed.
 
 ## What it does not do
 
@@ -68,7 +76,8 @@ The capacity is created **last among the Azure resources** and the storage accou
 - It never resizes a capacity and never removes an administrator from one.
 - It does not prove, before the capacity exists, that the pipeline may create workspaces: Fabric also requires the caller to administer a capacity. The first build finds out at step 8 and says what to change.
 - It does not create the ontology, the semantic model or reports. Those are Part 2.
-- It does not use Databricks or OneLake shortcuts. The data source is a storage account whose seed data is loaded into the lakehouse as Delta tables, which is the proven path for the ontology. Shortcuts and Databricks stay a pilot ([PILOT.md](PILOT.md), [DECISIONS.md](DECISIONS.md)).
+- It does not use Databricks or OneLake shortcuts. The seed data is loaded into the lakehouse as Delta tables (straight from the repository, or through a storage account with `CD_DATA_SOURCE=storage`), which is the proven path for the ontology. Shortcuts and Databricks stay a pilot ([PILOT.md](PILOT.md), [DECISIONS.md](DECISIONS.md)).
+- It does not override a tenant's network policy: if a policy turns off a storage account's public network access, use the default data source.
 
 ## Local use
 

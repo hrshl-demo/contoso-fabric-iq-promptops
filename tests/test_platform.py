@@ -18,7 +18,7 @@ UPN2 = "colleague@demo.test"
 PIPE = "bbbbbbbb-1111-4111-8111-bbbbbbbbbbbb"
 CONS = "cccccccc-1111-4111-8111-cccccccccccc"
 ENV = {"CD_RESOURCE_GROUP": "rg-demo", "CD_CAPACITY": "democapf4", "CD_WORKSPACE_DEV": "Demo-Dev", "CD_WORKSPACE_PROD": "Demo-Prod",
-       "CD_ADMIN_OBJECT_IDS": ADMIN, "CD_ADMIN_UPNS": UPN, "CD_PIPELINE_OBJECT_ID": PIPE}
+       "CD_ADMIN_OBJECT_IDS": ADMIN, "CD_ADMIN_UPNS": UPN, "CD_PIPELINE_OBJECT_ID": PIPE, "CD_DATA_SOURCE": "storage"}       # most tests walk the storage path; the repository path has its own
 
 
 def settings(env_name="dev", **over):
@@ -38,6 +38,7 @@ class FakeIo:
         self.deployment_cancelled = False
         self.deployed_admins = None
         self.infra_timeouts: list = []
+        self.build_sources: list = []
         self.status_reads = 0
         self.calls: list[str] = []
         self.capacity_fabric_id = "cap-guid-1"
@@ -82,6 +83,7 @@ class FakeIo:
         self._maybe_fail("download")
 
     def build_from_source(self, s, source, out):
+        self.build_sources.append(source)
         self._maybe_fail("build layers")
 
     def capacity(self, base, action, timeout=None):
@@ -248,6 +250,35 @@ def test_the_plan_lists_every_step_and_says_when_billing_starts():
     assert "never resized and never loses an administrator" in text
 
 
+def test_the_data_source_defaults_to_the_repository_and_only_two_values_are_allowed():
+    env = {k: v for k, v in ENV.items() if k != "CD_DATA_SOURCE"}
+    assert pf.load_platform_settings(env, "dev", "core").data_source == "repository"
+    assert pf.load_platform_settings({**env, "CD_DATA_SOURCE": ""}, "dev", "core").data_source == "repository"          # an unset repository variable reaches the workflow as ""
+    assert pf.load_platform_settings({**env, "CD_DATA_SOURCE": " Storage "}, "dev", "core").data_source == "storage"
+    with pytest.raises(cd.CdError, match="CD_DATA_SOURCE must be one of repository, storage; 'blob' is not"):
+        pf.load_platform_settings({**env, "CD_DATA_SOURCE": "blob"}, "dev", "core")
+    basics = {k: v for k, v in env.items() if k.startswith("CD_RESOURCE") or k in ("CD_CAPACITY", "CD_WORKSPACE_DEV", "CD_WORKSPACE_PROD")}
+    assert pf.load_platform_settings(basics, "dev", "core", need_people=False).data_source == "repository"                # the pause and destroy commands need no more than this
+
+
+def test_the_arm_parameters_say_whether_to_deploy_the_storage_account():
+    assert pf.arm_parameters(settings(), "stx", True)["parameters"]["deployStorage"]["value"] is True
+    assert pf.arm_parameters(settings(CD_DATA_SOURCE="repository"), "stx", True)["parameters"]["deployStorage"]["value"] is False
+
+
+def test_the_bicep_makes_the_storage_account_optional_and_no_output_reads_a_resource_that_may_not_exist():
+    _declared, text = bicep_params()
+    assert text.count("= if (deployStorage)") == 3 and "param deployStorage bool = true" in text                      # the account, its blob service and its container
+    outputs = text[text.index("output storageAccountName"):]
+    assert not re.search(r"\b(storage|blobService|sourceContainer)\.", outputs)
+
+
+def test_the_plan_for_the_repository_data_source_has_no_storage_account_and_builds_from_the_seed():
+    text = pf.describe_plan(settings(CD_DATA_SOURCE="repository"))
+    assert "no storage account" in text and "seed data in the repository" in text and "create the storage account" not in text
+    assert "bills about USD 0.72 an hour from here until step 13" in text and "13. pause the capacity" in text
+
+
 # ---- what to do about the capacity ----------------------------------------------------------------------------
 
 def facts(**over):
@@ -309,6 +340,46 @@ def test_a_clean_build_creates_the_source_first_then_the_capacity_and_pauses(tmp
     assert br.outputs["dataSource"]["url"].endswith(".dfs.core.windows.net/source")
     written = json.loads((tmp_path / "out" / "platform-outputs.json").read_text(encoding="utf-8"))
     assert written == br.outputs and "token" not in json.dumps(written).lower() and "secret" not in json.dumps(written).lower()
+
+
+def test_a_build_with_the_repository_as_data_source_never_creates_or_touches_a_storage_account(tmp_path):
+    """The first live run found that a subscription policy can close the storage account to GitHub's runners: the seed goes straight to the lakehouse."""
+    io = FakeIo()
+    s = settings(CD_DATA_SOURCE="repository")
+    rc, br = pf.build(s, io, tmp_path / "out", clock=clock(), sleeper=lambda s_: None)
+    assert rc == 0
+    assert io.calls == ["warm", "identity", "build layers", "capacity status", "infra capacity", "capacity resume", "workspace", "gate", "missing", "capacity status",
+                        "capacity pause"]
+    assert "infra storage" not in io.calls and "upload" not in io.calls and "download" not in io.calls
+    assert io.build_sources == [ROOT / "seed"]                                                            # the layers are built from the seed in the repository itself
+    assert br.outputs["dataSource"] == {"kind": "repository", "path": "seed"}
+    assert [r[0] for r in br.report.steps][:3] == ["check the sign-in and fetch the tokens", "find the subscription", "build the layers from the seed data in the repository"]
+    text = pf.render_summary(s, br, rc)
+    assert "the seed data in the repository (`seed/`)" in text and "stpromptops" not in text
+    written = json.loads((tmp_path / "out" / "platform-outputs.json").read_text(encoding="utf-8"))
+    assert written["dataSource"] == {"kind": "repository", "path": "seed"} and "storageAccount" not in json.dumps(written)
+
+
+def test_a_seed_folder_can_be_named_for_the_repository_data_source(tmp_path):
+    io = FakeIo()
+    pf.build(settings(CD_DATA_SOURCE="repository"), io, tmp_path / "out", clock=clock(), sleeper=lambda s: None, seed=tmp_path / "my-seed")
+    assert io.build_sources == [tmp_path / "my-seed"]
+
+
+def test_a_failure_to_build_the_layers_from_the_repository_costs_nothing_and_pauses_nothing(tmp_path):
+    io = FakeIo(fail="build layers")
+    rc, br = pf.build(settings(CD_DATA_SOURCE="repository"), io, tmp_path / "out", clock=clock(), sleeper=lambda s: None)
+    assert rc == cd.EXIT_FAILED and "infra capacity" not in io.calls and "capacity pause" not in io.calls and "settle" not in io.calls
+    assert br.report.active_seconds is None
+
+
+def test_the_storage_data_source_still_walks_the_storage_steps_and_names_the_account(tmp_path):
+    io = FakeIo()
+    s = settings(CD_DATA_SOURCE="storage")
+    rc, br = pf.build(s, io, tmp_path / "out", clock=clock(), sleeper=lambda s_: None)
+    assert rc == 0 and io.calls[:6] == ["warm", "identity", "infra storage", "upload", "download", "build layers"]
+    assert br.outputs["dataSource"]["kind"] == "storage" and br.outputs["dataSource"]["storageAccount"].startswith("stpromptops")
+    assert "`stpromptops" in pf.render_summary(s, br, rc)
 
 
 def test_missing_tables_or_a_reload_load_the_data_and_present_tables_do_not(tmp_path):
@@ -1046,6 +1117,20 @@ def test_upload_gives_up_after_three_tries_with_the_reason(tmp_path):
     io = live(tmp_path, az_runner([], fail_times=9))
     with pytest.raises(cd.CdError, match="AuthorizationPermissionMismatch"):
         io.upload_source(settings(), "stx", tmp_path)
+
+
+def test_a_storage_account_that_a_policy_has_closed_is_explained_and_the_way_out_is_named(tmp_path):
+    """The first live run: Azure said 'may be blocked by network rules' because the subscription had turned public network access off."""
+    calls = []
+
+    def run(cmd, **kw):
+        calls.append(cmd)
+        return SimpleNamespace(returncode=1, stdout="", stderr="ERROR: \nThe request may be blocked by network rules of storage account. Please check network rule set using "
+                                                               "'az storage account show -n accountname --query networkRuleSet'.")
+    io = live(tmp_path, run)
+    with pytest.raises(cd.CdError, match=r"(?s)blocked by network rules.*publicNetworkAccess.*CD_DATA_SOURCE.*repository"):
+        io.upload_source(settings(), "stx", tmp_path)
+    assert len(calls) == 3                                                                                  # it still tries three times first: a new account can lag
 
 
 def test_download_checks_that_it_really_got_the_seed(tmp_path):

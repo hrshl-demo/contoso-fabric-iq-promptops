@@ -23,7 +23,7 @@ This repo turns versioned prompts into a Fabric IQ ontology and Power BI reports
 | `seed/` | Synthetic seed data, read-only | Nobody |
 | `analysis/` | Analyses run by prompts (the PDF brief); `docs/reports/` documents them | You, through a PR |
 | `tools/`, `.github/workflows/` | Repo tooling and pipelines | Pipeline changes only |
-| `infra/` | The Bicep template of the platform (storage account, Fabric capacity) | Infrastructure changes only, with tests |
+| `infra/` | The Bicep template of the platform (Fabric capacity, optional storage account) | Infrastructure changes only, with tests |
 
 ## Prompt discipline
 

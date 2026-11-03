@@ -13,6 +13,8 @@ tenant yet. The one-time set-up it needs (an identity for the pipeline, two Fabr
 What `build` does, in order (the capacity does not exist, so nothing bills by the hour, until step 6):
   1 sign-in and tokens   2 find the subscription   3 storage account (the data source)   4 upload the seed data to it
   5 download it again and build the bronze, silver and gold layers from that copy
+  (steps 3 and 4 are skipped, and 5 builds from the seed data in the repository, unless CD_DATA_SOURCE is `storage`: many subscriptions have a policy that
+  turns off the storage account's public network access, and then GitHub's runners cannot reach it)
   6 create the Fabric capacity, or keep the one that exists (never resized, never loses an administrator)   7 make sure it is running
   8 create the workspace and the lakehouse   9 check the ontology gate, and ask the admin to open it now if it is closed   10 load the layers
   11 wait for the gate if it is still closed   12 write the outputs   13 pause the capacity, also when a step failed.
@@ -21,7 +23,8 @@ Every step is bounded by the deadline (CD_DEADLINE_MIN, see tools/cd.py), so the
 pause is owed is cancelled and waited for first, so that it cannot create a running capacity behind the pause.
 
 Settings are the repository variables of tools/cd.py (CD_RESOURCE_GROUP, CD_CAPACITY, CD_WORKSPACE_DEV, CD_WORKSPACE_PROD, CD_LOCATION, CD_TIER,
-CD_DEADLINE_MIN) and four lists that `python -m tools.bootstrap` sets: CD_ADMIN_OBJECT_IDS (people, by object id: workspace Admins), CD_ADMIN_UPNS (the same
+CD_DEADLINE_MIN), CD_DATA_SOURCE (`repository`, the default, or `storage`) and four lists that `python -m tools.bootstrap` sets: CD_ADMIN_OBJECT_IDS (people,
+by object id: workspace Admins), CD_ADMIN_UPNS (the same
 people, by user principal name: capacity administrators, because Fabric takes a UPN for a user), CD_PIPELINE_OBJECT_ID (this pipeline's identity) and
 CD_CONSUMER_OBJECT_IDS (content repositories, by object id: capacity administrators and workspace Contributors).
 """
@@ -49,6 +52,8 @@ from .promptlib import ROOT
 EXIT_OK, EXIT_FAILED, EXIT_CONFIG, EXIT_GATE, EXIT_STILL_RUNNING = cd.EXIT_OK, cd.EXIT_FAILED, cd.EXIT_CONFIG, 3, cd.EXIT_STILL_RUNNING
 GUID_RE = re.compile(r"^[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$")
 SOURCE_CONTAINER = "source"
+DATA_SOURCES = ("repository", "storage")
+DATA_SOURCE_DEFAULT = "repository"                        # a storage account is reachable from GitHub's runners only where the subscription's policies leave public network access on
 GATE_PROBE_ITEM = "PromptOpsGateProbe"
 DEFAULT_GATE_WAIT_MIN = 20
 GATE_POLL_S = 60.0
@@ -107,6 +112,7 @@ class PlatformSettings:
     consumers: tuple[str, ...] = ()
     other_workspaces: tuple[str, ...] = ()
     group_name: str = SP_GROUP_DEFAULT
+    data_source: str = DATA_SOURCE_DEFAULT         # 'repository': the seed data in this repository is loaded straight into the lakehouse; 'storage': through a storage account
 
     @property
     def capacity_admins(self) -> tuple[str, ...]:
@@ -138,7 +144,10 @@ def load_platform_settings(environ: Mapping[str, str], env_name: Optional[str], 
     consumers = parse_ids(environ.get("CD_CONSUMER_OBJECT_IDS", ""), "CD_CONSUMER_OBJECT_IDS") if need_people else ()
     others = tuple(n for n in ((environ.get(var) or "").strip() for key, var in cd.WORKSPACE_VARS.items() if key != env_name) if n)
     group = (environ.get("CD_SP_GROUP_NAME") or SP_GROUP_DEFAULT).strip() or SP_GROUP_DEFAULT
-    return PlatformSettings(base, admins, upns, pipeline[0] if pipeline else "", consumers, others, group)
+    data_source = (environ.get("CD_DATA_SOURCE") or "").strip().lower() or DATA_SOURCE_DEFAULT
+    if data_source not in DATA_SOURCES:
+        raise CdError(f"CD_DATA_SOURCE must be one of {', '.join(DATA_SOURCES)}; '{data_source[:20]}' is not (docs/PLATFORM.md)")
+    return PlatformSettings(base, admins, upns, pipeline[0] if pipeline else "", consumers, others, group, data_source)
 
 
 def http_status(ex: Exception) -> Optional[int]:
@@ -159,7 +168,7 @@ def storage_account_name(subscription_id: str, resource_group: str) -> str:
 def arm_parameters(s: PlatformSettings, storage_name: str, deploy_capacity: bool, admins: Optional[Sequence[str]] = None) -> dict:
     values = {"storageAccountName": storage_name, "sourceContainerName": SOURCE_CONTAINER, "capacityName": s.base.capacity, "location": s.base.location,
               "capacitySku": PLATFORM_SKU, "capacityAdmins": list(admins if admins is not None else s.capacity_admins), "deployCapacity": deploy_capacity,
-              "tags": TAGS}
+              "deployStorage": s.data_source == "storage", "tags": TAGS}
     return {"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#", "contentVersion": "1.0.0.0",
             "parameters": {k: {"value": v} for k, v in values.items()}}
 
@@ -191,19 +200,27 @@ def capacity_action(s: PlatformSettings, facts: dict) -> tuple[str, str, tuple[s
 
 def describe_plan(s: PlatformSettings) -> str:
     b = s.base
+    if s.data_source == "storage":
+        source_line = f"Data source:  a storage account in it (derived name), container '{SOURCE_CONTAINER}'"
+        data_steps = ["  3. create the storage account (the data source; cents a month)",
+                      "  4. upload the seed data to it",
+                      "  5. download it again and build the bronze, silver and gold layers from that copy (offline)"]
+    else:
+        source_line = "Data source:  the seed data in this repository (seed/), loaded into the lakehouse as managed Delta tables; no storage account"
+        data_steps = ["  3. (no storage account: CD_DATA_SOURCE=storage creates one, where the subscription lets GitHub's runners reach it)",
+                      "  4. (nothing to upload)",
+                      "  5. build the bronze, silver and gold layers from the seed data in the repository (offline)"]
     return "\n".join([
         f"Environment: {b.env_name}",
         f"Resource group: {b.resource_group} ({b.location}), empty at the start, created by the bootstrap",
-        f"Data source:  a storage account in it (derived name), container '{SOURCE_CONTAINER}'",
+        source_line,
         f"Capacity:     {b.capacity} (F4); administrators: {len(s.admin_upns)} people, this pipeline, {len(s.consumers)} content repositories",
         f"Workspace:    {b.workspace}; lakehouse from the kit's configuration",
         f"Tier:         {b.tier}",
         "Steps:",
         "  1. check the sign-in and fetch a token for each service",
         "  2. find the subscription",
-        "  3. create the storage account (the data source; cents a month)",
-        "  4. upload the seed data to it",
-        "  5. download it again and build the bronze, silver and gold layers from that copy (offline)",
+        *data_steps,
         f"  6. create the Fabric capacity (bills about USD {b.usd_per_hour:.2f} an hour from here until step 13). A capacity that already exists is never resized "
         "and never loses an administrator: only missing administrators are added",
         "  7. make sure the capacity is running",
@@ -378,8 +395,12 @@ class Live(cd.Live):
             try:
                 self._az(args, TRANSFER_TIMEOUT_S)
                 return
-            except CdError:
+            except CdError as ex:
                 if attempt == 2:
+                    if "network rules" in str(ex):
+                        raise CdError(f"{str(ex)[:400]} A policy in this subscription may have turned off public network access on the storage account (`az storage account show "
+                                      "--query publicNetworkAccess` says Disabled), so GitHub's runners cannot reach it. Set the repository variable CD_DATA_SOURCE to "
+                                      "repository to load the seed data straight into the lakehouse (docs/PLATFORM.md).") from ex
                     raise
                 self.sleeper(30.0 * (attempt + 1))
 
@@ -747,10 +768,14 @@ def build(s: PlatformSettings, io: Any, out: Path, *, reload_data: bool = False,
         who = step("find the subscription", lambda: io.identity(s))
         storage = storage_account_name(who["subscriptionId"], s.base.resource_group)
         ctx["storage"] = storage
-        storage_out = step("create the storage account, the data source", lambda: io.infra(s, storage, False)) or {}
-        step("upload the seed data to the data source", lambda: io.upload_source(s, storage, seed or ROOT / "seed"))
-        source = Path(tempfile.mkdtemp(prefix="platform-source-"))
-        step("download it again and build the layers from that copy", lambda: (io.download_source(s, storage, source), io.build_from_source(s, source, out)))
+        storage_out: dict = {}
+        if s.data_source == "storage":
+            storage_out = step("create the storage account, the data source", lambda: io.infra(s, storage, False)) or {}
+            step("upload the seed data to the data source", lambda: io.upload_source(s, storage, seed or ROOT / "seed"))
+            source = Path(tempfile.mkdtemp(prefix="platform-source-"))
+            step("download it again and build the layers from that copy", lambda: (io.download_source(s, storage, source), io.build_from_source(s, source, out)))
+        else:
+            step("build the layers from the seed data in the repository", lambda: io.build_from_source(s, seed or ROOT / "seed", out))
 
         def create_capacity(budget: float) -> str:
             nonlocal deployment_in_flight
@@ -790,7 +815,8 @@ def build(s: PlatformSettings, io: Any, out: Path, *, reload_data: bool = False,
         br.outputs = {
             "environment": s.base.env_name, "tier": s.base.tier, "location": s.base.location, "resourceGroup": s.base.resource_group,
             "capacity": {"name": s.base.capacity, "sku": PLATFORM_SKU, "fabricId": ws.get("capacityId")},
-            "dataSource": {"storageAccount": storage, "container": SOURCE_CONTAINER, "url": storage_out.get("sourceUrl")},
+            "dataSource": ({"kind": "storage", "storageAccount": storage, "container": SOURCE_CONTAINER, "url": storage_out.get("sourceUrl")}
+                           if s.data_source == "storage" else {"kind": "repository", "path": "seed"}),
             "workspace": {"name": s.base.workspace, "id": ws.get("workspaceId")},
             "lakehouse": {"name": ws.get("lakehouseName"), "id": ws.get("lakehouseId"), "sqlEndpoint": ws.get("sqlEndpoint"), "sqlDatabase": ws.get("sqlDatabase")},
             "ontologyGate": {"status": br.gate.status, "detail": br.gate.detail},
@@ -841,8 +867,10 @@ def render_summary(s: PlatformSettings, br: BuildReport, rc: int) -> str:
         lines += ["", f"The capacity existed or ran for about {mins:.0f} minutes, about USD {mins / 60 * b.usd_per_hour:.2f} at the list price (an estimate, not a bill)."]
     if br.outputs:
         o = br.outputs
+        src = o["dataSource"]
+        source = f"`{src['storageAccount']}/{src['container']}`" if src.get("kind", "storage") == "storage" else f"the seed data in the repository (`{src['path']}/`)"
         lines += ["", "| Output | Value |", "| --- | --- |", f"| Workspace | `{o['workspace']['name']}` |", f"| Lakehouse | `{o['lakehouse']['name']}` |",
-                  f"| Data source | `{o['dataSource']['storageAccount']}/{o['dataSource']['container']}` |", f"| Ontology gate | {o['ontologyGate']['status']} |"]
+                  f"| Data source | {source} |", f"| Ontology gate | {o['ontologyGate']['status']} |"]
     lines += [""] + [f"- {n}" for n in br.report.notes]
     if br.gate is not None and br.gate.request:
         lines += ["", "#### Action needed: open the ontology gate", "", "```", br.gate.request, "```"]
