@@ -9,6 +9,7 @@ Newest first. Every prompt version has one line of the form `` - `<prompt id>` <
 - `ontology.enrich` 1.1.0: same regeneration step; the synonyms and PII markers can be reviewed in `docs/generated/ontology-brief.md`.
 
 ### Artifacts
+- `analysis/monthly_brief`: the Monthly Business Brief, a six-page PDF built offline from the gold layer (prompt `reports.monthly-brief`), reproducible byte for byte; CI builds it on every pull request and keeps it as an artifact.
 - `fabric/ontology/ContosoBankOntology.Ontology` and `fabric/semantic-model/ContosoBankModel.SemanticModel` (core tier), generated from `kit/model/`; CI fails if they drift from the spec.
 - `tools/deploy_preview.py`: an offline preview of which Fabric items a change would create, replace or remove, posted on every pull request.
 

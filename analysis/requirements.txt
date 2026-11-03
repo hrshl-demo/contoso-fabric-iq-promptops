@@ -1,0 +1,3 @@
+# Extra dependencies of the analyses in analysis/ (the kit's pandas and pyarrow come from kit/requirements.txt).
+matplotlib==3.11.2
+numpy==2.5.4
