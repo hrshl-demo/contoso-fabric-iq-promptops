@@ -14,7 +14,8 @@ identity ids go into the repository's secrets through standard input, never on a
 
 Everything that can be refused is checked first, read-only, in the dry run too: the repository exists and the signed-in gh account administers it, the
 resource group is empty or was made by this project (--adopt to accept another), an existing app trusts nothing but the one repository it is for (any other
-federated credential, whatever its name, lets that other repository sign in as the app: --replace-trust removes them), a role that already has the
+federated credential, whatever its name, lets that other repository sign in as the app: --replace-trust removes them), the subscription has Fabric quota for
+an F4 in the chosen --location (a subscription can have none in a region), a role that already has the
 consumer role's name is exactly the role this project defines, and the capacity exists for a consumer.
 
 It acts on whatever subscription the `az` profile is signed in to. Because that profile can be signed in to a different tenant, --execute refuses to run
@@ -57,6 +58,8 @@ CONSUMER_VARIABLES = ("CD_RESOURCE_GROUP", "CD_CAPACITY", "CD_LOCATION", "CD_WOR
 DEFAULTS = {"resource_group": "rg-contoso-promptops", "capacity": "contosopromptopsf4", "location": "eastus2",
             "workspace_dev": "Contoso-PromptOps-Dev", "workspace_prod": "Contoso-PromptOps-Prod"}
 NEW = "<new>"
+FABRIC_QUOTA_NEEDED_CU = 4                                    # an F4
+QUOTA_SUGGEST_REGIONS = ("centralus", "northcentralus", "westus2", "westus3", "australiaeast", "centralindia", "southeastasia", "japaneast")
 PROPAGATION_TRIES = 8
 PROPAGATION_WAIT_S = 15.0
 REPO_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9-]{0,38}/[A-Za-z0-9._-]{1,100}$")
@@ -145,6 +148,18 @@ class Cloud:
 
     def provider_state(self, namespace: str) -> str:
         return (self._json("az", ["provider", "show", "-n", namespace], timeout=120) or {}).get("registrationState", "")
+
+    def fabric_quota(self, subscription: str, location: str) -> Optional[dict]:
+        """The capacity units the subscription may use in this region (read-only, Fabric Capacities - List Usages): {'limit', 'used'}, or None when they cannot be read."""
+        r = self._run("az", ["rest", "--method", "get", "--url", f"https://management.azure.com/subscriptions/{subscription}/providers/Microsoft.Fabric/locations/"
+                                                                 f"{location}/usages?api-version=2023-11-01"], check=False, timeout=120)
+        if r.returncode != 0:
+            return None
+        try:
+            q = (json.loads(r.stdout or "{}").get("value") or [])[0]
+            return {"limit": int(q["limit"]), "used": int(q["currentValue"])}
+        except (ValueError, KeyError, IndexError, TypeError):
+            return None
 
     def register_provider(self, namespace: str) -> None:
         self._run("az", ["provider", "register", "-n", namespace, "--wait"], timeout=900)
@@ -476,6 +491,25 @@ def check_trust(c: Any, cfg: Config, name: str, repo: str, prefix: str) -> None:
                       "fix it; if you mean it, run again with --replace-trust, which removes the other credentials. Nothing was changed")
 
 
+def has_room(quota: Optional[Mapping[str, int]]) -> bool:
+    return quota is not None and quota["limit"] - quota["used"] >= FABRIC_QUOTA_NEEDED_CU
+
+
+def check_fabric_quota(c: Any, subscription: str, location: str, say: Callable[[str], None]) -> None:
+    """Read-only. An F4 needs 4 capacity units of Fabric quota in its region, and a subscription can have none there: the first live run (4 Nov 2026) found 0 in East US 2
+    only when the capacity deployment was refused. Refused here instead, before anything is created, with the regions that have room."""
+    quota = c.fabric_quota(subscription, location)
+    if quota is None:
+        say(f"note: the Fabric quota of {location} could not be read; the first build will find out")
+        return
+    if has_room(quota):
+        return
+    room = [r for r in QUOTA_SUGGEST_REGIONS if r != location and has_room(c.fabric_quota(subscription, r))]
+    raise CdError(f"this subscription has no Fabric capacity quota for an F4 in {location} (limit {quota['limit']}, used {quota['used']}; an F4 needs {FABRIC_QUOTA_NEEDED_CU}). "
+                  + (f"Regions with room: {', '.join(room)}. Run again with --location <region>. " if room else "")
+                  + "Or ask for more (Azure portal > Quotas > Microsoft Fabric). Nothing was changed")
+
+
 def apply(c: Any, cfg: Config, say: Callable[[str], None] = print) -> Rows:
     validate(cfg)
     acct = c.account()
@@ -489,6 +523,7 @@ def apply(c: Any, cfg: Config, say: Callable[[str], None] = print) -> Rows:
     rg = c.rg_state(cfg.resource_group)
     rg_verdict = resource_group_verdict(cfg, rg)
     check_trust(c, cfg, APP_NAME, cfg.repo, prefix)
+    check_fabric_quota(c, sub, cfg.location, say)
     say(f"signed in as {acct['user'] or 'an identity'} ({acct['userType']}), subscription '{acct['name']}' (ending {sub[-4:]})")
     say("This is a dry run: nothing is changed. Add --execute (with --subscription) to do it.\n" if not cfg.execute else "Executing:\n")
     for ns in PROVIDERS:

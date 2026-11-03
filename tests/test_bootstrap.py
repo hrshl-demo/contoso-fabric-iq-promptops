@@ -38,6 +38,9 @@ class FakeCloud:
         self.changes: list[tuple] = []
         self.readonly = False
         self.n = 0
+        self.quotas: dict[str, dict] = {}                                 # region -> {'limit', 'used'}; a region that is not listed has plenty
+        self.quota_unreadable = False
+        self.quota_calls: list[str] = []
 
     def _change(self, *what):
         assert not self.readonly, f"a dry run changed something: {what}"
@@ -53,6 +56,12 @@ class FakeCloud:
 
     def provider_state(self, ns):
         return self.providers[ns]
+
+    def fabric_quota(self, subscription, location):
+        self.quota_calls.append(location)
+        if self.quota_unreadable:
+            return None
+        return self.quotas.get(location, {"limit": 512, "used": 0})
 
     def register_provider(self, ns):
         self._change("provider", ns)
@@ -172,6 +181,49 @@ def test_a_dry_run_reads_everything_and_changes_nothing():
     rows, text = run(fake, cfg(execute=False, subscription=""))
     assert rows.count("changed") == 0 and rows.count("would") >= 12 and "dry run" in text and fake.changes == []
     assert bs.NEW not in "".join(f"{r[1]}{r[2]}" for r in rows.rows)                                    # no placeholder leaks into what is said
+
+
+def test_a_region_without_fabric_quota_is_refused_before_anything_is_changed_and_regions_with_room_are_named():
+    """The first live run found 0 capacity units in East US 2 only when the F4 deployment was refused, after the identity had been made."""
+    fake = FakeCloud()
+    fake.quotas = {"eastus2": {"limit": 0, "used": 0}, "northcentralus": {"limit": 0, "used": 0}}
+    with pytest.raises(cd.CdError, match=r"no Fabric capacity quota for an F4 in eastus2 \(limit 0, used 0; an F4 needs 4\).*Regions with room: centralus, westus2.*--location.*Nothing was changed"):
+        run(fake)
+    with pytest.raises(cd.CdError, match="no Fabric capacity quota"):
+        run(fake, cfg(execute=False, subscription=""))                                                    # the dry run refuses too
+    assert fake.changes == []
+
+
+def test_a_quota_that_is_nearly_used_up_is_refused_and_exactly_enough_is_accepted():
+    fake = FakeCloud()
+    fake.quotas = {"eastus2": {"limit": 8, "used": 5}}
+    with pytest.raises(cd.CdError, match=r"limit 8, used 5"):
+        run(fake)
+    fake.quotas = {"eastus2": {"limit": 8, "used": 4}}
+    rows, _text = run(fake)
+    assert rows.count("changed") > 10
+
+
+def test_a_quota_that_cannot_be_read_says_so_and_does_not_stop_the_bootstrap():
+    fake = FakeCloud()
+    fake.quota_unreadable = True
+    rows, text = run(fake)
+    assert "could not be read" in text and rows.count("changed") > 10
+
+
+def test_when_no_region_has_room_the_refusal_still_says_how_to_ask_for_more():
+    fake = FakeCloud()
+    fake.quotas = {region: {"limit": 0, "used": 0} for region in ("eastus2", *bs.QUOTA_SUGGEST_REGIONS)}
+    with pytest.raises(cd.CdError, match=r"Quotas > Microsoft Fabric") as ex:
+        run(fake)
+    assert "Regions with room" not in str(ex.value)
+
+
+def test_the_location_that_is_asked_for_is_the_one_that_is_checked():
+    fake = FakeCloud()
+    fake.quotas = {"eastus2": {"limit": 0, "used": 0}}
+    run(fake, cfg(location="centralus"))
+    assert fake.quota_calls[0] == "centralus" and "eastus2" not in fake.quota_calls
 
 
 def test_apply_builds_the_identity_the_trust_the_group_the_roles_and_the_settings_on_a_blank_tenant():
@@ -812,6 +864,19 @@ def test_a_stuck_az_is_reported_not_waited_for_forever():
 def test_the_account_is_read_from_az():
     body = json.dumps({"id": SUB, "tenantId": TENANT, "name": "Demo", "user": {"name": "admin@demo.test", "type": "user"}})
     assert cloud((0, body, "")).account() == {"id": SUB, "tenantId": TENANT, "name": "Demo", "user": "admin@demo.test", "userType": "user"}
+
+
+def test_the_fabric_quota_is_read_from_the_usages_api_and_anything_else_is_unknown():
+    body = json.dumps({"value": [{"name": {"value": "CapacityQuota"}, "unit": "CU", "currentValue": 8, "limit": 512}]})
+    c = cloud((0, body, ""))
+    assert c.fabric_quota(SUB, "centralus") == {"limit": 512, "used": 8}
+    cmd = c.runner.calls[0][0]
+    assert cmd[:5] == ["az", "rest", "--method", "get", "--url"]
+    assert cmd[5].endswith(f"/subscriptions/{SUB}/providers/Microsoft.Fabric/locations/centralus/usages?api-version=2023-11-01")        # read-only: a GET
+    assert cloud((1, "", "AuthorizationFailed")).fabric_quota(SUB, "centralus") is None
+    assert cloud((0, "not json", "")).fabric_quota(SUB, "centralus") is None
+    assert cloud((0, "{}", "")).fabric_quota(SUB, "centralus") is None
+    assert cloud((0, json.dumps({"value": [{"limit": "x"}]}), "")).fabric_quota(SUB, "centralus") is None
 
 
 def listed_role(actions=bs.OPERATOR_ACTIONS, scopes=(SCOPE,), name=bs.ROLE_OPERATOR):
