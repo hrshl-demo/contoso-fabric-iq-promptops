@@ -10,11 +10,12 @@ workflows only sign in and call it.
 
 Settings come from environment variables (GitHub Actions variables): CD_RESOURCE_GROUP, CD_CAPACITY, CD_WORKSPACE_DEV, CD_WORKSPACE_PROD and
 optionally CD_LOCATION (default eastus2), CD_TIER (default: the kit's tier), CD_USD_PER_HOUR (default 0.72, the East US 2 list price of an F4)
-and CD_DEADLINE_MIN (default 45, 10 to 120).
+and CD_DEADLINE_MIN (default 45, 10 to 45).
 The capacity is paused at the end of every deploy once it has been resumed, also when a step failed. --keep-running leaves it on only when every
-step succeeded; after a failure it is paused anyway. The steps between resume and pause have a deadline (CD_DEADLINE_MIN): a step that is still running
-when it ends is stopped, so the pause that follows (up to 25 minutes) always happens inside the workflow's timeout (keep timeout-minutes at least 30
-minutes above the deadline plus about 5 minutes for the set-up steps).
+step succeeded; after a failure it is paused anyway. Every step between sign-in and verify is bounded by the deadline (CD_DEADLINE_MIN): a kit command
+is stopped, anything else that is still running is abandoned, and a step is not started with less than a minute left. The pause that follows is bounded
+too (about 25 minutes at the very most), so the whole run fits the workflows' 80 minute timeout: about 6 minutes of set-up, the deadline (at most 45),
+the pause, and a margin.
 `guard` pauses a running capacity unless CD_GUARD_HOLD_UNTIL (an ISO time such as 2026-11-05T20:00:00Z, set before a demo) is still in the future.
 """
 from __future__ import annotations
@@ -28,6 +29,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -40,9 +42,13 @@ EXIT_OK, EXIT_FAILED, EXIT_CONFIG, EXIT_STILL_RUNNING = 0, 1, 2, 4
 DEFAULT_LOCATION = "eastus2"
 DEFAULT_USD_PER_HOUR = 0.72
 DEFAULT_DEADLINE_MIN = 45
-PAUSE_TIMEOUT_S = 25 * 60                                  # one pause call, including the kit's own wait for the state to change
-CAPACITY_TIMEOUT_S = {"status": 300, "resume": 25 * 60, "pause": PAUSE_TIMEOUT_S}
+MAX_DEADLINE_MIN = 45                                      # about 6 minutes of set-up + this + the pause (about 25) + a margin must fit the 80 minute job timeout
+STATUS_TIMEOUT_S = 120
+PAUSE_TIMEOUT_S = 22 * 60                                  # one suspend call; the kit itself waits up to 20 minutes for the state to change
+PAUSE_TOTAL_S = PAUSE_TIMEOUT_S + STATUS_TIMEOUT_S + 30    # the suspend call, the status call after it, and a little slack
+CAPACITY_TIMEOUT_S = {"status": STATUS_TIMEOUT_S, "resume": 25 * 60, "pause": PAUSE_TIMEOUT_S}
 MIN_STEP_S = 60                                            # a step is not started with less than this left before the deadline
+GRACE_S = 15                                               # a step's own time limit (a kit command is killed) is given this head start over the outer one
 TIMEOUT_EXIT = 124
 NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9 ._()\-]{0,127}$")
 CAPACITY_RE = re.compile(r"^[a-z][a-z0-9]{2,62}$")
@@ -54,6 +60,30 @@ TOKEN_AUDIENCES = ("https://management.azure.com", "https://api.fabric.microsoft
 
 class CdError(RuntimeError):
     """A setting is missing or a step cannot run; the message says what to change."""
+
+
+class Abandoned(TimeoutError):
+    """A call was still running when its time was up, and was left behind."""
+
+
+def run_bounded(fn: Callable[[], Any], seconds: float) -> Any:
+    """Run fn() and wait at most `seconds` for it. A call that is still running then is abandoned (its thread ends with the process), so that one stuck
+    network call can never hold up the pause that follows it. Whatever fn raises, an interrupt included, is raised here."""
+    box: dict[str, Any] = {}
+
+    def target() -> None:
+        try:
+            box["value"] = fn()
+        except BaseException as ex:  # noqa: BLE001 - handed to the caller's thread below
+            box["error"] = ex
+    worker = threading.Thread(target=target, daemon=True)
+    worker.start()
+    worker.join(max(0.0, seconds))
+    if worker.is_alive():
+        raise Abandoned(f"still running after {int(seconds)} s and left behind")
+    if "error" in box:
+        raise box["error"]
+    return box.get("value")
 
 
 class StepFailed(RuntimeError):
@@ -103,10 +133,10 @@ def load_settings(environ: Mapping[str, str], env_name: Optional[str], default_t
         usd = DEFAULT_USD_PER_HOUR
     try:
         deadline = int(get("CD_DEADLINE_MIN", str(DEFAULT_DEADLINE_MIN)))
-        if not 10 <= deadline <= 120:
+        if not 10 <= deadline <= MAX_DEADLINE_MIN:
             raise ValueError
     except ValueError:
-        bad.append("CD_DEADLINE_MIN")
+        bad.append(f"CD_DEADLINE_MIN (10 to {MAX_DEADLINE_MIN} minutes)")
         deadline = DEFAULT_DEADLINE_MIN
     if bad:
         raise CdError("invalid values for: " + ", ".join(bad) + " (see docs/SETUP.md)")
@@ -129,7 +159,7 @@ def describe_plan(s: Settings) -> str:
         "  7. build the graph",
         "  8. verify the ontology and the tables",
         "  9. pause the capacity, also when a step failed",
-        f"Deadline:    steps 1 to 8 are stopped after {s.deadline_min} minutes so that step 9 always runs (it may take up to 25 minutes)",
+        f"Deadline:    steps 1 to 8 are bounded to {s.deadline_min} minutes so that step 9 always runs (it is bounded to about 25 minutes)",
     ])
 
 
@@ -159,8 +189,11 @@ class Live:
         if not az:
             raise CdError("the az command line is not installed")
         for resource in TOKEN_AUDIENCES:
-            r = self.runner([az, "account", "get-access-token", "--resource", resource, "--query", "expiresOn", "-o", "tsv", "--only-show-errors"],
-                            text=True, encoding="utf-8", capture_output=True)
+            try:
+                r = self.runner([az, "account", "get-access-token", "--resource", resource, "--query", "expiresOn", "-o", "tsv", "--only-show-errors"],
+                                text=True, encoding="utf-8", capture_output=True, timeout=90)
+            except subprocess.TimeoutExpired as ex:
+                raise CdError(f"az did not answer within 90 s when asked for a token for {resource}") from ex
             if r.returncode != 0:
                 raise CdError(f"the signed-in identity cannot get a token for {resource}: {(r.stderr or r.stdout).strip()[:300]}. "
                               f"Sign in first (azure/login in a workflow, az login on a laptop) and check docs/SETUP.md.")
@@ -230,8 +263,8 @@ class Live:
         sp = spec.make_spec(load_model(cli.ROOT / "model"), s.tier, spec.DEFAULT_DESCRIPTIONS)
         ws = {"workspaceId": st["workspaceId"], "workspaceName": st["workspaceName"]}
         lh = {"lakehouseId": st["lakehouseId"], "sqlEndpoint": st.get("sqlEndpoint"), "sqlDatabase": st.get("sqlDatabase")}
-        wait_s = 300.0 if budget is None else max(30.0, min(300.0, budget * 0.25))
-        timeout_s = 900.0 if budget is None else max(60.0, min(900.0, budget * 0.7))
+        wait_s = 300.0 if budget is None else max(10.0, min(300.0, budget * 0.25))
+        timeout_s = 900.0 if budget is None else max(30.0, min(900.0, budget * 0.7))
         return runner.materialize_graph(cli.make_ops(), sp, ws, lh, out, print, wait_s=wait_s, timeout_s=timeout_s)
 
 
@@ -255,7 +288,7 @@ def render_summary(s: Settings, rep: Report, rc: int) -> str:
 
 def pause(s: Settings, io: Any, say: Callable[[str], None]) -> int:
     try:
-        st = io.capacity(s, "pause")
+        st = run_bounded(lambda: io.capacity(s, "pause"), PAUSE_TOTAL_S)      # bounded too: a stuck call must not keep the job alive until its timeout
     except Exception as ex:  # noqa: BLE001 - whatever went wrong, the person must know the capacity may still be running
         say(f"::error::THE CAPACITY MAY STILL BE RUNNING ({str(ex)[:300]}). Pause it now: Azure portal, capacity {s.capacity}, Pause; or run the capacity workflow with action pause.")
         return EXIT_STILL_RUNNING
@@ -285,10 +318,14 @@ def deploy(s: Settings, io: Any, out: Path, reload_data: bool = False, keep_runn
             rep.steps.append((name, "not started", 0.0))
             raise StepFailed(name, f"not started: {max(0, int(budget))} s are left of the {int(limit // 60)}-minute deadline (CD_DEADLINE_MIN)")
         try:
-            res = fn(budget) if budgeted else fn()
+            # Whatever the step is, it gets at most the time that is left: a step that is stuck is abandoned, so the pause below always runs.
+            res = run_bounded((lambda: fn(budget)) if budgeted else fn, budget + GRACE_S)
         except StepFailed:
             rep.steps.append((name, "failed", clock() - t0))
             raise
+        except Abandoned as ex:
+            rep.steps.append((name, "abandoned", clock() - t0))
+            raise StepFailed(name, f"{ex}: the {int(limit // 60)}-minute deadline (CD_DEADLINE_MIN) ended while it was running; the capacity is paused next") from ex
         except Exception as ex:  # noqa: BLE001 - reported with the step that failed
             rep.steps.append((name, "failed", clock() - t0))
             raise StepFailed(name, str(ex)[:600]) from ex

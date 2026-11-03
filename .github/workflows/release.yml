@@ -246,6 +246,11 @@ jobs:
       - name: Deploy, verify, pause
         id: deploy
         run: python -m tools.cd deploy --env prod --reload-data --out "$RUNNER_TEMP/cd-out" --summary "$GITHUB_STEP_SUMMARY"
+      # Pausing twice is harmless. This catches a run that was cancelled, timed out or crashed before tools.cd could pause; it does not run when the
+      # deploy step never started (nothing was resumed). It comes before the artifact upload so that nothing else can use up the time it needs.
+      - name: Last line of defence, pause the capacity
+        if: ${{ always() && steps.deploy.outcome != 'skipped' }}
+        run: python -m tools.cd capacity pause
       - name: Keep the backup of any replaced definition
         if: ${{ always() }}
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -254,11 +259,6 @@ jobs:
           path: ${{ runner.temp }}/cd-out/backup
           if-no-files-found: ignore
           retention-days: 30
-      # Pausing twice is harmless. This catches a run that was cancelled, timed out or crashed before tools.cd could pause; it does not run when the
-      # deploy step never started (nothing was resumed).
-      - name: Last line of defence, pause the capacity
-        if: ${{ always() && steps.deploy.outcome != 'skipped' }}
-        run: python -m tools.cd capacity pause
 
   publish:
     name: Publish the GitHub release

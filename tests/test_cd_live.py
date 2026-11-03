@@ -119,7 +119,7 @@ def test_graph_hands_the_kit_a_valid_spec_and_state(world, monkeypatch):
     assert (seen["wait_s"], seen["timeout_s"]) == (300.0, 900.0)                                  # no deadline: the kit's own defaults
 
 
-@pytest.mark.parametrize("budget, wait_s, timeout_s", [(5000, 300.0, 900.0), (1200, 300.0, 840.0), (100, 30.0, 70.0), (10, 30.0, 60.0)])
+@pytest.mark.parametrize("budget, wait_s, timeout_s", [(5000, 300.0, 900.0), (1200, 300.0, 840.0), (100, 25.0, 70.0), (60, 15.0, 42.0), (10, 10.0, 30.0)])
 def test_the_graph_waits_are_cut_to_the_time_left_before_the_deadline(world, monkeypatch, budget, wait_s, timeout_s):
     mock, live, out, (cli, layers, runner, spec) = world
     mock.workspaces["w-1"] = {"id": "w-1", "displayName": "Demo-Dev", "capacityId": "cap-guid-1"}

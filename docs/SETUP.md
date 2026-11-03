@@ -24,7 +24,7 @@ The first real run replaces these estimates; the job summary shows the minutes t
 Five layers, each catching what the one before can miss:
 
 1. **`tools.cd` pauses in a `finally`**, after a failed step, an interrupt or a pause that needs a second try. `--keep-running` is honoured only when every step succeeded; after a failure the capacity is paused anyway.
-2. **A deadline** (`CD_DEADLINE_MIN`, default 45 minutes): a step still running when it ends is stopped and a step is not started with less than a minute left, so the pause that follows always has time inside the job's 80 minute timeout.
+2. **A deadline** (`CD_DEADLINE_MIN`, default 45, at most 45): every step is bounded by the time that is left. A kit command is stopped, a call inside the pipeline that is still running is abandoned, and a step is not started with less than a minute left. The pause that follows is bounded too (about 25 minutes at the very most), so set-up (about 6 minutes), deadline and pause fit inside the job's 80 minute timeout; a test checks that arithmetic against the workflow files.
 3. **A last workflow step** pauses again even when the deploy step was cancelled, timed out or crashed (pausing twice is harmless).
 4. **The guard**, every 3 hours, pauses a running F4 when nothing is deploying (the deploy and the guard share one concurrency group, so the guard waits for a running deploy). `CD_GUARD_HOLD_UNTIL` holds it off for a demo.
 5. **A pause that fails says so loudly**: "THE CAPACITY MAY STILL BE RUNNING", and the run fails.
@@ -125,7 +125,7 @@ gh variable set CD_WORKSPACE_DEV   --body "Contoso-Bank-Ontology-Demo-Dev"
 gh variable set CD_WORKSPACE_PROD  --body "Contoso-Bank-Ontology-Demo"
 ```
 
-Optional: `CD_LOCATION` (default `eastus2`), `CD_TIER` (default the kit's, `core`), `CD_USD_PER_HOUR` (default `0.72`), `CD_DEADLINE_MIN` (default `45`; keep it at least 35 minutes below the 80 minute job timeout), `RELEASE_APPROVERS` (default the repository owner), `CD_GUARD_HOLD_UNTIL` (see below).
+Optional: `CD_LOCATION` (default `eastus2`), `CD_TIER` (default the kit's, `core`), `CD_USD_PER_HOUR` (default `0.72`), `CD_DEADLINE_MIN` (default and maximum `45`, minimum `10`; the 80 minute job timeout is set for the maximum), `RELEASE_APPROVERS` (default the repository owner), `CD_GUARD_HOLD_UNTIL` (see below).
 
 The ids are secrets, not variables, so they are masked in logs and never in a file. **`CD_ENABLED` is the switch; set it last:**
 
@@ -153,7 +153,7 @@ Before a demo, resume the F4 yourself (`capacity` workflow, action `resume`) and
 | `workspace '...' was not found, or the identity has no role in it` | The app is not an Admin of that workspace (step 3) |
 | "the identity cannot see capacity '...' through the Fabric API" | The group is not a contributor or administrator of the capacity (step 3, item 4) |
 | "workspace '...' is not on capacity '...'" | The workspace is assigned to another capacity, which this pipeline would not pause. Assign it to the F4, or fix `CD_CAPACITY` |
-| "stopped at the 45-minute deadline" | A step took too long; the capacity was paused. Run again, the kit resumes where it stopped |
+| "stopped at the 45-minute deadline" or a step marked `abandoned` | A step took too long; the capacity was paused. Run again, the kit resumes where it stopped |
 | Ontology create answers 403 `FeatureNotAvailable` | The two capacity settings are not applied yet; wait 7 to 11 minutes after Apply |
 | "THE CAPACITY MAY STILL BE RUNNING" | Pause it now: the portal, or `capacity` workflow, action `pause`. Then read the log |
 

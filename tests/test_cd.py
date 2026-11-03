@@ -1,11 +1,14 @@
 import datetime as dt
 import json
+import threading
 from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
+import yaml
 
 from tools import cd
+from tools.promptlib import ROOT
 
 ENV = {"CD_RESOURCE_GROUP": "rg-demo", "CD_CAPACITY": "democapf4", "CD_WORKSPACE_DEV": "Demo-Dev", "CD_WORKSPACE_PROD": "Demo-Prod"}
 NOW = dt.datetime(2026, 11, 5, 12, 0, tzinfo=dt.timezone.utc)
@@ -228,10 +231,77 @@ def test_the_deadline_comes_from_the_settings():
     assert "capacity resume" not in io.calls and "capacity pause" not in io.calls                     # the resume never started, so nothing is paused
 
 
-@pytest.mark.parametrize("value", ["5", "121", "soon", "-1"])
+@pytest.mark.parametrize("value", ["5", "46", "121", "soon", "-1"])
 def test_the_deadline_must_be_a_sensible_number(value):
     with pytest.raises(cd.CdError, match="CD_DEADLINE_MIN"):
         settings(CD_DEADLINE_MIN=value)
+
+
+def test_run_bounded_returns_reraises_and_abandons():
+    assert cd.run_bounded(lambda: 42, 5) == 42
+    with pytest.raises(ValueError, match="boom"):
+        cd.run_bounded(lambda: (_ for _ in ()).throw(ValueError("boom")), 5)
+    with pytest.raises(KeyboardInterrupt):
+        cd.run_bounded(lambda: (_ for _ in ()).throw(KeyboardInterrupt()), 5)
+    release = threading.Event()
+    try:
+        with pytest.raises(cd.Abandoned, match="still running after 0 s and left behind"):
+            cd.run_bounded(lambda: release.wait(10), 0.05)
+    finally:
+        release.set()
+
+
+def short_waits(monkeypatch):
+    """Make every bounded call give up after a tenth of a second, so that a hang can be tested in no time."""
+    real = cd.run_bounded
+    monkeypatch.setattr(cd, "run_bounded", lambda fn, seconds: real(fn, 0.1))
+
+
+def test_a_step_that_hangs_is_abandoned_and_the_capacity_is_still_paused(monkeypatch):
+    short_waits(monkeypatch)
+    release = threading.Event()
+    io = FakeIo()
+    io.bootstrap = lambda s, out: release.wait(10)                                       # a Fabric call that never answers
+    try:
+        rc, rep = cd.deploy(settings(), io, Path("out"), clock=clock())
+    finally:
+        release.set()
+    assert rc == cd.EXIT_FAILED and io.calls[-1] == "capacity pause" and io.state == "Paused"
+    assert any(r[1] == "abandoned" for r in rep.steps) and "kit deploy" not in io.calls and "missing" not in io.calls
+
+
+def test_a_pause_that_hangs_is_reported_not_waited_for(monkeypatch, capsys):
+    short_waits(monkeypatch)
+    release = threading.Event()
+    io = FakeIo()
+    original = io.capacity
+
+    def capacity(s, action, timeout=None):
+        if action == "pause":
+            release.wait(10)
+        return original(s, action, timeout)
+    io.capacity = capacity
+    try:
+        rc, rep = cd.deploy(settings(), io, Path("out"), clock=clock())
+    finally:
+        release.set()
+    assert rc == cd.EXIT_STILL_RUNNING and "MAY STILL BE RUNNING" in capsys.readouterr().out
+    assert rep.steps[-1] == ("pause the capacity", "FAILED", rep.steps[-1][2])
+
+
+@pytest.mark.parametrize("workflow, job", [("cd-dev.yml", "deploy"), ("release.yml", "deploy-prod")])
+def test_the_worst_case_first_pause_fits_inside_the_job_timeout(workflow, job):
+    """About 6 minutes of set-up, the longest allowed deadline, the grace, and one full pause attempt, with a margin."""
+    doc = yaml.safe_load((ROOT / ".github" / "workflows" / workflow).read_text(encoding="utf-8"))
+    timeout = doc["jobs"][job]["timeout-minutes"]
+    worst = 6 + cd.MAX_DEADLINE_MIN + (cd.GRACE_S + cd.PAUSE_TOTAL_S) / 60
+    assert worst + 3 <= timeout, f"{worst:.1f} minutes in the worst case, the job allows {timeout}"
+
+
+def test_the_guard_job_fits_a_status_call_and_a_full_pause():
+    doc = yaml.safe_load((ROOT / ".github" / "workflows" / "capacity.yml").read_text(encoding="utf-8"))
+    worst = 4 + (cd.STATUS_TIMEOUT_S + cd.PAUSE_TOTAL_S) / 60
+    assert worst + 3 <= doc["jobs"]["capacity"]["timeout-minutes"]
 
 
 def test_a_capacity_that_cannot_be_paused_is_loud_even_after_a_good_deploy(capsys):
@@ -402,6 +472,17 @@ def test_live_warm_tokens_asks_for_every_audience_and_never_prints_a_token(tmp_p
     asked = [c[0][c[0].index("--resource") + 1] for c in calls]
     assert asked == list(cd.TOKEN_AUDIENCES) and "https://api.fabric.microsoft.com" in asked and "https://storage.azure.com" in asked
     assert all(c[0][c[0].index("--query") + 1] == "expiresOn" for c in calls)
+    assert all(c[1]["timeout"] == 90 for c in calls)                                              # a silent az cannot hold the step up
+
+
+def test_live_warm_tokens_gives_up_on_a_silent_az(tmp_path):
+    import subprocess
+
+    class Silent:
+        def __call__(self, cmd, **kw):
+            raise subprocess.TimeoutExpired(cmd, kw["timeout"])
+    with pytest.raises(cd.CdError, match="did not answer within 90 s.*management.azure.com"):
+        cd.Live(state_dir=tmp_path, runner=Silent(), az="az").warm_tokens(settings())
 
 
 def test_live_warm_tokens_names_the_audience_that_failed(tmp_path):

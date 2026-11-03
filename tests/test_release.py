@@ -303,6 +303,20 @@ def job(name, conclusion):
     return {"name": name, "conclusion": conclusion}
 
 
+def paged_api(pages, jobs_by_run):
+    """A stand-in for `gh api` that answers the workflow-runs request page by page (newest first)."""
+    seen = []
+
+    def api(path):
+        seen.append(path)
+        if "/workflows/" in path:
+            page = int(path.split("&page=")[1])
+            return {"workflow_runs": pages[page - 1] if page <= len(pages) else []}
+        return {"jobs": jobs_by_run[int(path.split("/runs/")[1].split("/")[0])]}
+    api.seen = seen
+    return api
+
+
 def test_a_skipped_deploy_job_is_not_a_deployment():
     """With CD_ENABLED unset the workflow run concludes 'success' although its only job was skipped; that must not license a prod deployment."""
     api = fake_api([{"id": 3, "head_sha": "c" * 40}, {"id": 2, "head_sha": "b" * 40}, {"id": 1, "head_sha": "a" * 40}],
@@ -321,6 +335,26 @@ def test_the_newest_real_deployment_wins_and_nothing_else_is_fetched():
 def test_no_deployment_when_the_deploy_job_did_not_succeed(jobs):
     assert release.last_dev_deployment("o/r", fake_api([{"id": 1, "head_sha": "a" * 40}], {1: jobs})) == ""
     assert release.last_dev_deployment("o/r", fake_api([], {})) == ""
+
+
+def test_the_search_goes_past_a_full_page_of_skipped_runs():
+    """Pagination: a whole page of runs whose deploy job was skipped must not hide an older real deployment."""
+    skipped = [{"id": i, "head_sha": f"{i:040x}"} for i in range(1, 51)]
+    real = [{"id": 100, "head_sha": "e" * 40}]
+    jobs = {i: [job("Deploy to dev", "skipped")] for i in range(1, 51)}
+    jobs[100] = [job("Deploy to dev", "success")]
+    api = paged_api([skipped, real], jobs)
+    assert release.last_dev_deployment("o/r", api) == "e" * 40
+    assert sum("&page=" in p for p in api.seen) == 2
+
+
+def test_the_search_stops_after_the_last_page_and_after_max_pages():
+    api = paged_api([[{"id": 1, "head_sha": "a" * 40}]], {1: [job("Deploy to dev", "skipped")]})
+    assert release.last_dev_deployment("o/r", api, per_page=50) == "" and sum("&page=" in p for p in api.seen) == 1      # a short page is the last one
+    pages = [[{"id": p * 100 + i, "head_sha": "b" * 40} for i in range(2)] for p in range(10)]
+    jobs = {r["id"]: [job("Deploy to dev", "skipped")] for page in pages for r in page}
+    api = paged_api(pages, jobs)
+    assert release.last_dev_deployment("o/r", api, per_page=2, max_pages=3) == "" and sum("&page=" in p for p in api.seen) == 3
 
 
 @pytest.mark.parametrize("repo", ["", "no-slash", "a/b/c", "o/r; rm -rf", "o/r name", "../x/y"])

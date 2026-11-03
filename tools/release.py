@@ -205,16 +205,20 @@ def gh_api(path: str, runner: Callable[..., Any] = subprocess.run) -> dict:
         raise ReleaseError(f"gh api {path.split('?')[0]} did not answer with JSON") from ex
 
 
-def last_dev_deployment(repo: str, api: Callable[[str], dict] = gh_api, limit: int = 20) -> str:
+def last_dev_deployment(repo: str, api: Callable[[str], dict] = gh_api, per_page: int = 50, max_pages: int = 5) -> str:
     """Head commit of the newest cd-dev run on main whose 'Deploy to dev' job really succeeded ('' when there is none). A run whose only job was
-    skipped (the deployment pipelines were switched off) concludes 'success' as well, so the conclusion of the job itself is what counts."""
+    skipped (the deployment pipelines were switched off) concludes 'success' as well, so the conclusion of the job itself is what counts, and the
+    search goes on page by page (newest first) past any number of such runs, up to max_pages pages."""
     if not REPO_RE.match(repo or ""):
         raise ReleaseError(f"repository '{repo}' must look like owner/name")
-    runs = api(f"repos/{repo}/actions/workflows/{DEPLOY_WORKFLOW}/runs?branch=main&status=success&per_page={limit}").get("workflow_runs") or []
-    for run in runs:
-        jobs = api(f"repos/{repo}/actions/runs/{run['id']}/jobs?per_page=100").get("jobs") or []
-        if any(j.get("name") == DEPLOY_JOB and j.get("conclusion") == "success" for j in jobs):
-            return str(run["head_sha"])
+    for page in range(1, max_pages + 1):
+        runs = api(f"repos/{repo}/actions/workflows/{DEPLOY_WORKFLOW}/runs?branch=main&status=success&per_page={per_page}&page={page}").get("workflow_runs") or []
+        for run in runs:
+            jobs = api(f"repos/{repo}/actions/runs/{run['id']}/jobs?per_page=100").get("jobs") or []
+            if any(j.get("name") == DEPLOY_JOB and j.get("conclusion") == "success" for j in jobs):
+                return str(run["head_sha"])
+        if len(runs) < per_page:
+            break
     return ""
 
 

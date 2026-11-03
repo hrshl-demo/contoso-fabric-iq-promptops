@@ -104,6 +104,12 @@ jobs:
           if [ "$RELOAD" = "true" ]; then args+=(--reload-data); fi
           if [ "$KEEP" = "true" ]; then args+=(--keep-running); fi
           python -m tools.cd deploy "${args[@]}"
+      # Pausing twice is harmless. This catches a run that was cancelled, timed out or crashed before tools.cd could pause. It does not run when the
+      # deploy step never started (nothing was resumed), and not after a successful run that was asked to keep the capacity on. It comes before the
+      # artifact upload so that nothing else can use up the time it needs.
+      - name: Last line of defence, pause the capacity
+        if: ${{ always() && steps.deploy.outcome != 'skipped' && (steps.deploy.outcome != 'success' || inputs.keep_running != true) }}
+        run: python -m tools.cd capacity pause
       - name: Keep the backup of any replaced definition
         if: ${{ always() }}
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -112,8 +118,3 @@ jobs:
           path: ${{ runner.temp }}/cd-out/backup
           if-no-files-found: ignore
           retention-days: 30
-      # Pausing twice is harmless. This catches a run that was cancelled, timed out or crashed before tools.cd could pause. It does not run when the
-      # deploy step never started (nothing was resumed), and not after a successful run that was asked to keep the capacity on.
-      - name: Last line of defence, pause the capacity
-        if: ${{ always() && steps.deploy.outcome != 'skipped' && (steps.deploy.outcome != 'success' || inputs.keep_running != true) }}
-        run: python -m tools.cd capacity pause
