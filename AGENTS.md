@@ -29,6 +29,7 @@ This repo turns versioned prompts into a Fabric IQ ontology and Power BI reports
 - Changing a prompt's body or inputs needs a `version` bump (semver) and a line in `CHANGELOG.md`. `python -m tools.lint_prompts` enforces it.
 - After a run that changes artifacts, regenerate and refresh: `python -m tools.export_fabric --write`, then `python -m tools.manifest --write`.
 - Quote the prompt id and version in the PR description.
+- Releases: `python -m tools.release prepare` (in a pull request) turns `## Unreleased` into a dated section. Never create tags or releases yourself; a human runs the `release` workflow. See `docs/RELEASING.md`.
 
 ## Skills
 

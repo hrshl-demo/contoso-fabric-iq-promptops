@@ -1,0 +1,196 @@
+name: release
+
+# Cut a release by hand: Actions > release > Run workflow. Run it once with "Publish" off first: a dry run checks the rules,
+# runs the full kit tests, builds every file from this commit and shows what it would publish. It changes nothing.
+# A release is a prepared CHANGELOG.md section (python -m tools.release prepare) plus this button. See docs/RELEASING.md.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release, for example v1.0.0. CHANGELOG.md must already have its dated section."
+        required: true
+        type: string
+      publish:
+        description: "Publish the GitHub release. Leave off for a dry run."
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+
+jobs:
+  gate:
+    name: Check the release rules
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Only from main, only by an approver
+        env:
+          REF: ${{ github.ref }}
+          ACTOR: ${{ github.triggering_actor }}
+          APPROVERS: ${{ vars.RELEASE_APPROVERS }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          set -eu
+          if [ "$REF" != "refs/heads/main" ]; then
+            echo "::error::Releases are cut from main only (this run is on $REF)."
+            exit 1
+          fi
+          list="${APPROVERS:-$OWNER}"
+          if ! printf '%s' "$list" | tr ',' '\n' | tr -d ' ' | grep -Fxqi -- "$ACTOR"; then
+            echo "::error::$ACTOR is not an approver. Approvers: $list (repository variable RELEASE_APPROVERS; the repository owner when unset)."
+            exit 1
+          fi
+          echo "$ACTOR is an approver and this run is on main."
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-ci.txt
+      - run: python -m pip install -r requirements-ci.txt
+      - name: Release rules
+        env:
+          VERSION: ${{ inputs.version }}
+        run: python -m tools.release gate --version "$VERSION"
+      - name: CI passed on this exact commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+        run: |
+          set -eu
+          ok=$(gh run list --repo "$REPO" --workflow ci.yml --commit "$SHA" --status success --json databaseId --jq 'length')
+          if [ "$ok" -lt 1 ]; then
+            echo "::error::There is no successful ci run for commit $SHA. Let CI on main finish (or fix it), then release."
+            exit 1
+          fi
+          echo "ci passed on $SHA"
+
+  kit-tests:
+    name: Full kit test suite
+    needs: gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      CONTOSO_REPO: ${{ github.workspace }}/seed
+      CONTOSO_REQUIRE_REPO: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: kit/requirements*.txt
+      - name: Install the kit requirements
+        working-directory: kit
+        run: python -m pip install -r requirements-dev.txt
+      - name: Run every kit test
+        working-directory: kit
+        run: python -m pytest -q
+
+  build:
+    name: Build the release files
+    needs: gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            kit/requirements.txt
+            analysis/requirements.txt
+            requirements-ci.txt
+      - name: Install the requirements
+        run: python -m pip install -r kit/requirements.txt -r analysis/requirements.txt -r requirements-ci.txt
+      - name: Build the core tier offline
+        working-directory: kit
+        run: python -m contoso_onto.cli build --repo ../seed --tier core --out ../out-core
+      - name: Generated Fabric items must match the spec
+        run: python -m tools.export_fabric --check --built out-core
+      - name: Build the full tier offline (the brief reads it)
+        working-directory: kit
+        run: python -m contoso_onto.cli build --repo ../seed --tier full --out ../out-full
+      - name: Build the Monthly Business Brief
+        run: python -m analysis.monthly_brief.build_brief --gold out-full/gold --out out-full/reports/monthly-brief.pdf --summary out-full/reports/summary.md
+      - name: Collect the release files
+        env:
+          VERSION: ${{ inputs.version }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python -m tools.release assets --version "$VERSION" --brief out-full/reports/monthly-brief.pdf --out release/assets
+          python -m tools.release notes --version "$VERSION" --commit "$GITHUB_SHA" --run-url "$RUN_URL" --out release/notes.md
+      - name: Job summary
+        env:
+          VERSION: ${{ inputs.version }}
+          PUBLISH: ${{ inputs.publish }}
+        run: |
+          {
+            if [ "$PUBLISH" = "true" ]; then
+              echo "### $VERSION: files built, publishing after the kit tests pass"
+            else
+              echo "### Dry run for $VERSION: nothing is published"
+              echo
+              echo "Run the workflow again with **Publish** on to release these files."
+            fi
+            echo
+            echo '```'
+            find release/assets -maxdepth 1 -type f -printf '%10s  %f\n' | sort -k2
+            echo '```'
+            echo "<details><summary>Release notes</summary>"
+            echo
+            cat release/notes.md
+            echo
+            echo "</details>"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release-files
+          path: release
+          if-no-files-found: error
+          retention-days: 30
+
+  publish:
+    name: Publish the GitHub release
+    if: ${{ inputs.publish }}
+    needs: [build, kit-tests]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: release-files
+          path: release
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          VERSION: ${{ inputs.version }}
+          SHA: ${{ github.sha }}
+        run: |
+          set -eu
+          gh release create "$VERSION" --repo "$REPO" --target "$SHA" --title "$VERSION" --notes-file release/notes.md --latest release/assets/*
+          url=$(gh release view "$VERSION" --repo "$REPO" --json url --jq .url)
+          echo "### Published $VERSION" >> "$GITHUB_STEP_SUMMARY"
+          echo "$url" >> "$GITHUB_STEP_SUMMARY"

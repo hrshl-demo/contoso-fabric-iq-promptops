@@ -1,6 +1,6 @@
 """Run every repo check in one go: python -m tools.check [--base origin/main]
 
-Prompt lint, generated wrappers, manifest, PII/secret guard, Fabric artifact validation and, when the kit's requirements are
+Prompt lint, generated wrappers, manifest, CHANGELOG structure, PII/secret guard, Fabric artifact validation and, when the kit's requirements are
 installed, that the generated Fabric items still match the spec. The kit's own tests run separately (see AGENTS.md).
 """
 from __future__ import annotations
@@ -10,7 +10,7 @@ import importlib.util
 import sys
 from typing import Optional
 
-from . import export_fabric, lint_prompts, manifest, pii_guard, validate_fabric, wrappers
+from . import export_fabric, lint_prompts, manifest, pii_guard, release, validate_fabric, wrappers
 
 
 def kit_requirements_installed() -> bool:
@@ -30,6 +30,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     a = ap.parse_args(argv)
     steps = [
         ("lint prompts", lambda: lint_prompts.main(["--base", a.base] if a.base else [])),
+        ("changelog", lambda: release.main(["lint"])),
         ("wrappers", lambda: wrappers.main(["--check"])),
         ("manifest", lambda: manifest.main(["--check"])),
         ("pii / secret guard", lambda: pii_guard.main([])),
