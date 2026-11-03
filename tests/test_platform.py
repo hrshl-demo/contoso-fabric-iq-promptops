@@ -743,6 +743,17 @@ def test_a_third_setting_is_asked_for_outside_the_us_and_eu():
     assert "outside this capacity's geographic region" not in pf.approval_request(s, "cap", 20, cross_geo=False)
 
 
+def test_a_run_that_does_not_wait_says_the_click_is_for_a_later_run_that_does(tmp_path, capsys):
+    """With a wait of 0 the capacity is paused right after the load, and its settings page is greyed out then: the request must not say the run waits."""
+    text = pf.approval_request(settings(), "cap-guid-1", 0)
+    assert "does not wait" in text and "Run build again with a wait" in text and "delegatedSettings" in text and "Override tenant admin selection" in text
+    assert "checks every minute" not in text and "up to 0 minutes" not in text
+    waits = pf.approval_request(settings(), "cap-guid-1", 20)
+    assert "checks every minute for up to 20 minutes" in waits and "does not wait" not in waits
+    rc, br = run_build(FakeIo(gate=("closed",)), tmp_path, gate_wait_min=0)
+    assert rc == pf.EXIT_GATE and "does not wait" in capsys.readouterr().out and "does not wait" in (tmp_path / "out" / "ADMIN_APPROVAL.md").read_text(encoding="utf-8")
+
+
 # ---- preflight ------------------------------------------------------------------------------------------------
 
 class PreflightIo(FakeIo):
