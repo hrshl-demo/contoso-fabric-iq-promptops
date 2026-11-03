@@ -29,6 +29,7 @@ class FakeCloud:
         self.rgs: dict[str, dict] = {}                                   # name -> {"tags": {...}, "resources": n}
         self.apps, self.sps, self.creds, self.groups = {}, {}, {}, {}
         self.members, self.roles, self.role_defs = set(), set(), {}
+        self.role_scopes: list[str] = []                                  # where the role definition was looked up
         self.repos = {PLATFORM: {"admin": True}, CONTENT: {"admin": True}}
         self.prefixes = {PLATFORM: "repo:demo-org@1/platform@2", CONTENT: "repo:demo-org@1/content@3"}
         self.capacities: dict[str, str] = {}                              # name -> resource id
@@ -74,8 +75,9 @@ class FakeCloud:
         self._change("role", oid, role, scope)
         self.roles.add((oid, role, scope))
 
-    def role_definition_exists(self, name):
-        return name in self.role_defs
+    def role_definition(self, name, scope):
+        self.role_scopes.append(scope)
+        return bs.role_shape(self.role_defs[name]) if name in self.role_defs else None
 
     def create_role_definition(self, doc):
         self._change("role definition", doc["Name"])
@@ -233,6 +235,65 @@ def test_with_replace_trust_the_old_trust_is_replaced_not_added():
     run(fake, cfg(replace_trust=True))
     assert [c["subject"] for c in fake.creds[app["id"]]] == ["repo:demo-org@1/platform@2:ref:refs/heads/main"]
     assert [c[0] for c in fake.changes if c[0].startswith("credential")] == ["credential-", "credential+"]
+
+
+RIGHT_SUBJECT = "repo:demo-org@1/platform@2:ref:refs/heads/main"
+
+
+def with_extra_credential(fake, name, subject="repo:somebody/else:ref:refs/heads/pwn", issuer=None):
+    """The identity already trusts the right repository, and ALSO something else under another name than github-main."""
+    app = {"appId": fake._id(), "id": fake._id()}
+    fake.apps[bs.APP_NAME] = app
+    fake.sps[app["appId"]] = fake._id()
+    fake.creds[app["id"]] = [{"id": "right", "name": "github-main", "subject": RIGHT_SUBJECT, "issuer": bs.ISSUER},
+                             {"id": "extra", "name": name, "subject": subject, "issuer": issuer or bs.ISSUER}]
+    return app
+
+
+@pytest.mark.parametrize("name", ["backup", "pull-requests"])
+def test_a_second_credential_under_any_name_is_refused_not_only_one_called_github_main(name):
+    """Only a credential with the name github-main used to be looked at: any other name kept another repository's right to sign in as the identity."""
+    fake = FakeCloud()
+    app = with_extra_credential(fake, name)
+    with pytest.raises(cd.CdError, match=rf"already trusts 'repo:somebody/else:ref:refs/heads/pwn' \(credential '{name}'\).*--replace-trust.*Nothing was changed"):
+        run(fake)
+    with pytest.raises(cd.CdError, match="--replace-trust"):
+        run(fake, cfg(execute=False, subscription=""))
+    assert fake.changes == [] and len(fake.creds[app["id"]]) == 2
+
+
+def test_replace_trust_removes_every_other_credential_and_keeps_the_right_one_untouched():
+    fake = FakeCloud()
+    app = with_extra_credential(fake, "backup")
+    run(fake, cfg(replace_trust=True))
+    assert [(c["id"], c["name"]) for c in fake.creds[app["id"]]] == [("right", "github-main")]
+    assert [c[0] for c in fake.changes if c[0].startswith("credential")] == ["credential-"]             # the right one is neither removed nor added again
+
+
+def test_the_right_subject_from_another_issuer_is_not_the_right_trust():
+    fake = FakeCloud()
+    app = with_extra_credential(fake, "x", subject=RIGHT_SUBJECT, issuer="https://issuer.example/other")
+    fake.creds[app["id"]].pop(0)                                                                       # only the look-alike is there
+    with pytest.raises(cd.CdError, match="--replace-trust"):
+        run(fake)
+    run(fake, cfg(replace_trust=True))
+    assert [(c["subject"], c["issuer"]) for c in fake.creds[app["id"]]] == [(RIGHT_SUBJECT, bs.ISSUER)]
+
+
+def test_a_dry_run_with_replace_trust_says_what_it_would_remove_and_changes_nothing():
+    fake = FakeCloud()
+    with_extra_credential(fake, "backup")
+    fake.readonly = True
+    rows, _text = run(fake, cfg(execute=False, subscription="", replace_trust=True))
+    assert fake.changes == [] and ("would", "trust in 'repo:somebody/else:ref:refs/heads/pwn' (credential 'backup')", "would remove") in rows.rows
+
+
+def test_the_trust_split_separates_the_right_credential_from_all_others():
+    right = {"id": "1", "name": "a", "subject": RIGHT_SUBJECT, "issuer": bs.ISSUER}
+    other = {"id": "2", "name": "b", "subject": "repo:x/y:ref:refs/heads/main", "issuer": bs.ISSUER}
+    lookalike = {"id": "3", "name": "c", "subject": RIGHT_SUBJECT, "issuer": "https://other"}
+    assert bs.trust_split([right, other, lookalike], RIGHT_SUBJECT) == ([right], [other, lookalike])
+    assert bs.trust_split([], RIGHT_SUBJECT) == ([], [])
 
 
 def test_a_repository_that_does_not_exist_or_cannot_be_administered_is_refused_before_anything_is_created():
@@ -446,6 +507,74 @@ def test_a_consumer_app_that_trusts_another_repository_is_not_rebound_either():
     fake.creds[app["id"]] = [{"id": "old", "name": "github-main", "subject": "repo:somebody/else:ref:refs/heads/main", "issuer": bs.ISSUER}]
     with pytest.raises(cd.CdError, match="--replace-trust"):
         consume(fake)
+
+
+def test_a_consumer_app_with_a_second_credential_of_another_name_is_refused_before_anything_changes():
+    fake = FakeCloud()
+    run(fake)
+    built(fake)
+    name = f"{bs.CONSUMER_APP_PREFIX}demo-org-content"
+    app = {"appId": fake._id(), "id": fake._id()}
+    fake.apps[name] = app
+    fake.sps[app["appId"]] = fake._id()
+    fake.creds[app["id"]] = [{"id": "right", "name": "github-main", "subject": "repo:demo-org@1/content@3:ref:refs/heads/main", "issuer": bs.ISSUER},
+                             {"id": "extra", "name": "other", "subject": "repo:somebody/else:ref:refs/heads/main", "issuer": bs.ISSUER}]
+    before = len(fake.changes)
+    with pytest.raises(cd.CdError, match=r"\(credential 'other'\).*--replace-trust.*Nothing was changed"):
+        consume(fake)
+    assert len(fake.changes) == before and not fake.role_defs
+
+
+def az_role(actions=bs.OPERATOR_ACTIONS, scopes=(SCOPE,), not_actions=(), data_actions=(), name=bs.ROLE_OPERATOR):
+    """A custom role the way `az role definition list` prints it."""
+    return {"Name": name, "Actions": list(actions), "NotActions": list(not_actions), "DataActions": list(data_actions), "NotDataActions": [], "AssignableScopes": list(scopes)}
+
+
+def test_a_role_that_already_has_the_consumer_roles_name_but_allows_more_is_refused_not_assigned():
+    """The role is given to the content repository's identity: a role is not trusted by its name."""
+    fake = FakeCloud()
+    run(fake)
+    built(fake)
+    fake.role_defs[bs.ROLE_OPERATOR] = az_role(actions=[*bs.OPERATOR_ACTIONS, "Microsoft.Fabric/capacities/delete", "Microsoft.Authorization/roleAssignments/write"])
+    before = len(fake.changes)
+    with pytest.raises(cd.CdError, match=r"already exists, but it is not the role this project defines.*roleassignments/write.*Nothing was changed"):
+        consume(fake)
+    assert len(fake.changes) == before and not any(r[1] == bs.ROLE_OPERATOR for r in fake.roles) and CONTENT not in fake.secrets
+    assert not any(n.startswith(bs.CONSUMER_APP_PREFIX) for n in fake.apps)                                  # nothing was created before the refusal
+
+
+@pytest.mark.parametrize("change", [
+    {"actions": [*bs.OPERATOR_ACTIONS[:3]]},                                                                    # fewer actions: it would not work
+    {"scopes": [f"/subscriptions/{SUB}"]},                                                                      # assignable over the whole subscription
+    {"not_actions": ["Microsoft.Fabric/capacities/suspend/action"]},
+    {"data_actions": ["Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read"]},
+])
+def test_any_difference_in_the_existing_role_is_refused(change):
+    fake = FakeCloud()
+    run(fake)
+    built(fake)
+    fake.role_defs[bs.ROLE_OPERATOR] = az_role(**change)
+    with pytest.raises(cd.CdError, match="not the role this project defines"):
+        consume(fake)
+
+
+def test_the_same_role_in_the_shape_az_prints_is_accepted_and_not_created_again():
+    fake = FakeCloud()
+    run(fake)
+    built(fake)
+    fake.role_defs[bs.ROLE_OPERATOR] = {"roleName": bs.ROLE_OPERATOR, "roleType": "CustomRole", "assignableScopes": [SCOPE.upper()],
+                                        "permissions": [{"actions": [a.lower() for a in bs.OPERATOR_ACTIONS], "notActions": [], "dataActions": [], "notDataActions": [],
+                                                         "condition": None, "conditionVersion": None}]}
+    consume(fake)
+    assert not any(c[0] == "role definition" for c in fake.changes) and any(r[1] == bs.ROLE_OPERATOR for r in fake.roles)
+
+
+def test_the_role_is_looked_up_where_a_role_that_is_assignable_only_in_the_resource_group_can_be_seen():
+    fake = FakeCloud()
+    run(fake)
+    built(fake)
+    consume(fake)
+    assert fake.role_scopes == [SCOPE]
 
 
 def test_a_consumer_dry_run_changes_nothing():
@@ -669,3 +798,35 @@ def test_a_stuck_az_is_reported_not_waited_for_forever():
 def test_the_account_is_read_from_az():
     body = json.dumps({"id": SUB, "tenantId": TENANT, "name": "Demo", "user": {"name": "admin@demo.test", "type": "user"}})
     assert cloud((0, body, "")).account() == {"id": SUB, "tenantId": TENANT, "name": "Demo", "user": "admin@demo.test", "userType": "user"}
+
+
+def listed_role(actions=bs.OPERATOR_ACTIONS, scopes=(SCOPE,), name=bs.ROLE_OPERATOR):
+    """One entry of `az role definition list`, as az 2.91 prints it."""
+    return {"roleName": name, "roleType": "CustomRole", "assignableScopes": list(scopes),
+            "permissions": [{"actions": list(actions), "notActions": [], "dataActions": [], "notDataActions": [], "condition": None, "conditionVersion": None}]}
+
+
+def test_a_role_definition_is_looked_up_by_name_at_the_given_scope_among_custom_roles_only():
+    c = cloud((0, json.dumps([listed_role()]), ""))
+    shape = c.role_definition(bs.ROLE_OPERATOR, SCOPE)
+    cmd = c.runner.calls[0][0]
+    assert cmd[:4] == ["az", "role", "definition", "list"] and cmd[cmd.index("--name") + 1] == bs.ROLE_OPERATOR
+    assert cmd[cmd.index("--custom-role-only") + 1] == "true" and cmd[cmd.index("--scope") + 1] == SCOPE
+    assert shape == bs.role_shape(bs.operator_role(SUB, "rg-contoso-promptops"))
+
+
+def test_a_missing_role_definition_is_none_and_only_the_exact_name_counts():
+    assert cloud((0, "[]", "")).role_definition(bs.ROLE_OPERATOR, SCOPE) is None
+    assert cloud((0, json.dumps([listed_role(name=bs.ROLE_OPERATOR + " (old)")]), "")).role_definition(bs.ROLE_OPERATOR, SCOPE) is None
+    with pytest.raises(cd.CdError, match="2 custom roles are called"):
+        cloud((0, json.dumps([listed_role(), listed_role()]), "")).role_definition(bs.ROLE_OPERATOR, SCOPE)
+
+
+def test_a_role_shape_is_the_same_whichever_way_the_role_is_written_down():
+    made = bs.role_shape(bs.operator_role(SUB, "rg-contoso-promptops"))
+    printed = bs.role_shape(listed_role(actions=[a.upper() for a in reversed(bs.OPERATOR_ACTIONS)], scopes=[SCOPE.lower() + "/"]))
+    assert made == printed and made["actions"] == sorted(a.lower() for a in bs.OPERATOR_ACTIONS) and made["assignableScopes"] == [SCOPE.lower()]
+    assert made["notActions"] == made["dataActions"] == made["notDataActions"] == []
+    assert bs.role_shape({"properties": listed_role()}) == made                                          # a nested `properties` envelope reads the same
+    two_blocks = {"assignableScopes": [SCOPE], "permissions": [{"actions": list(bs.OPERATOR_ACTIONS[:2])}, {"actions": list(bs.OPERATOR_ACTIONS[2:]), "notActions": ["x/y"]}]}
+    assert bs.role_shape(two_blocks)["notActions"] == ["x/y"] and bs.role_shape(two_blocks) != made

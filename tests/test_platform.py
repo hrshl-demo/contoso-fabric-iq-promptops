@@ -28,11 +28,16 @@ class FakeIo:
     """Every call the platform makes, recorded; each can be told to fail. The subscription starts blank: the capacity does not exist until it is created."""
 
     def __init__(self, fail=None, missing=(), gate=("open",), state="Paused", pause_error=None, kit_codes=None, interrupt_on=None, pause_state="Paused",
-                 cap_exists=False, cap_sku="F4", cap_admins=None, settle_state="Succeeded", create_then_fail=False):
+                 cap_exists=False, cap_sku="F4", cap_admins=None, settle_state="Succeeded", create_then_fail=False, settle_cancels=False, provisioning=(),
+                 appears_after=None, gate_warning=""):
         self.fail, self.missing, self.gates, self.state = fail, list(missing), list(gate), state
         self.pause_error, self.kit_codes, self.interrupt_on, self.pause_state = pause_error, kit_codes or {}, interrupt_on, pause_state
         self.cap_exists, self.cap_sku, self.cap_admins, self.settle_state, self.create_then_fail = cap_exists, cap_sku, cap_admins, settle_state, create_then_fail
+        self.settle_cancels, self.provisioning, self.appears_after, self.gate_warning = settle_cancels, list(provisioning), appears_after, gate_warning
+        self.deployment_cancelled = False
         self.deployed_admins = None
+        self.infra_timeouts: list = []
+        self.status_reads = 0
         self.calls: list[str] = []
         self.capacity_fabric_id = "cap-guid-1"
         self.gate_checks = 0
@@ -51,7 +56,9 @@ class FakeIo:
         self._maybe_fail("identity")
         return {"subscriptionId": "sub-1", "user": "app", "type": "servicePrincipal"}
 
-    def infra(self, s, storage, deploy_capacity, admins=None):
+    def infra(self, s, storage, deploy_capacity, admins=None, timeout=None):
+        if deploy_capacity:
+            self.infra_timeouts.append(timeout)
         if deploy_capacity and self.create_then_fail:                         # ARM accepted it, and the call still raised (a timeout, a cancelled run)
             self.calls.append("infra capacity")
             self.cap_exists, self.state = True, "Active"
@@ -64,6 +71,7 @@ class FakeIo:
 
     def settle_capacity_deployment(self, s):
         self.calls.append("settle")
+        self.deployment_cancelled = self.settle_cancels
         return self.settle_state
 
     def upload_source(self, s, storage, seed):
@@ -78,9 +86,13 @@ class FakeIo:
     def capacity(self, base, action, timeout=None):
         self.calls.append(f"capacity {action}")
         if action == "status":
+            self.status_reads += 1
+            if not self.cap_exists and self.appears_after is not None and self.status_reads > self.appears_after:
+                self.cap_exists, self.state = True, "Active"                 # the capacity service went on after the cancel, and the capacity appeared
             if not self.cap_exists:
                 return {"exists": False}
-            return {"exists": True, "state": self.state, "sku": self.cap_sku, "admins": self.cap_admins}
+            prov = self.provisioning.pop(0) if self.provisioning else "Succeeded"
+            return {"exists": True, "state": self.state, "sku": self.cap_sku, "admins": self.cap_admins, "provisioningState": prov}
         if not self.cap_exists:                                              # what the kit says for a capacity that is not there
             raise cd.CdError(f"capacity {action} failed: capacity does not exist in resource group rg-demo")
         if action == "pause":
@@ -109,7 +121,7 @@ class FakeIo:
         self.calls.append("gate")
         self.gate_checks += 1
         step = self.gates[min(self.gate_checks - 1, len(self.gates) - 1)]
-        return pf.GateState(step, f"fake {step}")
+        return pf.GateState(step, f"fake {step}", warning=self.gate_warning)
 
     def needs_cross_geo(self, s):
         return False
@@ -122,6 +134,20 @@ def clock(step_s=1.0):
         t[0] += step_s
         return t[0]
     return tick
+
+
+class Time:
+    """A clock that only moves when something sleeps, so that waiting costs nothing in a test."""
+
+    def __init__(self):
+        self.t, self.slept = 1000.0, []
+
+    def now(self):
+        return self.t
+
+    def sleep(self, seconds):
+        self.slept.append(seconds)
+        self.t += seconds
 
 
 @pytest.fixture(autouse=True)
@@ -252,9 +278,10 @@ def test_missing_administrators_are_added_and_nobody_is_removed():
     assert admins == ("manual@added.test", UPN, PIPE, CONS)                                              # the person added by hand in the portal stays
 
 
-def test_an_unreadable_administrator_list_is_an_update_that_only_adds():
-    action, _why, admins = pf.capacity_action(settings(), facts(admins=None, sku=None))
-    assert action == "update" and admins == (UPN, PIPE)
+def test_an_unreadable_administrator_list_is_refused_not_overwritten():
+    """An update deploys only the configured members, so it would replace administrators the platform cannot see."""
+    action, why, admins = pf.capacity_action(settings(), facts(admins=None, sku=None))
+    assert action == "refuse" and "could not be read" in why and "replace administrators" in why and admins == ()
 
 
 # ---- build ----------------------------------------------------------------------------------------------------
@@ -365,11 +392,116 @@ def test_the_last_line_of_defence_settles_then_pauses_and_is_harmless_when_nothi
 def test_the_last_line_of_defence_keeps_going_when_it_cannot_settle_or_read(capsys):
     io = FakeIo(cap_exists=True, state="Active")
     io.settle_capacity_deployment = lambda s: (_ for _ in ()).throw(cd.CdError("az hung"))
-    assert pf.rescue(settings(), io) == 0 and io.state == "Paused" and "could not settle" in capsys.readouterr().out
+    rc, _t = rescue_with(io)
+    assert rc == 0 and io.state == "Paused" and "could not settle" in capsys.readouterr().out
     io = FakeIo(cap_exists=True, state="Active")
     real = io.capacity
     io.capacity = lambda base, action, timeout=None: (_ for _ in ()).throw(cd.CdError("status broke")) if action == "status" else real(base, action, timeout)
     assert pf.rescue(settings(), io) == 0 and io.state == "Paused" and "trying to pause it anyway" in capsys.readouterr().out
+
+
+def test_the_last_line_of_defence_keeps_going_when_it_cannot_read_the_capacity(capsys):
+    io = FakeIo(cap_exists=True, state="Active")
+    real = io.capacity
+    io.capacity = lambda base, action, timeout=None: (_ for _ in ()).throw(cd.CdError("status broke")) if action == "status" else real(base, action, timeout)
+    assert pf.rescue(settings(), io) == 0 and io.state == "Paused" and "trying to pause it anyway" in capsys.readouterr().out
+
+
+def rescue_with(io):
+    t = Time()
+    return pf.rescue(settings(), io, clock=t.now, sleeper=t.sleep), t
+
+
+@pytest.mark.parametrize("state", ["Running", "Unknown", "Accepted"])
+def test_a_deployment_that_could_not_be_stopped_and_no_capacity_yet_is_an_error_not_a_success(state, capsys):
+    """Azure can still create the capacity after the job ends, and it bills from then on: 'nothing to pause' would be a false all-clear."""
+    io = FakeIo(settle_state=state, settle_cancels=True)
+    rc, t = rescue_with(io)
+    out = capsys.readouterr().out
+    assert rc == cd.EXIT_STILL_RUNNING and "THE CAPACITY MAY STILL APPEAR AND BILL" in out and pf.CAPACITY_DEPLOYMENT in out and "nothing to pause" not in out
+    assert sum(t.slept) == pf.LATE_APPEARANCE_S and "capacity pause" not in io.calls                    # it looked for a late appearance first, for a bounded time
+
+
+def test_a_settle_that_itself_fails_is_treated_as_a_deployment_in_doubt(capsys):
+    io = FakeIo()
+    io.settle_capacity_deployment = lambda s: (_ for _ in ()).throw(cd.CdError("az hung"))
+    rc, t = rescue_with(io)
+    assert rc == cd.EXIT_STILL_RUNNING and "MAY STILL APPEAR AND BILL" in capsys.readouterr().out and sum(t.slept) == pf.LATE_APPEARANCE_S
+
+
+def test_a_deployment_that_could_not_be_stopped_but_whose_capacity_exists_is_paused_with_a_warning(capsys):
+    io = FakeIo(settle_state="Running", settle_cancels=True, cap_exists=True, state="Active")
+    rc, _t = rescue_with(io)
+    assert rc == 0 and io.state == "Paused" and "its deployment is still not over" in capsys.readouterr().out
+
+
+def test_a_capacity_that_appears_after_a_cancel_is_found_and_paused():
+    """ARM cancel is not an undo: the capacity service can finish what it had started."""
+    io = FakeIo(settle_state="Canceled", settle_cancels=True, appears_after=3)
+    rc, t = rescue_with(io)
+    assert rc == 0 and io.state == "Paused" and io.calls[-1] == "capacity pause" and t.slept == [pf.PROVISION_POLL_S] * 3
+
+
+def test_a_cancelled_deployment_with_no_capacity_in_the_window_is_a_warning_and_the_guard_is_the_backstop(capsys):
+    io = FakeIo(settle_state="Canceled", settle_cancels=True)
+    rc, t = rescue_with(io)
+    out = capsys.readouterr().out
+    assert rc == 0 and f"did not appear in {int(pf.LATE_APPEARANCE_S)} s" in out and "scheduled guard" in out and "::warning::" in out
+    assert sum(t.slept) == pf.LATE_APPEARANCE_S
+
+
+def test_with_no_deployment_in_doubt_an_absent_capacity_is_not_waited_for():
+    io = FakeIo()
+    rc, t = rescue_with(io)
+    assert rc == 0 and t.slept == [] and io.calls == ["settle", "capacity status"]
+
+
+def test_a_capacity_that_is_still_being_provisioned_is_waited_for_before_it_is_paused(capsys):
+    io = FakeIo(cap_exists=True, state="Active", provisioning=["Provisioning", "Updating", "Succeeded"])
+    rc, t = rescue_with(io)
+    assert rc == 0 and io.calls == ["settle", "capacity status", "capacity status", "capacity status", "capacity pause"] and t.slept == [pf.PROVISION_POLL_S] * 2
+    assert "still being provisioned" in capsys.readouterr().out
+
+
+def test_the_wait_for_provisioning_is_bounded_and_the_pause_is_tried_anyway():
+    io = FakeIo(cap_exists=True, state="Active", provisioning=["Provisioning"] * 1000)
+    rc, t = rescue_with(io)
+    assert sum(t.slept) == pf.PROVISION_WAIT_S and io.calls[-1] == "capacity pause" and rc == 0
+
+
+@pytest.mark.parametrize("st, expected", [({"provisioningState": "Succeeded", "state": "Active"}, False), ({"provisioningState": "Provisioning"}, True),
+                                          ({"provisioningState": "Updating"}, True), ({"provisioningState": None, "state": "Paused"}, False),
+                                          ({"provisioningState": "Accepted"}, True), ({"provisioningState": "Succeeded", "state": "Provisioning"}, True),
+                                          ({"provisioningState": "Failed", "state": "Failed"}, False), ({}, False)])
+def test_a_capacity_is_being_provisioned_unless_azure_says_it_is_done(st, expected):
+    assert pf.being_provisioned(st) is expected
+
+
+def test_the_worst_case_before_the_pause_is_what_the_job_timeout_is_sized_for():
+    assert pf.PAUSE_PREAMBLE_MAX_S == pf.SETTLE_TOTAL_S + max(pf.PROVISION_WAIT_S, pf.LATE_APPEARANCE_S) + 2 * (cd.STATUS_TIMEOUT_S + cd.GRACE_S)
+
+
+def test_a_failed_deployment_that_cannot_be_stopped_is_a_loud_failure_of_the_build(tmp_path, capsys):
+    io = FakeIo(fail="infra capacity", settle_state="Running", settle_cancels=True)
+    rc, _br = run_build(io, tmp_path)
+    assert rc == cd.EXIT_STILL_RUNNING and "MAY STILL APPEAR AND BILL" in capsys.readouterr().out
+
+
+def test_the_capacity_deployment_is_given_less_time_than_the_step_has(tmp_path):
+    io = FakeIo()
+    pf.build(settings(), io, tmp_path / "out", clock=clock(), sleeper=lambda s: None, deadline_s=1000.0)
+    assert len(io.infra_timeouts) == 1 and io.infra_timeouts[0] <= 1000 - cd.GRACE_S - 30 and io.infra_timeouts[0] < pf.INFRA_TIMEOUT_S
+    io = FakeIo()
+    pf.build(settings(), io, tmp_path / "out2", clock=clock(), sleeper=lambda s: None)
+    assert io.infra_timeouts == [pf.INFRA_TIMEOUT_S]                                                    # with all the time there is, the usual limit
+
+
+def test_a_gate_probe_that_left_something_behind_fails_the_build_and_the_capacity_is_paused(tmp_path):
+    io = FakeIo(gate_warning="left behind in the workspace, delete by hand: PromptOpsGateProbe")
+    rc, br = run_build(io, tmp_path, keep_running=True)
+    assert rc == cd.EXIT_FAILED and io.calls[-1] == "capacity pause" and io.state == "Paused"          # --keep-running is not honoured
+    assert any("not a success" in n and "PromptOpsGateProbe" in n for n in br.report.notes) and (tmp_path / "out" / "platform-outputs.json").exists()
+    assert "FAILED" in pf.render_summary(settings(), br, rc)
 
 
 @pytest.mark.parametrize("failing", ["warm", "identity", "infra storage", "upload", "download", "build layers"])
@@ -443,11 +575,11 @@ def test_a_stuck_capacity_deployment_is_abandoned_then_settled_before_the_pause(
     io = FakeIo()
     original = io.infra
 
-    def slow(s, storage, deploy_capacity, admins=None):
+    def slow(s, storage, deploy_capacity, admins=None, timeout=None):
         if deploy_capacity:
             io.calls.append("infra capacity")
             release.wait(10)
-        return original(s, storage, deploy_capacity, admins)
+        return original(s, storage, deploy_capacity, admins, timeout)
     io.infra = slow
     try:
         rc, br = run_build(io, tmp_path)
@@ -737,6 +869,8 @@ def test_infra_runs_the_two_phases_with_a_parameters_file_and_returns_the_output
     params_file = first[first.index("-p") + 1].lstrip("@")
     assert "-p" in first and params_file.endswith("parameters.json") and "--only-show-errors" in first and calls[0][1]["timeout"] == pf.INFRA_TIMEOUT_S
     assert json.loads(Path(params_file).read_text(encoding="utf-8"))["parameters"]["deployCapacity"]["value"] is False
+    io.infra(settings(), "stx", True, None, timeout=600)
+    assert calls[-1][1]["timeout"] == 600                                                                  # the build gives the deployment less time than the step has
 
 
 def test_the_administrators_to_deploy_reach_the_parameters_file(tmp_path):
@@ -775,7 +909,7 @@ def test_a_deployment_that_has_ended_or_never_existed_is_not_cancelled(tmp_path,
     calls = []
     io = live(tmp_path, settle_runner(calls, [state]))
     assert io.settle_capacity_deployment(settings()) == (state or "NotFound")
-    assert not any(c[1:4] == ["deployment", "group", "cancel"] for c in calls)
+    assert not any(c[1:4] == ["deployment", "group", "cancel"] for c in calls) and io.deployment_cancelled is False
 
 
 def test_a_running_deployment_is_cancelled_and_waited_for(tmp_path):
@@ -784,13 +918,13 @@ def test_a_running_deployment_is_cancelled_and_waited_for(tmp_path):
     assert io.settle_capacity_deployment(settings()) == "Canceled"
     cancel = next(c for c in calls if c[1:4] == ["deployment", "group", "cancel"])
     assert cancel[cancel.index("-n") + 1] == pf.CAPACITY_DEPLOYMENT and cancel[cancel.index("-g") + 1] == "rg-demo"
-    assert sleeps == [pf.SETTLE_POLL_S, pf.SETTLE_POLL_S]
+    assert sleeps == [pf.SETTLE_POLL_S, pf.SETTLE_POLL_S] and io.deployment_cancelled is True            # a cancel is not an undo: the pause looks for a late capacity
 
 
 def test_a_deployment_that_never_ends_is_waited_for_only_so_long(tmp_path):
     calls, sleeps = [], []
     io = live(tmp_path, settle_runner(calls, ["Running"] * 100), sleeper=sleeps.append)
-    assert io.settle_capacity_deployment(settings()) == "Running" and sum(sleeps) == pf.SETTLE_TIMEOUT_S
+    assert io.settle_capacity_deployment(settings()) == "Running" and sum(sleeps) == pf.SETTLE_TIMEOUT_S and io.deployment_cancelled is True
 
 
 def test_a_status_call_that_hangs_does_not_stop_the_settling(tmp_path):
@@ -801,6 +935,31 @@ def test_a_status_call_that_hangs_does_not_stop_the_settling(tmp_path):
         raise subprocess.TimeoutExpired(cmd, kw["timeout"])
     io = live(tmp_path, run, sleeper=sleeps.append)
     assert io.settle_capacity_deployment(settings()) == "Unknown" and sum(sleeps) == pf.SETTLE_TIMEOUT_S
+
+
+def test_a_failed_status_call_is_not_taken_for_a_deployment_that_does_not_exist(tmp_path):
+    """A sign-in or network failure says nothing about the deployment: only Azure's own 'not found' means that there is none."""
+    calls, sleeps = [], []
+
+    def run(cmd, **kw):
+        calls.append(cmd)
+        if cmd[1:4] == ["deployment", "group", "show"]:
+            return SimpleNamespace(returncode=1, stdout="", stderr="ERROR: Please run 'az login' to setup account.")
+        return SimpleNamespace(returncode=0, stdout="", stderr="")
+    io = live(tmp_path, run, sleeper=sleeps.append)
+    assert io.settle_capacity_deployment(settings()) == "Unknown" and io.deployment_cancelled is True
+    assert any(c[1:4] == ["deployment", "group", "cancel"] for c in calls) and sum(sleeps) == pf.SETTLE_TIMEOUT_S
+
+
+@pytest.mark.parametrize("error", ["(DeploymentNotFound) Deployment 'platform-capacity' could not be found.", "(ResourceGroupNotFound) Resource group 'rg-demo' could not be found."])
+def test_azures_own_not_found_means_there_is_no_deployment(tmp_path, error):
+    calls = []
+
+    def run(cmd, **kw):
+        calls.append(cmd)
+        return SimpleNamespace(returncode=1, stdout="", stderr=error)
+    io = live(tmp_path, run)
+    assert io.settle_capacity_deployment(settings()) == "NotFound" and io.deployment_cancelled is False and len(calls) == 1
 
 
 def test_upload_uses_entra_sign_in_and_retries_a_fresh_storage_account(tmp_path):

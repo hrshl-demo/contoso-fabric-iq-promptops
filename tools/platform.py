@@ -57,10 +57,17 @@ INFRA_TIMEOUT_S = 20 * 60
 SETTLE_POLL_S = 15.0
 SETTLE_TIMEOUT_S = 240.0
 SETTLE_TOTAL_S = 300.0                                    # the cancel, the polling and the calls around them
+PROVISION_POLL_S = 15.0
+PROVISION_WAIT_S = 300.0                                  # a capacity that is still being provisioned cannot be paused yet: wait for it, this long at most
+LATE_APPEARANCE_S = 90.0                                  # after a cancel, a capacity may still appear: look for it this long
+PAUSE_PREAMBLE_MAX_S = SETTLE_TOTAL_S + max(PROVISION_WAIT_S, LATE_APPEARANCE_S) + 2 * (cd.STATUS_TIMEOUT_S + cd.GRACE_S)     # everything before the pause itself, worst case
+PROVISIONED = {None, "Succeeded", "Failed", "Canceled", "Cancelled", "Deleting", "Deleted"}
+PROVISIONING_STATES = {"Provisioning", "Preparing", "Updating", "UpdatingSku", "Creating"}
 MIN_CAPACITY_STEP_S = 15 * 60                             # creating the capacity is not started with less than this left: its pause needs room
 STORAGE_DEPLOYMENT = "platform-storage"
 CAPACITY_DEPLOYMENT = "platform-capacity"
 DEPLOYMENT_ENDED = {"Succeeded", "Failed", "Canceled", "Cancelled", "NotFound"}
+DEPLOYMENT_MISSING_RE = re.compile(r"DeploymentNotFound|ResourceGroupNotFound|ResourceNotFound")
 TRANSFER_TIMEOUT_S = 15 * 60
 PROBE_CLEANUP_TRIES = 3
 PLATFORM_SKU = "F4"
@@ -165,12 +172,15 @@ def capacity_action(s: PlatformSettings, facts: dict) -> tuple[str, str, tuple[s
     if sku not in (None, PLATFORM_SKU):
         return "refuse", (f"capacity {s.base.capacity} is {sku}, but the platform is built for {PLATFORM_SKU}. It never resizes a capacity by itself, because a resize "
                           f"changes the bill: resize it yourself (the kit's `capacity scale`) or point CD_CAPACITY at another name"), ()
-    have = [str(x) for x in (facts.get("admins") or [])]
+    if facts.get("admins") is None:
+        return "refuse", (f"capacity {s.base.capacity} exists but its list of administrators could not be read. The platform will not change it: an update would "
+                          "replace administrators it cannot see. Look at the capacity in the Azure portal, then run again"), ()
+    have = [str(x) for x in facts["admins"]]
     lower = {x.lower() for x in have}
     missing = [x for x in s.capacity_admins if x.lower() not in lower]
-    if not missing and facts.get("admins") is not None:
+    if not missing:
         return "keep", "the capacity exists and every configured administrator is on it", tuple(have)
-    return "update", "administrators are missing: " + (", ".join(missing) if missing else "the list could not be read"), tuple([*have, *missing])
+    return "update", "administrators are missing: " + ", ".join(missing), tuple([*have, *missing])
 
 
 def describe_plan(s: PlatformSettings) -> str:
@@ -258,6 +268,7 @@ class Live(cd.Live):
         self.sleeper = sleeper
         self.subscription: Optional[str] = None
         self.capacity_fabric_id: Optional[str] = None
+        self.deployment_cancelled = False
 
     # ---- az ------------------------------------------------------------------------------------------------------------------------------------
     def _az(self, args: list[str], timeout: float, check: bool = True) -> Any:
@@ -288,14 +299,17 @@ class Live(cd.Live):
             args += ["--no-pretty-print"]
         return json.loads(self._az([*args, "-o", "json"], timeout).stdout or "{}")
 
-    def infra(self, s: PlatformSettings, storage: str, deploy_capacity: bool, admins: Optional[Sequence[str]] = None) -> dict:
-        res = self._deploy(s, storage, deploy_capacity, "create", INFRA_TIMEOUT_S, admins)
+    def infra(self, s: PlatformSettings, storage: str, deploy_capacity: bool, admins: Optional[Sequence[str]] = None, timeout: Optional[float] = None) -> dict:
+        res = self._deploy(s, storage, deploy_capacity, "create", INFRA_TIMEOUT_S if timeout is None else timeout, admins)
         out = (res.get("properties") or {}).get("outputs") or {}
         return {k: v.get("value") for k, v in out.items()}
 
     def settle_capacity_deployment(self, s: PlatformSettings) -> str:
         """A capacity deployment that was abandoned (a deadline, an interrupt, a cancelled run) is still running on Azure's side and can create an Active
-        capacity after a pause was tried. Cancel it and wait until it has ended, so that the pause that follows sees what really exists."""
+        capacity after a pause was tried. Cancel it and wait until it has ended, so that the pause that follows sees what really exists. Returns the last
+        state seen; anything that is not an ended state means it could not be settled. `deployment_cancelled` says that a running deployment was cancelled:
+        a cancelled deployment does not undo what the capacity service had already started, so the capacity may still appear."""
+        self.deployment_cancelled = False
         show = ["deployment", "group", "show", "-g", s.base.resource_group, "-n", CAPACITY_DEPLOYMENT, "--query", "properties.provisioningState", "-o", "tsv"]
 
         def state() -> str:
@@ -303,12 +317,14 @@ class Live(cd.Live):
                 r = self._az(show, 120, check=False)
             except CdError:
                 return "Unknown"
-            if r.returncode != 0:
-                return "NotFound"
-            return (r.stdout or "").strip() or "NotFound"
+            if r.returncode == 0:
+                return (r.stdout or "").strip() or "Unknown"
+            # only Azure's own "there is no such deployment" counts as ended: a sign-in or network failure says nothing about the deployment
+            return "NotFound" if DEPLOYMENT_MISSING_RE.search(f"{r.stderr or ''} {r.stdout or ''}") else "Unknown"
         now = state()
         if now in DEPLOYMENT_ENDED:
             return now
+        self.deployment_cancelled = True
         try:
             self._az(["deployment", "group", "cancel", "-g", s.base.resource_group, "-n", CAPACITY_DEPLOYMENT], 60, check=False)
         except CdError:
@@ -425,7 +441,10 @@ class Live(cd.Live):
         _c, _l, runner, _s, _m = self._kit_modules()
         from contoso_onto import oac
         ws = cli.read_state(out)["workspaceId"]
-        self._remove_gate_probe(ops, ws)
+        stuck = self._remove_gate_probe(ops, ws)
+        if stuck:
+            return GateState("unknown", "an earlier gate probe left items that could not be removed, so the gate was not probed (a leftover makes the create answer 409)",
+                             warning=f"left behind in the workspace, delete by hand: {', '.join(stuck)}")
         try:
             ops.fab.create(ws, "ontologies", {"displayName": GATE_PROBE_ITEM})
         except oac.FabricError as ex:
@@ -569,30 +588,78 @@ def wait_for_gate(s: PlatformSettings, io: Any, state: GateState, out: Path, say
     return state
 
 
-def pause_what_exists(s: PlatformSettings, io: Any, say: Callable[[str], None], settle: bool = False) -> int:
-    """The pause that is owed. First, when a capacity deployment may still be running on Azure's side, cancel it and wait for it to end (it could create an
-    Active capacity after the pause was tried). Then pause the capacity if there is one: a capacity that does not exist is nothing to pause, not an alarm."""
+def being_provisioned(st: Mapping[str, Any]) -> bool:
+    """A capacity that is still being created or updated cannot be paused yet; an unknown provisioning state is treated the same way."""
+    return st.get("provisioningState") not in PROVISIONED or st.get("state") in PROVISIONING_STATES
+
+
+def pause_what_exists(s: PlatformSettings, io: Any, say: Callable[[str], None], settle: bool = False, *,
+                      clock: Callable[[], float] = time.monotonic, sleeper: Callable[[float], None] = time.sleep) -> int:
+    """The pause that is owed.
+
+    1. When a capacity deployment may still be running on Azure's side, cancel it and wait for it to end. A cancel is not an undo: the capacity service can
+       finish what it had already started and create an Active capacity after any pause was tried.
+    2. Look at the capacity. One that is still being provisioned cannot be paused yet: wait for that, at most PROVISION_WAIT_S. After a cancel (or when
+       the deployment could not be settled) a capacity that does not exist yet is looked for, LATE_APPEARANCE_S, before it is called absent.
+    3. Pause it. A deployment that could not be settled with no capacity to pause is an error, not a success: the capacity may still appear and bill.
+    A capacity that does not exist when no deployment was in doubt is nothing to pause, not an alarm."""
+    unsettled: Optional[str] = None                       # the last state of a deployment that could not be settled
+    cancelled = False                                     # a deployment that was still running was cancelled
     if settle:
         try:
-            state = cd.run_bounded(lambda: io.settle_capacity_deployment(s), SETTLE_TOTAL_S)
-            say(f"the capacity deployment ended: {state}")
-        except Exception as ex:  # noqa: BLE001 - go on and pause whatever exists
-            say(f"::warning::could not settle the capacity deployment ({str(ex)[:200]}); pausing whatever exists")
-    try:
-        st = cd.run_bounded(lambda: io.capacity(s.base, "status"), cd.STATUS_TIMEOUT_S + cd.GRACE_S)
-    except Exception as ex:  # noqa: BLE001 - cannot tell: try to pause, which says loudly if it cannot
-        say(f"::warning::could not read the capacity ({str(ex)[:200]}); trying to pause it anyway")
-        return cd.pause(s.base, io, say)
+            last = cd.run_bounded(lambda: io.settle_capacity_deployment(s), SETTLE_TOTAL_S)
+            cancelled = bool(getattr(io, "deployment_cancelled", False))
+            say(f"the capacity deployment: {last}")
+            if last not in DEPLOYMENT_ENDED:
+                unsettled = str(last)
+        except Exception as ex:  # noqa: BLE001 - go on and pause whatever exists, with the doubt kept
+            cancelled, unsettled = True, "Unknown"
+            say(f"::warning::could not settle the capacity deployment ({str(ex)[:200]}); pausing whatever exists, and looking for a capacity that may still appear")
+    began = clock()
+    until = began + max(PROVISION_WAIT_S, LATE_APPEARANCE_S)
+    late_until = began + LATE_APPEARANCE_S
+    doubt = cancelled or unsettled is not None
+    st: Mapping[str, Any] = {}
+    announced = False
+    while True:
+        try:
+            st = cd.run_bounded(lambda: io.capacity(s.base, "status"), cd.STATUS_TIMEOUT_S + cd.GRACE_S)
+        except Exception as ex:  # noqa: BLE001 - cannot tell: try to pause, which says loudly if it cannot
+            say(f"::warning::could not read the capacity ({str(ex)[:200]}); trying to pause it anyway")
+            return cd.pause(s.base, io, say)
+        if st.get("exists"):
+            if not being_provisioned(st) or clock() >= until:
+                break
+            if not announced:
+                say(f"capacity {s.base.capacity} is still being provisioned ({st.get('provisioningState')}/{st.get('state')}); it can be paused when that is over, waiting")
+                announced = True
+        elif not doubt or clock() >= late_until:
+            break
+        sleeper(PROVISION_POLL_S)
     if not st.get("exists"):
+        if unsettled is not None:
+            say(f"::error::THE CAPACITY MAY STILL APPEAR AND BILL: the capacity deployment could not be stopped (last state: {unsettled}) and capacity "
+                f"{s.base.capacity} does not exist yet. Azure portal, resource group {s.base.resource_group}, Deployments, {CAPACITY_DEPLOYMENT}: cancel it, then look for "
+                "the capacity and pause or delete it. The scheduled guard pauses an Active capacity within 3 hours.")
+            return EXIT_STILL_RUNNING
+        if cancelled:
+            say(f"::warning::a capacity deployment was cancelled while it ran, and capacity {s.base.capacity} did not appear in {int(LATE_APPEARANCE_S)} s. Azure can still finish "
+                "what it had started: look at the resource group in the Azure portal, or run the platform workflow with action check. The scheduled guard pauses an "
+                "Active capacity within 3 hours.")
+            return EXIT_OK
         say(f"capacity {s.base.capacity} does not exist, so there is nothing to pause")
         return EXIT_OK
-    return cd.pause(s.base, io, say)
+    code = cd.pause(s.base, io, say)
+    if code == EXIT_OK and unsettled is not None:
+        say(f"::warning::the capacity is paused, but its deployment is still not over (last state: {unsettled}). Look at Deployments in resource group {s.base.resource_group}.")
+    return code
 
 
-def rescue(s: PlatformSettings, io: Any, say: Callable[[str], None] = print) -> int:
+def rescue(s: PlatformSettings, io: Any, say: Callable[[str], None] = print, *, clock: Callable[[], float] = time.monotonic,
+           sleeper: Callable[[float], None] = time.sleep) -> int:
     """The last line of defence of the platform workflow: settle a capacity deployment that may still be running, then pause the capacity if it exists.
     Safe to run any number of times, and when nothing was ever created."""
-    return pause_what_exists(s, io, say, settle=True)
+    return pause_what_exists(s, io, say, settle=True, clock=clock, sleeper=sleeper)
 
 
 def build(s: PlatformSettings, io: Any, out: Path, *, reload_data: bool = False, keep_running: bool = False, gate_wait_min: float = DEFAULT_GATE_WAIT_MIN,
@@ -670,7 +737,7 @@ def build(s: PlatformSettings, io: Any, out: Path, *, reload_data: bool = False,
             say(f"capacity {s.base.capacity}: {action}: {why}")
             owe()
             deployment_in_flight = True
-            io.infra(s, storage, True, admins)
+            io.infra(s, storage, True, admins, timeout=min(INFRA_TIMEOUT_S, budget - cd.GRACE_S - 30))
             deployment_in_flight = False
             return "created" if action == "create" else "updated"
         rep.notes.append(f"capacity: {step('create the Fabric capacity, or keep the one that exists', create_capacity, budgeted=True)}")
@@ -699,9 +766,9 @@ def build(s: PlatformSettings, io: Any, out: Path, *, reload_data: bool = False,
             "ontologyGate": {"status": br.gate.status, "detail": br.gate.detail},
         }
         step("write the outputs", lambda: write_outputs(out, br.outputs))
-        rc = EXIT_GATE if br.gate.status == "closed" else EXIT_OK
+        rc = EXIT_FAILED if br.gate.warning else (EXIT_GATE if br.gate.status == "closed" else EXIT_OK)
         if br.gate.warning:
-            rep.notes.append(f"the gate probe left something behind: {br.gate.warning}")
+            rep.notes.append(f"the gate probe left something behind, so this build is not a success (and --keep-running is ignored): {br.gate.warning}")
         if br.gate.status == "closed":
             rep.notes.append("the ontology gate is still closed: open the link in ADMIN_APPROVAL.md while the capacity runs (docs/BOOTSTRAP.md), then run build again")
         elif br.gate.status == "unknown":
@@ -721,7 +788,7 @@ def build(s: PlatformSettings, io: Any, out: Path, *, reload_data: bool = False,
                 rep.notes.append("--keep-running was ignored; the capacity was paused")
             say("\n== pause the capacity")
             t0 = clock()
-            code = pause_what_exists(s, io, say, settle=deployment_in_flight)
+            code = pause_what_exists(s, io, say, settle=deployment_in_flight, clock=clock, sleeper=sleeper)
             rep.steps.append(("pause the capacity", "ok" if code == EXIT_OK else "FAILED", clock() - t0))
             rc = max(rc, code)
             rep.active_seconds = clock() - owes_pause_since

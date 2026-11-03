@@ -56,8 +56,8 @@
     },
     "reports.monthly-brief": {
       "outputs": {
-        "files": 5,
-        "sha256": "c9f859051e29a7cf5b501e26ed72d1849fadf82c548a00a374b1247f0057af2c"
+        "files": 8,
+        "sha256": "c89cc2d4a82a392db178cea185727caca1b782226a5a8d3493377425eccf1c6a"
       },
       "path": "prompts/reports/monthly-brief.md",
       "promptSha256": "0c3c29c5fb4889368d95445163c02d05fed027f96cee49c7df7bf6e9e6a17c9d",

@@ -57,17 +57,18 @@ def test_the_worst_case_first_pause_fits_inside_the_job_timeout(workflow, job):
     assert worst + 3 <= timeout, f"{worst:.1f} minutes in the worst case, the job allows {timeout}"
 
 
-def test_the_platform_build_fits_the_settling_the_status_call_and_the_pause_after_its_deadline():
-    """Set-up, the longest deadline, then (in the worst case) cancelling and waiting for a capacity deployment, reading the capacity, and a full pause."""
+def test_the_platform_build_fits_the_settling_the_waiting_the_status_calls_and_the_pause_after_its_deadline():
+    """Set-up, the longest deadline, then (in the worst case) cancelling and waiting for a capacity deployment, waiting for the capacity to be provisioned
+    (or looking for a late one), the status calls, and a full pause."""
     timeout = load("platform.yml")["jobs"]["build"]["timeout-minutes"]
-    worst = 6 + cd.MAX_DEADLINE_MIN + (cd.GRACE_S + pf.SETTLE_TOTAL_S + cd.STATUS_TIMEOUT_S + cd.GRACE_S + cd.PAUSE_TOTAL_S) / 60
+    worst = 6 + cd.MAX_DEADLINE_MIN + (cd.GRACE_S + pf.PAUSE_PREAMBLE_MAX_S + cd.PAUSE_TOTAL_S) / 60
     assert worst + 3 <= timeout, f"{worst:.1f} minutes in the worst case, the job allows {timeout}"
 
 
 def test_the_platform_destroy_fits_a_resume_the_purge_the_deletes_and_the_pause():
     timeout = load("platform.yml")["jobs"]["destroy"]["timeout-minutes"]
     resume, purge, delete_capacity, delete_storage = cd.CAPACITY_TIMEOUT_S["resume"] / 60, 15, cd.CAPACITY_TIMEOUT_S["resume"] / 60, 10
-    worst = 4 + resume + purge + delete_capacity + delete_storage + (cd.STATUS_TIMEOUT_S + cd.GRACE_S + cd.PAUSE_TOTAL_S) / 60
+    worst = 4 + resume + purge + delete_capacity + delete_storage + (pf.PAUSE_PREAMBLE_MAX_S + cd.PAUSE_TOTAL_S) / 60
     assert worst + 3 <= timeout, f"{worst:.1f} minutes in the worst case, the job allows {timeout}"
 
 

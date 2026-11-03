@@ -13,8 +13,9 @@ right. No secret is created: the pipelines sign in with a federated credential t
 identity ids go into the repository's secrets through standard input, never on a command line.
 
 Everything that can be refused is checked first, read-only, in the dry run too: the repository exists and the signed-in gh account administers it, the
-resource group is empty or was made by this project (--adopt to accept another), an existing app does not already trust a different repository
-(--replace-trust to replace that), and the capacity exists for a consumer.
+resource group is empty or was made by this project (--adopt to accept another), an existing app trusts nothing but the one repository it is for (any other
+federated credential, whatever its name, lets that other repository sign in as the app: --replace-trust removes them), a role that already has the
+consumer role's name is exactly the role this project defines, and the capacity exists for a consumer.
 
 It acts on whatever subscription the `az` profile is signed in to. Because that profile can be signed in to a different tenant, --execute refuses to run
 unless --subscription names the subscription you mean and it is the signed-in one.
@@ -33,7 +34,7 @@ import tempfile
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Callable, Optional, Sequence
+from typing import Any, Callable, Mapping, Optional, Sequence
 
 from . import cd
 from .cd import CdError
@@ -61,6 +62,28 @@ PROPAGATION_WAIT_S = 15.0
 REPO_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9-]{0,38}/[A-Za-z0-9._-]{1,100}$")
 RG_RE = re.compile(r"^[A-Za-z0-9_().\-]{0,88}[A-Za-z0-9_()\-]$")
 GROUP_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9-]{2,62}$")
+
+
+def role_shape(doc: Mapping[str, Any]) -> dict[str, list[str]]:
+    """What a role definition allows, in one form that can be compared: lower case, sorted. It reads the shape `az role definition list` prints
+    (`permissions`, `assignableScopes`) and the shape the role is created from (`Actions`, `NotActions`, ..., `AssignableScopes`)."""
+    inner = doc.get("properties") if isinstance(doc.get("properties"), Mapping) else doc
+    permissions = inner.get("permissions")
+    blocks = list(permissions) if permissions is not None else [inner]
+
+    def pick(*keys: str) -> list[str]:
+        return sorted({str(x).lower() for b in blocks for k in keys for x in (b.get(k) or [])})
+    scopes = inner.get("assignableScopes") or inner.get("AssignableScopes") or []
+    return {"actions": pick("actions", "Actions"), "notActions": pick("notActions", "NotActions"), "dataActions": pick("dataActions", "DataActions"),
+            "notDataActions": pick("notDataActions", "NotDataActions"), "assignableScopes": sorted({str(x).lower().rstrip("/") for x in scopes})}
+
+
+def trust_split(existing: Sequence[Mapping[str, Any]], subject: str) -> tuple[list[Mapping[str, Any]], list[Mapping[str, Any]]]:
+    """(the credentials that are exactly the wanted trust, every other credential). Whatever its name, a federated credential that trusts something else
+    lets that something sign in as the app."""
+    def wanted(x: Mapping[str, Any]) -> bool:
+        return x.get("subject") == subject and x.get("issuer") == ISSUER
+    return [x for x in existing if wanted(x)], [x for x in existing if not wanted(x)]
 
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -150,8 +173,14 @@ class Cloud:
                          wait_for=("PrincipalNotFound", "does not exist in the directory", "RoleDefinitionDoesNotExist", "role definition"),
                          already=("RoleAssignmentExists", "already exists"))
 
-    def role_definition_exists(self, name: str) -> bool:
-        return bool(self._json("az", ["role", "definition", "list", "--name", name, "--custom-role-only", "true"], timeout=180))
+    def role_definition(self, name: str, scope: str) -> Optional[dict]:
+        """What the custom role of this name allows (see role_shape), or None when there is none. It is looked up at `scope`, because a role that can be assigned
+        only inside a resource group is not listed at the subscription."""
+        found = [d for d in (self._json("az", ["role", "definition", "list", "--name", name, "--custom-role-only", "true", "--scope", scope], timeout=180) or [])
+                 if d.get("roleName") == name]
+        if len(found) > 1:
+            raise CdError(f"{len(found)} custom roles are called '{name}'; delete the extra ones in the Azure portal so that the right one is used")
+        return role_shape(found[0]) if found else None
 
     def create_role_definition(self, doc: dict) -> None:
         self._file_call(["role", "definition", "create"], "--role-definition", doc)
@@ -343,13 +372,19 @@ def ensure_identity(c: Any, cfg: Config, rows: Rows, name: str, repo: str, group
         sp = NEW
         rows.add("would", "service principal", "would create")
     what = f"trust in the main branch of {repo}"
-    if any(x.get("subject") == subject and x.get("issuer") == ISSUER for x in existing):
+    expected, foreign = trust_split(existing, subject)
+    for stale in foreign:                                                   # only reached with --replace-trust (check_trust refused otherwise); first, so that a name is free again
+        label = f"trust in '{stale.get('subject')}' (credential '{stale.get('name')}')"
+        if cfg.execute:
+            c.remove_credential(app["id"], stale["id"])
+            rows.add("changed", label, "removed")
+        else:
+            rows.add("would", label, "would remove")
+    if expected:
         rows.add("ok", what, "already there")
     elif not cfg.execute:
         rows.add("would", what, "would create")
     else:
-        for stale in (x for x in existing if x.get("name") == CREDENTIAL_NAME):
-            c.remove_credential(app["id"], stale["id"])                      # only reached with --replace-trust, or when the issuer was different
         c.add_credential(app["id"], CREDENTIAL_NAME, subject, f"GitHub Actions on the main branch of {repo}")
         rows.add("changed", what, "created")
     member = real and sp != NEW and group_id != NEW and c.is_member(group_id, sp)
@@ -422,16 +457,18 @@ def resource_group_verdict(cfg: Config, state: Optional[dict]) -> str:
 
 
 def check_trust(c: Any, cfg: Config, name: str, repo: str, prefix: str) -> None:
-    """Read-only. An app that already trusts a different repository is not silently rebound: a typo in --repo or --consumer would hand a privileged
-    identity to the wrong repository. --replace-trust says it is meant."""
+    """Read-only. An app that trusts anything besides the one subject this run would give it is not silently taken over, whatever the other credentials are
+    called: each one lets another repository (or branch) sign in as the app, and the platform's app can change Azure. A typo in --repo or --consumer, or an app
+    that was made by hand, would otherwise hand a privileged identity to the wrong place. --replace-trust says it is meant, and removes them."""
     app = c.find_app(name)
     if not app:
         return
     subject = f"{prefix}:ref:refs/heads/main"
-    for other in (x for x in c.credentials(app["id"]) if x.get("name") == CREDENTIAL_NAME and x.get("subject") != subject):
-        if not cfg.replace_trust:
-            raise CdError(f"the app '{name}' already trusts '{other.get('subject')}', but this run would make it trust '{subject}'. If that is a mistake in --repo or "
-                          "--consumer, fix it; if you mean it, run again with --replace-trust. Nothing was changed")
+    _expected, foreign = trust_split(c.credentials(app["id"]), subject)
+    if foreign and not cfg.replace_trust:
+        listed = ", ".join(f"'{x.get('subject')}' (credential '{x.get('name')}')" for x in foreign)
+        raise CdError(f"the app '{name}' already trusts {listed}, but this run would make it trust '{subject}' only. If that is a mistake in --repo or --consumer, "
+                      "fix it; if you mean it, run again with --replace-trust, which removes the other credentials. Nothing was changed")
 
 
 def apply(c: Any, cfg: Config, say: Callable[[str], None] = print) -> Rows:
@@ -525,13 +562,19 @@ def consumer(c: Any, cfg: Config, consumer_repo: str, say: Callable[[str], None]
     if not capacity:
         raise CdError(f"capacity {platform['CD_CAPACITY']} does not exist in {resource_group} yet. The content repository's role is assigned on the capacity itself (so that "
                       f"it can run this capacity and cannot create another): run the platform workflow with action 'build' first, then this. Nothing was changed")
+    wanted_role = operator_role(sub, resource_group)
+    have_role = c.role_definition(ROLE_OPERATOR, f"/subscriptions/{sub}/resourceGroups/{resource_group}")
+    if have_role is not None and have_role != role_shape(wanted_role):
+        raise CdError(f"a custom role called '{ROLE_OPERATOR}' already exists, but it is not the role this project defines (it allows "
+                      f"{', '.join(have_role['actions']) or 'nothing'}; assignable at {', '.join(have_role['assignableScopes']) or 'nowhere'}). It would be given to the "
+                      "content repository's identity, so a role is not trusted by its name. Delete or rename it (Azure portal, Access control (IAM), Roles), or make it "
+                      f"match: actions {', '.join(OPERATOR_ACTIONS)} and nothing else. Nothing was changed")
     say(f"onboarding {consumer_repo} to the platform of {cfg.repo}" + ("" if cfg.execute else " (dry run: nothing is changed)") + "\n")
     owner, repo_name = consumer_repo.split("/", 1)
     app_name = f"{CONSUMER_APP_PREFIX}{owner}-{repo_name}"
     check_trust(c, cfg, app_name, consumer_repo, prefix)                    # before anything is changed
     app, sp = ensure_identity(c, cfg, rows, app_name, consumer_repo, group_id, prefix)
-    ensure(rows, cfg.execute, f"role definition '{ROLE_OPERATOR}'", c.role_definition_exists(ROLE_OPERATOR),
-           lambda: c.create_role_definition(operator_role(sub, resource_group)))
+    ensure(rows, cfg.execute, f"role definition '{ROLE_OPERATOR}'", have_role is not None, lambda: c.create_role_definition(wanted_role))
     ensure_role(c, cfg, rows, sp, ROLE_OPERATOR, f"capacity {platform['CD_CAPACITY']}", capacity)
     known = [x for x in platform.get("CD_CONSUMER_OBJECT_IDS", "").replace(";", ",").split(",") if x.strip()]
     if sp.lower() in (k.strip().lower() for k in known):

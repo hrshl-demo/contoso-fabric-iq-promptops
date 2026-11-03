@@ -151,8 +151,9 @@ jobs:
     if: ${{ inputs.action == 'build' }}
     runs-on: ubuntu-latest
     # 6 minutes of set-up, the deadline for the build steps (CD_DEADLINE_MIN, default 45), and after it the pause: up to 5 minutes to cancel and wait for a
-    # capacity deployment that may still be running, then the status call and up to 25 minutes for the pause itself; plus a margin
-    timeout-minutes: 90
+    # capacity deployment that may still be running, up to 5 minutes more to wait for a capacity that is still being provisioned (or to look for one that
+    # appears after a cancel), the status calls, and up to 25 minutes for the pause itself; plus a margin
+    timeout-minutes: 100
     concurrency:
       group: fabric-capacity
       cancel-in-progress: false
@@ -223,8 +224,9 @@ jobs:
     needs: guards
     if: ${{ inputs.action == 'destroy' }}
     runs-on: ubuntu-latest
-    # Purging a workspace needs a running capacity, so a destroy can resume it, delete things, and must pause it again: the worst cases add up
-    timeout-minutes: 120
+    # Purging a workspace needs a running capacity, so a destroy can resume it, delete things, and must pause it again (after waiting for a capacity that is
+    # still being provisioned, if there is one): the worst cases add up
+    timeout-minutes: 130
     concurrency:
       group: fabric-capacity
       cancel-in-progress: false

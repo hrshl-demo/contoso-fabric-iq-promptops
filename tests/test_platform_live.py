@@ -182,6 +182,19 @@ def test_any_other_answer_is_unknown_and_says_what_was_said(world):
     assert state.status == "unknown" and "Injected" in state.detail
 
 
+def test_a_leftover_that_cannot_be_removed_stops_the_probe_and_is_reported(world, monkeypatch):
+    """With the old debris still there the create would answer 409 and say nothing about the gate: the probe is not made, and the debris is reported."""
+    mock, live, ops, out, cli = world
+    ws = ready(world)["workspaceId"]
+    ops.fab.create(ws, "ontologies", {"displayName": pf.GATE_PROBE_ITEM})
+    posts, real_create = [], ops.fab.create
+    monkeypatch.setattr(ops.fab, "create", lambda *a, **k: posts.append(a) or real_create(*a, **k))
+    monkeypatch.setattr(ops, "hard_delete_item", lambda w, item: (_ for _ in ()).throw(cd.CdError("403 InsufficientWorkspaceRole")))
+    state = live.gate_state(settings(), out)
+    assert state.status == "unknown" and "was not probed" in state.detail
+    assert pf.GATE_PROBE_ITEM in state.warning and "delete by hand" in state.warning and posts == []
+
+
 def test_a_probe_that_cannot_be_cleaned_up_is_tried_three_times_then_reported(world, monkeypatch):
     mock, live, ops, out, cli = world
     ready(world)
