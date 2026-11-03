@@ -111,8 +111,9 @@ def test_a_refused_workspace_creation_says_which_two_things_to_check(world, code
     with pytest.raises(cd.CdError) as ex:
         live.workspace_and_lakehouse(settings(), out)
     text = str(ex.value)
+    assert f"refused to create the workspace ({code})" in text                                              # the real status, not a fixed 403
     assert "Service principals can create workspaces, connections, and deployment pipelines" in text and "contoso-promptops-fabric-apps" in text
-    assert "not yet an administrator of the capacity" in text and "The capacity is paused next" in text
+    assert "not yet an administrator of the capacity" in text and "The capacity is paused next" in text and "up to 15 minutes" in text
     assert not mock.workspaces
 
 
@@ -225,15 +226,54 @@ def test_a_cleanup_that_works_on_the_second_try_leaves_no_warning(world, monkeyp
     assert state.status == "open" and not state.warning and "created and deleted" in state.detail
 
 
-# ---- the one door that can be checked before a capacity exists ------------------------------------------------
+# ---- the two doors that can be checked before a capacity exists ----------------------------------------------
 
-def test_the_api_door_is_checked_and_creating_workspaces_is_said_to_be_unprovable_yet(world):
-    """No probe workspace is created: Fabric also requires the caller to administer a capacity, and none exists before the build."""
+def probe_names(mock):
+    return [w["displayName"] for w in mock.workspaces.values()]
+
+
+def test_both_doors_are_checked_and_the_probe_workspace_is_created_and_deleted(world):
+    """The second tenant setting is proven by creating an empty workspace without a capacity and deleting it at once."""
     mock, live, ops, out, cli = world
     api, create = live.probe_fabric(settings())
-    assert api.status == "ok" and create.status == "skipped"
-    assert "capacity" in create.detail and "Service principals can create workspaces, connections, and deployment pipelines" in create.guide
-    assert not mock.workspaces and not mock.deleted_workspaces                                           # nothing was created, so nothing can be left behind
+    assert api.status == "ok" and create.status == "ok" and "created and deleted" in create.detail
+    assert not mock.workspaces                                                                            # nothing is left in Fabric
+    assert [s["displayName"] for s in mock.deleted_workspaces.values()][0].startswith(pf.PROBE_WORKSPACE_PREFIX)
+    assert all(w.get("capacityId") is None for w in mock.workspaces.values())                              # no capacity was involved, so nothing could bill
+
+
+@pytest.mark.parametrize("code", [401, 403])
+def test_a_refused_probe_workspace_means_the_second_tenant_setting_is_off(world, code):
+    """The first live run: Fabric answered 401 to the pipeline's create-workspace call at step 8, with the F4 already running."""
+    mock, live, ops, out, cli = world
+    fault(mock, r"/workspaces$", "POST", code)
+    api, create = live.probe_fabric(settings())
+    assert api.status == "ok" and create.status == "closed" and str(code) in create.detail
+    assert "Service principals can create workspaces, connections, and deployment pipelines" in create.guide and "contoso-promptops-fabric-apps" in create.guide
+    assert not mock.workspaces
+
+
+@pytest.mark.parametrize("code", [400, 404, 500])
+def test_a_probe_that_fails_for_another_reason_is_not_called_closed(world, code):
+    mock, live, ops, out, cli = world
+    fault(mock, r"/workspaces$", "POST", code)
+    _api, create = live.probe_fabric(settings())
+    assert create.status == "skipped" and "could not be proven" in create.detail and "step 8" in create.detail
+
+
+def test_a_probe_workspace_that_cannot_be_deleted_is_reported_by_name(world):
+    mock, live, ops, out, cli = world
+    fault(mock, r"/workspaces/[^/]+$", "DELETE", 500, count=9)
+    _api, create = live.probe_fabric(settings())
+    assert create.status == "error" and pf.PROBE_WORKSPACE_PREFIX in create.detail and "delete it by hand" in create.detail
+
+
+def test_a_leftover_probe_workspace_from_an_earlier_run_is_swept_and_other_workspaces_are_left_alone(world):
+    mock, live, ops, out, cli = world
+    for name in (pf.PROBE_WORKSPACE_PREFIX + "deadbeef", "Contoso-PromptOps-Dev"):
+        ops.fab.call("POST", f"{ops.fab.api}/workspaces", json={"displayName": name})
+    _api, create = live.probe_fabric(settings())
+    assert create.status == "ok" and probe_names(mock) == ["Contoso-PromptOps-Dev"]
 
 
 @pytest.mark.parametrize("code, status", [(401, "closed"), (403, "closed"), (500, "error"), (404, "error")])
@@ -241,8 +281,9 @@ def test_a_refused_listing_means_the_api_setting_is_off(world, code, status):
     mock, live, ops, out, cli = world
     fault(mock, r"/workspaces$", "GET", code)
     checks = live.probe_fabric(settings())
-    assert len(checks) == 1 and checks[0].status == status
+    assert len(checks) == 1 and checks[0].status == status                                                # without API access the creation is not even tried
     assert ("Service principals can call Fabric public APIs" in checks[0].guide) is (status == "closed")
+    assert not mock.workspaces
 
 
 # ---- destroying -----------------------------------------------------------------------------------------------
