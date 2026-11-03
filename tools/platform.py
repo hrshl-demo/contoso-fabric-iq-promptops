@@ -169,7 +169,10 @@ def capacity_action(s: PlatformSettings, facts: dict) -> tuple[str, str, tuple[s
     if not facts.get("exists"):
         return "create", "the capacity does not exist yet", s.capacity_admins
     sku = facts.get("sku")
-    if sku not in (None, PLATFORM_SKU):
+    if sku != PLATFORM_SKU:
+        if not sku:
+            return "refuse", (f"capacity {s.base.capacity} exists but its size could not be read. The platform will not deploy over it: a deployment sets the size to "
+                              f"{PLATFORM_SKU}, which would change the bill if it is another size. Look at the capacity in the Azure portal, then run again"), ()
         return "refuse", (f"capacity {s.base.capacity} is {sku}, but the platform is built for {PLATFORM_SKU}. It never resizes a capacity by itself, because a resize "
                           f"changes the bill: resize it yourself (the kit's `capacity scale`) or point CD_CAPACITY at another name"), ()
     if facts.get("admins") is None:
@@ -643,15 +646,18 @@ def pause_what_exists(s: PlatformSettings, io: Any, say: Callable[[str], None], 
                 "the capacity and pause or delete it. The scheduled guard pauses an Active capacity within 3 hours.")
             return EXIT_STILL_RUNNING
         if cancelled:
-            say(f"::warning::a capacity deployment was cancelled while it ran, and capacity {s.base.capacity} did not appear in {int(LATE_APPEARANCE_S)} s. Azure can still finish "
-                "what it had started: look at the resource group in the Azure portal, or run the platform workflow with action check. The scheduled guard pauses an "
-                "Active capacity within 3 hours.")
-            return EXIT_OK
+            say(f"::error::THE CAPACITY MAY STILL APPEAR AND BILL: a capacity deployment was cancelled while it ran, and capacity {s.base.capacity} did not appear in "
+                f"{int(LATE_APPEARANCE_S)} s. A cancel is not an undo: Azure can still finish what it had started, and nothing here can prove that it will not. Look at "
+                f"resource group {s.base.resource_group} in the Azure portal in a few minutes, or run the platform workflow with action check. The scheduled guard pauses "
+                "an Active capacity within 3 hours.")
+            return EXIT_STILL_RUNNING
         say(f"capacity {s.base.capacity} does not exist, so there is nothing to pause")
         return EXIT_OK
     code = cd.pause(s.base, io, say)
     if code == EXIT_OK and unsettled is not None:
-        say(f"::warning::the capacity is paused, but its deployment is still not over (last state: {unsettled}). Look at Deployments in resource group {s.base.resource_group}.")
+        say(f"::error::THE CAPACITY DEPLOYMENT IS STILL NOT OVER (last state: {unsettled}). The capacity is paused, but a deployment that is still running can change it. "
+            f"Cancel it in the Azure portal (resource group {s.base.resource_group}, Deployments, {CAPACITY_DEPLOYMENT}) and look at the capacity again.")
+        return EXIT_STILL_RUNNING
     return code
 
 

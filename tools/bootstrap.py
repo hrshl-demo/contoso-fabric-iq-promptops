@@ -64,9 +64,10 @@ RG_RE = re.compile(r"^[A-Za-z0-9_().\-]{0,88}[A-Za-z0-9_()\-]$")
 GROUP_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9-]{2,62}$")
 
 
-def role_shape(doc: Mapping[str, Any]) -> dict[str, list[str]]:
+def role_shape(doc: Mapping[str, Any]) -> dict[str, Any]:
     """What a role definition allows, in one form that can be compared: lower case, sorted. It reads the shape `az role definition list` prints
-    (`permissions`, `assignableScopes`) and the shape the role is created from (`Actions`, `NotActions`, ..., `AssignableScopes`)."""
+    (`permissions`, `assignableScopes`) and the shape the role is created from (`Actions`, `NotActions`, ..., `AssignableScopes`). The number of permission
+    blocks and any condition are part of it: a role with a condition on its permissions is not the same role as one without."""
     inner = doc.get("properties") if isinstance(doc.get("properties"), Mapping) else doc
     permissions = inner.get("permissions")
     blocks = list(permissions) if permissions is not None else [inner]
@@ -74,15 +75,19 @@ def role_shape(doc: Mapping[str, Any]) -> dict[str, list[str]]:
     def pick(*keys: str) -> list[str]:
         return sorted({str(x).lower() for b in blocks for k in keys for x in (b.get(k) or [])})
     scopes = inner.get("assignableScopes") or inner.get("AssignableScopes") or []
+    conditions = sorted({f"{b.get('condition')}@{b.get('conditionVersion')}" for b in blocks if b.get("condition") or b.get("conditionVersion")})
     return {"actions": pick("actions", "Actions"), "notActions": pick("notActions", "NotActions"), "dataActions": pick("dataActions", "DataActions"),
-            "notDataActions": pick("notDataActions", "NotDataActions"), "assignableScopes": sorted({str(x).lower().rstrip("/") for x in scopes})}
+            "notDataActions": pick("notDataActions", "NotDataActions"), "assignableScopes": sorted({str(x).lower().rstrip("/") for x in scopes}),
+            "conditions": conditions, "blocks": len(blocks)}
 
 
 def trust_split(existing: Sequence[Mapping[str, Any]], subject: str) -> tuple[list[Mapping[str, Any]], list[Mapping[str, Any]]]:
     """(the credentials that are exactly the wanted trust, every other credential). Whatever its name, a federated credential that trusts something else
-    lets that something sign in as the app."""
+    lets that something sign in as the app. One that has the right issuer and subject but not the audience azure/login asks for is not the wanted trust
+    either: it could not sign in, and it is replaced (with --replace-trust) rather than taken for the real thing."""
     def wanted(x: Mapping[str, Any]) -> bool:
-        return x.get("subject") == subject and x.get("issuer") == ISSUER
+        audiences = x.get("audiences")                                                  # always present in what Graph returns; a record without it is not judged on it
+        return x.get("subject") == subject and x.get("issuer") == ISSUER and (audiences is None or AUDIENCE in audiences)
     return [x for x in existing if wanted(x)], [x for x in existing if not wanted(x)]
 
 
@@ -565,10 +570,12 @@ def consumer(c: Any, cfg: Config, consumer_repo: str, say: Callable[[str], None]
     wanted_role = operator_role(sub, resource_group)
     have_role = c.role_definition(ROLE_OPERATOR, f"/subscriptions/{sub}/resourceGroups/{resource_group}")
     if have_role is not None and have_role != role_shape(wanted_role):
+        extra = ([f"{have_role['blocks']} permission blocks"] if have_role["blocks"] != 1 else []) + (["a condition on its permissions"] if have_role["conditions"] else [])
         raise CdError(f"a custom role called '{ROLE_OPERATOR}' already exists, but it is not the role this project defines (it allows "
-                      f"{', '.join(have_role['actions']) or 'nothing'}; assignable at {', '.join(have_role['assignableScopes']) or 'nowhere'}). It would be given to the "
+                      f"{', '.join(have_role['actions']) or 'nothing'}; assignable at {', '.join(have_role['assignableScopes']) or 'nowhere'}"
+                      + (f"; it has {' and '.join(extra)}" if extra else "") + "). It would be given to the "
                       "content repository's identity, so a role is not trusted by its name. Delete or rename it (Azure portal, Access control (IAM), Roles), or make it "
-                      f"match: actions {', '.join(OPERATOR_ACTIONS)} and nothing else. Nothing was changed")
+                      f"match: actions {', '.join(OPERATOR_ACTIONS)} and nothing else, in one unconditional permission block. Nothing was changed")
     say(f"onboarding {consumer_repo} to the platform of {cfg.repo}" + ("" if cfg.execute else " (dry run: nothing is changed)") + "\n")
     owner, repo_name = consumer_repo.split("/", 1)
     app_name = f"{CONSUMER_APP_PREFIX}{owner}-{repo_name}"

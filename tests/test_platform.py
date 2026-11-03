@@ -280,8 +280,15 @@ def test_missing_administrators_are_added_and_nobody_is_removed():
 
 def test_an_unreadable_administrator_list_is_refused_not_overwritten():
     """An update deploys only the configured members, so it would replace administrators the platform cannot see."""
-    action, why, admins = pf.capacity_action(settings(), facts(admins=None, sku=None))
+    action, why, admins = pf.capacity_action(settings(), facts(admins=None))
     assert action == "refuse" and "could not be read" in why and "replace administrators" in why and admins == ()
+
+
+def test_an_unreadable_size_is_refused_not_deployed_over():
+    """A deployment sets the size to F4: over an F8 whose size could not be read that is a resize, and a change of the bill."""
+    for missing in (None, ""):
+        action, why, admins = pf.capacity_action(settings(), facts(sku=missing, admins=[UPN]))
+        assert action == "refuse" and "size could not be read" in why and "change the bill" in why and admins == ()
 
 
 # ---- build ----------------------------------------------------------------------------------------------------
@@ -389,11 +396,12 @@ def test_the_last_line_of_defence_settles_then_pauses_and_is_harmless_when_nothi
     assert pf.rescue(settings(), io) == cd.EXIT_STILL_RUNNING and "MAY STILL BE RUNNING" in capsys.readouterr().out
 
 
-def test_the_last_line_of_defence_keeps_going_when_it_cannot_settle_or_read(capsys):
+def test_the_last_line_of_defence_pauses_when_it_cannot_settle_but_does_not_call_the_run_clean(capsys):
     io = FakeIo(cap_exists=True, state="Active")
     io.settle_capacity_deployment = lambda s: (_ for _ in ()).throw(cd.CdError("az hung"))
     rc, _t = rescue_with(io)
-    assert rc == 0 and io.state == "Paused" and "could not settle" in capsys.readouterr().out
+    out = capsys.readouterr().out
+    assert rc == cd.EXIT_STILL_RUNNING and io.state == "Paused" and "could not settle" in out and "STILL NOT OVER" in out
     io = FakeIo(cap_exists=True, state="Active")
     real = io.capacity
     io.capacity = lambda base, action, timeout=None: (_ for _ in ()).throw(cd.CdError("status broke")) if action == "status" else real(base, action, timeout)
@@ -429,10 +437,11 @@ def test_a_settle_that_itself_fails_is_treated_as_a_deployment_in_doubt(capsys):
     assert rc == cd.EXIT_STILL_RUNNING and "MAY STILL APPEAR AND BILL" in capsys.readouterr().out and sum(t.slept) == pf.LATE_APPEARANCE_S
 
 
-def test_a_deployment_that_could_not_be_stopped_but_whose_capacity_exists_is_paused_with_a_warning(capsys):
+def test_a_deployment_that_could_not_be_stopped_but_whose_capacity_exists_is_paused_and_the_run_is_not_clean(capsys):
+    """The capacity is paused, but a deployment that is still running can change it: exit 4 until someone has looked."""
     io = FakeIo(settle_state="Running", settle_cancels=True, cap_exists=True, state="Active")
     rc, _t = rescue_with(io)
-    assert rc == 0 and io.state == "Paused" and "its deployment is still not over" in capsys.readouterr().out
+    assert rc == cd.EXIT_STILL_RUNNING and io.state == "Paused" and "THE CAPACITY DEPLOYMENT IS STILL NOT OVER" in capsys.readouterr().out
 
 
 def test_a_capacity_that_appears_after_a_cancel_is_found_and_paused():
@@ -442,12 +451,12 @@ def test_a_capacity_that_appears_after_a_cancel_is_found_and_paused():
     assert rc == 0 and io.state == "Paused" and io.calls[-1] == "capacity pause" and t.slept == [pf.PROVISION_POLL_S] * 3
 
 
-def test_a_cancelled_deployment_with_no_capacity_in_the_window_is_a_warning_and_the_guard_is_the_backstop(capsys):
+def test_a_cancelled_deployment_with_no_capacity_in_the_window_is_an_error_because_nothing_can_prove_it_will_not_appear(capsys):
     io = FakeIo(settle_state="Canceled", settle_cancels=True)
     rc, t = rescue_with(io)
     out = capsys.readouterr().out
-    assert rc == 0 and f"did not appear in {int(pf.LATE_APPEARANCE_S)} s" in out and "scheduled guard" in out and "::warning::" in out
-    assert sum(t.slept) == pf.LATE_APPEARANCE_S
+    assert rc == cd.EXIT_STILL_RUNNING and f"did not appear in {int(pf.LATE_APPEARANCE_S)} s" in out and "A cancel is not an undo" in out and "scheduled guard" in out
+    assert "::error::THE CAPACITY MAY STILL APPEAR AND BILL" in out and sum(t.slept) == pf.LATE_APPEARANCE_S
 
 
 def test_with_no_deployment_in_doubt_an_absent_capacity_is_not_waited_for():

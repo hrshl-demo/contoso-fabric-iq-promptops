@@ -105,7 +105,7 @@ class FakeCloud:
 
     def add_credential(self, app_object_id, name, subject, description):
         self._change("credential+", app_object_id, name, subject)
-        self.creds.setdefault(app_object_id, []).append({"id": self._id(), "name": name, "subject": subject, "issuer": bs.ISSUER})
+        self.creds.setdefault(app_object_id, []).append({"id": self._id(), "name": name, "subject": subject, "issuer": bs.ISSUER, "audiences": [bs.AUDIENCE]})
 
     def remove_credential(self, app_object_id, credential_id):
         self._change("credential-", app_object_id, credential_id)
@@ -289,11 +289,25 @@ def test_a_dry_run_with_replace_trust_says_what_it_would_remove_and_changes_noth
 
 
 def test_the_trust_split_separates_the_right_credential_from_all_others():
-    right = {"id": "1", "name": "a", "subject": RIGHT_SUBJECT, "issuer": bs.ISSUER}
-    other = {"id": "2", "name": "b", "subject": "repo:x/y:ref:refs/heads/main", "issuer": bs.ISSUER}
-    lookalike = {"id": "3", "name": "c", "subject": RIGHT_SUBJECT, "issuer": "https://other"}
-    assert bs.trust_split([right, other, lookalike], RIGHT_SUBJECT) == ([right], [other, lookalike])
+    right = {"id": "1", "name": "a", "subject": RIGHT_SUBJECT, "issuer": bs.ISSUER, "audiences": [bs.AUDIENCE]}
+    other = {"id": "2", "name": "b", "subject": "repo:x/y:ref:refs/heads/main", "issuer": bs.ISSUER, "audiences": [bs.AUDIENCE]}
+    lookalike = {"id": "3", "name": "c", "subject": RIGHT_SUBJECT, "issuer": "https://other", "audiences": [bs.AUDIENCE]}
+    wrong_audience = {"id": "4", "name": "d", "subject": RIGHT_SUBJECT, "issuer": bs.ISSUER, "audiences": ["api://somewhere-else"]}
+    no_audience_field = {"id": "5", "name": "e", "subject": RIGHT_SUBJECT, "issuer": bs.ISSUER}
+    assert bs.trust_split([right, other, lookalike, wrong_audience], RIGHT_SUBJECT) == ([right], [other, lookalike, wrong_audience])
+    assert bs.trust_split([no_audience_field], RIGHT_SUBJECT) == ([no_audience_field], [])               # a record without the field is not judged on it
     assert bs.trust_split([], RIGHT_SUBJECT) == ([], [])
+
+
+def test_a_credential_that_could_not_sign_in_because_of_its_audience_is_replaced_not_taken_for_the_real_one():
+    fake = FakeCloud()
+    app = with_extra_credential(fake, "x", subject=RIGHT_SUBJECT)
+    fake.creds[app["id"]].pop(0)                                                                       # only the look-alike is there
+    fake.creds[app["id"]][0]["audiences"] = ["api://somewhere-else"]
+    with pytest.raises(cd.CdError, match="--replace-trust"):
+        run(fake)
+    run(fake, cfg(replace_trust=True))
+    assert [(c["subject"], c["audiences"]) for c in fake.creds[app["id"]]] == [(RIGHT_SUBJECT, [bs.AUDIENCE])]
 
 
 def test_a_repository_that_does_not_exist_or_cannot_be_administered_is_refused_before_anything_is_created():
@@ -830,3 +844,31 @@ def test_a_role_shape_is_the_same_whichever_way_the_role_is_written_down():
     assert bs.role_shape({"properties": listed_role()}) == made                                          # a nested `properties` envelope reads the same
     two_blocks = {"assignableScopes": [SCOPE], "permissions": [{"actions": list(bs.OPERATOR_ACTIONS[:2])}, {"actions": list(bs.OPERATOR_ACTIONS[2:]), "notActions": ["x/y"]}]}
     assert bs.role_shape(two_blocks)["notActions"] == ["x/y"] and bs.role_shape(two_blocks) != made
+
+
+def test_a_role_with_a_condition_or_with_two_permission_blocks_is_not_the_role_this_project_defines():
+    plain = bs.role_shape(listed_role())
+    conditioned = listed_role()
+    conditioned["permissions"][0].update({"condition": "@Resource[Microsoft.Fabric/capacities:name] StringEquals 'other'", "conditionVersion": "2.0"})
+    assert bs.role_shape(conditioned) != plain and bs.role_shape(conditioned)["conditions"]
+    split = listed_role()
+    split["permissions"] = [{"actions": list(bs.OPERATOR_ACTIONS[:2])}, {"actions": list(bs.OPERATOR_ACTIONS[2:])}]
+    assert bs.role_shape(split) != plain and bs.role_shape(split)["blocks"] == 2
+    assert plain["conditions"] == [] and plain["blocks"] == 1
+
+
+@pytest.mark.parametrize("what, expected", [("condition", "a condition on its permissions"), ("blocks", "2 permission blocks")])
+def test_a_consumer_refuses_a_role_with_the_right_actions_but_a_condition_or_split_permissions(what, expected):
+    fake = FakeCloud()
+    run(fake)
+    built(fake)
+    role = listed_role()
+    if what == "condition":
+        role["permissions"][0].update({"condition": "@Resource[Microsoft.Fabric/capacities:name] StringEquals 'other'", "conditionVersion": "2.0"})
+    else:
+        role["permissions"] = [{"actions": list(bs.OPERATOR_ACTIONS[:2])}, {"actions": list(bs.OPERATOR_ACTIONS[2:])}]
+    fake.role_defs[bs.ROLE_OPERATOR] = role
+    before = len(fake.changes)
+    with pytest.raises(cd.CdError, match=f"not the role this project defines.*{expected}.*Nothing was changed"):
+        consume(fake)
+    assert len(fake.changes) == before
