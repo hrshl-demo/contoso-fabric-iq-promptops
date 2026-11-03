@@ -8,6 +8,7 @@ A release is a reviewed CHANGELOG section plus a button press. Nothing here talk
   python -m tools.release notes   --unreleased --out notes.md           the same for the pending changes (pull request preview)
   python -m tools.release assets  --version v1.0.0 --brief monthly-brief.pdf --out dist     the files attached to the release
   python -m tools.release lint                                           structure of CHANGELOG.md
+  python -m tools.release promotion --dev-sha <sha> --sha <sha>          prod gets only what dev has had
 
 CHANGELOG.md convention: newest first; `## Unreleased` first, then `## vX.Y.Z — YYYY-MM-DD` sections in descending order,
 each with at least one `- ` entry.
@@ -30,6 +31,9 @@ from typing import Optional
 from .promptlib import ROOT
 
 VERSION_RE = re.compile(r"^v(\d+)\.(\d+)\.(\d+)$")
+SHA_RE = re.compile(r"^[0-9a-f]{7,40}$")
+# What a deployment sends to Fabric: a change here is a change in what is deployed.
+DEPLOYED_PATHS = ("fabric", "seed", "kit/model", "kit/contoso_onto", "kit/config", "tools/cd.py")
 LABEL_RE = re.compile(r"^(v\d+\.\d+\.\d+|preview)$")
 HEADING_RE = re.compile(r"^## (?P<title>.+?)[ \t]*$", re.M)
 RELEASE_TITLE_RE = re.compile(r"^(?P<version>v\d+\.\d+\.\d+)\s+[—–-]\s+(?P<date>\d{4}-\d{2}-\d{2})$")
@@ -150,6 +154,17 @@ def prepare(text: str, version: str, date: str) -> str:
 def git_tags(root: Path) -> list[str]:
     p = subprocess.run(["git", "-C", str(root), "tag", "--list", "v*"], capture_output=True, text=True)
     return [t.strip() for t in p.stdout.splitlines() if t.strip()] if p.returncode == 0 else []
+
+
+def deployed_changes(root: Path, dev_sha: str, sha: str) -> list[str]:
+    """Files that differ, in what a deployment sends, between the last successful dev deployment and this commit."""
+    for label, value in (("dev commit", dev_sha), ("commit", sha)):
+        if not SHA_RE.match(value or ""):
+            raise ReleaseError(f"the {label} '{value}' is not a commit id")
+    p = subprocess.run(["git", "-C", str(root), "diff", "--name-only", dev_sha, sha, "--", *DEPLOYED_PATHS], capture_output=True, text=True)
+    if p.returncode != 0:
+        raise ReleaseError(f"git could not compare {dev_sha[:7]} with {sha[:7]}: {p.stderr.strip()[:200]}")
+    return [line for line in p.stdout.splitlines() if line.strip()]
 
 
 def gate(root: Path, version: str, tags: list[str]) -> list[str]:
@@ -299,6 +314,9 @@ def main(argv: Optional[list[str]] = None) -> int:
     p.add_argument("--version", required=True)
     p.add_argument("--brief", required=True)
     p.add_argument("--out", required=True)
+    p = sub.add_parser("promotion", help="prod gets only what dev has had: fail when the deployed files differ from the last good dev deployment")
+    p.add_argument("--dev-sha", default="", help="head commit of the last successful dev deployment (empty: there is none)")
+    p.add_argument("--sha", required=True)
     sub.add_parser("lint")
     a = ap.parse_args(argv)
     root = Path(a.root)
@@ -325,6 +343,16 @@ def main(argv: Optional[list[str]] = None) -> int:
             for f in assets(root, a.version, Path(a.brief), Path(a.out)):
                 print(f"  {f.name}  {f.stat().st_size:,} bytes")
             return 0
+        if a.cmd == "promotion":
+            if not a.dev_sha:
+                print("release: there is no successful dev deployment yet; run the cd-dev workflow first (docs/SETUP.md)")
+                return 1
+            changed = deployed_changes(root, a.dev_sha, a.sha)
+            for line in changed:
+                print(f"  - {line}")
+            print("release promotion: " + (f"{len(changed)} deployed file(s) differ from the last good dev deployment ({a.dev_sha[:7]}); let cd-dev deploy this commit first"
+                                           if changed else f"prod would get exactly what dev had at {a.dev_sha[:7]}"))
+            return 1 if changed else 0
         problems = lint((root / "CHANGELOG.md").read_text(encoding="utf-8"))
         for line in problems:
             print(f"  - {line}")

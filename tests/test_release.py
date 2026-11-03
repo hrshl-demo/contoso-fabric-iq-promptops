@@ -1,10 +1,13 @@
 import hashlib
 import json
+import shutil
+import subprocess
 import zipfile
 from pathlib import Path
 
 import pytest
 
+from tests.conftest import git
 from tools import release
 from tools.promptlib import ROOT
 
@@ -218,3 +221,63 @@ def test_this_repos_changelog_is_well_formed():
     assert release.lint(text) == []
     assert release.unreleased(text) is not None
     assert release.notes(ROOT, None).startswith("## Pending changes")
+
+
+# ---- promotion: prod gets only what dev has had ---------------------------------------------------------------
+
+@pytest.fixture
+def history(tmp_path):
+    """A repo with three commits: a deployable file, then a docs-only change, then a deployable change."""
+    def head():
+        return subprocess.run(["git", "-C", str(tmp_path), "rev-parse", "HEAD"], capture_output=True, text=True, check=True).stdout.strip()
+    subprocess.run(["git", "-C", str(tmp_path), "init", "-q"], check=True)
+    (tmp_path / "fabric").mkdir()
+    (tmp_path / "fabric" / "item.txt").write_text("v1", encoding="utf-8")
+    git(tmp_path, "add", "-A")
+    git(tmp_path, "commit", "-q", "-m", "one")
+    first = head()
+    (tmp_path / "docs").mkdir()
+    (tmp_path / "docs" / "note.md").write_text("words", encoding="utf-8")
+    (tmp_path / "kit" / "tests").mkdir(parents=True)
+    (tmp_path / "kit" / "tests" / "t.py").write_text("x", encoding="utf-8")
+    git(tmp_path, "add", "-A")
+    git(tmp_path, "commit", "-q", "-m", "two")
+    second = head()
+    (tmp_path / "fabric" / "item.txt").write_text("v2", encoding="utf-8")
+    git(tmp_path, "add", "-A")
+    git(tmp_path, "commit", "-q", "-m", "three")
+    return tmp_path, first, second, head()
+
+
+@pytest.mark.skipif(shutil.which("git") is None, reason="git not available")
+def test_promotion_ignores_changes_that_deploy_nothing(history):
+    root, first, second, _third = history
+    assert release.deployed_changes(root, first, second) == []
+    assert release.deployed_changes(root, second, second) == []
+
+
+@pytest.mark.skipif(shutil.which("git") is None, reason="git not available")
+def test_promotion_lists_what_dev_has_not_had(history):
+    root, first, second, third = history
+    assert release.deployed_changes(root, first, third) == ["fabric/item.txt"]
+    assert release.deployed_changes(root, second, third) == ["fabric/item.txt"]
+
+
+@pytest.mark.skipif(shutil.which("git") is None, reason="git not available")
+def test_promotion_refuses_odd_input(history):
+    root, first, _second, third = history
+    for bad in ("--output=x", "HEAD~1", "", "zzzzzzz"):
+        with pytest.raises(release.ReleaseError, match="not a commit id"):
+            release.deployed_changes(root, bad, third)
+    with pytest.raises(release.ReleaseError, match="could not compare"):
+        release.deployed_changes(root, "0" * 40, third)
+
+
+@pytest.mark.skipif(shutil.which("git") is None, reason="git not available")
+def test_promotion_command_line(history, capsys):
+    root, first, second, third = history
+    assert release.main(["--root", str(root), "promotion", "--dev-sha", second, "--sha", second]) == 0
+    assert release.main(["--root", str(root), "promotion", "--dev-sha", first, "--sha", third]) == 1
+    assert release.main(["--root", str(root), "promotion", "--dev-sha", "", "--sha", third]) == 1
+    out = capsys.readouterr().out
+    assert "prod would get exactly what dev had" in out and "fabric/item.txt" in out and "no successful dev deployment yet" in out
