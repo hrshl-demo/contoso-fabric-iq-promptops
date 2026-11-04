@@ -841,6 +841,9 @@ def build(s: PlatformSettings, io: Any, out: Path, *, reload_data: bool = False,
                 return "kept"
             say(f"capacity {s.base.capacity}: {action}: {why}")
             owe()
+            if action == "update" and facts.get("state") != "Active":
+                say(f"the capacity is {facts.get('state') or 'not running'}: it is resumed first, because Azure refuses to update a capacity that is not running")
+                io.capacity(s.base, "resume", timeout=cd.CAPACITY_TIMEOUT_S["resume"])
             deployment_in_flight = True
             io.infra(s, storage, True, admins, timeout=min(INFRA_TIMEOUT_S, budget - cd.GRACE_S - 30))
             deployment_in_flight = False

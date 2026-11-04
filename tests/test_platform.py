@@ -66,6 +66,8 @@ class FakeIo:
             self.cap_exists, self.state = True, "Active"
             raise cd.CdError("the deployment client timed out")
         self._maybe_fail("infra capacity" if deploy_capacity else "infra storage")
+        if deploy_capacity and self.cap_exists and self.state != "Active":                  # what Azure answered on 4 Nov 2026 when a paused capacity was updated
+            raise cd.CdError("az deployment group create failed (1): BadRequest: Service is not ready to be updated")
         if deploy_capacity:
             self.cap_exists, self.state = True, "Active"
             self.deployed_admins = list(admins) if admins is not None else None
@@ -415,6 +417,21 @@ def test_a_rerun_adds_only_the_missing_administrator(tmp_path):
     rc, br = pf.build(settings(CD_CONSUMER_OBJECT_IDS=CONS), io, tmp_path / "out", clock=clock(), sleeper=lambda s: None)
     assert rc == 0 and "capacity: updated" in br.report.notes
     assert io.deployed_admins == ["manual@added.test", UPN, PIPE, CONS]
+
+
+def test_an_update_of_a_paused_capacity_resumes_it_first(tmp_path, capsys):
+    """The first consumer onboarding (4 Nov 2026) failed here: Azure refuses to update a capacity that is paused, so the new administrator could not be added."""
+    io = FakeIo(cap_exists=True, state="Paused", cap_admins=["manual@added.test", UPN, PIPE])
+    rc, br = pf.build(settings(CD_CONSUMER_OBJECT_IDS=CONS), io, tmp_path / "out", clock=clock(), sleeper=lambda s: None)
+    assert rc == 0 and "capacity: updated" in br.report.notes and io.deployed_admins == ["manual@added.test", UPN, PIPE, CONS]
+    assert io.calls.index("capacity resume") < io.calls.index("infra capacity") and io.calls[-1] == "capacity pause"
+    assert "it is resumed first" in capsys.readouterr().out
+
+
+def test_an_update_of_a_running_capacity_does_not_resume_it_twice_over(tmp_path):
+    io = FakeIo(cap_exists=True, state="Active", cap_admins=[UPN, PIPE])
+    rc, _ = pf.build(settings(CD_CONSUMER_OBJECT_IDS=CONS), io, tmp_path / "out", clock=clock(), sleeper=lambda s: None)
+    assert rc == 0 and io.calls.index("infra capacity") < io.calls.index("capacity resume")          # the one resume is the plain step 7
 
 
 def test_a_capacity_of_another_size_stops_the_build_before_anything_changes_it(tmp_path):
